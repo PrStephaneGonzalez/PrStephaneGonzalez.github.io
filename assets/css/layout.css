@@ -1,10 +1,9 @@
-/* Left portrait column: fixed, very left, never overlaps text */
 @media (min-width: 992px) {
   :root {
-    --portrait-w: 260px;
-    --gap: 32px;
-    --top: 110px; /* adjust if you want higher/lower under navbar */
-    --left: 24px; /* how far from the left edge */
+    --portrait-w: 200px;   /* taille portrait */
+    --gap: 28px;           /* espace entre portrait et texte */
+    --top: 110px;          /* position sous la navbar */
+    --left: 24px;          /* marge gauche */
   }
 
   #left-portrait-wrap {
@@ -21,13 +20,12 @@
     display: block;
   }
 
-  /* Push the whole page content to the right */
+  /* Décale tout le contenu à droite du portrait */
   #quarto-content {
     padding-left: calc(var(--portrait-w) + var(--gap));
   }
 }
 
-/* Mobile: portrait above content (no fixed column) */
 @media (max-width: 991.98px) {
   #left-portrait-wrap {
     position: static;
