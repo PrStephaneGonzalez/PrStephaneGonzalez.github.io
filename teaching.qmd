@@ -1,6 +1,8 @@
 ---
-title: "Teaching"
+title: "Stéphane Gonzalez"
+layout: layout
 ---
+
 
 This page gathers selected course materials and links. I will progressively add lecture notes, problem sets, and references.
 
