@@ -1,34 +1,40 @@
-/* Two-column layout on desktop: left portrait, right page content */
+/* === Clean two-column layout: portrait left, content right === */
+
 @media (min-width: 992px) {
-  main.content {
+  #quarto-content {
     display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 28px;
+    grid-template-columns: 260px minmax(0, 1fr);
+    column-gap: 32px;
     align-items: start;
   }
 
+  /* Portrait column */
   #left-portrait-wrap {
     position: sticky;
-    top: 90px; /* below the top navbar */
+    top: 96px; /* below navbar */
   }
 
   #left-portrait-wrap img {
     width: 100%;
     border-radius: 16px;
     display: block;
-    opacity: 1;
+  }
+
+  /* Make sure main content stays in its column */
+  #quarto-content > main {
+    grid-column: 2;
   }
 }
 
-/* On mobile, portrait goes on top (stacked) */
+/* Mobile: portrait above content */
 @media (max-width: 991.98px) {
   #left-portrait-wrap {
-    margin: 12px 0 18px 0;
+    margin: 0 0 20px 0;
+    max-width: 240px;
   }
 
   #left-portrait-wrap img {
-    width: 220px;
-    max-width: 100%;
+    width: 100%;
     border-radius: 16px;
     display: block;
   }
