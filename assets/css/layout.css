@@ -1,17 +1,18 @@
-/* === Clean two-column layout: portrait left, content right === */
-
+/* Left portrait column: fixed, very left, never overlaps text */
 @media (min-width: 992px) {
-  #quarto-content {
-    display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
-    column-gap: 32px;
-    align-items: start;
+  :root {
+    --portrait-w: 260px;
+    --gap: 32px;
+    --top: 110px; /* adjust if you want higher/lower under navbar */
+    --left: 24px; /* how far from the left edge */
   }
 
-  /* Portrait column */
   #left-portrait-wrap {
-    position: sticky;
-    top: 96px; /* below navbar */
+    position: fixed;
+    top: var(--top);
+    left: var(--left);
+    width: var(--portrait-w);
+    z-index: 2;
   }
 
   #left-portrait-wrap img {
@@ -20,22 +21,28 @@
     display: block;
   }
 
-  /* Make sure main content stays in its column */
-  #quarto-content > main {
-    grid-column: 2;
+  /* Push the whole page content to the right */
+  #quarto-content {
+    padding-left: calc(var(--portrait-w) + var(--gap));
   }
 }
 
-/* Mobile: portrait above content */
+/* Mobile: portrait above content (no fixed column) */
 @media (max-width: 991.98px) {
   #left-portrait-wrap {
-    margin: 0 0 20px 0;
-    max-width: 240px;
+    position: static;
+    margin: 12px 0 18px 0;
+    width: 220px;
+    max-width: 100%;
   }
 
   #left-portrait-wrap img {
     width: 100%;
     border-radius: 16px;
     display: block;
+  }
+
+  #quarto-content {
+    padding-left: 0;
   }
 }
