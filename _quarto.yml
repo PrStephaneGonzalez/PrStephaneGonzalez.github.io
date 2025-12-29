@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: _site
 
+resources:
+  - assets/**
+
 website:
   title: "Stéphane Gonzalez"
   navbar:
