@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const images = [
     "assets/img/portraits/p1.jpg",
     "assets/img/portraits/p2.jpg",
-    "assets/img/portraits/p3.jpg",
+    "assets/img/portraits/p3.jpg"
   ];
 
   let i = Math.floor(Math.random() * images.length);
@@ -17,6 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
       i = (i + 1) % images.length;
       img.src = images[i];
       img.style.opacity = "1";
-    }, 850);
+    }, 800);
   }, 10000);
 });
