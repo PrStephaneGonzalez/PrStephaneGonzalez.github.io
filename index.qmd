@@ -2,11 +2,25 @@
 title: "Stéphane Gonzalez"
 ---
 
-Professor of Economics (theoretical economics).  
-GATE Lyon Saint-Étienne (CNRS).
+::: {.row}
+::: {.col-md-8}
 
-Research interests: social choice, cooperative game theory, axiomatic methods.
+I am a Professor of Economics at GATE Lyon Saint-Étienne (CNRS). My work focuses on theoretical economics, with contributions in social choice theory, cooperative game theory, and axiomatic methods.
 
-- CV (PDF): to be added
-- Google Scholar: to be added
+## Links
+
+- CV (PDF): to add
+- Google Scholar: to add
 - Contact: see the Contact page
+
+:::
+::: {.col-md-4}
+
+<img
+  id="portrait-rotator"
+  src="assets/img/portraits/p1.jpg"
+  alt="Portrait"
+/>
+
+:::
+:::

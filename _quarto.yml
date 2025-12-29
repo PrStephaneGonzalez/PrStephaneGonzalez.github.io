@@ -21,3 +21,7 @@ format:
     toc: true
     smooth-scroll: true
     link-external-newwindow: true
+    css:
+      - assets/css/rotator.css
+    include-after-body:
+      - assets/js/portrait-rotator.js
