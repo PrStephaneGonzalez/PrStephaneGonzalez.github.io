@@ -1,6 +1,8 @@
 ---
-title: "Research"
+title: "Stéphane Gonzalez"
+layout: layout
 ---
+
 
 ## Main interests
 - Social choice
