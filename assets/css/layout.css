@@ -1,0 +1,35 @@
+/* Two-column layout on desktop: left portrait, right page content */
+@media (min-width: 992px) {
+  main.content {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  #left-portrait-wrap {
+    position: sticky;
+    top: 90px; /* below the top navbar */
+  }
+
+  #left-portrait-wrap img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+    opacity: 1;
+  }
+}
+
+/* On mobile, portrait goes on top (stacked) */
+@media (max-width: 991.98px) {
+  #left-portrait-wrap {
+    margin: 12px 0 18px 0;
+  }
+
+  #left-portrait-wrap img {
+    width: 220px;
+    max-width: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+}
