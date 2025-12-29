@@ -16,11 +16,11 @@ I am a Professor of Economics at GATE Lyon Saint-Étienne (CNRS). My work focuse
 :::
 ::: {.col-md-4}
 
-<img
-  id="portrait-rotator"
-  src="assets/img/portraits/p1.jpg"
-  alt="Portrait"
-/>
+<img id="portrait-rotator"
+     src="assets/img/portraits/p1.jpg"
+     alt="Portrait"
+     style="width: 320px; max-width: 100%; border-radius: 16px; opacity: 1;" />
+
 
 :::
 :::
