@@ -1,0 +1,11 @@
+---
+title: "Research"
+---
+
+## Main interests
+- Social choice
+- Cooperative game theory
+- Axiomatic methods
+
+## Working papers / publications
+(To be added.)
