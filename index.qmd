@@ -2,27 +2,24 @@
 title: "Stéphane Gonzalez"
 ---
 
-::: {.row}
-::: {.col-md-8}
+## Biography
 
-I am a Professor of Economics at GATE Lyon Saint-Étienne (CNRS). My work focuses on theoretical economics, with contributions in social choice theory, cooperative game theory, and axiomatic methods.
+I am a Full Professor at the [Groupe d'analyse et de théorie économique (GATE Lyon Saint-Etienne)](https://www.gate.cnrs.fr/), UMR 5824, [University of Saint-Etienne](https://www.univ-st-etienne.fr/), and the [Saint-Etienne School of Economics (SE2)](https://se2.univ-st-etienne.fr/). Since January 2025, I have served as the **Deputy Director of GATE**, in charge of the Saint-Étienne site.
 
-## Links
+I founded the [Master's program in Political Engineering](https://www.univ-st-etienne.fr/fr/formation/d-u-1/d-u-1/du-introduction-to-political-engineering-KVQTJNB1.html), which later evolved into the [Master's program in Economics and Data for Decision Science (EDDS)](https://se2.univ-st-etienne.fr/fr/formation/master-XB/master-XB/master-analyse-et-politique-economique-parcours-economics-data-and-decision-science-5_05_07_0018_FR.html). I also lead and founded the [Microcertification Artificial Intelligence: Challenges, Opportunities & Practical Cases](https://se2.univ-st-etienne.fr/fr/etudier-a-se2/formation-continue/formation-certifiante-intelligence-artificielle.html).
 
-- CV (PDF): to add
-- Google Scholar: to add
-- Contact: see the Contact page
+My academic background spans both mathematics and economics, with a Master's in Pure Mathematics from [Université Paris-Saclay](https://www.universite-paris-saclay.fr/) and another in Theoretical Economics from [Université Paris 1 Panthéon-Sorbonne](https://www.pantheonsorbonne.fr/). I earned my PhD from Université Paris 1, affiliated with the [Centre d'Economie de la Sorbonne (CES)](https://ces.univ-paris1.fr/) and the [Paris School of Economics (PSE)](https://www.parisschoolofeconomics.eu/), under the supervision of [Michel Grabisch](https://grabisch.univ-paris1.fr/).
 
-:::
-::: {.col-md-4}
+My research and teaching center on **theoretical economics**, especially **game theory** and **social choice theory**, with a strong emphasis on the **axiomatic method**.
 
-<img id="portrait-rotator"
-     src="assets/img/portraits/p1.jpg"
-     alt="Portrait"
-     style="width: 320px; max-width: 100%; border-radius: 16px; opacity: 1;" />
+## Professional Roles & Supervision
 
+* **Associate Editor:** [Theory and Decision](https://www.springer.com/journal/11238).
+* **PhD Supervision:** I have supervised two PhD students: [Kevin Techer](https://sites.google.com/view/kevintecher/home) and [David Lowing](https://ideas.repec.org/f/plo474.html).
 
-:::
-:::
+## Research Topics
 
-<script src="assets/js/portrait-rotator.js"></script>
+* Economic Theory
+* Game Theory
+* Social Choice
+* Coalition Formation
