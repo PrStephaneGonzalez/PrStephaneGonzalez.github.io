@@ -17,5 +17,7 @@ website:
 
 format:
   html:
-    include-after-body:
-      - assets/js/portrait-rotator.html
+    theme: cosmo
+    toc: true
+    smooth-scroll: true
+    link-external-newwindow: true
