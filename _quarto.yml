@@ -24,3 +24,9 @@ format:
     toc: true
     smooth-scroll: true
     link-external-newwindow: true
+    css:
+      - assets/css/layout.css
+    include-before-body:
+      - _includes/left-portrait.html
+    include-after-body:
+      - _includes/portrait-rotator-loader.html
