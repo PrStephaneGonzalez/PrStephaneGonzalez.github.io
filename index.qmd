@@ -24,3 +24,5 @@ I am a Professor of Economics at GATE Lyon Saint-Étienne (CNRS). My work focuse
 
 :::
 :::
+
+<script src="assets/js/portrait-rotator.js"></script>
