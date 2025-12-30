@@ -1,26 +1,42 @@
-@media (min-width: 992px) {
-  :root {
-  --portrait-w: 160px;
-  --gap: 20px;
-  --top: 110px;
-  --right-margin: 60px;               /* petite marge droite */
-  --left: calc(var(--right-margin) * 2 / 3); /* gauche = 2/3 de droite */
+/* =========================
+   Three-column layout (Quarto)
+   - Desktop: portrait | content | small right margin
+   - Mobile: stacked
+   ========================= */
+
+/* Global variables (apply everywhere) */
+:root {
+  --portrait-w: 160px;                 /* width of the portrait column */
+  --gap: 16px;                         /* space between columns */
+  --top: 110px;                        /* sticky offset under the navbar */
+
+  --right-margin: 24px;                /* make this very small */
+  --left: calc(var(--right-margin) * 2 / 3); /* left margin = 2/3 of right margin */
+
+  /* Optional: keep content from becoming too wide on very large screens.
+     Set to "none" if you want fully fluid width. */
+  --content-max-width: 980px;
 }
 
-
+/* Desktop / large screens */
+@media (min-width: 992px) {
   .three-columns-container {
-    display: grid;
-    grid-template-columns: var(--portrait-w) 1fr var(--right-margin);
-    gap: var(--gap);
+    display: grid !important;
+    grid-template-columns: var(--portrait-w) minmax(0, 1fr) var(--right-margin) !important;
+    gap: var(--gap) !important;
+
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--left);
+
+    /* Important: do NOT apply the same padding on both sides.
+       We only keep left padding so the content column gains width. */
+    padding-left: var(--left) !important;
+    padding-right: 0 !important;
   }
 
   #left-portrait-wrap {
     position: sticky;
     top: var(--top);
-    left: 0;
     width: var(--portrait-w);
     z-index: 2;
     align-self: start;
@@ -32,18 +48,22 @@
     display: block;
   }
 
-  /* Contenu central */
+  /* Central content */
   #quarto-content {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    /* Optional (remove if you want maximum width) */
+    max-width: var(--content-max-width);
   }
 
-  /* Colonne de droite (marge) */
+  /* Right spacer column */
   #right-margin {
     width: var(--right-margin);
   }
 }
 
+/* Mobile / tablet */
 @media (max-width: 991.98px) {
   .three-columns-container {
     display: block;
@@ -65,6 +85,7 @@
   #quarto-content {
     padding-left: 0;
     padding-right: 0;
+    max-width: none;
   }
 
   #right-margin {
