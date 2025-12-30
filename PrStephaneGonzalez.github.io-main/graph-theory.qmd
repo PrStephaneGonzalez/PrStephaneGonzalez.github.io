@@ -1,5 +1,0 @@
----
-title: "Graph Theory"
----
-
-Former Google Sites page: <https://sites.google.com/site/gonzalezstephaneuniv/graph-theory>

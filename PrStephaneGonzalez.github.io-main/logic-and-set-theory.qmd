@@ -1,7 +1,0 @@
----
-title: "Logic and Set Theory"
----
-
-Course page and materials:
-
-https://sites.google.com/site/gonzalezstephaneuniv/logic-and-set-theory
