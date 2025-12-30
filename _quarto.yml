@@ -21,6 +21,7 @@ website:
 format:
   html:
     theme: cosmo
+    page-layout: full
     toc: false
     smooth-scroll: true
     link-external-newwindow: true
