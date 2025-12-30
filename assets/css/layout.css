@@ -5,37 +5,43 @@
    ========================= */
 
 /* Global variables */
-:root{
-  --portrait-w: 160px;                 /* width of the portrait column */
-  --gap: 16px;                         /* space between columns */
-  --top: 110px;                        /* sticky offset under the navbar */
+:root {
+  --portrait-w: 180px;         /* Un peu plus large pour l'équilibre */
+  --gap: 40px;                 /* Plus d'espace entre photo et texte */
+  --top: 110px;                /* sticky offset */
 
-  --right-margin: 24px;                /* small right spacer */
-  --left: calc(var(--right-margin) * 2 / 3); /* left margin = 2/3 of right */
+  --right-margin: 40px;        /* Marge de sécurité à droite */
+  --left-padding: 2%;          /* Marge légère à gauche */
 
-  --content-max-width: 1100px;         /* widen central content on desktop */
+  /* On supprime la limite stricte de 1100px pour éviter les marges vides */
+  --content-max-width: 100%;   
 }
 
 /* Desktop / large screens */
-@media (min-width: 992px){
-  /* Fix the “zoomed-out” feel on desktop (as if you zoomed in a bit) */
-  html{ font-size: 18px; }
-  body{ line-height: 1.55; }
+@media (min-width: 992px) {
+  html { 
+    /* Simule le zoom : texte plus grand sur grand écran */
+    font-size: 19px; 
+  }
+  
+  body { 
+    line-height: 1.6; 
+  }
 
-  .three-columns-container{
+  .three-columns-container {
     display: grid;
-    grid-template-columns: var(--portrait-w) minmax(0, 1fr) var(--right-margin);
+    /* La colonne centrale (1fr) prend tout l'espace disponible */
+    grid-template-columns: var(--portrait-w) 1fr var(--right-margin);
     gap: var(--gap);
 
-    max-width: 1200px;
+    /* On utilise 95% de l'écran pour éviter les grandes bandes blanches */
+    max-width: 95%;
     margin: 0 auto;
-
-    /* keep only left padding so the content column stays wide */
-    padding-left: var(--left);
+    padding-left: var(--left-padding);
     padding-right: 0;
   }
 
-  #left-portrait-wrap{
+  #left-portrait-wrap {
     position: sticky;
     top: var(--top);
     width: var(--portrait-w);
@@ -43,53 +49,57 @@
     align-self: start;
   }
 
-  #left-portrait-wrap img{
+  #left-portrait-wrap img {
     width: 100%;
     border-radius: 16px;
     display: block;
+    /* Optionnel : ombre légère pour détacher la photo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   }
 
   /* Central content */
-  #quarto-content{
+  #quarto-content {
     padding-left: 0;
     padding-right: 0;
+    /* Le contenu s'étire désormais sans limite bloquante */
     max-width: var(--content-max-width);
-    margin: 0 auto;
+    margin: 0; 
   }
 
   /* Right spacer column */
-  #right-margin{
+  #right-margin {
     width: var(--right-margin);
   }
 }
 
 /* Mobile / tablet */
-@media (max-width: 991.98px){
-  .three-columns-container{
+@media (max-width: 991.98px) {
+  .three-columns-container {
     display: block;
+    padding: 0 20px; /* Marges de sécurité sur mobile */
   }
 
-  #left-portrait-wrap{
+  #left-portrait-wrap {
     position: static;
-    margin: 12px 0 18px 0;
-    width: 220px;
+    margin: 20px auto; /* Centré sur mobile */
+    width: 180px;
     max-width: 100%;
   }
 
-  #left-portrait-wrap img{
+  #left-portrait-wrap img {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 50%; /* Souvent plus joli en cercle sur mobile */
     display: block;
   }
 
-  #quarto-content{
+  #quarto-content {
     padding-left: 0;
     padding-right: 0;
     max-width: none;
     margin: 0;
   }
 
-  #right-margin{
+  #right-margin {
     display: none;
   }
 }
