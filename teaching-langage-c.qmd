@@ -1,5 +1,0 @@
----
-title: "Langage C"
----
-
-Former Google Sites page: <https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/langage-c>

@@ -1,7 +1,0 @@
----
-title: "Coalitions in Cooperative and Non-cooperative Game Theory"
----
-
-Course page and materials:
-
-https://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory
