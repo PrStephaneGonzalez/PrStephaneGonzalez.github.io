@@ -7,34 +7,6 @@ listing:
     type: default
     categories: true
     filter-ui: [search, category]
-  - id: working-papers
-    contents: working-papers
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
----
-  - id: publications
-    contents: publications
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
-    fields: [title, author, date, categories]
-  - id: working-papers
-    contents: working-papers
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
-    fields: [title, author, date, categories]
----
-  - id: publications
-    contents: publications
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
     fields: [title, author, date, categories]
   - id: working-papers
     contents: working-papers
