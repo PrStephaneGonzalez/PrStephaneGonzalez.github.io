@@ -1,0 +1,66 @@
+/*
+  Stéphane Gonzalez – Quarto site custom layout
+  Left portrait column visible on all pages.
+*/
+
+/* Wrapper injected into main.content */
+.sg-page {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.sg-side {
+  flex: 0 0 260px;
+}
+
+.sg-content {
+  flex: 1 1 auto;
+  min-width: 0; /* avoid overflow */
+}
+
+/* Keep portrait visible while scrolling (desktop) */
+.sg-portrait {
+  position: sticky;
+  top: 1.25rem;
+}
+
+#portrait-rotator {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  opacity: 1;
+  transition: opacity 500ms ease;
+}
+
+/* Slightly reduce title block spacing so it doesn't feel cramped */
+.quarto-title-block {
+  margin-bottom: 1rem;
+}
+
+/* Mobile / narrow screens: portrait moves above content */
+@media (max-width: 992px) {
+  .sg-page {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .sg-side {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .sg-portrait {
+    position: relative;
+    top: auto;
+  }
+
+  #portrait-rotator {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}

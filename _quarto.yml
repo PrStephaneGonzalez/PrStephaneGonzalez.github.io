@@ -21,8 +21,10 @@ website:
 format:
   html:
     theme: cosmo
-    toc: true
+    toc: false
     smooth-scroll: true
     link-external-newwindow: true
     css:
-      - assets/css/layout.css
+      - assets/css/site.css
+    include-after-body:
+      - _includes/site-scripts.html

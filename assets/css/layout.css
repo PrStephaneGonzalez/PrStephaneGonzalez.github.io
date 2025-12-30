@@ -1,0 +1,46 @@
+@media (min-width: 992px) {
+  :root {
+    --portrait-w: 200px;   /* taille portrait */
+    --gap: 28px;           /* espace entre portrait et texte */
+    --top: 110px;          /* position sous la navbar */
+    --left: 24px;          /* marge gauche */
+  }
+
+  #left-portrait-wrap {
+    position: fixed;
+    top: var(--top);
+    left: var(--left);
+    width: var(--portrait-w);
+    z-index: 2;
+  }
+
+  #left-portrait-wrap img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+
+  /* Décale tout le contenu à droite du portrait */
+  #quarto-content {
+    padding-left: calc(var(--portrait-w) + var(--gap));
+  }
+}
+
+@media (max-width: 991.98px) {
+  #left-portrait-wrap {
+    position: static;
+    margin: 12px 0 18px 0;
+    width: 220px;
+    max-width: 100%;
+  }
+
+  #left-portrait-wrap img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+  }
+
+  #quarto-content {
+    padding-left: 0;
+  }
+}
