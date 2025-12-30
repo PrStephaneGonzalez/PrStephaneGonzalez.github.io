@@ -4,7 +4,7 @@
     --gap: 28px;           /* espace entre portrait et texte */
     --top: 110px;          /* position sous la navbar */
     --left: 24px;          /* marge gauche */
-    --right-margin: 120px; /* marge droite (ajustable) */
+    --right-margin: 50px; /* marge droite (ajustable) */
   }
 
   .three-columns-container {
