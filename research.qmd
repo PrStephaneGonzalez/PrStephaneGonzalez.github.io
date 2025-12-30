@@ -62,46 +62,17 @@ listing:
 
 ## Invitations to participate in workshops, seminars, and conferences
 
-1. OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)
-2. Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)
-3. Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025)
-4. OSGAD 17 (Paris, France, 2024)
-5. GT Économie Comportementale (Université Paris Nanterre, France, 2024)
-6. Participatory Budgeting Workshop (Paris School of Economics, France, 2024)
-7. Amsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024)
-8. Séminaire du CREM (Caen, France, 2024)
-9. 2nd UB Workshop on Game Theory (Barcelona, Spain, 2023)
-10. Online Social Choice and Welfare Seminar (Online, 2023)
-11. XXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023)
-12. CO2ERASE (University Paris Dauphine, France, 2023)
-13. Workshop on Collective Decisions: Current Trends (Granada, Spain, 2023)
-14. Seminar of Economics and Management (University of Paderborn, Germany, 2023)
-15. Economic theory seminar (CES, Paris, France, 2023)
-16. Interaction seminar (AMSE, Marseille, France, 2022)
-17. Workshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022)
-18. Game theory seminar (University of Barcelona, Spain, 2022)
-19. MDOD Seminar (Paris 1, France, 2021)
-20. Séminaire du CRESE (Besançon, France, 2020)
-21. LEM Seminar (Lille, France, 2020)
-22. LED Seminar (Paris 8, France, 2019)
-23. MRE Seminar (Montpellier, France, 2019)
-24. Paris Symposium on Games 2018 (Paris, France, 2018)
-25. Symposium "Mathematics and Politics: Democratic Decision Making" (Hannover, Germany, 2018)
-26. The Game Theory seminars of the University of the Basque Country (Bilbao, Spain, 2018)
-27. CES Economic Theory Seminar of Paris 1 (Paris, France, 2018)
-28. Séminaire du BETA (Nancy, France, 2018)
-29. OSGAD 11 (Paris, France, 2017)
-30. Axiomatizations in Game Theory (Pécs, Hungary, 2017)
-31. Workshop MARS (Saint-Etienne, France, 2017)
-32. Workshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016)
-33. Séminaire du GATE-LSE (Lyon, France, 2016)
-34. ADRES (Paris, France, 2015)
-35. CEREC Workshop in Economics (Brussels, Belgium, 2014)
-36. QED (Vienna, Austria, 2013)
-37. MINT 4 (Amsterdam, Netherlands, 2013)
-38. Séminaire du laboratoire EQUIPPE (Lille, France, 2013)
-39. Parisian Game Theory PhD Seminar IHP (Paris, France, 2013)
-40. PSE Seminar in Economic Theory (Paris, France, 2013)
-41. OWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)
-42. EBIM Networks Workshop (Bielefeld, Germany, 2012)
-43. OSGAD 5 (Paris, France, 2011)
+```{=html}
+<!-- This list is generated automatically from invitations/*.qmd -->
+```
+
+::: {#invitations}
+```{listing}
+contents: invitations
+type: default
+sort: "date desc"
+fields: [title, date, description]
+filter-ui: false
+```
+:::
+
