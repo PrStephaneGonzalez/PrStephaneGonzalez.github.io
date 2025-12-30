@@ -1,6 +1,7 @@
 ---
 title: "Research"
-execute: false
+execute:
+  enabled: false
 
 listing:
   - id: publications
