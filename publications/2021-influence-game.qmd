@@ -1,0 +1,16 @@
+---
+title: "INFLUENCE: A partizan scoring game on graphs"
+author:
+  - Eric Duchêne
+  - Stéphane Gonzalez
+  - Aline Parreau
+  - Eric Rémila
+  - Philippe Solal
+date: 2021-07-01
+categories: [Graph Theory, Game Theory]
+params:
+  venue: "Theoretical Computer Science"
+  status: "published"
+---
+
+*Theoretical Computer Science* (published).

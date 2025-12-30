@@ -1,0 +1,13 @@
+---
+title: "Approval voting without ballot restrictions"
+author:
+  - Federica Ceron
+  - Stéphane Gonzalez
+date: 2021-07-01
+categories: [Voting, Social Choice]
+params:
+  venue: "Theoretical Economics"
+  status: "published"
+---
+
+*Theoretical Economics* (published).

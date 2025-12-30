@@ -1,0 +1,13 @@
+---
+title: "De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs"
+author:
+  - Stéphane Gonzalez
+  - Alain Marciano
+date: 2017-09-01
+categories: [Law and Economics, Cooperative Games]
+params:
+  venue: "Revue d'économie politique"
+  status: "published"
+---
+
+*Revue d'économie politique* (published).

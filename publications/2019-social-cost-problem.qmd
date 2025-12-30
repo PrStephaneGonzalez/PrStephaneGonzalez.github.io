@@ -1,0 +1,14 @@
+---
+title: "The social cost problem, rights and the (non)empty core"
+author:
+  - Stéphane Gonzalez
+  - Alain Marciano
+  - Philippe Solal
+date: 2019-04-01
+categories: [Law and Economics, Cooperative Games]
+params:
+  venue: "Journal of Public Economic Theory"
+  status: "published"
+---
+
+*Journal of Public Economic Theory* (published).

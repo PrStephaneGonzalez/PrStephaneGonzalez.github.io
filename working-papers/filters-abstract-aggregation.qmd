@@ -1,0 +1,15 @@
+---
+title: "Filters in abstract aggregation with infinite sequences of signals"
+author:
+  - Susumu Cato
+  - Stéphane Gonzalez
+  - Eric Rémila
+  - Philippe Solal
+date: 2025-01-01
+categories: [Aggregation, Social Choice]
+params:
+  venue: "Working paper"
+  status: "working paper"
+---
+
+*Working paper* (working paper).

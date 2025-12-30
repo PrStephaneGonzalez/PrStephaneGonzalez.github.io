@@ -1,0 +1,15 @@
+---
+title: "An axiomatic characterization of the proportional threshold methods: A geometric approach"
+author:
+  - Susumu Cato
+  - Stéphane Gonzalez
+  - Eric Rémila
+  - Philippe Solal
+date: 2026-01-01
+categories: [Social Choice]
+params:
+  venue: "Social Choice and Welfare"
+  status: "forthcoming"
+---
+
+*Social Choice and Welfare* (forthcoming).

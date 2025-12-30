@@ -1,0 +1,13 @@
+---
+title: "Axiomatic foundations of the core for games in effectiveness form"
+author:
+  - Stéphane Gonzalez
+  - Aymeric Lardon
+date: 2021-11-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "Mathematical Social Sciences"
+  status: "published"
+---
+
+*Mathematical Social Sciences* (published).

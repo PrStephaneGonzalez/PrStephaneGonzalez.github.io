@@ -1,0 +1,13 @@
+---
+title: "Autonomous coalitions"
+author:
+  - Stéphane Gonzalez
+  - Michel Grabisch
+date: 2015-12-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "Annals of Operations Research"
+  status: "published"
+---
+
+*Annals of Operations Research* (published).

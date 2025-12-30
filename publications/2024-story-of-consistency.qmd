@@ -1,0 +1,13 @@
+---
+title: "A Story of Consistency: Bridging the gap between Bentham and Rawls foundations"
+author:
+  - Stéphane Gonzalez
+  - Nikolaos Pnevmatikos
+date: 2024-06-01
+categories: [Philosophy, Justice]
+params:
+  venue: "Synthese"
+  status: "published"
+---
+
+*Synthese* (published).

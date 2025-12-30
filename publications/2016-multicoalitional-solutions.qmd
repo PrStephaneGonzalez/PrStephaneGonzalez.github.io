@@ -1,0 +1,13 @@
+---
+title: "Multicoalitional solutions"
+author:
+  - Stéphane Gonzalez
+  - Michel Grabisch
+date: 2016-05-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "Journal of Mathematical Economics"
+  status: "published"
+---
+
+*Journal of Mathematical Economics* (published).

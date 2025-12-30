@@ -1,0 +1,14 @@
+---
+title: "An Axiomatic Characterization of the Knapsack Budget Allocation Rule"
+author:
+  - Federica Ceron
+  - Stéphane Gonzalez
+  - Adriana Navarro-Ramos
+date: 2025-01-01
+categories: [Budget Allocation, Axiomatic Methods]
+params:
+  venue: "Working paper"
+  status: "working paper"
+---
+
+*Working paper* (working paper).

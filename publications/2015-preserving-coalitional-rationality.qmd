@@ -1,0 +1,13 @@
+---
+title: "Preserving coalitional rationality for non-balanced games"
+author:
+  - Stéphane Gonzalez
+  - Michel Grabisch
+date: 2015-08-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "International Journal of Game Theory"
+  status: "published"
+---
+
+*International Journal of Game Theory* (published).

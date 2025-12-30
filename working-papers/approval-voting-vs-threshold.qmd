@@ -1,0 +1,15 @@
+---
+title: "Approval voting versus proportional threshold methods: so far and yet so near"
+author:
+  - Susumu Cato
+  - Stéphane Gonzalez
+  - Eric Rémila
+  - Philippe Solal
+date: 2025-01-01
+categories: [Voting, Social Choice]
+params:
+  venue: "Working paper"
+  status: "working paper"
+---
+
+*Working paper* (working paper).

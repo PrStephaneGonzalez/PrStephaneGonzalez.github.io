@@ -1,0 +1,15 @@
+---
+title: "Axiomatic characterizations of the core without consistency"
+author:
+  - Sylvain Béal
+  - Stéphane Gonzalez
+  - Philippe Solal
+  - Peter Sudhölter
+date: 2023-09-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "International Journal of Game Theory"
+  status: "published"
+---
+
+*International Journal of Game Theory* (published).

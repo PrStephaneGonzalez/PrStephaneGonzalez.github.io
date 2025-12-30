@@ -1,0 +1,13 @@
+---
+title: "Axiomatization and Implementation via objections structure"
+author:
+  - Aymeric Lardon
+  - Stéphane Gonzalez
+date: 2025-09-01
+categories: [Implementation, Social Choice]
+params:
+  venue: "Theory and Decision"
+  status: "published"
+---
+
+*Theory and Decision* (published).

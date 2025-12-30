@@ -1,0 +1,14 @@
+---
+title: "Dilemma with approval and disapproval votes"
+author:
+  - Stéphane Gonzalez
+  - Annick Laruelle
+  - Philippe Solal
+date: 2019-08-01
+categories: [Voting, Social Choice]
+params:
+  venue: "Social Choice and Welfare"
+  status: "published"
+---
+
+*Social Choice and Welfare* (published).

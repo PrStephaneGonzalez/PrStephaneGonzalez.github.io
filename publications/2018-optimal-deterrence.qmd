@@ -1,0 +1,13 @@
+---
+title: "Optimal deterrence of cooperation"
+author:
+  - Stéphane Gonzalez
+  - Aymeric Lardon
+date: 2018-03-01
+categories: [Game Theory, Cooperative Games]
+params:
+  venue: "International Journal of Game Theory"
+  status: "published"
+---
+
+*International Journal of Game Theory* (published).
