@@ -1,7 +1,7 @@
 ---
-title: "Symposium "Mathematics and Politics: Democratic Decision Making""
+title: 'Symposium "Mathematics and Politics: Democratic Decision Making"'
 date: 2018-01-01
-categories: [Invited talk / seminar]
+categories: ["Invited talk / seminar"]
 params:
   location: "Hannover, Germany, 2018"
 description: "Hannover, Germany, 2018"
