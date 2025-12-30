@@ -1,0 +1,17 @@
+---
+title: "Teaching"
+---
+
+Below are teaching materials and course pages. Most full lecture notes and PDFs are currently hosted on the original Google Sites page; this website mirrors the same structure and provides direct access.
+
+## Courses
+
+- [Cours Prérequis](cours-prerequis.qmd)
+- [Langage C](langage-c.qmd)
+- [Logic and Set Theory](logic-and-set-theory.qmd)
+- [Macroeconomics](macroeconomics.qmd)
+- [Politiques économiques](politiques-economiques.qmd)
+- [Théorie de la mesure](theorie-de-la-mesure.qmd)
+- [Macroéconomie et Croissance](macroeconomie-et-croissance.qmd)
+- [Introduction to Political Engineering](introduction-to-political-engineering.qmd)
+- [Coalitions in cooperative and non-cooperative game theory](coalitions.qmd)

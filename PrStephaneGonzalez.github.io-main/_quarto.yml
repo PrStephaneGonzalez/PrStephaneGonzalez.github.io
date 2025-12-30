@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: _site
+
+resources:
+  - assets/**
+
+website:
+  title: "Stéphane Gonzalez"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Research
+        href: research.qmd
+      - text: Teaching
+        href: teaching.qmd
+      - text: Contact
+        href: contact.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: false
+    smooth-scroll: true
+    link-external-newwindow: true
+    css:
+      - assets/css/site.css
+    include-after-body:
+      - _includes/site-scripts.html

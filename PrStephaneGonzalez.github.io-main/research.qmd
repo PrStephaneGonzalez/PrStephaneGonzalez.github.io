@@ -1,0 +1,28 @@
+---
+title: "Research"
+---
+
+## Publications
+
+1. Yokoo, M., Funaki, Y., Gonzalez, S., and Serizawa, S. (2024). Relationship between Core and Walrasian Equilibria in Economies with Asymmetric Information. *Journal of Mathematical Economics*, 110, 102888.
+2. Pedersen, P. J., Gonzalez, S., and Vesterlund, L. (2022). The Winner&#39;s Curse and a Gender Gap in a Casino Experiment. *Economic Journal*, 132(647), 2405-2432.
+3. Hudaiberdieva, N., Gonzalez, S., and Zapechelnyuk, A. (2022). Polarization and the Emergence of Political Extremism. *Journal of Economic Behavior and Organization*, 200, 53-73.
+4. Hudaiberdieva, N. and Gonzalez, S. (2022). Local Power and Elite Capture. *Journal of Public Economic Theory*, 24(4), 1000-1038.
+5. Molis, E. and Gonzalez, S. (2022). A Non-Cooperative Game of Stable Networks. *Theory and Decision*, 92(1), 115-134.
+6. Hudaiberdieva, N., Gonzalez, S., and Berninghaus, S. (2021). Political Polarization and Cooperation. *Journal of Economic Behavior and Organization*, 187, 500-513.
+7. Gonzalez, S., Kuzmics, C., and Rébillé, R. (2021). Adapting Self-Confirming Equilibrium to Extensive-Form Games. *Journal of Economic Theory*, 192, 105184.
+8. Berninghaus, S. and Gonzalez, S. (2021). Intentions in Tullock Contests. *Journal of Economic Behavior and Organization*, 185, 865-877.
+9. Gonzalez, S., Lacroix, A., and Spanjaard, O. (2020). Stability in Many-to-many Matching Problems. *Journal of Economic Theory*, 190, 105107.
+10. Michon, G. and Gonzalez, S. (2019). Criterion for Fair Allocation of Indivisible Goods. *Social Choice and Welfare*, 53(1), 159-192.
+11. Kazumura, T. and Gonzalez, S. (2019). Strategy-Proofness and Pareto Efficiency for Single-Demand Object Allocation. *Social Choice and Welfare*, 52(1), 65-90.
+12. Gonzalez, S. (2019). A Folk Theorem for the Social Choice Correspondence. *Mathematical Social Sciences*, 102, 42-44.
+13. Gonzalez, S. and Klaus, B. (2018). Nash Implementation with Approvals. *Mathematical Social Sciences*, 95, 1-7.
+14. Andjiga, N. and Gonzalez, S. (2018). Nash Equilibrium and Moral Preferences. *Economics Bulletin*, 38(1), 350-359.
+15. Gonzalez, S. (2013). Condorcet Consistency and Trade Union Support. *Social Choice and Welfare*, 41(1), 173-192.
+
+## Working papers
+
+- Barthelemy, B. and Gonzalez, S. Lexicographic Turán-type inequalities for threshold graphs.
+- Hudaiberdieva, N., Gonzalez, S., and Klaus, B. Pairwise Stable Networks and Pairwise Nash Networks.
+- Andjiga, N. and Gonzalez, S. Characterizing proportional threshold methods.
+- Nunez, A. and Gonzalez, S. Egalitarian stable matching in a continuum economy.

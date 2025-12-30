@@ -1,0 +1,19 @@
+::: {.container-fluid}
+::: {.row}
+
+::: {.col-lg-3 col-md-4 d-none d-md-block}
+<img id="portrait-rotator"
+     src="/assets/img/portraits/p1.jpg"
+     alt="Portrait"
+     style="width: 100%; border-radius: 16px; margin-top: 1rem;" />
+:::
+
+::: {.col-lg-9 col-md-8}
+{{ content }}
+:::
+
+:::
+:::
+
+<script src="/assets/js/portrait-rotator.js"></script>
+
