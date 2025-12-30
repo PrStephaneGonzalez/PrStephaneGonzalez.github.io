@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: _site
 
+execute:
+  enabled: false
+
 resources:
   - assets/**
 
