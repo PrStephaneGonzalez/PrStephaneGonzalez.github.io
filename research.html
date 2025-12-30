@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -68,8 +70,150 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-publications .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-search","listing-category"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-publications'] = new List('listing-publications', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-working-papers .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-search","listing-category"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-working-papers'] = new List('listing-working-papers', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-publications .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-author','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-search","listing-category"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-publications'] = new List('listing-publications', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-working-papers .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-author','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-search","listing-category"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-working-papers'] = new List('listing-working-papers', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
@@ -118,9 +262,10 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(36)</span></div><div class="category" data-category="QWdncmVnYXRpb24=">Aggregation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="QXhpb21hdGljJTIwTWV0aG9kcw==">Axiomatic Methods <span class="quarto-category-count">(2)</span></div><div class="category" data-category="QnVkZ2V0JTIwQWxsb2NhdGlvbg==">Budget Allocation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Q29vcGVyYXRpdmUlMjBHYW1lcw==">Cooperative Games <span class="quarto-category-count">(16)</span></div><div class="category" data-category="RHluYW1pYyUyMEdhbWVz">Dynamic Games <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R2FtZSUyMFRoZW9yeQ==">Game Theory <span class="quarto-category-count">(16)</span></div><div class="category" data-category="R3JhcGglMjBUaGVvcnk=">Graph Theory <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SW1wbGVtZW50YXRpb24=">Implementation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SnVzdGljZQ==">Justice <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TGF3JTIwYW5kJTIwRWNvbm9taWNz">Law and Economics <span class="quarto-category-count">(4)</span></div><div class="category" data-category="UGhpbG9zb3BoeQ==">Philosophy <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U29jaWFsJTIwQ2hvaWNl">Social Choice <span class="quarto-category-count">(12)</span></div><div class="category" data-category="Vm90aW5n">Voting <span class="quarto-category-count">(6)</span></div></div></div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -129,7 +274,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -141,33 +286,469 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<ul>
+<li>id: publications contents: publications sort: “date desc” type: default categories: true filter-ui: [search, category] fields: [title, author, date, categories]</li>
+<li>id: working-papers contents: working-papers sort: “date desc” type: default categories: true filter-ui: [search, category] fields: [title, author, date, categories] —</li>
+<li>id: publications contents: publications sort: “date desc” type: default categories: true filter-ui: [search, category] fields: [title, author, date, categories]</li>
+<li>id: working-papers contents: working-papers sort: “date desc” type: default categories: true filter-ui: [search, category] fields: [title, author, date, categories] —</li>
+</ul>
 <section id="publications" class="level2">
 <h2 class="anchored" data-anchor-id="publications">Publications</h2>
-<ol type="1">
-<li>An axiomatic characterization of the proportional threshold methods: A geometric approach, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, <em>Social Choice and Welfare</em> (forthcoming).</li>
-<li>Axiomatization and Implementation via objections structure, Aymeric Lardon and Stéphane Gonzalez, <em>Theory and Decision</em>, September 2025, Volume 99, 393–405.</li>
-<li>A Story of Consistency: Bridging the gap between Bentham and Rawls foundations, Stéphane Gonzalez and Nikolaos Pnevmatikos, <em>Synthese</em>, June 2024, Volume 203, article number 208.</li>
-<li>Axiomatic characterizations of the core without consistency, Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter, <em>International Journal of Game Theory</em>, September 2023, Volume 53(3), 687–701.</li>
-<li>Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective, Stéphane Gonzalez and Fatma Zahra Rostom, <em>Mathematical Social Sciences</em>, September 2022, Volume 119, 1–10.</li>
-<li>Axiomatic foundations of the core for games in effectiveness form, Stéphane Gonzalez and Aymeric Lardon, <em>Mathematical Social Sciences</em>, November 2021, Volume 114, 28–38.</li>
-<li>Approval voting without ballot restrictions, Federica Ceron and Stéphane Gonzalez, <em>Theoretical Economics</em>, July 2021, Volume 16, Issue 3, 759–775.</li>
-<li>INFLUENCE: A partizan scoring game on graphs, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, <em>Theoretical Computer Science</em>, July 2021, Volumes 878–879, 26–46.</li>
-<li>Dilemma with approval and disapproval votes, Stéphane Gonzalez, Annick Laruelle, Philippe Solal, <em>Social Choice and Welfare</em>, August 2019, Volume 53, Issue 3, 497–517.</li>
-<li>The social cost problem, rights and the (non)empty core, Stéphane Gonzalez, Alain Marciano, Philippe Solal, <em>Journal of Public Economic Theory</em>, April 2019, Volume 21, Issue 2, 347–365.</li>
-<li>Optimal deterrence of cooperation, Stéphane Gonzalez and Aymeric Lardon, <em>International Journal of Game Theory</em>, March 2018, Volume 47, Issue 1, 207–227.</li>
-<li>De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs, Stéphane Gonzalez and Alain Marciano, <em>Revue d’économie politique</em>, September 2017, Volume 127, Issue 4, 579–600.</li>
-<li>Multicoalitional solutions, Stéphane Gonzalez and Michel Grabisch, <em>Journal of Mathematical Economics</em>, May 2016, Volume 64, 1–10.</li>
-<li>Autonomous coalitions, Stéphane Gonzalez and Michel Grabisch, <em>Annals of Operations Research</em>, December 2015, Volume 235, Issue 1, 301–317.</li>
-<li>Preserving coalitional rationality for non-balanced games, Stéphane Gonzalez and Michel Grabisch, <em>International Journal of Game Theory</em>, August 2015, Volume 44, Issue 3, 733–760.</li>
-</ol>
+<div id="listing-publications" class="quarto-listing quarto-listing-container-default">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="U29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1767225600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2026-proportional-threshold-methods.html" class="no-external">An axiomatic characterization of the proportional threshold methods: A geometric approach</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2026-proportional-threshold-methods.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2026
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="SW1wbGVtZW50YXRpb24lMkNTb2NpYWwlMjBDaG9pY2U=" data-listing-date-sort="1756684800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2025-objections-structure.html" class="no-external">Axiomatization and Implementation via objections structure</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('SW1wbGVtZW50YXRpb24='); return false;">Implementation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2025-objections-structure.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2025
+</div>
+<div class="listing-author">
+Aymeric Lardon, Stéphane Gonzalez
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="UGhpbG9zb3BoeSUyQ0p1c3RpY2U=" data-listing-date-sort="1717200000000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="2">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2024-story-of-consistency.html" class="no-external">A Story of Consistency: Bridging the gap between Bentham and Rawls foundations</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UGhpbG9zb3BoeQ=='); return false;">Philosophy</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('SnVzdGljZQ=='); return false;">Justice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2024-story-of-consistency.html" class="no-external">
+<div class="listing-date">
+Jun 1, 2024
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Nikolaos Pnevmatikos
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1693526400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2023-core-without-consistency.html" class="no-external">Axiomatic characterizations of the core without consistency</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2023-core-without-consistency.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2023
+</div>
+<div class="listing-author">
+Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="R2FtZSUyMFRoZW9yeSUyQ0R5bmFtaWMlMjBHYW1lcw==" data-listing-date-sort="1661990400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2022-resource-exploitation.html" class="no-external">Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RHluYW1pYyUyMEdhbWVz'); return false;">Dynamic Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2022-resource-exploitation.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2022
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Fatma Zahra Rostom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1635724800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-effectiveness-form-core.html" class="no-external">Axiomatic foundations of the core for games in effectiveness form</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-effectiveness-form-core.html" class="no-external">
+<div class="listing-date">
+Nov 1, 2021
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Aymeric Lardon
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="R3JhcGglMjBUaGVvcnklMkNHYW1lJTIwVGhlb3J5" data-listing-date-sort="1625097600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-influence-game.html" class="no-external">INFLUENCE: A partizan scoring game on graphs</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R3JhcGglMjBUaGVvcnk='); return false;">Graph Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-influence-game.html" class="no-external">
+<div class="listing-date">
+Jul 1, 2021
+</div>
+<div class="listing-author">
+Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1625097600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="3">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-approval-voting.html" class="no-external">Approval voting without ballot restrictions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-approval-voting.html" class="no-external">
+<div class="listing-date">
+Jul 1, 2021
+</div>
+<div class="listing-author">
+Federica Ceron, Stéphane Gonzalez
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1564617600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2019-approval-disapproval.html" class="no-external">Dilemma with approval and disapproval votes</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2019-approval-disapproval.html" class="no-external">
+<div class="listing-date">
+Aug 1, 2019
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Annick Laruelle, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="TGF3JTIwYW5kJTIwRWNvbm9taWNzJTJDQ29vcGVyYXRpdmUlMjBHYW1lcw==" data-listing-date-sort="1554076800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2019-social-cost-problem.html" class="no-external">The social cost problem, rights and the (non)empty core</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGF3JTIwYW5kJTIwRWNvbm9taWNz'); return false;">Law and Economics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2019-social-cost-problem.html" class="no-external">
+<div class="listing-date">
+Apr 1, 2019
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Alain Marciano, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1519862400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2018-optimal-deterrence.html" class="no-external">Optimal deterrence of cooperation</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2018-optimal-deterrence.html" class="no-external">
+<div class="listing-date">
+Mar 1, 2018
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Aymeric Lardon
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="TGF3JTIwYW5kJTIwRWNvbm9taWNzJTJDQ29vcGVyYXRpdmUlMjBHYW1lcw==" data-listing-date-sort="1504224000000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2017-coase-core.html" class="no-external">De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGF3JTIwYW5kJTIwRWNvbm9taWNz'); return false;">Law and Economics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2017-coase-core.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2017
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Alain Marciano
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1462060800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2016-multicoalitional-solutions.html" class="no-external">Multicoalitional solutions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2016-multicoalitional-solutions.html" class="no-external">
+<div class="listing-date">
+May 1, 2016
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1448928000000" data-listing-file-modified-sort="1767110174143" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2015-autonomous-coalitions.html" class="no-external">Autonomous coalitions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2015-autonomous-coalitions.html" class="no-external">
+<div class="listing-date">
+Dec 1, 2015
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1438387200000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2015-preserving-coalitional-rationality.html" class="no-external">Preserving coalitional rationality for non-balanced games</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2015-preserving-coalitional-rationality.html" class="no-external">
+<div class="listing-date">
+Aug 1, 2015
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
 </section>
 <section id="working-papers" class="level2">
 <h2 class="anchored" data-anchor-id="working-papers">Working papers</h2>
-<ol type="1">
-<li>An Axiomatic Characterization of the Knapsack Budget Allocation Rule, Federica Ceron, Stéphane Gonzalez, Adriana Navarro Ramos.</li>
-<li>Approval voting versus proportional threshold methods: so far and yet so near, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.</li>
-<li>Filters in abstract aggregation with infinite sequences of signals, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.</li>
-</ol>
+<div id="listing-working-papers" class="quarto-listing quarto-listing-container-default">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="QnVkZ2V0JTIwQWxsb2NhdGlvbiUyQ0F4aW9tYXRpYyUyME1ldGhvZHM=" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/knapsack-budget-allocation-rule.html" class="no-external">An Axiomatic Characterization of the Knapsack Budget Allocation Rule</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QnVkZ2V0JTIwQWxsb2NhdGlvbg=='); return false;">Budget Allocation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('QXhpb21hdGljJTIwTWV0aG9kcw=='); return false;">Axiomatic Methods</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/knapsack-budget-allocation-rule.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Federica Ceron, Stéphane Gonzalez, Adriana Navarro-Ramos
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="QWdncmVnYXRpb24lMkNTb2NpYWwlMjBDaG9pY2U=" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/filters-abstract-aggregation.html" class="no-external">Filters in abstract aggregation with infinite sequences of signals</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QWdncmVnYXRpb24='); return false;">Aggregation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/filters-abstract-aggregation.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/approval-voting-vs-threshold.html" class="no-external">Approval voting versus proportional threshold methods: so far and yet so near</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/approval-voting-vs-threshold.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
 </section>
 <section id="list-of-peer-reviewed-international-conference-presentations" class="level2">
 <h2 class="anchored" data-anchor-id="list-of-peer-reviewed-international-conference-presentations">List of peer-reviewed international conference presentations</h2>
@@ -253,9 +834,460 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div class="quarto-listing quarto-listing-container-default" id="listing-publications">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="U29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1767225600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2026-proportional-threshold-methods.html" class="no-external">An axiomatic characterization of the proportional threshold methods: A geometric approach</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2026-proportional-threshold-methods.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2026
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="SW1wbGVtZW50YXRpb24lMkNTb2NpYWwlMjBDaG9pY2U=" data-listing-date-sort="1756684800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2025-objections-structure.html" class="no-external">Axiomatization and Implementation via objections structure</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('SW1wbGVtZW50YXRpb24='); return false;">Implementation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2025-objections-structure.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2025
+</div>
+<div class="listing-author">
+Aymeric Lardon, Stéphane Gonzalez
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="UGhpbG9zb3BoeSUyQ0p1c3RpY2U=" data-listing-date-sort="1717200000000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="2">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2024-story-of-consistency.html" class="no-external">A Story of Consistency: Bridging the gap between Bentham and Rawls foundations</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UGhpbG9zb3BoeQ=='); return false;">Philosophy</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('SnVzdGljZQ=='); return false;">Justice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2024-story-of-consistency.html" class="no-external">
+<div class="listing-date">
+Jun 1, 2024
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Nikolaos Pnevmatikos
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1693526400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2023-core-without-consistency.html" class="no-external">Axiomatic characterizations of the core without consistency</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2023-core-without-consistency.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2023
+</div>
+<div class="listing-author">
+Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="R2FtZSUyMFRoZW9yeSUyQ0R5bmFtaWMlMjBHYW1lcw==" data-listing-date-sort="1661990400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2022-resource-exploitation.html" class="no-external">Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RHluYW1pYyUyMEdhbWVz'); return false;">Dynamic Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2022-resource-exploitation.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2022
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Fatma Zahra Rostom
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1635724800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-effectiveness-form-core.html" class="no-external">Axiomatic foundations of the core for games in effectiveness form</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-effectiveness-form-core.html" class="no-external">
+<div class="listing-date">
+Nov 1, 2021
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Aymeric Lardon
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="R3JhcGglMjBUaGVvcnklMkNHYW1lJTIwVGhlb3J5" data-listing-date-sort="1625097600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-influence-game.html" class="no-external">INFLUENCE: A partizan scoring game on graphs</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R3JhcGglMjBUaGVvcnk='); return false;">Graph Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-influence-game.html" class="no-external">
+<div class="listing-date">
+Jul 1, 2021
+</div>
+<div class="listing-author">
+Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1625097600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="3">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2021-approval-voting.html" class="no-external">Approval voting without ballot restrictions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2021-approval-voting.html" class="no-external">
+<div class="listing-date">
+Jul 1, 2021
+</div>
+<div class="listing-author">
+Federica Ceron, Stéphane Gonzalez
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1564617600000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2019-approval-disapproval.html" class="no-external">Dilemma with approval and disapproval votes</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2019-approval-disapproval.html" class="no-external">
+<div class="listing-date">
+Aug 1, 2019
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Annick Laruelle, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="TGF3JTIwYW5kJTIwRWNvbm9taWNzJTJDQ29vcGVyYXRpdmUlMjBHYW1lcw==" data-listing-date-sort="1554076800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2019-social-cost-problem.html" class="no-external">The social cost problem, rights and the (non)empty core</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGF3JTIwYW5kJTIwRWNvbm9taWNz'); return false;">Law and Economics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2019-social-cost-problem.html" class="no-external">
+<div class="listing-date">
+Apr 1, 2019
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Alain Marciano, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1519862400000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2018-optimal-deterrence.html" class="no-external">Optimal deterrence of cooperation</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2018-optimal-deterrence.html" class="no-external">
+<div class="listing-date">
+Mar 1, 2018
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Aymeric Lardon
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="TGF3JTIwYW5kJTIwRWNvbm9taWNzJTJDQ29vcGVyYXRpdmUlMjBHYW1lcw==" data-listing-date-sort="1504224000000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2017-coase-core.html" class="no-external">De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGF3JTIwYW5kJTIwRWNvbm9taWNz'); return false;">Law and Economics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2017-coase-core.html" class="no-external">
+<div class="listing-date">
+Sep 1, 2017
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Alain Marciano
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1462060800000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2016-multicoalitional-solutions.html" class="no-external">Multicoalitional solutions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2016-multicoalitional-solutions.html" class="no-external">
+<div class="listing-date">
+May 1, 2016
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1448928000000" data-listing-file-modified-sort="1767110174143" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="5">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2015-autonomous-coalitions.html" class="no-external">Autonomous coalitions</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2015-autonomous-coalitions.html" class="no-external">
+<div class="listing-date">
+Dec 1, 2015
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-categories="R2FtZSUyMFRoZW9yeSUyQ0Nvb3BlcmF0aXZlJTIwR2FtZXM=" data-listing-date-sort="1438387200000" data-listing-file-modified-sort="1767110174144" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./publications/2015-preserving-coalitional-rationality.html" class="no-external">Preserving coalitional rationality for non-balanced games</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('R2FtZSUyMFRoZW9yeQ=='); return false;">Game Theory</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29vcGVyYXRpdmUlMjBHYW1lcw=='); return false;">Cooperative Games</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./publications/2015-preserving-coalitional-rationality.html" class="no-external">
+<div class="listing-date">
+Aug 1, 2015
+</div>
+<div class="listing-author">
+Stéphane Gonzalez, Michel Grabisch
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div class="quarto-listing quarto-listing-container-default" id="listing-working-papers">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="QnVkZ2V0JTIwQWxsb2NhdGlvbiUyQ0F4aW9tYXRpYyUyME1ldGhvZHM=" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/knapsack-budget-allocation-rule.html" class="no-external">An Axiomatic Characterization of the Knapsack Budget Allocation Rule</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QnVkZ2V0JTIwQWxsb2NhdGlvbg=='); return false;">Budget Allocation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('QXhpb21hdGljJTIwTWV0aG9kcw=='); return false;">Axiomatic Methods</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/knapsack-budget-allocation-rule.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Federica Ceron, Stéphane Gonzalez, Adriana Navarro-Ramos
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="QWdncmVnYXRpb24lMkNTb2NpYWwlMjBDaG9pY2U=" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/filters-abstract-aggregation.html" class="no-external">Filters in abstract aggregation with infinite sequences of signals</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QWdncmVnYXRpb24='); return false;">Aggregation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/filters-abstract-aggregation.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Vm90aW5nJTJDU29jaWFsJTIwQ2hvaWNl" data-listing-date-sort="1735689600000" data-listing-file-modified-sort="1767110174145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./working-papers/approval-voting-vs-threshold.html" class="no-external">Approval voting versus proportional threshold methods: so far and yet so near</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Vm90aW5n'); return false;">Voting</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U29jaWFsJTIwQ2hvaWNl'); return false;">Social Choice</div>
+
+</div>
+</div>
+<div class="metadata">
+<a href="./working-papers/approval-voting-vs-threshold.html" class="no-external">
+<div class="listing-date">
+Jan 1, 2025
+</div>
+<div class="listing-author">
+Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script src="assets/js/portrait-rotator.js"></script>
 <script src="assets/js/site-layout.js"></script>
 <script id="quarto-html-after-body" type="application/javascript">
