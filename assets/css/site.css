@@ -1,17 +1,40 @@
 /*
   Stéphane Gonzalez – Quarto site custom layout
-  Left portrait column visible on all pages.
+
+  The site injects a portrait column on the left via assets/js/site-layout.js
+  (classes: .sg-page, .sg-side, .sg-content, .sg-portrait, #portrait-rotator).
+
+  Desktop issue ("zoomed-out" look): Quarto's default page layout can constrain
+  the main content width and keep typography small. This stylesheet fixes that
+  by expanding the main content area on desktop, keeping the portrait column
+  narrow, and slightly increasing base font size.
+
+  Mobile: keep the stacked layout.
 */
+
+:root {
+  /* Page width on desktop */
+  --sg-page-max: 1600px;
+  --sg-page-width: min(96vw, var(--sg-page-max));
+
+  /* Portrait column */
+  --sg-side-width: 180px;
+  --sg-gap: 2rem;
+  --sg-sticky-top: 110px;
+
+  /* Typography on desktop (fixes the "zoomed-out" feel) */
+  --sg-desktop-font-size: clamp(16px, 0.55vw + 14px, 19px);
+}
 
 /* Wrapper injected into main.content */
 .sg-page {
   display: flex;
   align-items: flex-start;
-  gap: 2rem;
+  gap: var(--sg-gap);
 }
 
 .sg-side {
-  flex: 0 0 260px;
+  flex: 0 0 var(--sg-side-width);
 }
 
 .sg-content {
@@ -22,12 +45,12 @@
 /* Keep portrait visible while scrolling (desktop) */
 .sg-portrait {
   position: sticky;
-  top: 1.25rem;
+  top: var(--sg-sticky-top);
 }
 
 #portrait-rotator {
   width: 100%;
-  max-width: 260px;
+  max-width: var(--sg-side-width);
   height: auto;
   display: block;
   border-radius: 16px;
@@ -40,8 +63,39 @@
   margin-bottom: 1rem;
 }
 
-/* Mobile / narrow screens: portrait moves above content */
-@media (max-width: 992px) {
+/* =========================
+   Desktop / large screens
+   ========================= */
+@media (min-width: 992px) {
+  html {
+    font-size: var(--sg-desktop-font-size);
+  }
+
+  body {
+    line-height: 1.55;
+  }
+
+  /* Expand Quarto's main content area (this removes the "miniature" look) */
+  main.content {
+    width: var(--sg-page-width) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Quarto sometimes constrains wrappers (depends on theme/version). Neutralize them. */
+  .page-columns,
+  .quarto-container,
+  .content {
+    max-width: none !important;
+  }
+}
+
+/* =========================
+   Mobile / narrow screens
+   ========================= */
+@media (max-width: 991.98px) {
   .sg-page {
     flex-direction: column;
     gap: 1.25rem;
