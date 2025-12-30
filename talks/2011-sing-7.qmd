@@ -1,0 +1,12 @@
+---
+title: "SING 7"
+date: 2011-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Paris, France, 2011"
+description: "Paris, France, 2011 — [website](https://www.singmeeting.org/)"
+---
+SING 7 (Paris, France, 2011).
+
+Link: <https://www.singmeeting.org/>

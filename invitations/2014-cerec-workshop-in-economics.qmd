@@ -1,0 +1,9 @@
+---
+title: "CEREC Workshop in Economics"
+date: 2014-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Brussels, Belgium, 2014"
+description: "Brussels, Belgium, 2014"
+---
+CEREC Workshop in Economics (Brussels, Belgium, 2014).

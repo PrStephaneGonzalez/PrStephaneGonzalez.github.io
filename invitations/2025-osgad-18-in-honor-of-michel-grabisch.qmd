@@ -1,0 +1,12 @@
+---
+title: "OSGAD 18, in honor of Michel Grabisch"
+date: 2025-01-01
+categories: [Invited talk / seminar]
+url: "https://osgad2025.sciencesconf.org/"
+params:
+  location: "Paris, France, 2025"
+description: "Paris, France, 2025 — [website](https://osgad2025.sciencesconf.org/)"
+---
+OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025).
+
+Link: <https://osgad2025.sciencesconf.org/>

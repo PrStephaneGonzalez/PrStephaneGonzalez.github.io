@@ -1,0 +1,9 @@
+---
+title: "Workshop on Collective Decisions: Current Trends"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Granada, Spain, 2023"
+description: "Granada, Spain, 2023"
+---
+Workshop on Collective Decisions: Current Trends (Granada, Spain, 2023).

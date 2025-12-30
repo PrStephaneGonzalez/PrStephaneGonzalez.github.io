@@ -1,0 +1,12 @@
+---
+title: "EURO 2016 – ECOR 28"
+date: 2016-01-01
+categories: [Conference presentation]
+url: "https://www.euro-online.org/conf/"
+params:
+  location: "Poznan, Poland, 2016"
+description: "Poznan, Poland, 2016 — [website](https://www.euro-online.org/conf/)"
+---
+EURO 2016 – ECOR 28 (Poznan, Poland, 2016).
+
+Link: <https://www.euro-online.org/conf/>

@@ -1,0 +1,12 @@
+---
+title: "SING 8"
+date: 2012-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Budapest, Hungary, 2012"
+description: "Budapest, Hungary, 2012 — [website](https://www.singmeeting.org/)"
+---
+SING 8 (Budapest, Hungary, 2012).
+
+Link: <https://www.singmeeting.org/>

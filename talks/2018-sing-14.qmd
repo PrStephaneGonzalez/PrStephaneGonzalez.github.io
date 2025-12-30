@@ -1,0 +1,12 @@
+---
+title: "SING 14"
+date: 2018-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Bayreuth, Germany, 2018"
+description: "Bayreuth, Germany, 2018 — [website](https://www.singmeeting.org/)"
+---
+SING 14 (Bayreuth, Germany, 2018).
+
+Link: <https://www.singmeeting.org/>

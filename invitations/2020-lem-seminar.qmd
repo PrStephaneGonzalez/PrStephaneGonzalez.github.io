@@ -1,0 +1,9 @@
+---
+title: "LEM Seminar"
+date: 2020-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Lille, France, 2020"
+description: "Lille, France, 2020"
+---
+LEM Seminar (Lille, France, 2020).

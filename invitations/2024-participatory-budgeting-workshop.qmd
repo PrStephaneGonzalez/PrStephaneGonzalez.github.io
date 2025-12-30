@@ -1,0 +1,9 @@
+---
+title: "Participatory Budgeting Workshop"
+date: 2024-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris School of Economics, France, 2024"
+description: "Paris School of Economics, France, 2024"
+---
+Participatory Budgeting Workshop (Paris School of Economics, France, 2024).

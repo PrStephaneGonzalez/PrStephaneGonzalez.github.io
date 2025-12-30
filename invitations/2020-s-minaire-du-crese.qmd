@@ -1,0 +1,9 @@
+---
+title: "Séminaire du CRESE"
+date: 2020-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Besançon, France, 2020"
+description: "Besançon, France, 2020"
+---
+Séminaire du CRESE (Besançon, France, 2020).

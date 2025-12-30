@@ -1,0 +1,9 @@
+---
+title: "Parisian Game Theory PhD Seminar IHP"
+date: 2013-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris, France, 2013"
+description: "Paris, France, 2013"
+---
+Parisian Game Theory PhD Seminar IHP (Paris, France, 2013).

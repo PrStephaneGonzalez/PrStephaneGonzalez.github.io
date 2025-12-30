@@ -1,0 +1,12 @@
+---
+title: "SAET 17"
+date: 2017-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Faro, Portugal, 2017"
+description: "Faro, Portugal, 2017 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 17 (Faro, Portugal, 2017).
+
+Link: <https://www.saet.uiuc.edu/>

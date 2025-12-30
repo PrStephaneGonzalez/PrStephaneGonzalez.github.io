@@ -1,0 +1,9 @@
+---
+title: "Seminar of Economics and Management"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "University of Paderborn, Germany, 2023"
+description: "University of Paderborn, Germany, 2023"
+---
+Seminar of Economics and Management (University of Paderborn, Germany, 2023).

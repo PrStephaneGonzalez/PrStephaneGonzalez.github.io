@@ -6,8 +6,10 @@ author:
 date: 2018-03-01
 categories: [Game Theory, Cooperative Games]
 params:
-  venue: "International Journal of Game Theory"
+  venue: "[International Journal of Game Theory](https://doi.org/10.1007/s00182-017-0584-8)"
   status: "published"
+doi: "10.1007/s00182-017-0584-8"
+url: "https://doi.org/10.1007/s00182-017-0584-8"
+description: "10.1007/s00182-017-0584-8"
 ---
-
 *International Journal of Game Theory* (published).

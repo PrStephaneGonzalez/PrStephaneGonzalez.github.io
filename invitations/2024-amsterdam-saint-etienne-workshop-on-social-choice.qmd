@@ -1,0 +1,9 @@
+---
+title: "Amsterdam/Saint-Etienne Workshop on Social Choice"
+date: 2024-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Saint-Etienne, France, 2024"
+description: "Saint-Etienne, France, 2024"
+---
+Amsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024).

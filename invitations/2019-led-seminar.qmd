@@ -1,0 +1,9 @@
+---
+title: "LED Seminar"
+date: 2019-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris 8, France, 2019"
+description: "Paris 8, France, 2019"
+---
+LED Seminar (Paris 8, France, 2019).

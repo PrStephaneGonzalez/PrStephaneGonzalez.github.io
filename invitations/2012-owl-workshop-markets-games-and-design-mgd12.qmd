@@ -1,0 +1,9 @@
+---
+title: "OWL Workshop “Markets, Games, and Design” MGD12"
+date: 2012-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paderborn, Germany, 2012"
+description: "Paderborn, Germany, 2012"
+---
+OWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012).

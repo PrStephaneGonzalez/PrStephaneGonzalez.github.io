@@ -1,0 +1,9 @@
+---
+title: "Economic theory seminar"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "CES, Paris, France, 2023"
+description: "CES, Paris, France, 2023"
+---
+Economic theory seminar (CES, Paris, France, 2023).

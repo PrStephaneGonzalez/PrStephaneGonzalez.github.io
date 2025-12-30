@@ -1,0 +1,12 @@
+---
+title: "EURO OR 2022"
+date: 2022-01-01
+categories: [Conference presentation]
+url: "https://www.euro-online.org/conf/"
+params:
+  location: "Espoo, Finland, 2022"
+description: "Espoo, Finland, 2022 — [website](https://www.euro-online.org/conf/)"
+---
+EURO OR 2022 (Espoo, Finland, 2022).
+
+Link: <https://www.euro-online.org/conf/>

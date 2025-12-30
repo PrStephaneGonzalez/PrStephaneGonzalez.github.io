@@ -1,0 +1,12 @@
+---
+title: "SAET 22"
+date: 2023-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Paris, France, 2023"
+description: "Paris, France, 2023 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 22 (Paris, France, 2023).
+
+Link: <https://www.saet.uiuc.edu/>

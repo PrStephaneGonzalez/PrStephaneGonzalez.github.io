@@ -6,8 +6,10 @@ author:
 date: 2021-11-01
 categories: [Game Theory, Cooperative Games]
 params:
-  venue: "Mathematical Social Sciences"
+  venue: "[Mathematical Social Sciences](https://doi.org/10.1016/j.mathsocsci.2021.09.001)"
   status: "published"
+doi: "10.1016/j.mathsocsci.2021.09.001"
+url: "https://doi.org/10.1016/j.mathsocsci.2021.09.001"
+description: "10.1016/j.mathsocsci.2021.09.001"
 ---
-
 *Mathematical Social Sciences* (published).

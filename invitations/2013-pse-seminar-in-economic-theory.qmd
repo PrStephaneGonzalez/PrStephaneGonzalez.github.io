@@ -1,0 +1,9 @@
+---
+title: "PSE Seminar in Economic Theory"
+date: 2013-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris, France, 2013"
+description: "Paris, France, 2013"
+---
+PSE Seminar in Economic Theory (Paris, France, 2013).

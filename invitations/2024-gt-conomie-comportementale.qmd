@@ -1,0 +1,9 @@
+---
+title: "GT Économie Comportementale"
+date: 2024-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Université Paris Nanterre, France, 2024"
+description: "Université Paris Nanterre, France, 2024"
+---
+GT Économie Comportementale (Université Paris Nanterre, France, 2024).

@@ -1,0 +1,9 @@
+---
+title: "Séminaire du BETA"
+date: 2018-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Nancy, France, 2018"
+description: "Nancy, France, 2018"
+---
+Séminaire du BETA (Nancy, France, 2018).

@@ -1,0 +1,9 @@
+---
+title: "MDOD Seminar"
+date: 2021-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris 1, France, 2021"
+description: "Paris 1, France, 2021"
+---
+MDOD Seminar (Paris 1, France, 2021).

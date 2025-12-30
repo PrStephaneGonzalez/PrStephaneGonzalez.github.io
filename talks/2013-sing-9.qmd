@@ -1,0 +1,12 @@
+---
+title: "SING 9"
+date: 2013-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Vigo, Spain, 2013"
+description: "Vigo, Spain, 2013 — [website](https://www.singmeeting.org/)"
+---
+SING 9 (Vigo, Spain, 2013).
+
+Link: <https://www.singmeeting.org/>

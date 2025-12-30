@@ -1,0 +1,9 @@
+---
+title: "CES Economic Theory Seminar of Paris 1"
+date: 2018-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris, France, 2018"
+description: "Paris, France, 2018"
+---
+CES Economic Theory Seminar of Paris 1 (Paris, France, 2018).

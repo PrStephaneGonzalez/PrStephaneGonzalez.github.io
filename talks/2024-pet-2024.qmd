@@ -1,0 +1,12 @@
+---
+title: "PET 2024"
+date: 2024-01-01
+categories: [Conference presentation]
+url: "https://www.petmeetings.org/"
+params:
+  location: "Lyon, France, 2024"
+description: "Lyon, France, 2024 — [website](https://www.petmeetings.org/)"
+---
+PET 2024 (Lyon, France, 2024).
+
+Link: <https://www.petmeetings.org/>

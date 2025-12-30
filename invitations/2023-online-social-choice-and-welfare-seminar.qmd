@@ -1,0 +1,9 @@
+---
+title: "Online Social Choice and Welfare Seminar"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Online, 2023"
+description: "Online, 2023"
+---
+Online Social Choice and Welfare Seminar (Online, 2023).

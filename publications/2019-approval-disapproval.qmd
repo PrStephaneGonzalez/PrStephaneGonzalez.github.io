@@ -7,8 +7,10 @@ author:
 date: 2019-08-01
 categories: [Voting, Social Choice]
 params:
-  venue: "Social Choice and Welfare"
+  venue: "[Social Choice and Welfare](https://doi.org/10.1007/s00355-019-01194-6)"
   status: "published"
+doi: "10.1007/s00355-019-01194-6"
+url: "https://doi.org/10.1007/s00355-019-01194-6"
+description: "10.1007/s00355-019-01194-6"
 ---
-
 *Social Choice and Welfare* (published).

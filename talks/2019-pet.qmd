@@ -1,0 +1,12 @@
+---
+title: "PET"
+date: 2019-01-01
+categories: [Conference presentation]
+url: "https://www.petmeetings.org/"
+params:
+  location: "Strasbourg, France, 2019"
+description: "Strasbourg, France, 2019 — [website](https://www.petmeetings.org/)"
+---
+PET (Strasbourg, France, 2019).
+
+Link: <https://www.petmeetings.org/>

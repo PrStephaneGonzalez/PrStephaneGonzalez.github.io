@@ -1,0 +1,9 @@
+---
+title: "Workshop MARS"
+date: 2017-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Saint-Etienne, France, 2017"
+description: "Saint-Etienne, France, 2017"
+---
+Workshop MARS (Saint-Etienne, France, 2017).

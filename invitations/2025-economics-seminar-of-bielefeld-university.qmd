@@ -1,0 +1,9 @@
+---
+title: "Economics Seminar of Bielefeld University"
+date: 2025-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Bielefeld, Germany, 2025"
+description: "Bielefeld, Germany, 2025"
+---
+Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025).

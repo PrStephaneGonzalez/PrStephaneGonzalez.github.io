@@ -1,0 +1,9 @@
+---
+title: "XXXI European Workshop on Economic Theory – EWET"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Naples, Italy, 2023"
+description: "Naples, Italy, 2023"
+---
+XXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023).

@@ -1,0 +1,12 @@
+---
+title: "SAET 24"
+date: 2025-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Ischia, Italy, 2025"
+description: "Ischia, Italy, 2025 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 24 (Ischia, Italy, 2025).
+
+Link: <https://www.saet.uiuc.edu/>

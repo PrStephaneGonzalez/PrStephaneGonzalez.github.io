@@ -1,0 +1,12 @@
+---
+title: "ASSET"
+date: 2025-01-01
+categories: [Conference presentation]
+url: "https://www.asset.org.es/"
+params:
+  location: "Rabat, Morocco, 2025"
+description: "Rabat, Morocco, 2025 — [website](https://www.asset.org.es/)"
+---
+ASSET (Rabat, Morocco, 2025).
+
+Link: <https://www.asset.org.es/>

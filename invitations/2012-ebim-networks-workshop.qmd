@@ -1,0 +1,9 @@
+---
+title: "EBIM Networks Workshop"
+date: 2012-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Bielefeld, Germany, 2012"
+description: "Bielefeld, Germany, 2012"
+---
+EBIM Networks Workshop (Bielefeld, Germany, 2012).

@@ -1,0 +1,12 @@
+---
+title: "SING 19"
+date: 2024-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Besançon, France, 2024"
+description: "Besançon, France, 2024 — [website](https://www.singmeeting.org/)"
+---
+SING 19 (Besançon, France, 2024).
+
+Link: <https://www.singmeeting.org/>

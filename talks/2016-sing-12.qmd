@@ -1,0 +1,12 @@
+---
+title: "SING 12"
+date: 2016-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Odense, Denmark, 2016"
+description: "Odense, Denmark, 2016 — [website](https://www.singmeeting.org/)"
+---
+SING 12 (Odense, Denmark, 2016).
+
+Link: <https://www.singmeeting.org/>

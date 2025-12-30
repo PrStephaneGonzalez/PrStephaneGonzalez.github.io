@@ -1,0 +1,9 @@
+---
+title: "Séminaire du laboratoire EQUIPPE"
+date: 2013-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Lille, France, 2013"
+description: "Lille, France, 2013"
+---
+Séminaire du laboratoire EQUIPPE (Lille, France, 2013).

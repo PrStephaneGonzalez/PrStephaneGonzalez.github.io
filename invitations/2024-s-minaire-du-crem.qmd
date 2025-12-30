@@ -1,0 +1,9 @@
+---
+title: "Séminaire du CREM"
+date: 2024-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Caen, France, 2024"
+description: "Caen, France, 2024"
+---
+Séminaire du CREM (Caen, France, 2024).

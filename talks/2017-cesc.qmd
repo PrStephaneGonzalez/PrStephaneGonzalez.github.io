@@ -1,0 +1,12 @@
+---
+title: "CESC"
+date: 2017-01-01
+categories: [Conference presentation]
+url: "https://www.ieb.ub.edu/en/research/collective-decisions-and-social-choice-cesc/"
+params:
+  location: "Barcelona, Spain, 2017"
+description: "Barcelona, Spain, 2017 — [website](https://www.ieb.ub.edu/en/research/collective-decisions-and-social-choice-cesc/)"
+---
+CESC (Barcelona, Spain, 2017).
+
+Link: <https://www.ieb.ub.edu/en/research/collective-decisions-and-social-choice-cesc/>

@@ -1,0 +1,12 @@
+---
+title: "Paris Symposium on Games 2018"
+date: 2018-01-01
+categories: [Invited talk / seminar]
+url: "https://paris-symposium-on-games.org/"
+params:
+  location: "Paris, France, 2018"
+description: "Paris, France, 2018 — [website](https://paris-symposium-on-games.org/)"
+---
+Paris Symposium on Games 2018 (Paris, France, 2018).
+
+Link: <https://paris-symposium-on-games.org/>

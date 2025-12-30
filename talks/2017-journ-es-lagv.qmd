@@ -1,0 +1,9 @@
+---
+title: "Journées LAGV"
+date: 2017-01-01
+categories: [Conference presentation]
+params:
+  location: "Aix-en-Provence, France, 2017"
+description: "Aix-en-Provence, France, 2017"
+---
+Journées LAGV (Aix-en-Provence, France, 2017).

@@ -1,0 +1,12 @@
+---
+title: "SSCW 13"
+date: 2016-01-01
+categories: [Conference presentation]
+url: "https://www.scw-conferences.org/"
+params:
+  location: "Lund, Sweden, 2016"
+description: "Lund, Sweden, 2016 — [website](https://www.scw-conferences.org/)"
+---
+SSCW 13 (Lund, Sweden, 2016).
+
+Link: <https://www.scw-conferences.org/>

@@ -1,0 +1,9 @@
+---
+title: "Workshop GDR-Jeux cooperative models in games and social choice"
+date: 2022-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "CRESE, Besançon, France, 2022"
+description: "CRESE, Besançon, France, 2022"
+---
+Workshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022).

@@ -6,8 +6,10 @@ author:
 date: 2025-09-01
 categories: [Implementation, Social Choice]
 params:
-  venue: "Theory and Decision"
+  venue: "[Theory and Decision](https://doi.org/10.1007/s11238-025-10051-1)"
   status: "published"
+doi: "10.1007/s11238-025-10051-1"
+url: "https://doi.org/10.1007/s11238-025-10051-1"
+description: "10.1007/s11238-025-10051-1"
 ---
-
 *Theory and Decision* (published).

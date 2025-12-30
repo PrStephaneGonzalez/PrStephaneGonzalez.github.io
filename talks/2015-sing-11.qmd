@@ -1,0 +1,12 @@
+---
+title: "SING 11"
+date: 2015-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "St-Petersburg, Russia, 2015"
+description: "St-Petersburg, Russia, 2015 — [website](https://www.singmeeting.org/)"
+---
+SING 11 (St-Petersburg, Russia, 2015).
+
+Link: <https://www.singmeeting.org/>

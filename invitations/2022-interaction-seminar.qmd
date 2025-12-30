@@ -1,0 +1,9 @@
+---
+title: "Interaction seminar"
+date: 2022-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "AMSE, Marseille, France, 2022"
+description: "AMSE, Marseille, France, 2022"
+---
+Interaction seminar (AMSE, Marseille, France, 2022).

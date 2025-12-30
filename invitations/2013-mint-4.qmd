@@ -1,0 +1,9 @@
+---
+title: "MINT 4"
+date: 2013-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Amsterdam, Netherlands, 2013"
+description: "Amsterdam, Netherlands, 2013"
+---
+MINT 4 (Amsterdam, Netherlands, 2013).

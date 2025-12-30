@@ -1,0 +1,9 @@
+---
+title: "Game Theory Workshop in Honour of Peter Sudhölter"
+date: 2025-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Universitat Roviri i Virgili, Spain, 2025"
+description: "Universitat Roviri i Virgili, Spain, 2025"
+---
+Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025).

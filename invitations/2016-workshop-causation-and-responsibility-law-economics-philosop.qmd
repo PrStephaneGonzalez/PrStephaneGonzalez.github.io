@@ -1,0 +1,9 @@
+---
+title: "Workshop Causation and Responsibility: Law, Economics, Philosophy"
+date: 2016-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Nancy, France, 2016"
+description: "Nancy, France, 2016"
+---
+Workshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016).

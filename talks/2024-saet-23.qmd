@@ -1,0 +1,12 @@
+---
+title: "SAET 23"
+date: 2024-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Santiago, Chile, 2024"
+description: "Santiago, Chile, 2024 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 23 (Santiago, Chile, 2024).
+
+Link: <https://www.saet.uiuc.edu/>

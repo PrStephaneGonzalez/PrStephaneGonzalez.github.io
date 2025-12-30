@@ -9,8 +9,10 @@ author:
 date: 2021-07-01
 categories: [Graph Theory, Game Theory]
 params:
-  venue: "Theoretical Computer Science"
+  venue: "[International Game Theory Review](https://doi.org/10.1142/S0219198915400046)"
   status: "published"
+doi: "10.1142/S0219198915400046"
+url: "https://doi.org/10.1142/S0219198915400046"
+description: "10.1142/S0219198915400046"
 ---
-
 *Theoretical Computer Science* (published).

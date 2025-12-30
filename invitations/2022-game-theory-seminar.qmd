@@ -1,0 +1,9 @@
+---
+title: "Game theory seminar"
+date: 2022-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "University of Barcelona, Spain, 2022"
+description: "University of Barcelona, Spain, 2022"
+---
+Game theory seminar (University of Barcelona, Spain, 2022).

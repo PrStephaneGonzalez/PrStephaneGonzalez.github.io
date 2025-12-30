@@ -1,0 +1,9 @@
+---
+title: "OSGAD 11"
+date: 2017-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Paris, France, 2017"
+description: "Paris, France, 2017"
+---
+OSGAD 11 (Paris, France, 2017).

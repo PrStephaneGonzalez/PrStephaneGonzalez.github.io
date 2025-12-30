@@ -1,0 +1,9 @@
+---
+title: "Séminaire du GATE-LSE"
+date: 2016-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Lyon, France, 2016"
+description: "Lyon, France, 2016"
+---
+Séminaire du GATE-LSE (Lyon, France, 2016).

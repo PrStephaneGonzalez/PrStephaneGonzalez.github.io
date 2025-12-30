@@ -1,0 +1,12 @@
+---
+title: "EURO 2018 – ECOR 29"
+date: 2018-01-01
+categories: [Conference presentation]
+url: "https://www.euro-online.org/conf/"
+params:
+  location: "Valencia, Spain, 2018"
+description: "Valencia, Spain, 2018 — [website](https://www.euro-online.org/conf/)"
+---
+EURO 2018 – ECOR 29 (Valencia, Spain, 2018).
+
+Link: <https://www.euro-online.org/conf/>

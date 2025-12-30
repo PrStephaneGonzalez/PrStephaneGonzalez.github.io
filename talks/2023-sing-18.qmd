@@ -1,0 +1,12 @@
+---
+title: "SING 18"
+date: 2023-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Messina, Italy, 2023"
+description: "Messina, Italy, 2023 — [website](https://www.singmeeting.org/)"
+---
+SING 18 (Messina, Italy, 2023).
+
+Link: <https://www.singmeeting.org/>

@@ -1,0 +1,9 @@
+---
+title: "Axiomatizations in Game Theory"
+date: 2017-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Pécs, Hungary, 2017"
+description: "Pécs, Hungary, 2017"
+---
+Axiomatizations in Game Theory (Pécs, Hungary, 2017).

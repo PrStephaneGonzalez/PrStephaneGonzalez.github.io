@@ -1,0 +1,12 @@
+---
+title: "SAET 13"
+date: 2013-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Paris, France, 2013"
+description: "Paris, France, 2013 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 13 (Paris, France, 2013).
+
+Link: <https://www.saet.uiuc.edu/>

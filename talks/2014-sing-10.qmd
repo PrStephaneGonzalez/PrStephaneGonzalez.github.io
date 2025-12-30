@@ -1,0 +1,12 @@
+---
+title: "SING 10"
+date: 2014-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Krakow, Poland, 2014"
+description: "Krakow, Poland, 2014 — [website](https://www.singmeeting.org/)"
+---
+SING 10 (Krakow, Poland, 2014).
+
+Link: <https://www.singmeeting.org/>

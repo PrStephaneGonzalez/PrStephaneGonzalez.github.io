@@ -1,0 +1,12 @@
+---
+title: "SAET 19"
+date: 2019-01-01
+categories: [Conference presentation]
+url: "https://www.saet.uiuc.edu/"
+params:
+  location: "Ischia, Italy, 2019"
+description: "Ischia, Italy, 2019 — [website](https://www.saet.uiuc.edu/)"
+---
+SAET 19 (Ischia, Italy, 2019).
+
+Link: <https://www.saet.uiuc.edu/>

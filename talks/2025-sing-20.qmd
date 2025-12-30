@@ -1,0 +1,12 @@
+---
+title: "SING 20"
+date: 2025-01-01
+categories: [Conference presentation]
+url: "https://www.singmeeting.org/"
+params:
+  location: "Maastricht, Netherlands, 2025"
+description: "Maastricht, Netherlands, 2025 — [website](https://www.singmeeting.org/)"
+---
+SING 20 (Maastricht, Netherlands, 2025).
+
+Link: <https://www.singmeeting.org/>

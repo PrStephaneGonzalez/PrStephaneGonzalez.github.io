@@ -6,8 +6,10 @@ author:
 date: 2021-07-01
 categories: [Voting, Social Choice]
 params:
-  venue: "Theoretical Economics"
+  venue: "[Theoretical Economics](https://doi.org/10.3982/TE4087)"
   status: "published"
+doi: "10.3982/TE4087"
+url: "https://doi.org/10.3982/TE4087"
+description: "10.3982/TE4087"
 ---
-
 *Theoretical Economics* (published).

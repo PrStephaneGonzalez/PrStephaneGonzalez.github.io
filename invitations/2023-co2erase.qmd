@@ -1,0 +1,9 @@
+---
+title: "CO2ERASE"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "University Paris Dauphine, France, 2023"
+description: "University Paris Dauphine, France, 2023"
+---
+CO2ERASE (University Paris Dauphine, France, 2023).

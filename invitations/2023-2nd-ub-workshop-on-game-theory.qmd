@@ -1,0 +1,9 @@
+---
+title: "2nd UB Workshop on Game Theory"
+date: 2023-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Barcelona, Spain, 2023"
+description: "Barcelona, Spain, 2023"
+---
+2nd UB Workshop on Game Theory (Barcelona, Spain, 2023).

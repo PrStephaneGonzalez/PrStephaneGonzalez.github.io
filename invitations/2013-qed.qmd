@@ -1,0 +1,9 @@
+---
+title: "QED"
+date: 2013-01-01
+categories: [Invited talk / seminar]
+params:
+  location: "Vienna, Austria, 2013"
+description: "Vienna, Austria, 2013"
+---
+QED (Vienna, Austria, 2013).

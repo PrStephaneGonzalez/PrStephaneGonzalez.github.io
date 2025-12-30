@@ -6,8 +6,11 @@ author:
 date: 2015-12-01
 categories: [Game Theory, Cooperative Games]
 params:
-  venue: "Annals of Operations Research"
+  venue: "[Annals of Operations Research](https://doi.org/10.1007/s10479-015-1951-0)"
   status: "published"
+doi: "10.1007/s10479-015-1951-0"
+url: "https://doi.org/10.1007/s10479-015-1951-0"
+description: "10.1007/s10479-015-1951-0"
 ---
-
 *Annals of Operations Research* (published).
+

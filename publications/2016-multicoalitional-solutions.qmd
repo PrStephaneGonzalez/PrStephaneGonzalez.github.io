@@ -6,8 +6,10 @@ author:
 date: 2016-05-01
 categories: [Game Theory, Cooperative Games]
 params:
-  venue: "Journal of Mathematical Economics"
+  venue: "[Journal of Mathematical Economics](https://doi.org/10.1016/j.jmateco.2016.02.006)"
   status: "published"
+doi: "10.1016/j.jmateco.2016.02.006"
+url: "https://doi.org/10.1016/j.jmateco.2016.02.006"
+description: "10.1016/j.jmateco.2016.02.006"
 ---
-
 *Journal of Mathematical Economics* (published).
