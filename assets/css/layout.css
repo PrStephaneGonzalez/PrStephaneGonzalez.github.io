@@ -4,14 +4,25 @@
     --gap: 28px;           /* espace entre portrait et texte */
     --top: 110px;          /* position sous la navbar */
     --left: 24px;          /* marge gauche */
+    --right-margin: 120px; /* marge droite (ajustable) */
+  }
+
+  .three-columns-container {
+    display: grid;
+    grid-template-columns: var(--portrait-w) 1fr var(--right-margin);
+    gap: var(--gap);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--left);
   }
 
   #left-portrait-wrap {
-    position: fixed;
+    position: sticky;
     top: var(--top);
-    left: var(--left);
+    left: 0;
     width: var(--portrait-w);
     z-index: 2;
+    align-self: start;
   }
 
   #left-portrait-wrap img {
@@ -20,13 +31,23 @@
     display: block;
   }
 
-  /* Décale tout le contenu à droite du portrait */
+  /* Contenu central */
   #quarto-content {
-    padding-left: calc(var(--portrait-w) + var(--gap));
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Colonne de droite (marge) */
+  #right-margin {
+    width: var(--right-margin);
   }
 }
 
 @media (max-width: 991.98px) {
+  .three-columns-container {
+    display: block;
+  }
+
   #left-portrait-wrap {
     position: static;
     margin: 12px 0 18px 0;
@@ -42,5 +63,10 @@
 
   #quarto-content {
     padding-left: 0;
+    padding-right: 0;
+  }
+
+  #right-margin {
+    display: none;
   }
 }
