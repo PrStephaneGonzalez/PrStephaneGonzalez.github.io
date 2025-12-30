@@ -92,3 +92,8 @@
     display: none;
   }
 }
+
+@media (min-width: 992px) {
+  body { outline: 10px solid lime !important; }
+}
+
