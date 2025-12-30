@@ -4,12 +4,18 @@
   The site injects a portrait column on the left via assets/js/site-layout.js
   (classes: .sg-page, .sg-side, .sg-content, .sg-portrait, #portrait-rotator).
 
-  Desktop issue ("zoomed-out" look): Quarto's default page layout can constrain
-  the main content width and keep typography small. This stylesheet fixes that
-  by expanding the main content area on desktop, keeping the portrait column
-  narrow, and slightly increasing base font size.
+  Goal (desktop):
+  - Keep the portrait column narrow and sticky.
+  - Make the page feel less "zoomed-out" by slightly increasing base font size
+    and widening the *outer* Quarto container (without breaking Quarto's grid).
 
-  Mobile: keep the stacked layout.
+  Important:
+  - Do NOT force main.content to a fixed width.
+    Quarto uses .page-columns grid for margin sidebars (e.g., listing categories).
+    Forcing widths on main.content / .content can cause the sidebar to overlap the listing.
+
+  Mobile:
+  - Keep a stacked layout.
 */
 
 :root {
@@ -26,7 +32,7 @@
   --sg-desktop-font-size: clamp(16px, 0.55vw + 14px, 19px);
 }
 
-/* Wrapper injected into main.content */
+/* Wrapper injected into main.content by assets/js/site-layout.js */
 .sg-page {
   display: flex;
   align-items: flex-start;
@@ -75,20 +81,38 @@
     line-height: 1.55;
   }
 
-  /* Expand Quarto's main content area (this removes the "miniature" look) */
+  /*
+    Keep Quarto's internal grid intact.
+    main.content should remain fluid; widening is handled by the outer container below.
+  */
   main.content {
-    width: var(--sg-page-width) !important;
+    width: 100% !important;
     max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /*
+    Widen the outer Quarto container instead of hacking inner wrappers.
+    This preserves the margin sidebar used by listings (Categories).
+  */
+  .page-columns,
+  .quarto-container {
+    max-width: var(--sg-page-width) !important;
     margin: 0 auto !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
 
-  /* Quarto sometimes constrains wrappers (depends on theme/version). Neutralize them. */
-  .page-columns,
-  .quarto-container,
-  .content {
-    max-width: none !important;
+  /*
+    IMPORTANT:
+    Do not neutralize `.content` max-width: it participates in Quarto layouts.
+    Doing so can cause sidebars (listing categories) to overlap main content.
+  */
+
+  /* Optional: ensure the listing sidebar stays visually clean */
+  .quarto-listing-category {
+    background: white;
   }
 }
 
