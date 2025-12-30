@@ -1,11 +1,12 @@
 @media (min-width: 992px) {
   :root {
-    --portrait-w: 200px;   /* taille portrait */
-    --gap: 28px;           /* espace entre portrait et texte */
-    --top: 110px;          /* position sous la navbar */
-    --left: 24px;          /* marge gauche */
-    --right-margin: 50px; /* marge droite (ajustable) */
-  }
+  --portrait-w: 160px;
+  --gap: 20px;
+  --top: 110px;
+  --right-margin: 60px;               /* petite marge droite */
+  --left: calc(var(--right-margin) * 2 / 3); /* gauche = 2/3 de droite */
+}
+
 
   .three-columns-container {
     display: grid;
