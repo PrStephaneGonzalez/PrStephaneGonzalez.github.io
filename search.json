@@ -1,5 +1,110 @@
 [
   {
+    "objectID": "talks/2024-sing-19.html",
+    "href": "talks/2024-sing-19.html",
+    "title": "SING 19",
+    "section": "",
+    "text": "SING 19 (Besançon, France, 2024).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2017-journ-es-lagv.html",
+    "href": "talks/2017-journ-es-lagv.html",
+    "title": "Journées LAGV",
+    "section": "",
+    "text": "Journées LAGV (Aix-en-Provence, France, 2017)."
+  },
+  {
+    "objectID": "talks/2013-sing-9.html",
+    "href": "talks/2013-sing-9.html",
+    "title": "SING 9",
+    "section": "",
+    "text": "SING 9 (Vigo, Spain, 2013).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2023-saet-22.html",
+    "href": "talks/2023-saet-22.html",
+    "title": "SAET 22",
+    "section": "",
+    "text": "SAET 22 (Paris, France, 2023).\nLink: https://www.saet.uiuc.edu/"
+  },
+  {
+    "objectID": "talks/2019-saet-19.html",
+    "href": "talks/2019-saet-19.html",
+    "title": "SAET 19",
+    "section": "",
+    "text": "SAET 19 (Ischia, Italy, 2019).\nLink: https://www.saet.uiuc.edu/"
+  },
+  {
+    "objectID": "talks/2018-paris-symposium-on-games-2018.html",
+    "href": "talks/2018-paris-symposium-on-games-2018.html",
+    "title": "Paris Symposium on Games 2018",
+    "section": "",
+    "text": "Paris Symposium on Games 2018 (Paris, France, 2018).\nLink: https://paris-symposium-on-games.org/"
+  },
+  {
+    "objectID": "talks/2016-sscw-13.html",
+    "href": "talks/2016-sscw-13.html",
+    "title": "SSCW 13",
+    "section": "",
+    "text": "SSCW 13 (Lund, Sweden, 2016).\nLink: https://www.scw-conferences.org/"
+  },
+  {
+    "objectID": "talks/2025-sing-20.html",
+    "href": "talks/2025-sing-20.html",
+    "title": "SING 20",
+    "section": "",
+    "text": "SING 20 (Maastricht, Netherlands, 2025).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2017-cesc.html",
+    "href": "talks/2017-cesc.html",
+    "title": "CESC",
+    "section": "",
+    "text": "CESC (Barcelona, Spain, 2017).\nLink: https://www.ieb.ub.edu/en/research/collective-decisions-and-social-choice-cesc/"
+  },
+  {
+    "objectID": "talks/2014-sing-10.html",
+    "href": "talks/2014-sing-10.html",
+    "title": "SING 10",
+    "section": "",
+    "text": "SING 10 (Krakow, Poland, 2014).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2019-pet.html",
+    "href": "talks/2019-pet.html",
+    "title": "PET",
+    "section": "",
+    "text": "PET (Strasbourg, France, 2019).\nLink: https://www.petmeetings.org/"
+  },
+  {
+    "objectID": "talks/2018-euro-2018-ecor-29.html",
+    "href": "talks/2018-euro-2018-ecor-29.html",
+    "title": "EURO 2018 – ECOR 29",
+    "section": "",
+    "text": "EURO 2018 – ECOR 29 (Valencia, Spain, 2018).\nLink: https://www.euro-online.org/conf/"
+  },
+  {
+    "objectID": "talks/2018-sing-14.html",
+    "href": "talks/2018-sing-14.html",
+    "title": "SING 14",
+    "section": "",
+    "text": "SING 14 (Bayreuth, Germany, 2018).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2021-euro-or-2021.html",
+    "href": "talks/2021-euro-or-2021.html",
+    "title": "EURO OR 2021",
+    "section": "",
+    "text": "EURO OR 2021 (Athens, virtual, Greece, 2021).\nLink: https://www.euro-online.org/conf/"
+  },
+  {
+    "objectID": "talks/2011-sing-7.html",
+    "href": "talks/2011-sing-7.html",
+    "title": "SING 7",
+    "section": "",
+    "text": "SING 7 (Paris, France, 2011).\nLink: https://www.singmeeting.org/"
+  },
+  {
     "objectID": "publications/2015-preserving-coalitional-rationality.html",
     "href": "publications/2015-preserving-coalitional-rationality.html",
     "title": "Preserving coalitional rationality for non-balanced games",
@@ -56,116 +161,263 @@
     "text": "Journal of Mathematical Economics (published)."
   },
   {
-    "objectID": "teaching-prerequisites.html",
-    "href": "teaching-prerequisites.html",
-    "title": "Prerequisites",
+    "objectID": "invitations/2022-interaction-seminar.html",
+    "href": "invitations/2022-interaction-seminar.html",
+    "title": "Interaction seminar",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/prerequisites"
+    "text": "Interaction seminar (AMSE, Marseille, France, 2022)."
   },
   {
-    "objectID": "teaching-macroeconomie.html",
-    "href": "teaching-macroeconomie.html",
-    "title": "Macroéconomie",
+    "objectID": "invitations/2023-workshop-on-collective-decisions-current-trends.html",
+    "href": "invitations/2023-workshop-on-collective-decisions-current-trends.html",
+    "title": "Workshop on Collective Decisions: Current Trends",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroeconomie"
+    "text": "Workshop on Collective Decisions: Current Trends (Granada, Spain, 2023)."
   },
   {
-    "objectID": "politiques-economiques.html",
-    "href": "politiques-economiques.html",
-    "title": "Politiques économiques",
+    "objectID": "invitations/2015-adres.html",
+    "href": "invitations/2015-adres.html",
+    "title": "ADRES",
     "section": "",
-    "text": "Course page and materials:\n\nhttps://sites.google.com/site/gonzalezstephaneuniv/politique-economique"
+    "text": "ADRES (Paris, France, 2015)."
   },
   {
-    "objectID": "theorie-de-la-mesure.html",
-    "href": "theorie-de-la-mesure.html",
-    "title": "Théorie de la Mesure",
+    "objectID": "invitations/2022-workshop-gdr-jeux-cooperative-models-in-games-and-social-cho.html",
+    "href": "invitations/2022-workshop-gdr-jeux-cooperative-models-in-games-and-social-cho.html",
+    "title": "Workshop GDR-Jeux cooperative models in games and social choice",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/theorie-de-la-mesure"
+    "text": "Workshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022)."
   },
   {
-    "objectID": "introduction-to-political-engineering.html",
-    "href": "introduction-to-political-engineering.html",
-    "title": "Introduction to Political Engineering",
+    "objectID": "invitations/2024-gt-conomie-comportementale.html",
+    "href": "invitations/2024-gt-conomie-comportementale.html",
+    "title": "GT Économie Comportementale",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/introduction-to-political-engineering"
+    "text": "GT Économie Comportementale (Université Paris Nanterre, France, 2024)."
   },
   {
-    "objectID": "teaching-theorie-mesure.html",
-    "href": "teaching-theorie-mesure.html",
-    "title": "Measure theory, integration, probability",
+    "objectID": "invitations/2019-mre-seminar.html",
+    "href": "invitations/2019-mre-seminar.html",
+    "title": "MRE Seminar",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/th%C3%A9orie-de-la-mesure-int%C3%A9gration-probabilit%C3%A9"
+    "text": "MRE Seminar (Montpellier, France, 2019)."
   },
   {
-    "objectID": "teaching-langage-c.html",
-    "href": "teaching-langage-c.html",
-    "title": "Langage C",
+    "objectID": "invitations/2018-paris-symposium-on-games-2018.html",
+    "href": "invitations/2018-paris-symposium-on-games-2018.html",
+    "title": "Paris Symposium on Games 2018",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/langage-c"
+    "text": "Paris Symposium on Games 2018 (Paris, France, 2018).\nLink: https://paris-symposium-on-games.org/"
   },
   {
-    "objectID": "langage-c.html",
-    "href": "langage-c.html",
-    "title": "Langage C",
+    "objectID": "invitations/2020-s-minaire-du-crese.html",
+    "href": "invitations/2020-s-minaire-du-crese.html",
+    "title": "Séminaire du CRESE",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/langage-c"
+    "text": "Séminaire du CRESE (Besançon, France, 2020)."
   },
   {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
+    "objectID": "invitations/2024-s-minaire-du-crem.html",
+    "href": "invitations/2024-s-minaire-du-crem.html",
+    "title": "Séminaire du CREM",
     "section": "",
-    "text": "GATE Lyon Saint-Étienne (UMR 5824)\nPhysical address: 77 rue Michelet, 42100 Saint-Etienne, France\nPhone: +334 77 42 19 57\nEmail: stephane.gonzalez@univ-st-etienne.fr"
+    "text": "Séminaire du CREM (Caen, France, 2024)."
   },
   {
-    "objectID": "politique-economique.html",
-    "href": "politique-economique.html",
-    "title": "Politique Économique",
+    "objectID": "invitations/2014-cerec-workshop-in-economics.html",
+    "href": "invitations/2014-cerec-workshop-in-economics.html",
+    "title": "CEREC Workshop in Economics",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/politique-economique"
+    "text": "CEREC Workshop in Economics (Brussels, Belgium, 2014)."
   },
   {
-    "objectID": "macroeconomics.html",
-    "href": "macroeconomics.html",
-    "title": "Macroeconomics",
+    "objectID": "invitations/2016-s-minaire-du-gate-lse.html",
+    "href": "invitations/2016-s-minaire-du-gate-lse.html",
+    "title": "Séminaire du GATE-LSE",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomics"
+    "text": "Séminaire du GATE-LSE (Lyon, France, 2016)."
   },
   {
-    "objectID": "teaching-political-engineering.html",
-    "href": "teaching-political-engineering.html",
-    "title": "Introduction to Political Engineering",
+    "objectID": "invitations/2012-owl-workshop-markets-games-and-design-mgd12.html",
+    "href": "invitations/2012-owl-workshop-markets-games-and-design-mgd12.html",
+    "title": "OWL Workshop “Markets, Games, and Design” MGD12",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/introduction-to-political-engineering"
+    "text": "OWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)."
   },
   {
-    "objectID": "working-papers/filters-abstract-aggregation.html",
-    "href": "working-papers/filters-abstract-aggregation.html",
-    "title": "Filters in abstract aggregation with infinite sequences of signals",
+    "objectID": "invitations/2019-led-seminar.html",
+    "href": "invitations/2019-led-seminar.html",
+    "title": "LED Seminar",
     "section": "",
-    "text": "Working paper (working paper)."
+    "text": "LED Seminar (Paris 8, France, 2019)."
   },
   {
-    "objectID": "teaching-macro-croissance.html",
-    "href": "teaching-macro-croissance.html",
-    "title": "Macroéconomie et croissance",
+    "objectID": "invitations/2013-s-minaire-du-laboratoire-equippe.html",
+    "href": "invitations/2013-s-minaire-du-laboratoire-equippe.html",
+    "title": "Séminaire du laboratoire EQUIPPE",
     "section": "",
-    "text": "Niveau : Licence 3\nSemestre : 2\nVolume horaire : 18 heures de cours (CM) et 18 heures de pratique (TD)\nIntervenant : Stéphane Gonzalez\nContact : stephane.gonzalez@univ-st-etienne.fr\nObjectifs du cours : Ce cours est conçu pour familiariser les étudiants avec les principales théories de la croissance économique. Les modèles de Harrod-Domar, Solow, Ramsey-Cass-Koopmans, Romer, Barro et Goodwin seront abordés. Chaque modèle sera étudié mathématiquement et appliqué à différentes politiques économiques à travers une simulation en Python. L’objectif est d’amener l’étudiant à une autonomie suffisante pour conseiller quantitativement un décideur sur les questions de croissance économique.\nPlan de cours :\n\nIntroduction aux théories de la croissance\nÉtude mathématique et simulation des modèles de croissance\nApplication des modèles à différentes politiques économiques\nUtilisation de Python pour la simulation de modèles économiques\n\nCompétences développées : À la fin de ce cours, les étudiants seront capables de comprendre et de construire des modèles dynamiques en économie, de les étudier mathématiquement et de les appliquer à différentes politiques économiques. Ils auront également acquis des compétences transversales telles que la capacité de lire un diagramme de phase, d’étudier qualitativement une équation différentielle ordinaire, et de réaliser des simulations en Python.\nModalités d’évaluation : L’évaluation se fera sur la base d’une épreuve écrite.\nPrérequis : Cours introductif à l’analyse mathématique. Connaissance de base de la programmation en Python est un plus.\nBibliographie / références :\n\n“Introduction to Modern Economic Growth” - Daron Acemoglu\n“Théories économiques de la croissance” - Robert J. Barro et Xavier Sala-i-Martin\n“Advanced Macroeconomics” - David Romer\n“Economic Growth” - Weil, D.\n\nQuelques contenus :\n\nmacroeconomics_combined.pdf (see the former Google Sites page)\n\nFormer Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroconomie-et-croissance"
+    "text": "Séminaire du laboratoire EQUIPPE (Lille, France, 2013)."
   },
   {
-    "objectID": "working-papers/knapsack-budget-allocation-rule.html",
-    "href": "working-papers/knapsack-budget-allocation-rule.html",
-    "title": "An Axiomatic Characterization of the Knapsack Budget Allocation Rule",
+    "objectID": "invitations/2024-participatory-budgeting-workshop.html",
+    "href": "invitations/2024-participatory-budgeting-workshop.html",
+    "title": "Participatory Budgeting Workshop",
     "section": "",
-    "text": "Working paper (working paper)."
+    "text": "Participatory Budgeting Workshop (Paris School of Economics, France, 2024)."
   },
   {
-    "objectID": "working-papers/approval-voting-vs-threshold.html",
-    "href": "working-papers/approval-voting-vs-threshold.html",
-    "title": "Approval voting versus proportional threshold methods: so far and yet so near",
+    "objectID": "invitations/2012-ebim-networks-workshop.html",
+    "href": "invitations/2012-ebim-networks-workshop.html",
+    "title": "EBIM Networks Workshop",
     "section": "",
-    "text": "Working paper (working paper)."
+    "text": "EBIM Networks Workshop (Bielefeld, Germany, 2012)."
+  },
+  {
+    "objectID": "invitations/2017-axiomatizations-in-game-theory.html",
+    "href": "invitations/2017-axiomatizations-in-game-theory.html",
+    "title": "Axiomatizations in Game Theory",
+    "section": "",
+    "text": "Axiomatizations in Game Theory (Pécs, Hungary, 2017)."
+  },
+  {
+    "objectID": "invitations/2024-amsterdam-saint-etienne-workshop-on-social-choice.html",
+    "href": "invitations/2024-amsterdam-saint-etienne-workshop-on-social-choice.html",
+    "title": "Amsterdam/Saint-Etienne Workshop on Social Choice",
+    "section": "",
+    "text": "Amsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024)."
+  },
+  {
+    "objectID": "invitations/2018-the-game-theory-seminars-of-the-university-of-the-basque-cou.html",
+    "href": "invitations/2018-the-game-theory-seminars-of-the-university-of-the-basque-cou.html",
+    "title": "The Game Theory seminars of the University of the Basque Country",
+    "section": "",
+    "text": "The Game Theory seminars of the University of the Basque Country (Bilbao, Spain, 2018)."
+  },
+  {
+    "objectID": "invitations/2024-osgad-17.html",
+    "href": "invitations/2024-osgad-17.html",
+    "title": "OSGAD 17",
+    "section": "",
+    "text": "OSGAD 17 (Paris, France, 2024)."
+  },
+  {
+    "objectID": "invitations/2018-symposium-mathematics-and-politics-democratic-decision-makin.html",
+    "href": "invitations/2018-symposium-mathematics-and-politics-democratic-decision-makin.html",
+    "title": "Symposium “Mathematics and Politics: Democratic Decision Making”",
+    "section": "",
+    "text": "Symposium “Mathematics and Politics: Democratic Decision Making” (Hannover, Germany, 2018)."
+  },
+  {
+    "objectID": "coalitions-in-cooperative-and-non-cooperative-game-theory.html",
+    "href": "coalitions-in-cooperative-and-non-cooperative-game-theory.html",
+    "title": "Coalitions in Cooperative and Non-cooperative Game Theory",
+    "section": "",
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory"
+  },
+  {
+    "objectID": "macroeconomie-et-croissance.html",
+    "href": "macroeconomie-et-croissance.html",
+    "title": "Macroéconomie et Croissance",
+    "section": "",
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomie-et-croissance"
+  },
+  {
+    "objectID": "coalitions.html",
+    "href": "coalitions.html",
+    "title": "Coalitions in cooperative and non-cooperative game theory",
+    "section": "",
+    "text": "Course page and materials:\n\nhttps://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Social Choice\n\n\n\n\n\n\nJan 1, 2026\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nImplementation\n\nSocial Choice\n\n\n\n\n\n\nSep 1, 2025\n\n\nAymeric Lardon, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nPhilosophy\n\nJustice\n\n\n\n\n\n\nJun 1, 2024\n\n\nStéphane Gonzalez, Nikolaos Pnevmatikos\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2023\n\n\nSylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter\n\n\n\n\n\n\n\n\n\nGame Theory\n\nDynamic Games\n\n\n\n\n\n\nSep 1, 2022\n\n\nStéphane Gonzalez, Fatma Zahra Rostom\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nNov 1, 2021\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nGraph Theory\n\nGame Theory\n\n\n\n\n\n\nJul 1, 2021\n\n\nEric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJul 1, 2021\n\n\nFederica Ceron, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nAug 1, 2019\n\n\nStéphane Gonzalez, Annick Laruelle, Philippe Solal\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nApr 1, 2019\n\n\nStéphane Gonzalez, Alain Marciano, Philippe Solal\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMar 1, 2018\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2017\n\n\nStéphane Gonzalez, Alain Marciano\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMay 1, 2016\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nDec 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nAug 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "research.html#publications",
+    "href": "research.html#publications",
+    "title": "Research",
+    "section": "",
+    "text": "Social Choice\n\n\n\n\n\n\nJan 1, 2026\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nImplementation\n\nSocial Choice\n\n\n\n\n\n\nSep 1, 2025\n\n\nAymeric Lardon, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nPhilosophy\n\nJustice\n\n\n\n\n\n\nJun 1, 2024\n\n\nStéphane Gonzalez, Nikolaos Pnevmatikos\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2023\n\n\nSylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter\n\n\n\n\n\n\n\n\n\nGame Theory\n\nDynamic Games\n\n\n\n\n\n\nSep 1, 2022\n\n\nStéphane Gonzalez, Fatma Zahra Rostom\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nNov 1, 2021\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nGraph Theory\n\nGame Theory\n\n\n\n\n\n\nJul 1, 2021\n\n\nEric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJul 1, 2021\n\n\nFederica Ceron, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nAug 1, 2019\n\n\nStéphane Gonzalez, Annick Laruelle, Philippe Solal\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nApr 1, 2019\n\n\nStéphane Gonzalez, Alain Marciano, Philippe Solal\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMar 1, 2018\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2017\n\n\nStéphane Gonzalez, Alain Marciano\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMay 1, 2016\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nDec 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nAug 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "research.html#working-papers",
+    "href": "research.html#working-papers",
+    "title": "Research",
+    "section": "Working papers",
+    "text": "Working papers\n\n\n    \n      \n      \n    \n\n\n\n\n\nAn Axiomatic Characterization of the Knapsack Budget Allocation Rule\n\n\n\nBudget Allocation\n\nAxiomatic Methods\n\n\n\n\n\n\nJan 1, 2025\n\n\nFederica Ceron, Stéphane Gonzalez, Adriana Navarro-Ramos\n\n\n\n\n\n\n\nFilters in abstract aggregation with infinite sequences of signals\n\n\n\nAggregation\n\nSocial Choice\n\n\n\n\n\n\nJan 1, 2025\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\nApproval voting versus proportional threshold methods: so far and yet so near\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJan 1, 2025\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "research.html#peer-reviewed-international-conference-presentations",
+    "href": "research.html#peer-reviewed-international-conference-presentations",
+    "title": "Research",
+    "section": "Peer-reviewed international conference presentations",
+    "text": "Peer-reviewed international conference presentations\n\n\n\n\n\nSAET 24\n\n\nIschia, Italy, 2025 — website\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nSING 20\n\n\nMaastricht, Netherlands, 2025 — website\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nASSET\n\n\nRabat, Morocco, 2025 — website\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nPET 2024\n\n\nLyon, France, 2024 — website\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nSSCW 17\n\n\nParis, France, 2024 — website\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nSAET 23\n\n\nSantiago, Chile, 2024 — website\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nSING 19\n\n\nBesançon, France, 2024 — website\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nSING 18\n\n\nMessina, Italy, 2023 — website\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nSAET 22\n\n\nParis, France, 2023 — website\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nEURO OR 2022\n\n\nEspoo, Finland, 2022 — website\n\n\n\n\n\nJan 1, 2022\n\n\n\n\n\n\n\nEURO OR 2021\n\n\nAthens, virtual, Greece, 2021 — website\n\n\n\n\n\nJan 1, 2021\n\n\n\n\n\n\n\nPET\n\n\nStrasbourg, France, 2019 — website\n\n\n\n\n\nJan 1, 2019\n\n\n\n\n\n\n\nSAET 19\n\n\nIschia, Italy, 2019 — website\n\n\n\n\n\nJan 1, 2019\n\n\n\n\n\n\n\nCESC 2\n\n\nBarcelona, Spain, 2019 — website\n\n\n\n\n\nJan 1, 2019\n\n\n\n\n\n\n\nSING 14\n\n\nBayreuth, Germany, 2018 — website\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nEURO 2018 – ECOR 29\n\n\nValencia, Spain, 2018 — website\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nParis Symposium on Games 2018\n\n\nParis, France, 2018 — website\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nPET\n\n\nParis, France, 2017 — website\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nCESC\n\n\nBarcelona, Spain, 2017 — website\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nJournées LAGV\n\n\nAix-en-Provence, France, 2017\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nSAET 17\n\n\nFaro, Portugal, 2017 — website\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nSING 12\n\n\nOdense, Denmark, 2016 — website\n\n\n\n\n\nJan 1, 2016\n\n\n\n\n\n\n\nSSCW 13\n\n\nLund, Sweden, 2016 — website\n\n\n\n\n\nJan 1, 2016\n\n\n\n\n\n\n\nEURO 2016 – ECOR 28\n\n\nPoznan, Poland, 2016 — website\n\n\n\n\n\nJan 1, 2016\n\n\n\n\n\n\n\nSING 11\n\n\nSt-Petersburg, Russia, 2015 — website\n\n\n\n\n\nJan 1, 2015\n\n\n\n\n\n\n\nSING 10\n\n\nKrakow, Poland, 2014 — website\n\n\n\n\n\nJan 1, 2014\n\n\n\n\n\n\n\nSAET 13\n\n\nParis, France, 2013 — website\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nSING 9\n\n\nVigo, Spain, 2013 — website\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nSING 8\n\n\nBudapest, Hungary, 2012 — website\n\n\n\n\n\nJan 1, 2012\n\n\n\n\n\n\n\nSING 7\n\n\nParis, France, 2011 — website\n\n\n\n\n\nJan 1, 2011\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "research.html#invitations-to-participate-in-workshops-seminars-and-conferences",
+    "href": "research.html#invitations-to-participate-in-workshops-seminars-and-conferences",
+    "title": "Research",
+    "section": "Invitations to participate in workshops, seminars, and conferences",
+    "text": "Invitations to participate in workshops, seminars, and conferences\n\n\n\n\n\nOSGAD 18, in honor of Michel Grabisch\n\n\nParis, France, 2025 — website\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nGame Theory Workshop in Honour of Peter Sudhölter\n\n\nUniversitat Roviri i Virgili, Spain, 2025\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nEconomics Seminar of Bielefeld University\n\n\nBielefeld, Germany, 2025\n\n\n\n\n\nJan 1, 2025\n\n\n\n\n\n\n\nOSGAD 17\n\n\nParis, France, 2024\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nAmsterdam/Saint-Etienne Workshop on Social Choice\n\n\nSaint-Etienne, France, 2024\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nParticipatory Budgeting Workshop\n\n\nParis School of Economics, France, 2024\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nSéminaire du CREM\n\n\nCaen, France, 2024\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\nGT Économie Comportementale\n\n\nUniversité Paris Nanterre, France, 2024\n\n\n\n\n\nJan 1, 2024\n\n\n\n\n\n\n\n2nd UB Workshop on Game Theory\n\n\nBarcelona, Spain, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nCO2ERASE\n\n\nUniversity Paris Dauphine, France, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nSeminar of Economics and Management\n\n\nUniversity of Paderborn, Germany, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nXXXI European Workshop on Economic Theory – EWET\n\n\nNaples, Italy, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nEconomic theory seminar\n\n\nCES, Paris, France, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nOnline Social Choice and Welfare Seminar\n\n\nOnline, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nWorkshop on Collective Decisions: Current Trends\n\n\nGranada, Spain, 2023\n\n\n\n\n\nJan 1, 2023\n\n\n\n\n\n\n\nGame theory seminar\n\n\nUniversity of Barcelona, Spain, 2022\n\n\n\n\n\nJan 1, 2022\n\n\n\n\n\n\n\nWorkshop GDR-Jeux cooperative models in games and social choice\n\n\nCRESE, Besançon, France, 2022\n\n\n\n\n\nJan 1, 2022\n\n\n\n\n\n\n\nInteraction seminar\n\n\nAMSE, Marseille, France, 2022\n\n\n\n\n\nJan 1, 2022\n\n\n\n\n\n\n\nMDOD Seminar\n\n\nParis 1, France, 2021\n\n\n\n\n\nJan 1, 2021\n\n\n\n\n\n\n\nLEM Seminar\n\n\nLille, France, 2020\n\n\n\n\n\nJan 1, 2020\n\n\n\n\n\n\n\nSéminaire du CRESE\n\n\nBesançon, France, 2020\n\n\n\n\n\nJan 1, 2020\n\n\n\n\n\n\n\nLED Seminar\n\n\nParis 8, France, 2019\n\n\n\n\n\nJan 1, 2019\n\n\n\n\n\n\n\nMRE Seminar\n\n\nMontpellier, France, 2019\n\n\n\n\n\nJan 1, 2019\n\n\n\n\n\n\n\nSymposium “Mathematics and Politics: Democratic Decision Making”\n\n\nHannover, Germany, 2018\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nThe Game Theory seminars of the University of the Basque Country\n\n\nBilbao, Spain, 2018\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nSéminaire du BETA\n\n\nNancy, France, 2018\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nCES Economic Theory Seminar of Paris 1\n\n\nParis, France, 2018\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nParis Symposium on Games 2018\n\n\nParis, France, 2018 — website\n\n\n\n\n\nJan 1, 2018\n\n\n\n\n\n\n\nAxiomatizations in Game Theory\n\n\nPécs, Hungary, 2017\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nOSGAD 11\n\n\nParis, France, 2017\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nWorkshop MARS\n\n\nSaint-Etienne, France, 2017\n\n\n\n\n\nJan 1, 2017\n\n\n\n\n\n\n\nSéminaire du GATE-LSE\n\n\nLyon, France, 2016\n\n\n\n\n\nJan 1, 2016\n\n\n\n\n\n\n\nWorkshop Causation and Responsibility: Law, Economics, Philosophy\n\n\nNancy, France, 2016\n\n\n\n\n\nJan 1, 2016\n\n\n\n\n\n\n\nADRES\n\n\nParis, France, 2015\n\n\n\n\n\nJan 1, 2015\n\n\n\n\n\n\n\nCEREC Workshop in Economics\n\n\nBrussels, Belgium, 2014\n\n\n\n\n\nJan 1, 2014\n\n\n\n\n\n\n\nQED\n\n\nVienna, Austria, 2013\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nSéminaire du laboratoire EQUIPPE\n\n\nLille, France, 2013\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nPSE Seminar in Economic Theory\n\n\nParis, France, 2013\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nParisian Game Theory PhD Seminar IHP\n\n\nParis, France, 2013\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nMINT 4\n\n\nAmsterdam, Netherlands, 2013\n\n\n\n\n\nJan 1, 2013\n\n\n\n\n\n\n\nEBIM Networks Workshop\n\n\nBielefeld, Germany, 2012\n\n\n\n\n\nJan 1, 2012\n\n\n\n\n\n\n\nOWL Workshop “Markets, Games, and Design” MGD12\n\n\nPaderborn, Germany, 2012\n\n\n\n\n\nJan 1, 2012\n\n\n\n\n\n\n\nOSGAD 5\n\n\nParis, France, 2011\n\n\n\n\n\nJan 1, 2011\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "cours-prerequis.html",
+    "href": "cours-prerequis.html",
+    "title": "Cours Prérequis",
+    "section": "",
+    "text": "The course material (PDF) is available on the original Google Sites page:\nhttps://sites.google.com/site/gonzalezstephaneuniv/cours-prerequis"
+  },
+  {
+    "objectID": "logic-and-set-theory.html",
+    "href": "logic-and-set-theory.html",
+    "title": "Logic and Set Theory",
+    "section": "",
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/logic-and-set-theory"
+  },
+  {
+    "objectID": "teaching-logic-and-set.html",
+    "href": "teaching-logic-and-set.html",
+    "title": "Logic and set",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/logic-and-set"
+  },
+  {
+    "objectID": "teaching-coalitions.html",
+    "href": "teaching-coalitions.html",
+    "title": "Coalitions in cooperative and non-cooperative game theory",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/coalitions-in-cooperative-and-non-cooperative-game-theory"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "Below are teaching materials and course pages. Most full lecture notes and PDFs are currently hosted on the original Google Sites page; this website mirrors the same structure and provides direct access."
+  },
+  {
+    "objectID": "teaching.html#courses",
+    "href": "teaching.html#courses",
+    "title": "Teaching",
+    "section": "Courses",
+    "text": "Courses\n\nCours Prérequis\nLangage C\nLogic and Set Theory\nMacroeconomics\nPolitiques économiques\nThéorie de la mesure\nMacroéconomie et Croissance\nIntroduction to Political Engineering\nCoalitions in cooperative and non-cooperative game theory"
+  },
+  {
+    "objectID": "teaching-politique-economique.html",
+    "href": "teaching-politique-economique.html",
+    "title": "Politique économique",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/politique-economique"
+  },
+  {
+    "objectID": "graph-theory.html",
+    "href": "graph-theory.html",
+    "title": "Graph Theory",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/graph-theory"
   },
   {
     "objectID": "index.html",
@@ -224,116 +476,270 @@
     "text": "Invitations to participate in workshops, seminars, and conferences\n\nOSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)\nGame Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)\nEconomics Seminar of Bielefeld University (Bielefeld, Germany, 2025)\nOSGAD 17 (Paris, France, 2024)\nGT Économie Comportementale (Université Paris Nanterre, France, 2024)\nParticipatory Budgeting Workshop (Paris School of Economics, France, 2024)\nAmsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024)\nSéminaire du CREM (Caen, France, 2024)\n2nd UB Workshop on Game Theory (Barcelona, Spain, 2023)\nOnline Social Choice and Welfare Seminar (Online, 2023)\nXXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023)\nCO2ERASE (University Paris Dauphine, France, 2023)\nWorkshop on Collective Decisions: Current Trends (Granada, Spain, 2023)\nSeminar of Economics and Management (University of Paderborn, Germany, 2023)\nEconomic theory seminar (CES, Paris, France, 2023)\nInteraction seminar (AMSE, Marseille, France, 2022)\nWorkshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022)\nGame theory seminar (University of Barcelona, Spain, 2022)\nMDOD Seminar (Paris 1, France, 2021)\nSéminaire du CRESE (Besançon, France, 2020)\nLEM Seminar (Lille, France, 2020)\nLED Seminar (Paris 8, France, 2019)\nMRE Seminar (Montpellier, France, 2019)\nParis Symposium on Games 2018 (Paris, France, 2018)\nSymposium “Mathematics and Politics: Democratic Decision Making” (Hannover, Germany, 2018)\nThe Game Theory seminars of the University of the Basque Country (Bilbao, Spain, 2018)\nCES Economic Theory Seminar of Paris 1 (Paris, France, 2018)\nSéminaire du BETA (Nancy, France, 2018)\nOSGAD 11 (Paris, France, 2017)\nAxiomatizations in Game Theory (Pécs, Hungary, 2017)\nWorkshop MARS (Saint-Etienne, France, 2017)\nWorkshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016)\nSéminaire du GATE-LSE (Lyon, France, 2016)\nADRES (Paris, France, 2015)\nCEREC Workshop in Economics (Brussels, Belgium, 2014)\nQED (Vienna, Austria, 2013)\nMINT 4 (Amsterdam, Netherlands, 2013)\nSéminaire du laboratoire EQUIPPE (Lille, France, 2013)\nParisian Game Theory PhD Seminar IHP (Paris, France, 2013)\nPSE Seminar in Economic Theory (Paris, France, 2013)\nOWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)\nEBIM Networks Workshop (Bielefeld, Germany, 2012)\nOSGAD 5 (Paris, France, 2011)"
   },
   {
-    "objectID": "graph-theory.html",
-    "href": "graph-theory.html",
-    "title": "Graph Theory",
+    "objectID": "working-papers/approval-voting-vs-threshold.html",
+    "href": "working-papers/approval-voting-vs-threshold.html",
+    "title": "Approval voting versus proportional threshold methods: so far and yet so near",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/graph-theory"
+    "text": "Working paper (working paper)."
   },
   {
-    "objectID": "teaching-politique-economique.html",
-    "href": "teaching-politique-economique.html",
-    "title": "Politique économique",
+    "objectID": "working-papers/knapsack-budget-allocation-rule.html",
+    "href": "working-papers/knapsack-budget-allocation-rule.html",
+    "title": "An Axiomatic Characterization of the Knapsack Budget Allocation Rule",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/politique-economique"
+    "text": "Working paper (working paper)."
   },
   {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "Teaching",
+    "objectID": "teaching-macro-croissance.html",
+    "href": "teaching-macro-croissance.html",
+    "title": "Macroéconomie et croissance",
     "section": "",
-    "text": "Below are teaching materials and course pages. Most full lecture notes and PDFs are currently hosted on the original Google Sites page; this website mirrors the same structure and provides direct access."
+    "text": "Niveau : Licence 3\nSemestre : 2\nVolume horaire : 18 heures de cours (CM) et 18 heures de pratique (TD)\nIntervenant : Stéphane Gonzalez\nContact : stephane.gonzalez@univ-st-etienne.fr\nObjectifs du cours : Ce cours est conçu pour familiariser les étudiants avec les principales théories de la croissance économique. Les modèles de Harrod-Domar, Solow, Ramsey-Cass-Koopmans, Romer, Barro et Goodwin seront abordés. Chaque modèle sera étudié mathématiquement et appliqué à différentes politiques économiques à travers une simulation en Python. L’objectif est d’amener l’étudiant à une autonomie suffisante pour conseiller quantitativement un décideur sur les questions de croissance économique.\nPlan de cours :\n\nIntroduction aux théories de la croissance\nÉtude mathématique et simulation des modèles de croissance\nApplication des modèles à différentes politiques économiques\nUtilisation de Python pour la simulation de modèles économiques\n\nCompétences développées : À la fin de ce cours, les étudiants seront capables de comprendre et de construire des modèles dynamiques en économie, de les étudier mathématiquement et de les appliquer à différentes politiques économiques. Ils auront également acquis des compétences transversales telles que la capacité de lire un diagramme de phase, d’étudier qualitativement une équation différentielle ordinaire, et de réaliser des simulations en Python.\nModalités d’évaluation : L’évaluation se fera sur la base d’une épreuve écrite.\nPrérequis : Cours introductif à l’analyse mathématique. Connaissance de base de la programmation en Python est un plus.\nBibliographie / références :\n\n“Introduction to Modern Economic Growth” - Daron Acemoglu\n“Théories économiques de la croissance” - Robert J. Barro et Xavier Sala-i-Martin\n“Advanced Macroeconomics” - David Romer\n“Economic Growth” - Weil, D.\n\nQuelques contenus :\n\nmacroeconomics_combined.pdf (see the former Google Sites page)\n\nFormer Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroconomie-et-croissance"
   },
   {
-    "objectID": "teaching.html#courses",
-    "href": "teaching.html#courses",
-    "title": "Teaching",
-    "section": "Courses",
-    "text": "Courses\n\nCours Prérequis\nLangage C\nLogic and Set Theory\nMacroeconomics\nPolitiques économiques\nThéorie de la mesure\nMacroéconomie et Croissance\nIntroduction to Political Engineering\nCoalitions in cooperative and non-cooperative game theory"
-  },
-  {
-    "objectID": "teaching-coalitions.html",
-    "href": "teaching-coalitions.html",
-    "title": "Coalitions in cooperative and non-cooperative game theory",
+    "objectID": "working-papers/filters-abstract-aggregation.html",
+    "href": "working-papers/filters-abstract-aggregation.html",
+    "title": "Filters in abstract aggregation with infinite sequences of signals",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/coalitions-in-cooperative-and-non-cooperative-game-theory"
+    "text": "Working paper (working paper)."
   },
   {
-    "objectID": "teaching-logic-and-set.html",
-    "href": "teaching-logic-and-set.html",
-    "title": "Logic and set",
+    "objectID": "teaching-political-engineering.html",
+    "href": "teaching-political-engineering.html",
+    "title": "Introduction to Political Engineering",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/logic-and-set"
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/introduction-to-political-engineering"
   },
   {
-    "objectID": "logic-and-set-theory.html",
-    "href": "logic-and-set-theory.html",
-    "title": "Logic and Set Theory",
+    "objectID": "macroeconomics.html",
+    "href": "macroeconomics.html",
+    "title": "Macroeconomics",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/logic-and-set-theory"
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomics"
   },
   {
-    "objectID": "cours-prerequis.html",
-    "href": "cours-prerequis.html",
-    "title": "Cours Prérequis",
+    "objectID": "politique-economique.html",
+    "href": "politique-economique.html",
+    "title": "Politique Économique",
     "section": "",
-    "text": "The course material (PDF) is available on the original Google Sites page:\nhttps://sites.google.com/site/gonzalezstephaneuniv/cours-prerequis"
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/politique-economique"
   },
   {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
     "section": "",
-    "text": "Social Choice\n\n\n\n\n\n\nJan 1, 2026\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nImplementation\n\nSocial Choice\n\n\n\n\n\n\nSep 1, 2025\n\n\nAymeric Lardon, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nPhilosophy\n\nJustice\n\n\n\n\n\n\nJun 1, 2024\n\n\nStéphane Gonzalez, Nikolaos Pnevmatikos\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2023\n\n\nSylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter\n\n\n\n\n\n\n\n\n\nGame Theory\n\nDynamic Games\n\n\n\n\n\n\nSep 1, 2022\n\n\nStéphane Gonzalez, Fatma Zahra Rostom\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nNov 1, 2021\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nGraph Theory\n\nGame Theory\n\n\n\n\n\n\nJul 1, 2021\n\n\nEric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJul 1, 2021\n\n\nFederica Ceron, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nAug 1, 2019\n\n\nStéphane Gonzalez, Annick Laruelle, Philippe Solal\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nApr 1, 2019\n\n\nStéphane Gonzalez, Alain Marciano, Philippe Solal\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMar 1, 2018\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2017\n\n\nStéphane Gonzalez, Alain Marciano\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMay 1, 2016\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nDec 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nAug 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\nNo matching items"
+    "text": "GATE Lyon Saint-Étienne (UMR 5824)\nPhysical address: 77 rue Michelet, 42100 Saint-Etienne, France\nPhone: +334 77 42 19 57\nEmail: stephane.gonzalez@univ-st-etienne.fr"
   },
   {
-    "objectID": "research.html#publications",
-    "href": "research.html#publications",
-    "title": "Research",
+    "objectID": "langage-c.html",
+    "href": "langage-c.html",
+    "title": "Langage C",
     "section": "",
-    "text": "Social Choice\n\n\n\n\n\n\nJan 1, 2026\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nImplementation\n\nSocial Choice\n\n\n\n\n\n\nSep 1, 2025\n\n\nAymeric Lardon, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nPhilosophy\n\nJustice\n\n\n\n\n\n\nJun 1, 2024\n\n\nStéphane Gonzalez, Nikolaos Pnevmatikos\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2023\n\n\nSylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter\n\n\n\n\n\n\n\n\n\nGame Theory\n\nDynamic Games\n\n\n\n\n\n\nSep 1, 2022\n\n\nStéphane Gonzalez, Fatma Zahra Rostom\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nNov 1, 2021\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nGraph Theory\n\nGame Theory\n\n\n\n\n\n\nJul 1, 2021\n\n\nEric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJul 1, 2021\n\n\nFederica Ceron, Stéphane Gonzalez\n\n\n\n\n\n\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nAug 1, 2019\n\n\nStéphane Gonzalez, Annick Laruelle, Philippe Solal\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nApr 1, 2019\n\n\nStéphane Gonzalez, Alain Marciano, Philippe Solal\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMar 1, 2018\n\n\nStéphane Gonzalez, Aymeric Lardon\n\n\n\n\n\n\n\n\n\nLaw and Economics\n\nCooperative Games\n\n\n\n\n\n\nSep 1, 2017\n\n\nStéphane Gonzalez, Alain Marciano\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nMay 1, 2016\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nDec 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\n\n\n\n\nGame Theory\n\nCooperative Games\n\n\n\n\n\n\nAug 1, 2015\n\n\nStéphane Gonzalez, Michel Grabisch\n\n\n\n\n\nNo matching items"
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/langage-c"
   },
   {
-    "objectID": "research.html#working-papers",
-    "href": "research.html#working-papers",
-    "title": "Research",
-    "section": "Working papers",
-    "text": "Working papers\n\n\n    \n      \n      \n    \n\n\n\n\n\nAn Axiomatic Characterization of the Knapsack Budget Allocation Rule\n\n\n\nBudget Allocation\n\nAxiomatic Methods\n\n\n\n\n\n\nJan 1, 2025\n\n\nFederica Ceron, Stéphane Gonzalez, Adriana Navarro-Ramos\n\n\n\n\n\n\n\nFilters in abstract aggregation with infinite sequences of signals\n\n\n\nAggregation\n\nSocial Choice\n\n\n\n\n\n\nJan 1, 2025\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\n\n\nApproval voting versus proportional threshold methods: so far and yet so near\n\n\n\nVoting\n\nSocial Choice\n\n\n\n\n\n\nJan 1, 2025\n\n\nSusumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "research.html#list-of-peer-reviewed-international-conference-presentations",
-    "href": "research.html#list-of-peer-reviewed-international-conference-presentations",
-    "title": "Research",
-    "section": "List of peer-reviewed international conference presentations",
-    "text": "List of peer-reviewed international conference presentations\n\nASSET (Rabat, Morocco, 2025)\nSAET 24 (Ischia, Italy, 2025)\nSING 20 (Maastricht, Netherlands, 2025)\nSING 19 (Besançon, France, 2024)\nSSCW 17 (Paris, France, 2024)\nPET 2024 (Lyon, France, 2024)\nSAET 23 (Santiago, Chile, 2024)\nSAET 22 (Paris, France, 2023)\nSING 18 (Messina, Italy, 2023)\nEURO OR 2022 (Espoo, Finland, 2022)\nEURO OR 2021 (Athens, virtual, Greece, 2021)\nPET (Strasbourg, France, 2019)\nSAET 19 (Ischia, Italy, 2019)\nCESC 2 (Barcelona, Spain, 2019)\nSING 14 (Bayreuth, Germany, 2018)\nEURO 2018 – ECOR 29 (Valencia, Spain, 2018)\nParis Symposium on Games 2018 (Paris, France, 2018)\nPET (Paris, France, 2017)\nSAET 17 (Faro, Portugal, 2017)\nJournées LAGV (Aix-en-Provence, France, 2017)\nCESC (Barcelona, Spain, 2017)\nSING 12 (Odense, Denmark, 2016)\nEURO 2016 – ECOR 28 (Poznan, Poland, 2016)\nSSCW 13 (Lund, Sweden, 2016)\nSING 11 (St-Petersburg, Russia, 2015)\nSING 10 (Krakow, Poland, 2014)\nSAET 13 (Paris, France, 2013)\nSING 9 (Vigo, Spain, 2013)\nSING 8 (Budapest, Hungary, 2012)\nSING 7 (Paris, France, 2011)"
-  },
-  {
-    "objectID": "research.html#invitations-to-participate-in-workshops-seminars-and-conferences",
-    "href": "research.html#invitations-to-participate-in-workshops-seminars-and-conferences",
-    "title": "Research",
-    "section": "Invitations to participate in workshops, seminars, and conferences",
-    "text": "Invitations to participate in workshops, seminars, and conferences\n\nOSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)\nGame Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)\nEconomics Seminar of Bielefeld University (Bielefeld, Germany, 2025)\nOSGAD 17 (Paris, France, 2024)\nGT Économie Comportementale (Université Paris Nanterre, France, 2024)\nParticipatory Budgeting Workshop (Paris School of Economics, France, 2024)\nAmsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024)\nSéminaire du CREM (Caen, France, 2024)\n2nd UB Workshop on Game Theory (Barcelona, Spain, 2023)\nOnline Social Choice and Welfare Seminar (Online, 2023)\nXXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023)\nCO2ERASE (University Paris Dauphine, France, 2023)\nWorkshop on Collective Decisions: Current Trends (Granada, Spain, 2023)\nSeminar of Economics and Management (University of Paderborn, Germany, 2023)\nEconomic theory seminar (CES, Paris, France, 2023)\nInteraction seminar (AMSE, Marseille, France, 2022)\nWorkshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022)\nGame theory seminar (University of Barcelona, Spain, 2022)\nMDOD Seminar (Paris 1, France, 2021)\nSéminaire du CRESE (Besançon, France, 2020)\nLEM Seminar (Lille, France, 2020)\nLED Seminar (Paris 8, France, 2019)\nMRE Seminar (Montpellier, France, 2019)\nParis Symposium on Games 2018 (Paris, France, 2018)\nSymposium “Mathematics and Politics: Democratic Decision Making” (Hannover, Germany, 2018)\nThe Game Theory seminars of the University of the Basque Country (Bilbao, Spain, 2018)\nCES Economic Theory Seminar of Paris 1 (Paris, France, 2018)\nSéminaire du BETA (Nancy, France, 2018)\nOSGAD 11 (Paris, France, 2017)\nAxiomatizations in Game Theory (Pécs, Hungary, 2017)\nWorkshop MARS (Saint-Etienne, France, 2017)\nWorkshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016)\nSéminaire du GATE-LSE (Lyon, France, 2016)\nADRES (Paris, France, 2015)\nCEREC Workshop in Economics (Brussels, Belgium, 2014)\nQED (Vienna, Austria, 2013)\nMINT 4 (Amsterdam, Netherlands, 2013)\nSéminaire du laboratoire EQUIPPE (Lille, France, 2013)\nParisian Game Theory PhD Seminar IHP (Paris, France, 2013)\nPSE Seminar in Economic Theory (Paris, France, 2013)\nOWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)\nEBIM Networks Workshop (Bielefeld, Germany, 2012)\nOSGAD 5 (Paris, France, 2011)"
-  },
-  {
-    "objectID": "coalitions.html",
-    "href": "coalitions.html",
-    "title": "Coalitions in cooperative and non-cooperative game theory",
+    "objectID": "teaching-langage-c.html",
+    "href": "teaching-langage-c.html",
+    "title": "Langage C",
     "section": "",
-    "text": "Course page and materials:\n\nhttps://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory"
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/langage-c"
   },
   {
-    "objectID": "macroeconomie-et-croissance.html",
-    "href": "macroeconomie-et-croissance.html",
-    "title": "Macroéconomie et Croissance",
+    "objectID": "teaching-theorie-mesure.html",
+    "href": "teaching-theorie-mesure.html",
+    "title": "Measure theory, integration, probability",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomie-et-croissance"
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/th%C3%A9orie-de-la-mesure-int%C3%A9gration-probabilit%C3%A9"
   },
   {
-    "objectID": "coalitions-in-cooperative-and-non-cooperative-game-theory.html",
-    "href": "coalitions-in-cooperative-and-non-cooperative-game-theory.html",
-    "title": "Coalitions in Cooperative and Non-cooperative Game Theory",
+    "objectID": "introduction-to-political-engineering.html",
+    "href": "introduction-to-political-engineering.html",
+    "title": "Introduction to Political Engineering",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory"
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/introduction-to-political-engineering"
+  },
+  {
+    "objectID": "theorie-de-la-mesure.html",
+    "href": "theorie-de-la-mesure.html",
+    "title": "Théorie de la Mesure",
+    "section": "",
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/theorie-de-la-mesure"
+  },
+  {
+    "objectID": "politiques-economiques.html",
+    "href": "politiques-economiques.html",
+    "title": "Politiques économiques",
+    "section": "",
+    "text": "Course page and materials:\n\nhttps://sites.google.com/site/gonzalezstephaneuniv/politique-economique"
+  },
+  {
+    "objectID": "teaching-macroeconomie.html",
+    "href": "teaching-macroeconomie.html",
+    "title": "Macroéconomie",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroeconomie"
+  },
+  {
+    "objectID": "teaching-prerequisites.html",
+    "href": "teaching-prerequisites.html",
+    "title": "Prerequisites",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/prerequisites"
+  },
+  {
+    "objectID": "invitations/2022-game-theory-seminar.html",
+    "href": "invitations/2022-game-theory-seminar.html",
+    "title": "Game theory seminar",
+    "section": "",
+    "text": "Game theory seminar (University of Barcelona, Spain, 2022)."
+  },
+  {
+    "objectID": "invitations/2023-2nd-ub-workshop-on-game-theory.html",
+    "href": "invitations/2023-2nd-ub-workshop-on-game-theory.html",
+    "title": "2nd UB Workshop on Game Theory",
+    "section": "",
+    "text": "2nd UB Workshop on Game Theory (Barcelona, Spain, 2023)."
+  },
+  {
+    "objectID": "invitations/2025-osgad-18-in-honor-of-michel-grabisch.html",
+    "href": "invitations/2025-osgad-18-in-honor-of-michel-grabisch.html",
+    "title": "OSGAD 18, in honor of Michel Grabisch",
+    "section": "",
+    "text": "OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025).\nLink: https://osgad2025.sciencesconf.org/"
+  },
+  {
+    "objectID": "invitations/2023-co2erase.html",
+    "href": "invitations/2023-co2erase.html",
+    "title": "CO2ERASE",
+    "section": "",
+    "text": "CO2ERASE (University Paris Dauphine, France, 2023)."
+  },
+  {
+    "objectID": "invitations/2013-qed.html",
+    "href": "invitations/2013-qed.html",
+    "title": "QED",
+    "section": "",
+    "text": "QED (Vienna, Austria, 2013)."
+  },
+  {
+    "objectID": "invitations/2023-seminar-of-economics-and-management.html",
+    "href": "invitations/2023-seminar-of-economics-and-management.html",
+    "title": "Seminar of Economics and Management",
+    "section": "",
+    "text": "Seminar of Economics and Management (University of Paderborn, Germany, 2023)."
+  },
+  {
+    "objectID": "invitations/2025-game-theory-workshop-in-honour-of-peter-sudh-lter.html",
+    "href": "invitations/2025-game-theory-workshop-in-honour-of-peter-sudh-lter.html",
+    "title": "Game Theory Workshop in Honour of Peter Sudhölter",
+    "section": "",
+    "text": "Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)."
+  },
+  {
+    "objectID": "invitations/2017-osgad-11.html",
+    "href": "invitations/2017-osgad-11.html",
+    "title": "OSGAD 11",
+    "section": "",
+    "text": "OSGAD 11 (Paris, France, 2017)."
+  },
+  {
+    "objectID": "invitations/2018-s-minaire-du-beta.html",
+    "href": "invitations/2018-s-minaire-du-beta.html",
+    "title": "Séminaire du BETA",
+    "section": "",
+    "text": "Séminaire du BETA (Nancy, France, 2018)."
+  },
+  {
+    "objectID": "invitations/2023-xxxi-european-workshop-on-economic-theory-ewet.html",
+    "href": "invitations/2023-xxxi-european-workshop-on-economic-theory-ewet.html",
+    "title": "XXXI European Workshop on Economic Theory – EWET",
+    "section": "",
+    "text": "XXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023)."
+  },
+  {
+    "objectID": "invitations/2020-lem-seminar.html",
+    "href": "invitations/2020-lem-seminar.html",
+    "title": "LEM Seminar",
+    "section": "",
+    "text": "LEM Seminar (Lille, France, 2020)."
+  },
+  {
+    "objectID": "invitations/2017-workshop-mars.html",
+    "href": "invitations/2017-workshop-mars.html",
+    "title": "Workshop MARS",
+    "section": "",
+    "text": "Workshop MARS (Saint-Etienne, France, 2017)."
+  },
+  {
+    "objectID": "invitations/2013-pse-seminar-in-economic-theory.html",
+    "href": "invitations/2013-pse-seminar-in-economic-theory.html",
+    "title": "PSE Seminar in Economic Theory",
+    "section": "",
+    "text": "PSE Seminar in Economic Theory (Paris, France, 2013)."
+  },
+  {
+    "objectID": "invitations/2011-osgad-5.html",
+    "href": "invitations/2011-osgad-5.html",
+    "title": "OSGAD 5",
+    "section": "",
+    "text": "OSGAD 5 (Paris, France, 2011)."
+  },
+  {
+    "objectID": "invitations/2018-ces-economic-theory-seminar-of-paris-1.html",
+    "href": "invitations/2018-ces-economic-theory-seminar-of-paris-1.html",
+    "title": "CES Economic Theory Seminar of Paris 1",
+    "section": "",
+    "text": "CES Economic Theory Seminar of Paris 1 (Paris, France, 2018)."
+  },
+  {
+    "objectID": "invitations/2013-parisian-game-theory-phd-seminar-ihp.html",
+    "href": "invitations/2013-parisian-game-theory-phd-seminar-ihp.html",
+    "title": "Parisian Game Theory PhD Seminar IHP",
+    "section": "",
+    "text": "Parisian Game Theory PhD Seminar IHP (Paris, France, 2013)."
+  },
+  {
+    "objectID": "invitations/2013-mint-4.html",
+    "href": "invitations/2013-mint-4.html",
+    "title": "MINT 4",
+    "section": "",
+    "text": "MINT 4 (Amsterdam, Netherlands, 2013)."
+  },
+  {
+    "objectID": "invitations/2023-economic-theory-seminar.html",
+    "href": "invitations/2023-economic-theory-seminar.html",
+    "title": "Economic theory seminar",
+    "section": "",
+    "text": "Economic theory seminar (CES, Paris, France, 2023)."
+  },
+  {
+    "objectID": "invitations/2023-online-social-choice-and-welfare-seminar.html",
+    "href": "invitations/2023-online-social-choice-and-welfare-seminar.html",
+    "title": "Online Social Choice and Welfare Seminar",
+    "section": "",
+    "text": "Online Social Choice and Welfare Seminar (Online, 2023)."
+  },
+  {
+    "objectID": "invitations/2025-economics-seminar-of-bielefeld-university.html",
+    "href": "invitations/2025-economics-seminar-of-bielefeld-university.html",
+    "title": "Economics Seminar of Bielefeld University",
+    "section": "",
+    "text": "Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025)."
+  },
+  {
+    "objectID": "invitations/2021-mdod-seminar.html",
+    "href": "invitations/2021-mdod-seminar.html",
+    "title": "MDOD Seminar",
+    "section": "",
+    "text": "MDOD Seminar (Paris 1, France, 2021)."
+  },
+  {
+    "objectID": "invitations/2016-workshop-causation-and-responsibility-law-economics-philosop.html",
+    "href": "invitations/2016-workshop-causation-and-responsibility-law-economics-philosop.html",
+    "title": "Workshop Causation and Responsibility: Law, Economics, Philosophy",
+    "section": "",
+    "text": "Workshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016)."
   },
   {
     "objectID": "publications/2015-autonomous-coalitions.html",
@@ -383,5 +789,110 @@
     "title": "De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs",
     "section": "",
     "text": "Revue d’économie politique (published)."
+  },
+  {
+    "objectID": "talks/2024-pet-2024.html",
+    "href": "talks/2024-pet-2024.html",
+    "title": "PET 2024",
+    "section": "",
+    "text": "PET 2024 (Lyon, France, 2024).\nLink: https://www.petmeetings.org/"
+  },
+  {
+    "objectID": "talks/2012-sing-8.html",
+    "href": "talks/2012-sing-8.html",
+    "title": "SING 8",
+    "section": "",
+    "text": "SING 8 (Budapest, Hungary, 2012).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2013-saet-13.html",
+    "href": "talks/2013-saet-13.html",
+    "title": "SAET 13",
+    "section": "",
+    "text": "SAET 13 (Paris, France, 2013).\nLink: https://www.saet.uiuc.edu/"
+  },
+  {
+    "objectID": "talks/2017-pet.html",
+    "href": "talks/2017-pet.html",
+    "title": "PET",
+    "section": "",
+    "text": "PET (Paris, France, 2017).\nLink: https://www.petmeetings.org/"
+  },
+  {
+    "objectID": "talks/2024-sscw-17.html",
+    "href": "talks/2024-sscw-17.html",
+    "title": "SSCW 17",
+    "section": "",
+    "text": "SSCW 17 (Paris, France, 2024).\nLink: https://www.scw-conferences.org/"
+  },
+  {
+    "objectID": "talks/2022-euro-or-2022.html",
+    "href": "talks/2022-euro-or-2022.html",
+    "title": "EURO OR 2022",
+    "section": "",
+    "text": "EURO OR 2022 (Espoo, Finland, 2022).\nLink: https://www.euro-online.org/conf/"
+  },
+  {
+    "objectID": "talks/2025-saet-24.html",
+    "href": "talks/2025-saet-24.html",
+    "title": "SAET 24",
+    "section": "",
+    "text": "SAET 24 (Ischia, Italy, 2025).\nLink: https://www.saet.uiuc.edu/"
+  },
+  {
+    "objectID": "talks/2016-sing-12.html",
+    "href": "talks/2016-sing-12.html",
+    "title": "SING 12",
+    "section": "",
+    "text": "SING 12 (Odense, Denmark, 2016).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2023-sing-18.html",
+    "href": "talks/2023-sing-18.html",
+    "title": "SING 18",
+    "section": "",
+    "text": "SING 18 (Messina, Italy, 2023).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2016-euro-2016-ecor-28.html",
+    "href": "talks/2016-euro-2016-ecor-28.html",
+    "title": "EURO 2016 – ECOR 28",
+    "section": "",
+    "text": "EURO 2016 – ECOR 28 (Poznan, Poland, 2016).\nLink: https://www.euro-online.org/conf/"
+  },
+  {
+    "objectID": "talks/2024-saet-23.html",
+    "href": "talks/2024-saet-23.html",
+    "title": "SAET 23",
+    "section": "",
+    "text": "SAET 23 (Santiago, Chile, 2024).\nLink: https://www.saet.uiuc.edu/"
+  },
+  {
+    "objectID": "talks/2025-asset.html",
+    "href": "talks/2025-asset.html",
+    "title": "ASSET",
+    "section": "",
+    "text": "ASSET (Rabat, Morocco, 2025).\nLink: https://www.asset.org.es/"
+  },
+  {
+    "objectID": "talks/2015-sing-11.html",
+    "href": "talks/2015-sing-11.html",
+    "title": "SING 11",
+    "section": "",
+    "text": "SING 11 (St-Petersburg, Russia, 2015).\nLink: https://www.singmeeting.org/"
+  },
+  {
+    "objectID": "talks/2019-cesc-2.html",
+    "href": "talks/2019-cesc-2.html",
+    "title": "CESC 2",
+    "section": "",
+    "text": "CESC 2 (Barcelona, Spain, 2019).\nLink: https://www.ieb.ub.edu/en/research/collective-decisions-and-social-choice-cesc/"
+  },
+  {
+    "objectID": "talks/2017-saet-17.html",
+    "href": "talks/2017-saet-17.html",
+    "title": "SAET 17",
+    "section": "",
+    "text": "SAET 17 (Faro, Portugal, 2017).\nLink: https://www.saet.uiuc.edu/"
   }
 ]
