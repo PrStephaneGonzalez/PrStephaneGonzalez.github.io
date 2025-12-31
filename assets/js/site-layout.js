@@ -58,7 +58,8 @@
         sources: [
           'assets/img/portraits/p1.jpg',
           'assets/img/portraits/p2.jpg',
-          'assets/img/portraits/p3.jpg'
+          'assets/img/portraits/p3.jpg',
+          'assets/img/portraits/p4.jpg'
         ]
       });
     }
