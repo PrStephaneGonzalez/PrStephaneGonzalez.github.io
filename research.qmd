@@ -3,54 +3,127 @@ title: "Research"
 execute:
   enabled: false
 
-listing:
-  - id: publications
-    contents: publications
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
-    fields: [title, author, date, categories]
-
-  - id: working-papers
-    contents: working-papers
-    sort: "date desc"
-    type: default
-    categories: true
-    filter-ui: [search, category]
-    fields: [title, author, date, categories]
-
-  - id: talks
-    contents: talks
-    sort: "date desc"
-    type: default
-    fields: [title, date, description]
-    filter-ui: false
-
-  - id: invitations
-    contents: invitations
-    sort: "date desc"
-    type: default
-    fields: [title, date, description]
-    filter-ui: false
----
+## Research topics
+- Economic Theory
+- Game Theory
+- Social Choice
+- Coalition Formation
 
 ## Publications
 
-::: {#publications}
-:::
+1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare* (forthcoming).
+
+2. **[Axiomatization and Implementation via objections structure](https://doi.org/10.1007/s11238-025-10051-1)**, Aymeric Lardon, Stéphane Gonzalez, *Theory and Decision*, September 2025, Volume 99, 393–405.
+
+3. **[A Story of Consistency: Bridging the gap between Bentham and Rawls foundations](https://doi.org/10.1007/s11229-024-04612-0)**, Stéphane Gonzalez, Nikolaos Pnevmatikos, *Synthese*, June 2024, Volume 203, article number 208.
+
+4. **[Axiomatic characterizations of the core without consistency](https://doi.org/10.1007/s00182-022-00835-y)**, Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter, *International Journal of Game Theory*, September 2023, Volume 53(3), 687–701.
+
+5. **[Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective](https://doi.org/10.1016/j.mathsocsci.2022.05.003)**, Stéphane Gonzalez, Fatma Zahra Rostom, *Mathematical Social Sciences*, September 2022, Volume 119, 1–10.
+
+6. **[Axiomatic foundations of the core for games in effectiveness form](https://doi.org/10.1016/j.mathsocsci.2021.09.001)**, Stéphane Gonzalez, Aymeric Lardon, *Mathematical Social Sciences*, November 2021, Volume 114, 28–38.
+
+7. **[Approval voting without ballot restrictions](https://doi.org/10.3982/TE4087)**, Federica Ceron, Stéphane Gonzalez, *Theoretical Economics*, July 2021, Volume 16, Issue 3, 759–775.
+
+8. **[INFLUENCE: A partizan scoring game on graphs](https://doi.org/10.1016/j.tcs.2021.05.028)**, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, *Theoretical Computer Science*, July 2021, Volumes 878–879, 26–46.
+
+9. **[Dilemma with approval and disapproval votes](https://doi.org/10.1007/s00355-019-01194-6)**, Stéphane Gonzalez, Annick Laruelle, Philippe Solal, *Social Choice and Welfare*, August 2019, Volume 53, Issue 3, 497–517.
+
+10. **[The social cost problem, rights and the (non)empty core](https://doi.org/10.1111/jpet.12334)**, Stéphane Gonzalez, Alain Marciano, Philippe Solal, *Journal of Public Economic Theory*, April 2019, Volume 21, Issue 2, 347–365.
+
+11. **[Optimal deterrence of cooperation](https://doi.org/10.1007/s00182-017-0584-8)**, Stéphane Gonzalez, Aymeric Lardon, *International Journal of Game Theory*, March 2018, Volume 47, Issue 1, 207–227.
+
+12. **[De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs](https://www.cairn.info/revue-d-economie-politique-2017-4-page-579.htm)**, Stéphane Gonzalez, Alain Marciano, *Revue d'économie politique*, September 2017, Volume 127, Issue 4, 579–600.
+
+13. **[Multicoalitional solutions](https://doi.org/10.1016/j.jmateco.2016.02.006)**, Stéphane Gonzalez, Michel Grabisch, *Journal of Mathematical Economics*, May 2016, Volume 64, 1–10.
+
+14. **[Autonomous coalitions](https://doi.org/10.1007/s10479-015-1951-0)**, Stéphane Gonzalez, Michel Grabisch, *Annals of Operations Research*, December 2015, Volume 235, Issue 1, 301–317.
+
+15. **[Preserving coalitional rationality for non-balanced games](https://doi.org/10.1007/s00182-014-0451-9)**, Stéphane Gonzalez, Michel Grabisch, *International Journal of Game Theory*, August 2015, Volume 44, Issue 3, 733–760.
 
 ## Working papers
 
-::: {#working-papers}
-:::
+1. **[An Axiomatic Characterization of the Knapsack Budget Allocation Rule](https://drive.google.com/file/d/1ohZOChhUraWmsfbry4vOygneIh3gKfo3/view)**, Federica Ceron, Stéphane Gonzalez, Adriana Navarro Ramos.
 
-## Peer-reviewed international conference presentations
+2. **[Approval voting versus proportional threshold methods: so far and yet so near](https://shs.hal.science/halshs-03858356)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
 
-::: {#talks}
-:::
+3. **Filters in abstract aggregation with infinite sequences of signals**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
+
+## List of peer-reviewed international conference presentations
+
+1. ASSET (Rabat, Morocco, 2025)
+2. SAET 24 (Ischia, Italy, 2025)
+3. SING 20 (Maastricht, Netherlands, 2025)
+4. SING 19 (Besançon, France, 2024)
+5. SSCW 17 (Paris, France, 2024)
+6. PET 2024 (Lyon, France, 2024)
+7. SAET 23 (Santiago, Chile, 2024)
+8. SAET 22 (Paris, France, 2023)
+9. SING 18 (Messina, Italy, 2023)
+10. EURO OR 2022 (Espoo, Finland, 2022)
+11. EURO OR 2021 (Athens, virtual, Greece, 2021)
+12. PET (Strasbourg, France, 2019)
+13. SAET 19 (Ischia, Italy, 2019)
+14. CESC 2 (Barcelona, Spain, 2019)
+15. SING 14 (Bayreuth, Germany, 2018)
+16. EURO 2018 – ECOR 29 (Valencia, Spain, 2018)
+17. Paris Symposium on Games 2018 (Paris, France, 2018)
+18. PET (Paris, France, 2017)
+19. SAET 17 (Faro, Portugal, 2017)
+20. Journées LAGV (Aix-en-Provence, France, 2017)
+21. CESC (Barcelona, Spain, 2017)
+22. SING 12 (Odense, Denmark, 2016)
+23. EURO 2016 – ECOR 28 (Poznan, Poland, 2016)
+24. SSCW 13 (Lund, Sweden, 2016)
+25. SING 11 (St-Petersburg, Russia, 2015)
+26. SING 10 (Krakow, Poland, 2014)
+27. SAET 13 (Paris, France, 2013)
+28. SING 9 (Vigo, Spain, 2013)
+29. SING 8 (Budapest, Hungary, 2012)
+30. SING 7 (Paris, France, 2011)
 
 ## Invitations to participate in workshops, seminars, and conferences
 
-::: {#invitations}
-:::
+1. OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)
+2. Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)
+3. Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025)
+4. OSGAD 17 (Paris, France, 2024)
+5. GT Économie Comportementale (Université Paris Nanterre, France, 2024)
+6. Participatory Budgeting Workshop (Paris School of Economics, France, 2024)
+7. Amsterdam/Saint-Etienne Workshop on Social Choice (Saint-Etienne, France, 2024)
+8. Séminaire du CREM (Caen, France, 2024)
+9. 2nd UB Workshop on Game Theory (Barcelona, Spain, 2023)
+10. Online Social Choice and Welfare Seminar (Online, 2023)
+11. XXXI European Workshop on Economic Theory – EWET (Naples, Italy, 2023)
+12. CO2ERASE (University Paris Dauphine, France, 2023)
+13. Workshop on Collective Decisions: Current Trends (Granada, Spain, 2023)
+14. Seminar of Economics and Management (University of Paderborn, Germany, 2023)
+15. Economic theory seminar (CES, Paris, France, 2023)
+16. Interaction seminar (AMSE, Marseille, France, 2022)
+17. Workshop GDR-Jeux cooperative models in games and social choice (CRESE, Besançon, France, 2022)
+18. Game theory seminar (University of Barcelona, Spain, 2022)
+19. MDOD Seminar (Paris 1, France, 2021)
+20. Séminaire du CRESE (Besançon, France, 2020)
+21. LEM Seminar (Lille, France, 2020)
+22. LED Seminar (Paris 8, France, 2019)
+23. MRE Seminar (Montpellier, France, 2019)
+24. Paris Symposium on Games 2018 (Paris, France, 2018)
+25. Symposium "Mathematics and Politics: Democratic Decision Making" (Hannover, Germany, 2018)
+26. The Game Theory seminars of the University of the Basque Country (Bilbao, Spain, 2018)
+27. CES Economic Theory Seminar of Paris 1 (Paris, France, 2018)
+28. Séminaire du BETA (Nancy, France, 2018)
+29. OSGAD 11 (Paris, France, 2017)
+30. Axiomatizations in Game Theory (Pécs, Hungary, 2017)
+31. Workshop MARS (Saint-Etienne, France, 2017)
+32. Workshop Causation and Responsibility: Law, Economics, Philosophy (Nancy, France, 2016)
+33. Séminaire du GATE-LSE (Lyon, France, 2016)
+34. ADRES (Paris, France, 2015)
+35. CEREC Workshop in Economics (Brussels, Belgium, 2014)
+36. QED (Vienna, Austria, 2013)
+37. MINT 4 (Amsterdam, Netherlands, 2013)
+38. Séminaire du laboratoire EQUIPPE (Lille, France, 2013)
+39. Parisian Game Theory PhD Seminar IHP (Paris, France, 2013)
+40. PSE Seminar in Economic Theory (Paris, France, 2013)
+41. OWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)
+42. EBIM Networks Workshop (Bielefeld, Germany, 2012)
+43. OSGAD 5 (Paris, France, 2011)
