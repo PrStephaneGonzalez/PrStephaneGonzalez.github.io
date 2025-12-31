@@ -49,36 +49,66 @@ title: "Research"
 
 ## List of peer-reviewed international conference presentations
 
-1. ASSET (Rabat, Morocco, 2025)
-2. SAET 24 (Ischia, Italy, 2025)
-3. SING 20 (Maastricht, Netherlands, 2025)
-4. SING 19 (Besançon, France, 2024)
-5. SSCW 17 (Paris, France, 2024)
-6. PET 2024 (Lyon, France, 2024)
-7. SAET 23 (Santiago, Chile, 2024)
-8. SAET 22 (Paris, France, 2023)
-9. SING 18 (Messina, Italy, 2023)
-10. EURO OR 2022 (Espoo, Finland, 2022)
-11. EURO OR 2021 (Athens, virtual, Greece, 2021)
-12. PET (Strasbourg, France, 2019)
-13. SAET 19 (Ischia, Italy, 2019)
-14. CESC 2 (Barcelona, Spain, 2019)
-15. SING 14 (Bayreuth, Germany, 2018)
-16. EURO 2018 – ECOR 29 (Valencia, Spain, 2018)
-17. Paris Symposium on Games 2018 (Paris, France, 2018)
-18. PET (Paris, France, 2017)
-19. SAET 17 (Faro, Portugal, 2017)
-20. Journées LAGV (Aix-en-Provence, France, 2017)
-21. CESC (Barcelona, Spain, 2017)
-22. SING 12 (Odense, Denmark, 2016)
-23. EURO 2016 – ECOR 28 (Poznan, Poland, 2016)
-24. SSCW 13 (Lund, Sweden, 2016)
-25. SING 11 (St-Petersburg, Russia, 2015)
-26. SING 10 (Krakow, Poland, 2014)
-27. SAET 13 (Paris, France, 2013)
-28. SING 9 (Vigo, Spain, 2013)
-29. SING 8 (Budapest, Hungary, 2012)
-30. SING 7 (Paris, France, 2011)
+1. **[ASSET](https://asset2025.sciencesconf.org/)** (Rabat, Morocco, 2025)
+
+2. **[SAET 24](https://www.mathematical-economics-naples.eu/)** (Ischia, Italy, 2025)
+
+3. **[SING 20](https://sites.google.com/view/sing20/home)** (Maastricht, Netherlands, 2025)
+
+4. **[SING 19](https://univfcomte.wixsite.com/sing19)** (Besançon, France, 2024)
+
+5. **[SSCW 17](https://centredeconomiesorbonne.cnrs.fr/en/sscw-2024-17th-meeting-of-the-society-for-social-choice-and-welfare-2/)** (Paris, France, 2024)
+
+6. **[PET 2024](https://pet2024.sciencesconf.org/)** (Lyon, France, 2024)
+
+7. **[SAET 23](https://saetconference.org/2024/)** (Santiago, Chile, 2024)
+
+8. **[SAET 22](https://saetconference.org/2023/)** (Paris, France, 2023)
+
+9. **[SING 18](https://www.bisazzagangi.it/sing18/registration.php)** (Messina, Italy, 2023)
+
+10. **[EURO OR 2022](https://euro2022.euro-online.org/)** (Espoo, Finland, 2022)
+
+11. **[EURO OR 2021](https://euro2021.euro-online.org/)** (Athens, virtual, Greece, 2021)
+
+12. **[PET 2019](https://pet2019.sciencesconf.org/)** (Strasbourg, France, 2019)
+
+13. **[SAET 19](https://saetconference.org/2019/)** (Ischia, Italy, 2019)
+
+14. **[CESC 2](https://www.ub.edu/cesc2019/)** (Barcelona, Spain, 2019)
+
+15. **[SING 14](https://www.sing14.uni-bayreuth.de/)** (Bayreuth, Germany, 2018)
+
+16. **[EURO 2018 – ECOR 29](https://www.euro2018valencia.com/)** (Valencia, Spain, 2018)
+
+17. **Paris Symposium on Games 2018** (Paris, France, 2018)  
+
+18. **[PET 2017](https://pet2017.sciencesconf.org/)** (Paris, France, 2017)
+
+19. **[SAET 17](https://saetconference.org/2017/)** (Faro, Portugal, 2017)
+
+20. **Journées LAGV** (Aix-en-Provence, France, 2017)  
+
+21. **CESC** (Barcelona, Spain, 2017)  
+
+22. **[SING 12](https://www.sing12.dk/)** (Odense, Denmark, 2016)
+
+23. **[EURO 2016 – ECOR 28](http://euro2016.poznan.pl/)** (Poznan, Poland, 2016)
+
+24. **[SSCW 13](https://www.lusem.lu.se/sscw2016)** (Lund, Sweden, 2016)
+
+25. **SING 11** (St-Petersburg, Russia, 2015)  
+
+26. **SING 10** (Krakow, Poland, 2014)  
+
+27. **[SAET 13](https://saetconference.org/2013/)** (Paris, France, 2013)
+
+28. **[SING 9](https://sing9.webs.uvigo.es/)** (Vigo, Spain, 2013)
+
+29. **SING 8** (Budapest, Hungary, 2012)  
+
+30. **SING 7** (Paris, France, 2011)  
+
 
 ## Invitations to participate in workshops, seminars, and conferences
 
