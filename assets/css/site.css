@@ -17,10 +17,9 @@
   Mobile:
   - Keep a stacked layout.
 */
-
 :root {
   /* Page width on desktop */
-  --sg-page-max: 1600px;
+  --sg-page-max: 1900px;
   --sg-page-width: min(96vw, var(--sg-page-max));
 
   /* Portrait column */
@@ -29,7 +28,7 @@
   --sg-sticky-top: 110px;
 
   /* Typography on desktop (fixes the "zoomed-out" feel) */
-  --sg-desktop-font-size: clamp(16px, 0.55vw + 14px, 19px);
+  --sg-desktop-font-size: clamp(18px, 0.65vw + 14px, 23px);
 }
 
 /* Wrapper injected into main.content by assets/js/site-layout.js */
