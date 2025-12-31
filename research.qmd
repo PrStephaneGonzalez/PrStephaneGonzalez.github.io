@@ -1,7 +1,5 @@
 ---
-title: 'Research'
-execute:
-  enabled: false
+title: "Research"
 
 ## Research topics
 - Economic Theory
