@@ -2,16 +2,14 @@
 title: "Teaching"
 ---
 
-Below are teaching materials and course pages. Most full lecture notes and PDFs are currently hosted on the original Google Sites page; this website mirrors the same structure and provides direct access.
+Below are course pages and teaching materials (syllabi, notes, slides, etc.).  
+Additional material will be added progressively.
 
 ## Courses
 
-- [Cours Prérequis](cours-prerequis.qmd)
-- [Langage C](langage-c.qmd)
-- [Logic and Set Theory](logic-and-set-theory.qmd)
-- [Macroeconomics](macroeconomics.qmd)
-- [Politiques économiques](politiques-economiques.qmd)
-- [Théorie de la mesure](theorie-de-la-mesure.qmd)
-- [Macroéconomie et Croissance](macroeconomie-et-croissance.qmd)
+- [Graph Theory and Applications (M1 EDDS)](graph-theory-and-applications.qmd)
+- [Economic Design (M1 EDDS)](economic-design.qmd)
+- [Coalitions in Cooperative and Non-Cooperative Game Theory](coalitions.qmd)
+- [Microéconomie – marchés imparfaits et interactions stratégiques](micro-imparfaits-interactions.qmd)
+- [Macroéconomie VI – théories de la croissance](macro-theories-croissance.qmd)
 - [Introduction to Political Engineering](introduction-to-political-engineering.qmd)
-- [Coalitions in cooperative and non-cooperative game theory](coalitions.qmd)
