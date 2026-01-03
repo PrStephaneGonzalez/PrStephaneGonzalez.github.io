@@ -1,7 +1,11 @@
 ---
-title: "Introduction to Political Engineering"
+title: "Applied Economic Theory / Introduction to Political Engineering"
 ---
 
-Course page and materials:
+## Course description
 
-https://sites.google.com/site/gonzalezstephaneuniv/introduction-to-political-engineering
+This page will contain the syllabus and teaching material for the course.
+
+## Course material
+
+Content will be added progressively.

@@ -1,0 +1,11 @@
+---
+title: "Graph Theory and Applications"
+---
+
+## Syllabus
+
+- [Download the syllabus (PDF)](https://se2.univ-st-etienne.fr/_attachment/master-political-engineering-article/M1_EDDS_Syllabus_GraphTheoryAndApplications.pdf?download=true)
+
+## Course material
+
+Lecture notes, exercises, and additional material will be added here.

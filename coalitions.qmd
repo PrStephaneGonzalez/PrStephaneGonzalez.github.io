@@ -1,7 +1,11 @@
 ---
-title: "Coalitions in cooperative and non-cooperative game theory"
+title: "Coalitions in Cooperative and Non-Cooperative Game Theory"
 ---
 
-Course page and materials:
+## Syllabus
 
-- https://sites.google.com/site/gonzalezstephaneuniv/coalitions-in-cooperative-and-non-cooperative-game-theory
+- [Download the syllabus (PDF)](https://se2.univ-st-etienne.fr/_attachment/master-political-engineering-article/Coalitions%20in%20cooperative%20and%20non-cooperative%20game%20theory.pdf?download=true)
+
+## Course material
+
+Slides, bibliographic references, and additional notes will be added here.
