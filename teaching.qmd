@@ -2,14 +2,15 @@
 title: "Teaching"
 ---
 
-Below are course pages and teaching materials (syllabi, notes, slides, etc.).  
+This page gathers course descriptions and teaching materials  
+(syllabi, notes, slides, references).  
 Additional material will be added progressively.
 
 ## Courses
 
-- [Graph Theory and Applications (M1 EDDS)](graph-theory-and-applications.qmd)
-- [Economic Design (M1 EDDS)](economic-design.qmd)
+- [Graph Theory and Applications](graph-theory-and-applications.qmd)
+- [Design of economic and political methods: axiomatic theory](economic-design.qmd)
 - [Coalitions in Cooperative and Non-Cooperative Game Theory](coalitions.qmd)
-- [Microéconomie – marchés imparfaits et interactions stratégiques](micro-imparfaits-interactions.qmd)
-- [Macroéconomie VI – théories de la croissance](macro-theories-croissance.qmd)
-- [Introduction to Political Engineering](introduction-to-political-engineering.qmd)
+- [Microeconomics: Imperfect Markets and Strategic Interactions](micro-imperfect-markets.qmd)
+- [Macroeconomics VI: Growth Theories](macro-growth-theories.qmd)
+- [Applied economic theory/Introduction to Political Engineering](introduction-to-political-engineering.qmd)
