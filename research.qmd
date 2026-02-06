@@ -113,6 +113,7 @@ title: "Research"
 
 ## Invitations to participate in workshops, seminars, and conferences
 
+1. AGATE Seminar, Charles University (Prague, Czech Republic, 2026) 
 1. OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)
 1. Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)
 1. Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025)
