@@ -22,7 +22,7 @@ My research and teaching center on **theoretical economics**, especially **game 
 
 ## Publications
 
-1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare* (forthcoming).
+1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare*, May 2026, Volume 66, 619–645.
 
 1. **[Axiomatization and Implementation via objections structure](https://doi.org/10.1007/s11238-025-10051-1)**, Aymeric Lardon, Stéphane Gonzalez, *Theory and Decision*, September 2025, Volume 99, 393–405.
 
