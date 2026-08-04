@@ -9,6 +9,7 @@ title: "Research"
 - Coalition Formation
 
 ## Publications
+1. **[Filters in abstract aggregation with infinite sequences of signals](10.1016/j.mathsocsci.2026.102551)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Mathematical Social Sciences*, Juillet 2026.
 
 1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare*, May 2026, Volume 66, 619–645.
 
