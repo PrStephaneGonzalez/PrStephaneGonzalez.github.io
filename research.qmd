@@ -47,7 +47,6 @@ description: "Research, publications, working papers, conference presentations a
 1. **[Consistency in collective decision-making under uncertainty: an axiomatic approach](https://www.gate.cnrs.fr/RePEc/2026/2604.pdf)**, Stéphane Gonzalez, Le-Nhat-Linh Huynh.
 1. **[An Axiomatic Characterization of the Knapsack Budget Allocation Rule](https://drive.google.com/file/d/1ohZOChhUraWmsfbry4vOygneIh3gKfo3/view)**, Federica Ceron, Stéphane Gonzalez, Adriana Navarro Ramos.
 1. **[Approval voting versus proportional threshold methods: so far and yet so near](https://shs.hal.science/halshs-03858356)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
-1. **Filters in abstract aggregation with infinite sequences of signals**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
 
 ## List of peer-reviewed international conference presentations
 
