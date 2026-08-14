@@ -1,5 +1,6 @@
 ---
 title: "Teaching"
+description-meta: "Teaching and course materials by Stéphane Gonzalez in microeconomics, game theory, social choice and related topics in theoretical economics."
 ---
 
 This page gathers course descriptions and teaching materials  
