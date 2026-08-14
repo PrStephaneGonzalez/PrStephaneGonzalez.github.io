@@ -45,18 +45,18 @@ My research and teaching center on **theoretical economics**, especially **game 
 * **Coordinating Editor**: [*Theory and Decision*](https://www.springer.com/journal/11238).
 * **PhD supervision**: I have supervised two PhD students: [Kevin Techer](https://sites.google.com/view/kevintecher/home) and [David Lowing](https://sites.google.com/view/davidlowing/home).
 
-## Research topics
+## Research
 - Economic Theory
 - Game Theory
 - Social Choice
 - Axiomatic methods
 
+See my **[Research](research.qmd)** page for publications, working papers, conference presentations and invited seminars.
+
 ## Coauthors
 
 [Sylvain Béal](https://sites.google.com/site/bealpage/) · Raffaele Berzi · [Susumu Cato](https://sites.google.com/site/susumucato/) · [Federica Ceron](https://sites.google.com/view/federica-ceron/home) · [Eric Duchêne](https://perso.liris.cnrs.fr/eric.duchene/index_en.html) · [Michel Grabisch](https://sites.google.com/site/michelgrabisch/) · [Le-Nhat-Linh Huynh](https://sites.google.com/view/le-nhat-linh-huynh/home) · [Aymeric Lardon](https://sites.google.com/site/lardonpage/research) · [Annick Laruelle](https://www.ikerbasque.net/es/annick-laruelle) · [Alain Marciano](https://mre.edu.umontpellier.fr/lequipe-montpellier-recherche-en-economie/liste_membres/alain-marciano/) · [Adriana Navarro-Ramos](https://sites.google.com/view/adriananavarro-ramos/home) · [Aline Parreau](https://perso.liris.cnrs.fr/aline.parreau/) · [Nikolaos Pnevmatikos](https://sites.google.com/site/nikosspnevmatikos/home) · [Eric Rémila](https://perso.univ-st-etienne.fr/remila/) · [Fatma Zahra Rostom](https://www.researchgate.net/profile/Fatma-Rostom) · [Philippe Solal](https://sites.google.com/view/philippesolal) · [Peter Sudhölter](https://orcid.org/0000-0002-9928-6672) · [Vassili Vergopoulos](https://lemma.assas-universite.fr/fr/vassili-vergopoulos)
 
-## Research and teaching
+## Teaching
 
-For my complete list of publications, working papers, conference presentations and invited seminars, see **[Research](research.qmd)**.
-
-For courses and teaching materials, see **[Teaching](teaching.qmd)**.
+My teaching covers microeconomics, game theory, social choice and related topics in theoretical economics, from undergraduate to graduate level. See **[Teaching](teaching.qmd)** for courses and teaching materials.
