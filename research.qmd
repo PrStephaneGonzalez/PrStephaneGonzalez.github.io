@@ -1,5 +1,6 @@
 ---
 title: "Research"
+description: "Research, publications, working papers, conference presentations and invited seminars of Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and GATE Lyon Saint-Étienne."
 ---
 
 ## Research topics
@@ -9,112 +10,86 @@ title: "Research"
 - Coalition Formation
 
 ## Publications
-1. **[Filters in abstract aggregation with infinite sequences of signals](10.1016/j.mathsocsci.2026.102551)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Mathematical Social Sciences*, Juillet 2026.
+1. **[Filters in abstract aggregation with infinite sequences of signals](https://doi.org/10.1016/j.mathsocsci.2026.102551)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Mathematical Social Sciences*, July 2026.
 
 1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare*, May 2026, Volume 66, 619–645.
 
-2. **[Axiomatization and Implementation via objections structure](https://doi.org/10.1007/s11238-025-10051-1)**, Aymeric Lardon, Stéphane Gonzalez, *Theory and Decision*, September 2025, Volume 99, 393–405.
+1. **[Axiomatization and Implementation via objections structure](https://doi.org/10.1007/s11238-025-10051-1)**, Aymeric Lardon, Stéphane Gonzalez, *Theory and Decision*, September 2025, Volume 99, 393–405.
 
-3. **[A Story of Consistency: Bridging the gap between Bentham and Rawls foundations](https://doi.org/10.1007/s11229-024-04612-0)**, Stéphane Gonzalez, Nikolaos Pnevmatikos, *Synthese*, June 2024, Volume 203, article number 208.
+1. **[A Story of Consistency: Bridging the gap between Bentham and Rawls foundations](https://doi.org/10.1007/s11229-024-04612-0)**, Stéphane Gonzalez, Nikolaos Pnevmatikos, *Synthese*, June 2024, Volume 203, article number 208.
 
-4. **[Axiomatic characterizations of the core without consistency](https://doi.org/10.1007/s00182-022-00835-y)**, Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter, *International Journal of Game Theory*, September 2023, Volume 53(3), 687–701.
+1. **[Axiomatic characterizations of the core without consistency](https://doi.org/10.1007/s00182-022-00835-y)**, Sylvain Béal, Stéphane Gonzalez, Philippe Solal, Peter Sudhölter, *International Journal of Game Theory*, September 2023, Volume 53(3), 687–701.
 
-5. **[Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective](https://doi.org/10.1016/j.mathsocsci.2022.05.003)**, Stéphane Gonzalez, Fatma Zahra Rostom, *Mathematical Social Sciences*, September 2022, Volume 119, 1–10.
+1. **[Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective](https://doi.org/10.1016/j.mathsocsci.2022.05.003)**, Stéphane Gonzalez, Fatma Zahra Rostom, *Mathematical Social Sciences*, September 2022, Volume 119, 1–10.
 
-6. **[Axiomatic foundations of the core for games in effectiveness form](https://doi.org/10.1016/j.mathsocsci.2021.09.001)**, Stéphane Gonzalez, Aymeric Lardon, *Mathematical Social Sciences*, November 2021, Volume 114, 28–38.
+1. **[Axiomatic foundations of the core for games in effectiveness form](https://doi.org/10.1016/j.mathsocsci.2021.09.001)**, Stéphane Gonzalez, Aymeric Lardon, *Mathematical Social Sciences*, November 2021, Volume 114, 28–38.
 
-7. **[Approval voting without ballot restrictions](https://doi.org/10.3982/TE4087)**, Federica Ceron, Stéphane Gonzalez, *Theoretical Economics*, July 2021, Volume 16, Issue 3, 759–775.
+1. **[Approval voting without ballot restrictions](https://doi.org/10.3982/TE4087)**, Federica Ceron, Stéphane Gonzalez, *Theoretical Economics*, July 2021, Volume 16, Issue 3, 759–775.
 
-8. **[INFLUENCE: A partizan scoring game on graphs](https://doi.org/10.1016/j.tcs.2021.05.028)**, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, *Theoretical Computer Science*, July 2021, Volumes 878–879, 26–46.
+1. **[INFLUENCE: A partizan scoring game on graphs](https://doi.org/10.1016/j.tcs.2021.05.028)**, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, *Theoretical Computer Science*, July 2021, Volumes 878–879, 26–46.
 
-9. **[Dilemma with approval and disapproval votes](https://doi.org/10.1007/s00355-019-01194-6)**, Stéphane Gonzalez, Annick Laruelle, Philippe Solal, *Social Choice and Welfare*, August 2019, Volume 53, Issue 3, 497–517.
+1. **[Dilemma with approval and disapproval votes](https://doi.org/10.1007/s00355-019-01194-6)**, Stéphane Gonzalez, Annick Laruelle, Philippe Solal, *Social Choice and Welfare*, August 2019, Volume 53, Issue 3, 497–517.
 
-10. **[The social cost problem, rights and the (non)empty core](https://doi.org/10.1111/jpet.12334)**, Stéphane Gonzalez, Alain Marciano, Philippe Solal, *Journal of Public Economic Theory*, April 2019, Volume 21, Issue 2, 347–365.
+1. **[The social cost problem, rights and the (non)empty core](https://doi.org/10.1111/jpet.12334)**, Stéphane Gonzalez, Alain Marciano, Philippe Solal, *Journal of Public Economic Theory*, April 2019, Volume 21, Issue 2, 347–365.
 
-11. **[Optimal deterrence of cooperation](https://doi.org/10.1007/s00182-017-0584-8)**, Stéphane Gonzalez, Aymeric Lardon, *International Journal of Game Theory*, March 2018, Volume 47, Issue 1, 207–227.
+1. **[Optimal deterrence of cooperation](https://doi.org/10.1007/s00182-017-0584-8)**, Stéphane Gonzalez, Aymeric Lardon, *International Journal of Game Theory*, March 2018, Volume 47, Issue 1, 207–227.
 
-12. **[De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs](https://www.cairn.info/revue-d-economie-politique-2017-4-page-579.htm)**, Stéphane Gonzalez, Alain Marciano, *Revue d'économie politique*, September 2017, Volume 127, Issue 4, 579–600.
+1. **[De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs](https://www.cairn.info/revue-d-economie-politique-2017-4-page-579.htm)**, Stéphane Gonzalez, Alain Marciano, *Revue d'économie politique*, September 2017, Volume 127, Issue 4, 579–600.
 
-13. **[Multicoalitional solutions](https://doi.org/10.1016/j.jmateco.2016.02.006)**, Stéphane Gonzalez, Michel Grabisch, *Journal of Mathematical Economics*, May 2016, Volume 64, 1–10.
+1. **[Multicoalitional solutions](https://doi.org/10.1016/j.jmateco.2016.02.006)**, Stéphane Gonzalez, Michel Grabisch, *Journal of Mathematical Economics*, May 2016, Volume 64, 1–10.
 
-14. **[Autonomous coalitions](https://doi.org/10.1007/s10479-015-1951-0)**, Stéphane Gonzalez, Michel Grabisch, *Annals of Operations Research*, December 2015, Volume 235, Issue 1, 301–317.
+1. **[Autonomous coalitions](https://doi.org/10.1007/s10479-015-1951-0)**, Stéphane Gonzalez, Michel Grabisch, *Annals of Operations Research*, December 2015, Volume 235, Issue 1, 301–317.
 
-15. **[Preserving coalitional rationality for non-balanced games](https://doi.org/10.1007/s00182-014-0451-9)**, Stéphane Gonzalez, Michel Grabisch, *International Journal of Game Theory*, August 2015, Volume 44, Issue 3, 733–760.
+1. **[Preserving coalitional rationality for non-balanced games](https://doi.org/10.1007/s00182-014-0451-9)**, Stéphane Gonzalez, Michel Grabisch, *International Journal of Game Theory*, August 2015, Volume 44, Issue 3, 733–760.
 
 ## Working papers
 
+1. **[Consistency in collective decision-making under uncertainty: an axiomatic approach](https://www.gate.cnrs.fr/RePEc/2026/2604.pdf)**, Stéphane Gonzalez, Le-Nhat-Linh Huynh.
 1. **[An Axiomatic Characterization of the Knapsack Budget Allocation Rule](https://drive.google.com/file/d/1ohZOChhUraWmsfbry4vOygneIh3gKfo3/view)**, Federica Ceron, Stéphane Gonzalez, Adriana Navarro Ramos.
-
-2. **[Approval voting versus proportional threshold methods: so far and yet so near](https://shs.hal.science/halshs-03858356)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
-
-3. **Filters in abstract aggregation with infinite sequences of signals**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
+1. **[Approval voting versus proportional threshold methods: so far and yet so near](https://shs.hal.science/halshs-03858356)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
+1. **Filters in abstract aggregation with infinite sequences of signals**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal.
 
 ## List of peer-reviewed international conference presentations
 
-1. **[ASSET](https://asset2025.sciencesconf.org/)** (Rabat, Morocco, 2025)
-
-2. **[SAET 24](https://www.mathematical-economics-naples.eu/)** (Ischia, Italy, 2025)
-
-3. **[SING 20](https://sites.google.com/view/sing20/home)** (Maastricht, Netherlands, 2025)
-
-4. **[SING 19](https://univfcomte.wixsite.com/sing19)** (Besançon, France, 2024)
-
-5. **[SSCW 17](https://centredeconomiesorbonne.cnrs.fr/en/sscw-2024-17th-meeting-of-the-society-for-social-choice-and-welfare-2/)** (Paris, France, 2024)
-
-6. **[PET 2024](https://pet2024.sciencesconf.org/)** (Lyon, France, 2024)
-
-7. **[SAET 23](https://saetconference.org/2024/)** (Santiago, Chile, 2024)
-
-8. **[SAET 22](https://saetconference.org/2023/)** (Paris, France, 2023)
-
-9. **[SING 18](https://www.bisazzagangi.it/sing18/registration.php)** (Messina, Italy, 2023)
-
-10. **[EURO OR 2022](https://euro2022.euro-online.org/)** (Espoo, Finland, 2022)
-
-11. **[EURO OR 2021](https://euro2021.euro-online.org/)** (Athens, virtual, Greece, 2021)
-
-12. **[PET 2019](https://pet2019.sciencesconf.org/)** (Strasbourg, France, 2019)
-
-13. **[SAET 19](https://saetconference.org/2019/)** (Ischia, Italy, 2019)
-
-14. **[CESC 2](https://www.ub.edu/cesc2019/)** (Barcelona, Spain, 2019)
-
-15. **[SING 14](https://www.sing14.uni-bayreuth.de/)** (Bayreuth, Germany, 2018)
-
-16. **[EURO 2018 – ECOR 29](https://www.euro2018valencia.com/)** (Valencia, Spain, 2018)
-
-17. **Paris Symposium on Games 2018** (Paris, France, 2018)  
-
-18. **[PET 2017](https://pet2017.sciencesconf.org/)** (Paris, France, 2017)
-
-19. **[SAET 17](https://saetconference.org/2017/)** (Faro, Portugal, 2017)
-
-20. **Journées LAGV** (Aix-en-Provence, France, 2017)  
-
-21. **CESC** (Barcelona, Spain, 2017)  
-
-22. **[SING 12](https://www.sing12.dk/)** (Odense, Denmark, 2016)
-
-23. **[EURO 2016 – ECOR 28](http://euro2016.poznan.pl/)** (Poznan, Poland, 2016)
-
-24. **[SSCW 13](https://www.lusem.lu.se/sscw2016)** (Lund, Sweden, 2016)
-
-25. **SING 11** (St-Petersburg, Russia, 2015)  
-
-26. **SING 10** (Krakow, Poland, 2014)  
-
-27. **[SAET 13](https://saetconference.org/2013/)** (Paris, France, 2013)
-
-28. **[SING 9](https://sing9.webs.uvigo.es/)** (Vigo, Spain, 2013)
-
-29. **SING 8** (Budapest, Hungary, 2012)  
-
-30. **SING 7** (Paris, France, 2011)  
-
+1. SING 21 (Naples, Italy, 2026)
+1. SSCW 18 (Tokyo, Japan, 2026)
+1. ASSET (Rabat, Morocco, 2025)
+1. SAET 24 (Ischia, Italy, 2025)
+1. SING 20 (Maastricht, Netherlands, 2025)
+1. SING 19 (Besançon, France, 2024)
+1. SSCW 17 (Paris, France, 2024)
+1. PET 2024 (Lyon, France, 2024)
+1. SAET 23 (Santiago, Chile, 2024)
+1. SAET 22 (Paris, France, 2023)
+1. SING 18 (Messina, Italy, 2023)
+1. EURO OR 2022 (Espoo, Finland, 2022)
+1. EURO OR 2021 (Athens, virtual, Greece, 2021)
+1. PET (Strasbourg, France, 2019)
+1. SAET 19 (Ischia, Italy, 2019)
+1. CESC 2 (Barcelona, Spain, 2019)
+1. SING 14 (Bayreuth, Germany, 2018)
+1. EURO 2018 – ECOR 29 (Valencia, Spain, 2018)
+1. Paris Symposium on Games 2018 (Paris, France, 2018)
+1. PET (Paris, France, 2017)
+1. SAET 17 (Faro, Portugal, 2017)
+1. Journées LAGV (Aix-en-Provence, France, 2017)
+1. CESC (Barcelona, Spain, 2017)
+1. SING 12 (Odense, Denmark, 2016)
+1. EURO 2016 – ECOR 28 (Poznan, Poland, 2016)
+1. SSCW 13 (Lund, Sweden, 2016)
+1. SING 11 (St-Petersburg, Russia, 2015)
+1. SING 10 (Krakow, Poland, 2014)
+1. SAET 13 (Paris, France, 2013)
+1. SING 9 (Vigo, Spain, 2013)
+1. SING 8 (Budapest, Hungary, 2012)
+1. SING 7 (Paris, France, 2011)
 
 ## Invitations to participate in workshops, seminars, and conferences
 
-1. AGATE Seminar, Charles University (Prague, Czech Republic, 2026) 
+1. GRC Game Theory Workshop, Waseda University, (Tokyo, Japan, 2026)
+1. Economics and Game Theory Seminar (経済学・ゲーム理論セミナー), Tokyo University of Science, (Tokyo, Japan, 2026)
+1. Game Theory, Social Choice, and Mechanism Design, INSEA (Rabat, Morocco, 2026)
+1. AGATE Seminar, Charles University (Prague, Czech Republic, 2026)
 1. OSGAD 18, in honor of Michel Grabisch (Paris, France, 2025)
 1. Game Theory Workshop in Honour of Peter Sudhölter (Universitat Roviri i Virgili, Spain, 2025)
 1. Economics Seminar of Bielefeld University (Bielefeld, Germany, 2025)
