@@ -6,8 +6,8 @@
 
   Goal (desktop):
   - Keep the portrait column narrow and sticky.
-  - Make the page feel less "zoomed-out" by slightly increasing base font size
-    and widening the *outer* Quarto container (without breaking Quarto's grid).
+  - Align the portrait visually with the site name in the navbar.
+  - Keep the main text column in its current comfortable reading position.
 
   Important:
   - Do NOT force main.content to a fixed width.
@@ -27,7 +27,7 @@
   --sg-gap: 2rem;
   --sg-sticky-top: 110px;
 
-  /* Typography on desktop (fixes the "zoomed-out" feel) */
+  /* Typography on desktop */
   --sg-desktop-font-size: clamp(18px, 0.65vw + 14px, 23px);
 }
 
@@ -72,12 +72,30 @@
    Desktop / large screens
    ========================= */
 @media (min-width: 992px) {
+  :root {
+    /* Moves the portrait toward the navbar brand while leaving text in place. */
+    --sg-portrait-shift: clamp(150px, 15vw, 280px);
+  }
+
   html {
     font-size: var(--sg-desktop-font-size);
   }
 
   body {
     line-height: 1.55;
+  }
+
+  /*
+    Pull the whole flex wrapper left, then compensate only the text column.
+    Result: the portrait aligns near the navbar brand; the text does not move.
+  */
+  .sg-page {
+    margin-left: calc(-1 * var(--sg-portrait-shift));
+    width: calc(100% + var(--sg-portrait-shift));
+  }
+
+  .sg-content {
+    margin-left: var(--sg-portrait-shift);
   }
 
   /*
@@ -102,12 +120,6 @@
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
-
-  /*
-    IMPORTANT:
-    Do not neutralize `.content` max-width: it participates in Quarto layouts.
-    Doing so can cause sidebars (listing categories) to overlap main content.
-  */
 
   /* Optional: ensure the listing sidebar stays visually clean */
   .quarto-listing-category {
