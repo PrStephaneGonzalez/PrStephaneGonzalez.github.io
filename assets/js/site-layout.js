@@ -13,8 +13,8 @@
 
     const img = document.createElement('img');
     img.id = 'portrait-rotator';
-    img.alt = 'Portrait';
-    img.src = 'assets/img/portraits/p1.jpg';
+    img.alt = 'Stéphane Gonzalez';
+    img.src = 'assets/img/portraits/209D54D3-AFFB-4023-8875-728CEC6D7189.jpeg';
     img.loading = 'lazy';
 
     wrapper.appendChild(img);
@@ -56,10 +56,10 @@
       window.SGPortraitRotatorInit(img, {
         intervalMs: 12000,
         sources: [
-          'assets/img/portraits/p1.jpg',
-          'assets/img/portraits/p2.jpg',
-          'assets/img/portraits/p3.jpg',
-          'assets/img/portraits/p4.jpg'
+          'assets/img/portraits/209D54D3-AFFB-4023-8875-728CEC6D7189.jpeg',
+          'assets/img/portraits/EDEDFA1C-C21A-435D-972B-110D600B11C5.png',
+          'assets/img/portraits/14977DB0-67AA-4C30-BA63-32BFD4B70E5B.jpeg',
+          'assets/img/portraits/E48E58D7-24FA-4228-9F3E-6A9B0705C687.jpeg'
         ]
       });
     }
