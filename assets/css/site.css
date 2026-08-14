@@ -23,7 +23,7 @@
   --sg-page-width: min(96vw, var(--sg-page-max));
 
   /* Portrait column */
-  --sg-side-width: 180px;
+  --sg-side-width: 250px;
   --sg-gap: 2rem;
   --sg-sticky-top: 110px;
 
