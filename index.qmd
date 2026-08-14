@@ -1,6 +1,6 @@
 ---
-title: "Stéphane Gonzalez — Professor of Economics"
-description: "Stéphane Gonzalez is Professor of Economics at Université Jean Monnet, Deputy Director of GATE Lyon Saint-Étienne, and a researcher in game theory, social choice and axiomatic economics."
+pagetitle: "Stéphane Gonzalez — Professor of Economics"
+description-meta: "Stéphane Gonzalez is Professor of Economics at Université Jean Monnet, Deputy Director of GATE Lyon Saint-Étienne, and a researcher in game theory, social choice and axiomatic economics."
 format:
   html:
     include-in-header:
