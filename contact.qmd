@@ -1,5 +1,6 @@
 ---
 title: "Contact"
+description-meta: "Contact information for Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and GATE Lyon Saint-Étienne."
 ---
 
 GATE Lyon Saint-Étienne (UMR 5824)
