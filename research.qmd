@@ -1,6 +1,6 @@
 ---
 title: "Research"
-description: "Research, publications, working papers, conference presentations and invited seminars of Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and GATE Lyon Saint-Étienne."
+description-meta: "Research, publications, working papers, conference presentations and invited seminars of Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and GATE Lyon Saint-Étienne."
 ---
 
 ## Research topics
