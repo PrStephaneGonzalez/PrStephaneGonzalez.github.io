@@ -1,5 +1,6 @@
 ---
-title: "Stéphane Gonzalez"
+title: "Stéphane Gonzalez — Professor of Economics"
+description: "Stéphane Gonzalez is Professor of Economics at Université Jean Monnet, Deputy Director of GATE Lyon Saint-Étienne, and a researcher in game theory, social choice and axiomatic economics."
 ---
 
 ## Biography
@@ -7,7 +8,6 @@ I am a Full Professor at the [Groupe d'analyse et de théorie économique (GATE 
 I founded the [Master's program in Political Engineering](https://www.univ-st-etienne.fr/fr/formation/d-u-1/d-u-1/du-introduction-to-political-engineering-KVQTJNB1.html), which later evolved into the [Master's program in Economics and Data for Decision Science (EDDS)](https://se2.univ-st-etienne.fr/fr/etudier-a-se2/les-masters/economics-data-and-decision-science/master-economics-data-and-decision-science.html). I also lead and founded the [Microcertification Artificial Intelligence: Challenges, Opportunities & Practical Cases](https://se2.univ-st-etienne.fr/fr/etudier-a-se2/formation-continue/formation-certifiante-intelligence-artificielle.html).
 My academic background spans both mathematics and economics, with a Master's in **Pure Mathematics** from [Université Paris-Saclay](https://www.universite-paris-saclay.fr/) and another in **Theoretical Economics** from [Université Paris 1 Panthéon-Sorbonne](https://www.pantheonsorbonne.fr/). I earned my PhD from Université Paris 1, affiliated with the [Centre d'Economie de la Sorbonne (CES)](https://ces.pantheonsorbonne.fr/) and the [Paris School of Economics (PSE)](https://www.parisschoolofeconomics.eu/), under the supervision of [Michel Grabisch](https://sites.google.com/site/michelgrabisch/).
 My research and teaching center on **theoretical economics**, especially **game theory** and **social choice theory**, with a strong emphasis on the **axiomatic method**.
----
 
 ## Professional roles and supervision
 * **Deputy Director of GATE Lyon Saint-Etienne** (since January 2025), in charge of the Saint-Étienne site.
@@ -22,7 +22,7 @@ My research and teaching center on **theoretical economics**, especially **game 
 
 ## Publications
 
-1. **[Filters in abstract aggregation with infinite sequences of signals](10.1016/j.mathsocsci.2026.102551)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Mathematical Social Sciences*, Juillet 2026.
+1. **[Filters in abstract aggregation with infinite sequences of signals](https://doi.org/10.1016/j.mathsocsci.2026.102551)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Mathematical Social Sciences*, July 2026.
 
 1. **[An axiomatic characterization of the proportional threshold methods: A geometric approach](https://doi.org/10.1007/s00355-025-01618-6)**, Susumu Cato, Stéphane Gonzalez, Eric Rémila, Philippe Solal, *Social Choice and Welfare*, May 2026, Volume 66, 619–645.
 
