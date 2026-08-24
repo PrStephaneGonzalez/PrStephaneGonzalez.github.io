@@ -20,9 +20,10 @@
 
     const img = document.createElement('img');
     img.id = 'portrait-rotator';
-    img.alt = 'Stéphane Gonzalez';
+    img.alt = 'Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne';
     img.src = portraits.sculpture;
-    img.loading = 'lazy';
+    img.loading = 'eager';
+    img.fetchPriority = 'high';
 
     wrapper.appendChild(img);
     aside.appendChild(wrapper);
