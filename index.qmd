@@ -5,30 +5,52 @@ format:
   html:
     include-in-header:
       text: |
+        <meta property="og:image" content="https://stephanegonzalez.eu/assets/img/portraits/p2.jpg">
+        <meta property="og:image:alt" content="Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne">
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Stéphane Gonzalez",
-          "url": "https://stephanegonzalez.eu/",
-          "jobTitle": "Professor of Economics",
-          "affiliation": [
+          "@graph": [
             {
-              "@type": "Organization",
-              "name": "Université Jean Monnet Saint-Étienne",
-              "url": "https://www.univ-st-etienne.fr/"
+              "@type": "Person",
+              "@id": "https://stephanegonzalez.eu/#person",
+              "name": "Stéphane Gonzalez",
+              "url": "https://stephanegonzalez.eu/",
+              "image": {
+                "@type": "ImageObject",
+                "@id": "https://stephanegonzalez.eu/#portrait",
+                "url": "https://stephanegonzalez.eu/assets/img/portraits/p2.jpg",
+                "contentUrl": "https://stephanegonzalez.eu/assets/img/portraits/p2.jpg",
+                "caption": "Stéphane Gonzalez, Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne"
+              },
+              "jobTitle": "Professor of Economics",
+              "affiliation": [
+                {
+                  "@type": "Organization",
+                  "name": "Université Jean Monnet Saint-Étienne",
+                  "url": "https://www.univ-st-etienne.fr/"
+                },
+                {
+                  "@type": "Organization",
+                  "name": "GATE Lyon Saint-Étienne",
+                  "url": "https://www.gate.cnrs.fr/"
+                }
+              ],
+              "knowsAbout": [
+                "Economic Theory",
+                "Game Theory",
+                "Social Choice Theory",
+                "Axiomatic Economics"
+              ]
             },
             {
-              "@type": "Organization",
-              "name": "GATE Lyon Saint-Étienne",
-              "url": "https://www.gate.cnrs.fr/"
+              "@type": "WebPage",
+              "@id": "https://stephanegonzalez.eu/#webpage",
+              "url": "https://stephanegonzalez.eu/",
+              "name": "Stéphane Gonzalez — Professor of Economics",
+              "mainEntity": { "@id": "https://stephanegonzalez.eu/#person" },
+              "primaryImageOfPage": { "@id": "https://stephanegonzalez.eu/#portrait" }
             }
-          ],
-          "knowsAbout": [
-            "Economic Theory",
-            "Game Theory",
-            "Social Choice Theory",
-            "Axiomatic Economics"
           ]
         }
         </script>
