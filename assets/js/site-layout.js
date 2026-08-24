@@ -4,6 +4,13 @@
 */
 
 (function () {
+  const portraits = {
+    sculpture: 'assets/img/portraits/EDEDFA1C-C21A-435D-972B-110D600B11C5.png',
+    chalkboard: 'assets/img/portraits/209D54D3-AFFB-4023-8875-728CEC6D7189.jpeg',
+    desert: 'assets/img/portraits/14977DB0-67AA-4C30-BA63-32BFD4B70E5B.jpeg',
+    nature: 'assets/img/portraits/E48E58D7-24FA-4228-9F3E-6A9B0705C687.jpeg'
+  };
+
   function createPortraitAside() {
     const aside = document.createElement('aside');
     aside.className = 'sg-side';
@@ -14,7 +21,7 @@
     const img = document.createElement('img');
     img.id = 'portrait-rotator';
     img.alt = 'Stéphane Gonzalez';
-    img.src = 'assets/img/portraits/209D54D3-AFFB-4023-8875-728CEC6D7189.jpeg';
+    img.src = portraits.sculpture;
     img.loading = 'lazy';
 
     wrapper.appendChild(img);
@@ -56,10 +63,10 @@
       window.SGPortraitRotatorInit(img, {
         intervalMs: 12000,
         sources: [
-          'assets/img/portraits/209D54D3-AFFB-4023-8875-728CEC6D7189.jpeg',
-          'assets/img/portraits/EDEDFA1C-C21A-435D-972B-110D600B11C5.png',
-          'assets/img/portraits/14977DB0-67AA-4C30-BA63-32BFD4B70E5B.jpeg',
-          'assets/img/portraits/E48E58D7-24FA-4228-9F3E-6A9B0705C687.jpeg'
+          portraits.sculpture,
+          portraits.chalkboard,
+          portraits.desert,
+          portraits.nature
         ]
       });
     }
