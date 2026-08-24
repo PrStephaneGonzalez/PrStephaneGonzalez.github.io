@@ -16,7 +16,7 @@
 
   Mobile:
   - Keep a stacked layout.
-  - Use a fixed square portrait area to prevent layout jumps during rotation.
+  - Preserve each portrait's natural aspect ratio and framing.
 */
 :root {
   /* Page width on desktop */
@@ -144,7 +144,6 @@
     position: relative;
     top: auto;
     width: 100%;
-    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 16px;
   }
@@ -152,10 +151,7 @@
   #portrait-rotator {
     width: 100%;
     max-width: 320px;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    object-position: center;
+    height: auto;
     margin: 0 auto;
     border-radius: 16px;
   }
