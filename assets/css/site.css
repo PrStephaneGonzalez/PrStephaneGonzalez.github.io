@@ -6,8 +6,8 @@
 
   Goal (desktop):
   - Keep the portrait column narrow and sticky.
-  - Align the portrait visually with the site name in the navbar.
-  - Keep the main text column in its current comfortable reading position.
+  - Keep the layout robust across different desktop widths.
+  - Avoid negative offsets that can clip the portrait on narrower screens.
 
   Important:
   - Do NOT force main.content to a fixed width.
@@ -72,11 +72,6 @@
    Desktop / large screens
    ========================= */
 @media (min-width: 992px) {
-  :root {
-    /* Moves the portrait toward the navbar brand while leaving text in place. */
-    --sg-portrait-shift: clamp(150px, 15vw, 280px);
-  }
-
   html {
     font-size: var(--sg-desktop-font-size);
   }
@@ -86,16 +81,17 @@
   }
 
   /*
-    Pull the whole flex wrapper left, then compensate only the text column.
-    Result: the portrait aligns near the navbar brand; the text does not move.
+    Keep the portrait inside Quarto's responsive container.
+    This is intentionally conservative: no negative horizontal offsets,
+    so the image cannot be clipped on narrower desktop displays.
   */
   .sg-page {
-    margin-left: calc(-1 * var(--sg-portrait-shift));
-    width: calc(100% + var(--sg-portrait-shift));
+    margin-left: 0;
+    width: 100%;
   }
 
   .sg-content {
-    margin-left: var(--sg-portrait-shift);
+    margin-left: 0;
   }
 
   /*
