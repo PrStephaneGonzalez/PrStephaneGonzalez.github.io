@@ -1,0 +1,148 @@
+/* Standalone page for the September 2026 Workshop in Economic Theory */
+
+body.workshop-page {
+  background: #f7f7f5;
+  color: #202020;
+  line-height: 1.5;
+}
+
+body.workshop-page #quarto-header,
+body.workshop-page .quarto-secondary-nav,
+body.workshop-page .quarto-title-block {
+  display: none !important;
+}
+
+body.workshop-page .page-columns,
+body.workshop-page .quarto-container,
+body.workshop-page main.content {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.workshop-shell {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 5rem 2rem 3rem;
+}
+
+.workshop-hero {
+  border-bottom: 1px solid #cfcfca;
+  padding-bottom: 2.4rem;
+  margin-bottom: 3rem;
+}
+
+.workshop-kicker {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.workshop-hero h1 {
+  margin: 0;
+  max-width: 800px;
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.workshop-location {
+  margin: 1.5rem 0 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.workshop-program h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.workshop-talk {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 1.8rem 0;
+  border-top: 1px solid #d8d8d3;
+}
+
+.workshop-time {
+  padding-top: 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.workshop-details h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.workshop-affiliation {
+  margin: 0.2rem 0 0.9rem;
+  color: #696969;
+}
+
+.workshop-title {
+  margin: 0;
+  max-width: 720px;
+  font-size: 1.18rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.workshop-coauthors {
+  margin: 0.45rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.96rem;
+}
+
+.workshop-lunch {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.workshop-lunch .workshop-details h3 {
+  font-size: 1.2rem;
+}
+
+.workshop-lunch .workshop-affiliation {
+  margin-bottom: 0;
+}
+
+.workshop-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #cfcfca;
+  color: #666;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 650px) {
+  .workshop-shell {
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .workshop-hero {
+    margin-bottom: 2.25rem;
+  }
+
+  .workshop-talk {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .workshop-time {
+    font-size: 1rem;
+  }
+}
