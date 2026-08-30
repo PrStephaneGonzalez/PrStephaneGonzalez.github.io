@@ -136,7 +136,7 @@ description-meta: "Research, publications, working papers, conference presentati
 
 ## Workshop organization
 
-1. **[19th Meeting of the Society for Social Choice and Welfare (SSCW 2028)](https://www.gate.cnrs.fr/condorcet/)** — Co-organizer. Lyon, France, 2028.
+1. **[19th Meeting of the Society for Social Choice and Welfare (SSCW 2028)](https://www.gate.cnrs.fr/condorcet/)** — Co-organizer. Université Lumière Lyon 2, Lyon, France, 2028.
 1. **[France–Spain Meeting on Microeconomic Theory](https://sites.google.com/go.ugr.es/france-spain-mit)** — Member of the Scientific Committee.
 1. **[Workshop in Economic Theory](https://economic-theory-stetienne.github.io/)** — Co-organizer. Saint-Étienne, France, September 8, 2026.
 1. **[SAET 2025](https://saet.uiowa.edu/2025-conference/)** — Co-organizer with Federica Ceron of the session *Axiomatization in Economic Theory*. Ischia, Italy, 2025.
