@@ -23,6 +23,8 @@ website:
         href: scientific-organization.qmd
       - text: Teaching
         href: teaching.qmd
+      - text: CV
+        href: assets/cv/cv-stephane-gonzalez.pdf
       - text: Contact
         href: contact.qmd
 
