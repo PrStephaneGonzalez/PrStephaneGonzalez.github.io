@@ -79,7 +79,7 @@ My research and teaching center on **theoretical economics**, especially **game 
 - Social Choice
 - Axiomatic methods
 
-See my **[Research](research.qmd)** page for publications, working papers, conference presentations and invited seminars.
+See my **[Research](research.qmd)** page for publications, working papers, conference presentations and invited seminars. See also **[Scientific organization](scientific-organization.qmd)** for conferences, workshops, SAET sessions and scientific committees.
 
 ## Coauthors
 
