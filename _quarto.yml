@@ -19,6 +19,8 @@ website:
         href: index.qmd
       - text: Research
         href: research.qmd
+      - text: Scientific organization
+        href: scientific-organization.qmd
       - text: Teaching
         href: teaching.qmd
       - text: Contact
