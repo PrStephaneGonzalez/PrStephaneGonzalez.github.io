@@ -1,0 +1,42 @@
+---
+title: "Scientific organization"
+description-meta: "Scientific conference and workshop organization, session organization, and scientific committees of Stéphane Gonzalez."
+---
+
+I regularly contribute to the organization of conferences, workshops and conference sessions in economic theory, game theory and social choice.
+
+## Current and forthcoming
+
+1. **[19th Meeting of the Society for Social Choice and Welfare (SSCW 2028)](https://www.gate.cnrs.fr/condorcet/)** — Co-organizer. Lyon, France, June–July 2028. The conference will be hosted by GATE Lyon Saint-Étienne and Université Jean Monnet, with support from the PEPR CONDORCET.
+
+1. **[France–Spain Meeting on Microeconomic Theory](https://sites.google.com/go.ugr.es/france-spain-mit)** — Member of the Scientific Committee. Annual France–Spain meeting in microeconomic theory.
+
+1. **[Workshop in Economic Theory](https://economic-theory-stetienne.github.io/)** — Co-organizer. Saint-Étienne, France, September 8, 2026.
+
+## SAET sessions — Axiomatization in Economic Theory
+
+1. **[SAET 2025](https://saet.uiowa.edu/2025-conference/)** — Co-organizer with Federica Ceron of the session *Axiomatization in Economic Theory*. Ischia, Italy, June 29–July 5, 2025.
+
+1. **[SAET 2024](https://saet.uiowa.edu/wp-content/uploads/sites/18/2024/08/2024SantiagoConferenceProgramSAET.pdf)** — Organizer, with Federica Ceron as co-organizer, of two sessions on *Axiomatizations in Economic Theory*. Santiago, Chile, January 8–11, 2024.
+
+1. **[SAET 2023](https://sites.google.com/view/saet2023/home)** — Organizer of a session on *Axiomatization in Economic Theory*. Paris, France, July 17–21, 2023.
+
+## Previous conference and workshop organization
+
+1. **[Games and Optimization 2022 (GO22)](https://go22.sciencesconf.org/?lang=en)** — Co-organizer with Eric Rémila. Saint-Étienne, France, April 14–15, 2022.
+
+1. **[INDEPTH #1 — Institutional Design and Economic Preferences: Theory and Experiments](https://www.gate.cnrs.fr/en/research/research-areas/game-theory-social-choice-and-markets/)** — Co-organizer. Saint-Étienne, France, March 28–29, 2019.
+
+1. **[Journées SDA2 2018 — Systèmes Dynamiques, Automates & Algorithmes](https://www.univ-st-etienne.fr/fr/gate-lse/actualites-agenda/actualites-2017-2018/journees-sda2-04-05-et-06-07.html)** — Member of the organizing committee. Saint-Étienne, France, July 4–6, 2018.
+
+1. **[MARS — Measures, Axioms, Rights and Stability in Coalitions and Networks](https://www.univ-st-etienne.fr/fr/gate-lse/anciennes-actualites/archives-2017/workshop-measures-axioms-rights-and-stability-in-coalitions-and-networks.html)** — Organizer. Saint-Étienne, France, March 22–23, 2017.
+
+1. **[Faire de la politique autrement? Théorie et pratique du choix social](https://www.gate.cnrs.fr/recherche/manifestations-scientifiques/colloques-et-workshops/colloques-et-workshops-organises-par-le-gate-depuis-2002/)** — Co-organizer with Antoinette Baujard and Mostapha Diss. Academic workshop and public-outreach event, Saint-Étienne, France, April 27–28, 2017.
+
+1. **Games and Optimization** — Co-organizer. Saint-Étienne, France, November 21–22, 2017.
+
+## Scientific committees
+
+1. **France–Spain Meeting on Microeconomic Theory** — Scientific Committee.
+
+1. **ADRES Doctoral Conference** — Member of the Scientific Committee, 2020–2023.
