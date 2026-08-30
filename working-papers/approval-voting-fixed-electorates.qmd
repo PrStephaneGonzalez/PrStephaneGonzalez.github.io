@@ -1,0 +1,13 @@
+---
+title: "Approval Voting with Fixed Electorates, Fixed Agendas and No Ballot Assumptions"
+author:
+  - Raffaele Berzi
+  - Stéphane Gonzalez
+date: 2026-01-01
+categories: [Voting, Social Choice]
+params:
+  venue: "Working paper"
+  status: "working paper"
+---
+
+*Working paper*. [HAL](https://hal.science/hal-05717382).
