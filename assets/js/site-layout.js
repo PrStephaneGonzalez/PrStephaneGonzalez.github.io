@@ -57,9 +57,6 @@
   }
 
   function init() {
-    // Keep standalone event pages free of the personal portrait layout.
-    if (document.body.classList.contains('workshop-page')) return;
-
     const img = wrapMainContent();
     if (!img) return;
 
