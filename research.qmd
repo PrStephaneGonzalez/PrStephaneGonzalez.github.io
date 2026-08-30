@@ -133,3 +133,7 @@ description-meta: "Research, publications, working papers, conference presentati
 1. OWL Workshop “Markets, Games, and Design” MGD12 (Paderborn, Germany, 2012)
 1. EBIM Networks Workshop (Bielefeld, Germany, 2012)
 1. OSGAD 5 (Paris, France, 2011)
+
+## Workshop organization
+
+1. **[Workshop in Economic Theory](https://economic-theory-stetienne.github.io/)** (Saint-Étienne, France, September 8, 2026).
