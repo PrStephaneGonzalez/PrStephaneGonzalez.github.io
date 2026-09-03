@@ -8,4 +8,6 @@ title: "Graph Theory and Applications"
 
 ## Course material
 
+- [Session 1 --- From an investigation to our first theorems (PDF)](assets/teaching/graph-theory-session-1.pdf)
+
 Lecture notes, exercises, and additional material will be added here.
