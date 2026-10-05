@@ -10,5 +10,6 @@ title: "Graph Theory and Applications"
 
 - [Session 1 --- From an investigation to our first theorems (PDF)](assets/teaching/graph-theory-session-1.pdf)
 - [Session 2 --- From counting triangles to finding fixed points (PDF)](assets/teaching/graph-theory-session-2.pdf)
+- [Session 3 --- Rumours, economic dynamics and Markov chains (PDF)](assets/teaching/graph-theory-session-3.pdf)
 
 Lecture notes, exercises, and additional material will be added here.
