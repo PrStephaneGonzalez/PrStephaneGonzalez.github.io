@@ -469,81 +469,60 @@
     "text": "Teaching\nMy teaching covers microeconomics, game theory, social choice and related topics in theoretical economics, from undergraduate to graduate level. See Teaching for courses and teaching materials."
   },
   {
-    "objectID": "publications/2024-story-of-consistency.html",
-    "href": "publications/2024-story-of-consistency.html",
-    "title": "A Story of Consistency: Bridging the gap between Bentham and Rawls foundations",
+    "objectID": "macroeconomics.html",
+    "href": "macroeconomics.html",
+    "title": "Macroeconomics",
     "section": "",
-    "text": "Synthese (published)."
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomics"
   },
   {
-    "objectID": "publications/2015-autonomous-coalitions.html",
-    "href": "publications/2015-autonomous-coalitions.html",
-    "title": "Autonomous coalitions",
+    "objectID": "publications/2017-coase-core.html",
+    "href": "publications/2017-coase-core.html",
+    "title": "De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs",
     "section": "",
-    "text": "Annals of Operations Research (published)."
+    "text": "Revue d’économie politique (published)."
   },
   {
-    "objectID": "publications/2025-objections-structure.html",
-    "href": "publications/2025-objections-structure.html",
-    "title": "Axiomatization and Implementation via objections structure",
+    "objectID": "publications/2023-core-without-consistency.html",
+    "href": "publications/2023-core-without-consistency.html",
+    "title": "Axiomatic characterizations of the core without consistency",
     "section": "",
-    "text": "Theory and Decision (published)."
+    "text": "International Journal of Game Theory (published)."
   },
   {
-    "objectID": "publications/2016-multicoalitional-solutions.html",
-    "href": "publications/2016-multicoalitional-solutions.html",
-    "title": "Multicoalitional solutions",
+    "objectID": "publications/2026-proportional-threshold-methods.html",
+    "href": "publications/2026-proportional-threshold-methods.html",
+    "title": "An axiomatic characterization of the proportional threshold methods: A geometric approach",
     "section": "",
-    "text": "Journal of Mathematical Economics (published)."
+    "text": "Social Choice and Welfare (forthcoming)."
   },
   {
-    "objectID": "publications/2022-resource-exploitation.html",
-    "href": "publications/2022-resource-exploitation.html",
-    "title": "Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective",
+    "objectID": "publications/2015-preserving-coalitional-rationality.html",
+    "href": "publications/2015-preserving-coalitional-rationality.html",
+    "title": "Preserving coalitional rationality for non-balanced games",
+    "section": "",
+    "text": "International Journal of Game Theory (published)."
+  },
+  {
+    "objectID": "publications/2018-optimal-deterrence.html",
+    "href": "publications/2018-optimal-deterrence.html",
+    "title": "Optimal deterrence of cooperation",
+    "section": "",
+    "text": "International Journal of Game Theory (published)."
+  },
+  {
+    "objectID": "publications/2019-social-cost-problem.html",
+    "href": "publications/2019-social-cost-problem.html",
+    "title": "The social cost problem, rights and the (non)empty core",
+    "section": "",
+    "text": "Journal of Public Economic Theory (published)."
+  },
+  {
+    "objectID": "publications/2021-effectiveness-form-core.html",
+    "href": "publications/2021-effectiveness-form-core.html",
+    "title": "Axiomatic foundations of the core for games in effectiveness form",
     "section": "",
     "text": "Mathematical Social Sciences (published)."
-  },
-  {
-    "objectID": "publications/2019-approval-disapproval.html",
-    "href": "publications/2019-approval-disapproval.html",
-    "title": "Dilemma with approval and disapproval votes",
-    "section": "",
-    "text": "Social Choice and Welfare (published)."
-  },
-  {
-    "objectID": "publications/2021-influence-game.html",
-    "href": "publications/2021-influence-game.html",
-    "title": "INFLUENCE: A partizan scoring game on graphs",
-    "section": "",
-    "text": "Theoretical Computer Science (published)."
-  },
-  {
-    "objectID": "publications/2021-approval-voting.html",
-    "href": "publications/2021-approval-voting.html",
-    "title": "Approval voting without ballot restrictions",
-    "section": "",
-    "text": "Theoretical Economics (published)."
-  },
-  {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "Teaching",
-    "section": "",
-    "text": "This page gathers course descriptions and teaching materials\n(syllabi, notes, slides, references).\nAdditional material will be added progressively."
-  },
-  {
-    "objectID": "teaching.html#courses",
-    "href": "teaching.html#courses",
-    "title": "Teaching",
-    "section": "Courses",
-    "text": "Courses\n\nGraph Theory and Applications\nDesign of economic and political methods: axiomatic theory\nCoalitions in Cooperative and Non-Cooperative Game Theory\nMicroeconomics: Imperfect Markets and Strategic Interactions\nMacroeconomics VI: Growth Theories\nApplied economic theory/Introduction to Political Engineering"
-  },
-  {
-    "objectID": "teaching-logic-and-set.html",
-    "href": "teaching-logic-and-set.html",
-    "title": "Logic and set",
-    "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/logic-and-set"
   },
   {
     "objectID": "graph-theory-and-applications.html",
@@ -567,60 +546,95 @@
     "text": "Course material\n\nSession 1 — From an investigation to our first theorems (PDF)\nSession 2 — From counting triangles to finding fixed points (PDF)\nSession 3 — Rumours, economic dynamics and Markov chains (PDF)\n\nLecture notes, exercises, and additional material will be added here."
   },
   {
-    "objectID": "publications/2021-effectiveness-form-core.html",
-    "href": "publications/2021-effectiveness-form-core.html",
-    "title": "Axiomatic foundations of the core for games in effectiveness form",
+    "objectID": "teaching-logic-and-set.html",
+    "href": "teaching-logic-and-set.html",
+    "title": "Logic and set",
+    "section": "",
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/logic-and-set"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "This page gathers course descriptions and teaching materials\n(syllabi, notes, slides, references).\nAdditional material will be added progressively."
+  },
+  {
+    "objectID": "teaching.html#courses",
+    "href": "teaching.html#courses",
+    "title": "Teaching",
+    "section": "Courses",
+    "text": "Courses\n\nGraph Theory and Applications\nDesign of economic and political methods: axiomatic theory\nCoalitions in Cooperative and Non-Cooperative Game Theory\nMicroeconomics: Imperfect Markets and Strategic Interactions\nMacroeconomics VI: Growth Theories\nApplied economic theory/Introduction to Political Engineering"
+  },
+  {
+    "objectID": "publications/2021-approval-voting.html",
+    "href": "publications/2021-approval-voting.html",
+    "title": "Approval voting without ballot restrictions",
+    "section": "",
+    "text": "Theoretical Economics (published)."
+  },
+  {
+    "objectID": "publications/2021-influence-game.html",
+    "href": "publications/2021-influence-game.html",
+    "title": "INFLUENCE: A partizan scoring game on graphs",
+    "section": "",
+    "text": "Theoretical Computer Science (published)."
+  },
+  {
+    "objectID": "publications/2019-approval-disapproval.html",
+    "href": "publications/2019-approval-disapproval.html",
+    "title": "Dilemma with approval and disapproval votes",
+    "section": "",
+    "text": "Social Choice and Welfare (published)."
+  },
+  {
+    "objectID": "publications/2022-resource-exploitation.html",
+    "href": "publications/2022-resource-exploitation.html",
+    "title": "Sharing the Global Outcomes of Finite Natural Resource Exploitation: A Dynamic Coalitional Stability Perspective",
     "section": "",
     "text": "Mathematical Social Sciences (published)."
   },
   {
-    "objectID": "publications/2019-social-cost-problem.html",
-    "href": "publications/2019-social-cost-problem.html",
-    "title": "The social cost problem, rights and the (non)empty core",
+    "objectID": "publications/2016-multicoalitional-solutions.html",
+    "href": "publications/2016-multicoalitional-solutions.html",
+    "title": "Multicoalitional solutions",
     "section": "",
-    "text": "Journal of Public Economic Theory (published)."
+    "text": "Journal of Mathematical Economics (published)."
   },
   {
-    "objectID": "publications/2018-optimal-deterrence.html",
-    "href": "publications/2018-optimal-deterrence.html",
-    "title": "Optimal deterrence of cooperation",
+    "objectID": "publications/2025-objections-structure.html",
+    "href": "publications/2025-objections-structure.html",
+    "title": "Axiomatization and Implementation via objections structure",
     "section": "",
-    "text": "International Journal of Game Theory (published)."
+    "text": "Theory and Decision (published)."
   },
   {
-    "objectID": "publications/2015-preserving-coalitional-rationality.html",
-    "href": "publications/2015-preserving-coalitional-rationality.html",
-    "title": "Preserving coalitional rationality for non-balanced games",
+    "objectID": "publications/2015-autonomous-coalitions.html",
+    "href": "publications/2015-autonomous-coalitions.html",
+    "title": "Autonomous coalitions",
     "section": "",
-    "text": "International Journal of Game Theory (published)."
+    "text": "Annals of Operations Research (published)."
   },
   {
-    "objectID": "publications/2026-proportional-threshold-methods.html",
-    "href": "publications/2026-proportional-threshold-methods.html",
-    "title": "An axiomatic characterization of the proportional threshold methods: A geometric approach",
+    "objectID": "publications/2024-story-of-consistency.html",
+    "href": "publications/2024-story-of-consistency.html",
+    "title": "A Story of Consistency: Bridging the gap between Bentham and Rawls foundations",
     "section": "",
-    "text": "Social Choice and Welfare (forthcoming)."
+    "text": "Synthese (published)."
   },
   {
-    "objectID": "publications/2023-core-without-consistency.html",
-    "href": "publications/2023-core-without-consistency.html",
-    "title": "Axiomatic characterizations of the core without consistency",
+    "objectID": "books.html",
+    "href": "books.html",
+    "title": "Books",
     "section": "",
-    "text": "International Journal of Game Theory (published)."
+    "text": "Book in progress · Stéphane Gonzalez\nHow should we make decisions when outcomes are uncertain? How should conflicting objectives be balanced? How can individual preferences be transformed into collective decisions? Can a voting rule be fair and immune to manipulation? How do strategic interactions and social networks shape collective outcomes?\nThis book introduces economic theory through a simple question: how can we design better decisions and better institutions?\nRather than presenting economic theory as a catalogue of models, the book starts from concrete problems and uses them to introduce decision theory, social choice, game theory, political economy and network analysis. Particular attention is paid to the limits revealed by theory: sometimes mathematics tells us not how to find a perfect decision or institution, but why no perfect solution can satisfy all the properties we would like simultaneously.\nThe book is being developed alongside my course Applied Economic Theory / Introduction to Political Engineering. Chapters will be made progressively available here in English and French.\n\n\n\n\n\n\nThe written chapters are extended versions of the course material. They contain additional examples, results and discussions that go beyond what is covered during lectures.\n\n\n\n\n\n\n\n\nIntroduction à la décision et à l’ingénierie politique\nEnglish version — forthcoming online\nVersion française — prochainement en ligne\nMore chapters will be added progressively."
   },
   {
-    "objectID": "publications/2017-coase-core.html",
-    "href": "publications/2017-coase-core.html",
-    "title": "De nouveaux éclairages sur le théorème de Coase et la vacuité du cœur à trois joueurs",
+    "objectID": "books.html#chapters",
+    "href": "books.html#chapters",
+    "title": "Books",
     "section": "",
-    "text": "Revue d’économie politique (published)."
-  },
-  {
-    "objectID": "macroeconomics.html",
-    "href": "macroeconomics.html",
-    "title": "Macroeconomics",
-    "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomics"
+    "text": "Introduction à la décision et à l’ingénierie politique\nEnglish version — forthcoming online\nVersion française — prochainement en ligne\nMore chapters will be added progressively."
   },
   {
     "objectID": "micro-imperfect-markets.html",
@@ -648,21 +662,28 @@
     "href": "introduction-to-political-engineering.html",
     "title": "Applied Economic Theory / Introduction to Political Engineering",
     "section": "",
-    "text": "This page will contain the syllabus and teaching material for the course."
+    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
   },
   {
     "objectID": "introduction-to-political-engineering.html#course-description",
     "href": "introduction-to-political-engineering.html#course-description",
     "title": "Applied Economic Theory / Introduction to Political Engineering",
     "section": "",
-    "text": "This page will contain the syllabus and teaching material for the course."
+    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
+    "href": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "Book and extended lecture notes",
+    "text": "Book and extended lecture notes\nThe course is developed alongside my book in progress, Decision-Making and Political Engineering.\nThe chapters of the book are available progressively in English and French. They are deliberately more extensive than the material covered in class: some examples, results, proofs and discussions go beyond what is presented during lectures.\nBook & extended lecture notes →"
   },
   {
     "objectID": "introduction-to-political-engineering.html#course-material",
     "href": "introduction-to-political-engineering.html#course-material",
     "title": "Applied Economic Theory / Introduction to Political Engineering",
     "section": "Course material",
-    "text": "Course material\nContent will be added progressively."
+    "text": "Course material\nAdditional course-specific material will be added progressively."
   },
   {
     "objectID": "talks/2018-euro-2018-ecor-29.html",
