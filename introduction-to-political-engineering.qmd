@@ -1,11 +1,22 @@
 ---
 title: "Applied Economic Theory / Introduction to Political Engineering"
+description-meta: "Applied Economic Theory and Introduction to Political Engineering: course materials by Stéphane Gonzalez."
 ---
 
 ## Course description
 
-This page will contain the syllabus and teaching material for the course.
+This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.
+
+The emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results.
+
+## Book and extended lecture notes
+
+The course is developed alongside my book in progress, **[*Decision-Making and Political Engineering*](books.qmd)**.
+
+The chapters of the book are available progressively in **English and French**. They are deliberately more extensive than the material covered in class: some examples, results, proofs and discussions go beyond what is presented during lectures.
+
+[**Book & extended lecture notes →**](books.qmd)
 
 ## Course material
 
-Content will be added progressively.
+Additional course-specific material will be added progressively.
