@@ -27,7 +27,7 @@ The written chapters are extended versions of the course material. They contain 
 
 *Introduction à la décision et à l'ingénierie politique*
 
-**English version — forthcoming online**  
-**Version française — prochainement en ligne**
+[Download Chapter 1 — English version (PDF)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
+[Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
 
 More chapters will be added progressively.
