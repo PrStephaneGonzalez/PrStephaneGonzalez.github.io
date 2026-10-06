@@ -1,0 +1,33 @@
+---
+title: "Books"
+description-meta: "Books and book projects by Stéphane Gonzalez."
+---
+
+# Decision-Making and Political Engineering
+
+### *An introduction to economic theory through decisions, institutions and collective choice*
+
+**Book in progress · Stéphane Gonzalez**
+
+How should we make decisions when outcomes are uncertain? How should conflicting objectives be balanced? How can individual preferences be transformed into collective decisions? Can a voting rule be fair and immune to manipulation? How do strategic interactions and social networks shape collective outcomes?
+
+This book introduces economic theory through a simple question: **how can we design better decisions and better institutions?**
+
+Rather than presenting economic theory as a catalogue of models, the book starts from concrete problems and uses them to introduce decision theory, social choice, game theory, political economy and network analysis. Particular attention is paid to the limits revealed by theory: sometimes mathematics tells us not how to find a perfect decision or institution, but why no perfect solution can satisfy all the properties we would like simultaneously.
+
+The book is being developed alongside my course [*Applied Economic Theory / Introduction to Political Engineering*](introduction-to-political-engineering.qmd). Chapters will be made progressively available here in **English and French**.
+
+::: {.callout-note appearance="simple" icon="false"}
+The written chapters are extended versions of the course material. They contain additional examples, results and discussions that go beyond what is covered during lectures.
+:::
+
+## Chapters
+
+### Chapter 1 — Introduction to Decision-Making and Political Engineering
+
+*Introduction à la décision et à l'ingénierie politique*
+
+**English version — forthcoming online**  
+**Version française — prochainement en ligne**
+
+More chapters will be added progressively.
