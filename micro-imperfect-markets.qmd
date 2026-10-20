@@ -8,4 +8,5 @@ title: "Microeconomics: Imperfect Markets and Strategic Interactions"
 
 ## Course material
 
-Additional material may be added here.
+- [Game Theory — Tutorial Sheet (Exercises 1–9)](assets/teaching/Jeuxl3-7.pdf)
+- [Game Theory — Detailed Solutions (Exercises 5–9)](assets/teaching/solutions.pdf)
