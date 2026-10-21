@@ -448,7 +448,11 @@ UNI.forEach(u=>{if(!u.prog)u.prog=()=>u.keys().filter(k=>status(k)==='acquis').l
   /* progression partielle : une notion acquise vaut 1, sinon chaque réussite du premier coup vaut 1/4 (au plus 3/4 avant la confirmation un autre jour) */
   u.partial=u.keys?()=>{const ks=u.keys();const acq=ks.filter(k=>status(k)==='acquis').length;const rest=ks.filter(k=>status(k)!=='acquis').map(credit).sort((a,b)=>b-a).slice(0,Math.max(0,u.total-acq));return Math.min(u.total,acq+rest.reduce((a,b)=>a+b,0))}:u.prog});
 function credit(k){const it=st.items[k];if(!it)return 0;if(status(k)==='acquis')return 1;return Math.min(it.ok,3)/4}
-const uniAvail=u=>!!st.unicorns[u.id]||st.games[u.req].freed;
+/* une licorne n'ouvre son défi que lorsque tous les exercices dont elle dépend sont libérés (toute la chaîne d'apprentissage) */
+const UNEEDS={u_let:['letters'],u_num:['nuts'],u_cur:['letters','cursive'],u_snd:['letters','sounds','syll'],u_read:['letters','sounds','syll','words'],u_log:['space','path','nuts','potions','logic']};
+const uniMissing=u=>(UNEEDS[u.id]||[u.req]).filter(id=>!st.games[id].freed).map(id=>GBY[id]);
+const uniAvail=u=>!!st.unicorns[u.id]||uniMissing(u).length===0;
+const listFr=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' et '+a[a.length-1];
 /* défi de licorne : priorité aux notions qui peuvent progresser aujourd'hui */
 function focusW(k){const it=st.items[k];if(!it)return 3;if(status(k)==='acquis')return .3;return 5}
 function focusPick(pool,keyf){return wpick(pool,x=>focusW(keyf(x)))}
@@ -514,7 +518,7 @@ function status(key){const it=st.items[key];if(!it)return'nv';if(it.ok>=3)return
 const freshW=k=>status(k)==='acquis'?1:3;
 function reqOf(G){return G.req==='ALL'?GAMES.filter(x=>x.id!==G.id).map(x=>x.id):G.req}
 function available(G){const s=st.games[G.id];return s.freed||reqOf(G).every(r=>st.games[r].freed)}
-function checkUnicorns(){const out=[];UNI.forEach(u=>{if(!st.unicorns[u.id]&&u.prog()>=u.total){st.unicorns[u.id]=true;out.push(u)}});if(out.length)save();return out}
+function checkUnicorns(){const out=[];UNI.forEach(u=>{if(!st.unicorns[u.id]&&uniAvail(u)&&u.prog()>=u.total){st.unicorns[u.id]=true;out.push(u)}});if(out.length)save();return out}
 
 /* ================= voix et sons ================= */
 let voice=null;
@@ -554,8 +558,8 @@ function renderMap(){
   if(terr==='prairie')UNI.forEach(u=>{const [x,y]=L[u.id];const fr=!!st.unicorns[u.id];const av=uniAvail(u);const p=u.partial()/u.total;
     const ring=sv('svg',{class:'uring',viewBox:'0 0 52 52'});ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'rgba(255,255,255,.35)'}));ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'#ffd36b',pathLength:100,'stroke-dasharray':`${Math.round(Math.min(1,p)*100)} 100`}));
     S.append(h('button',{class:'spot uni '+(fr?'free':av?'locked':'blocked'),style:`left:${x}%;top:${y}%;--c:#ffd36b;--h:${u.h}`,'aria-label':u.name,
-      onclick:()=>{sfx('tap');if(av)uniInfo(u);else say(`Pour approcher ${u.name}, libère d'abord ${GBY[u.req].name}.`)}},
-      h('span',{class:'ani'},'🦄'),fr?h('span',{class:'spark'},'✨'):ring,av?null:h('span',{class:'req'},h('span',null,GBY[u.req].ani))))});
+      onclick:()=>{sfx('tap');if(av)uniInfo(u);else say(`Pour approcher ${u.name}, libère d'abord ${listFr(uniMissing(u).map(g=>g.name))}.`)}},
+      h('span',{class:'ani'},'🦄'),fr?h('span',{class:'spark'},'✨'):ring,av?null:h('span',{class:'req'},h('span',null,uniMissing(u).map(g=>g.ani).join('')))))});
   drawScene();
 }
 function blockedMsg(g,missing){
@@ -1277,7 +1281,7 @@ function openParents(){
       h('tbody',null,GAMES.map(g=>{const s=st.games[g.id];const av=available(g);return h('tr',null,h('td',null,g.ani+' '+g.title),h('td',null,g.skill),h('td',{class:'num'},`${s.level} / ${g.max}`+(s.mastered?' ✓':'')),
         h('td',null,h('span',{class:'pill '+(s.freed?'ok':av?'no':'bl')},s.freed?'libéré':av?'à libérer':'verrouillé')))})))),
     h('h3',null,'Licornes'),
-    h('div',{class:'tbl'},h('table',null,h('tbody',null,UNI.map(u=>{const p=Math.min(u.total,u.prog());return h('tr',null,h('td',null,'🦄 '+cap1(u.name)),h('td',null,cap1(u.goal),h('div',{class:'muted'},uniAvail(u)?'Défi ouvert : toucher la licorne dans la prairie':'Défi ouvert après '+GBY[u.req].name)),h('td',{class:'num'},`${p} / ${u.total}`),h('td',null,h('span',{class:'pill '+(st.unicorns[u.id]?'ok':'no')},st.unicorns[u.id]?'libérée':'en cours')))})))),
+    h('div',{class:'tbl'},h('table',null,h('tbody',null,UNI.map(u=>{const p=Math.min(u.total,u.prog());return h('tr',null,h('td',null,'🦄 '+cap1(u.name)),h('td',null,cap1(u.goal),h('div',{class:'muted'},uniAvail(u)?'Défi ouvert : toucher la licorne dans la prairie':'Défi ouvert après '+listFr(uniMissing(u).map(g=>g.name)))),h('td',{class:'num'},`${p} / ${u.total}`),h('td',null,h('span',{class:'pill '+(st.unicorns[u.id]?'ok':'no')},st.unicorns[u.id]?'libérée':'en cours')))})))),
     h('h3',null,'Lettres en capitales'),chips(ALPH.map(l=>'L:'+l),ALPH),
     h('h3',null,'Lettres en scriptes (minuscules)'),chips(ALPH.map(l=>'l:'+l),ALPH.map(l=>l.toLowerCase())),
     h('h3',null,'Syllabes lues'),seenChips('S:'),
