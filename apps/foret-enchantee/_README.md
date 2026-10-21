@@ -12,7 +12,7 @@ C'est un site statique : un seul fichier `index.html`, sans dépendance ni étap
 | `manifest.webmanifest` | Nom et icônes quand le site est installé sur l'écran d'accueil |
 | `sw.js` | Fonctionnement hors connexion (après une première visite) |
 | `icons/` | Icônes 180, 192 et 512 px |
-| `sons/` | 35 sons du français enregistrés (`audio/*.m4a`), page d'écoute `index.html`, licences `LICENSE.txt` |
+| `sons/` | Sons en voix française : `ph/` sons isolés, `sy/` syllabes, `w/` mots, `mo/` petits mots (MP3), page d'écoute `index.html`, `CREDITS.txt`. Régénérables avec le script `gen.py` (Piper) |
 
 ## Essayer chez soi
 
@@ -58,7 +58,7 @@ Chaque niveau gagné transforme l'animal (étincelant, d'argent, d'or, arc-en-ci
 
 Une mauvaise bulle fait entendre son propre son, puis la consigne revient. Dans la Prairie, le dragon demande désormais l'abeille, et les licornes des syllabes et de la lecture demandent le perroquet et l'abeille : on ne lit pas de syllabes écrites avant d'en connaître les sons.
 
-Les sons viennent du *Tableau des sons du français de Parle* (Tingnova Inc., CC BY 4.0) ; six extraits viennent de Wikimedia Commons (CC BY-SA 3.0). Ils ont été rognés et égalisés en volume. Les consonnes semblent contenues dans de courtes syllabes plutôt qu'isolées : à vérifier à l'écoute (`sons/index.html`).
+Les sons sont produits par la synthèse vocale Piper avec la voix française « siwis » (corpus SIWIS, Université d'Édimbourg, CC BY 4.0), son par son à partir de phonèmes choisis explicitement : les consonnes qui se prolongent sont tenues (« fff »), les autres sont suivies d'un petit « e » (« pe »). Les syllabes, les mots et les petits mots ont aussi leur fichier ; seules les consignes de la fée passent par la voix de l'appareil. Page d'écoute : `sons/index.html`.
 
 ## Où sont les données
 

@@ -1215,26 +1215,31 @@ MODS.cursive={
 };
 
 /* ================= Royaume des Nuages : apprendre à lire pas à pas ================= */
-/* Sons enregistrés : Parle French Sound Chart (Tingnova Inc., CC BY 4.0), dossier sons/audio/.
-   Sans ces fichiers (aperçu claude.ai), la voix de l'appareil prend le relais avec un mot-repère. */
-const SNDF={a:'a',i:'i',o:'o_ferme',u:'y','é':'e_ferme','è':'e_ouvert',e:'schwa',l:'l',m:'m',r:'r',s:'s',f:'f',v:'v',n:'n',j:'j',p:'p',t:'t',d:'d',b:'b',c:'k',g:'g',z:'z',ch:'ch',ou:'u',on:'nasal_on',an:'nasal_an',in:'nasal_in',eu:'eu_ferme',au:'o_ferme',ai:'e_ouvert',gn:'gn'};
+/* Sons du ciel : voix française « siwis » (Piper, données CC BY 4.0), générés à partir de phonèmes contrôlés.
+   Dossier sons/ : ph (sons isolés), sy (syllabes), w (mots), mo (petits mots).
+   Sans ces fichiers (aperçu claude.ai), la voix de l'appareil prend le relais. */
+const SKEY=x=>x.replace(/é/g,'E').replace(/è/g,'H').replace(/ê/g,'X').replace(/â/g,'A').replace(/ô/g,'O').replace(/î/g,'I').replace(/[’']/g,'').replace(/ /g,'_');
+const SND_SET={ph:new Set(["a", "i", "o", "u", "é", "è", "e", "ou", "on", "an", "in", "oi", "eu", "au", "ai", "l", "m", "r", "s", "f", "v", "n", "j", "p", "t", "d", "b", "c", "g", "z", "ch", "gn"]),sy:new Set(["la", "li", "lo", "lu", "lé", "le", "ma", "mi", "mo", "mu", "mé", "me", "ra", "ri", "ro", "ru", "ré", "re", "sa", "si", "so", "su", "sé", "se", "fa", "fi", "fo", "fu", "fé", "fe", "va", "vi", "vo", "vu", "vé", "ve", "na", "ni", "no", "nu", "né", "ne", "ja", "ji", "jo", "ju", "jé", "je", "pa", "pi", "po", "pu", "pé", "pe", "ta", "ti", "to", "tu", "té", "te", "da", "di", "do", "du", "dé", "de", "ba", "bi", "bo", "bu", "bé", "be", "ca", "co", "ga", "go", "gu", "za", "zi", "zo", "zu", "zé", "ze", "lou", "mou", "rou", "sou", "fou", "vou", "nou", "jou", "pou", "tou", "dou", "bou", "cou", "gou", "zou", "cha", "chi", "cho", "chu", "ché", "che", "lon", "mon", "ron", "son", "fon", "von", "non", "jon", "pon", "ton", "don", "bon", "con", "gon", "zon", "lan", "man", "ran", "san", "fan", "van", "nan", "jan", "pan", "tan", "dan", "ban", "can", "gan", "zan", "loi", "moi", "roi", "soi", "foi", "voi", "noi", "joi", "poi", "toi", "doi", "boi", "coi", "goi", "zoi", "lin", "min", "rin", "sin", "fin", "vin", "nin", "jin", "pin", "tin", "din", "bin", "zin", "lau", "mau", "rau", "sau", "fau", "vau", "nau", "jau", "pau", "tau", "dau", "bau", "cau", "gau", "zau", "leu", "meu", "reu", "seu", "feu", "veu", "neu", "jeu", "peu", "teu", "deu", "beu", "zeu", "lai", "mai", "rai", "sai", "fai", "vai", "nai", "jai", "pai", "tai", "dai", "bai", "cai", "gai", "zai"]),w:new Set(["lama", "moto", "vélo", "mur", "sofa", "judo", "radio", "piano", "lit", "rat", "riz", "nid", "dé", "bébé", "lune", "tomate", "salade", "tulipe", "pirate", "banane", "ananas", "robe", "café", "tortue", "pomme", "vache", "chat", "loup", "poule", "mouton", "lapin", "sapin", "melon", "cochon", "canard", "roi", "feu", "auto", "lait", "savon", "bouche", "mouche", "lion", "pantalon", "souris", "hibou", "loupe", "poisson", "ballon", "montagne", "chocolat", "bonbon", "fourmi", "éléphant"]),mo:new Set(["le", "la", "un", "une", "et", "les", "il", "elle", "est", "dans", "sur", "de", "je", "tu", "des", "avec", "pas", "mon"])};
 const SNDW={l:'lune',m:'maman',r:'rat',s:'sac',f:'fée',v:'vélo',n:'nid',j:'jupe',p:'papa',t:'tomate',d:'dé',b:'bébé',c:'café',g:'gare',z:'zèbre',ch:'chat',gn:'montagne'};
 const SNDT=g=>({a:'a',i:'i',o:'o',u:'u','é':'é','è':'è',e:'eu',ou:'où',on:'on',an:'an',in:'hein',oi:'oie',au:'eau',eu:'eux',ai:'è'})[g]||('comme dans '+(SNDW[g]||g));
-let sndOK=true,sndTok=0;const sndUrl={};
+let sndTok=0;const sndUrl={};
 const sndEl=new Audio();sndEl.preload='auto';
 function sndUnlock(){try{sndEl.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';const p=sndEl.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
-function sndLoad(f){if(!sndUrl[f])sndUrl[f]=fetch('sons/audio/'+f+'.m4a').then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>URL.createObjectURL(b)).catch(()=>{sndOK=false;return null});return sndUrl[f]}
-function sndPreload(gs){if(sndOK)gs.forEach(g=>{const f=SNDF[g];if(f)sndLoad(f)})}
-/* joue le son d'une graphie (a, l, ou, on…), puis appelle onend */
-function snd(g,onend){const tok=++sndTok;let done=false,fell=false;const fin=()=>{if(!done&&tok===sndTok){done=true;onend&&onend()}};
-  const fb=()=>{if(fell||tok!==sndTok)return;fell=true;say(SNDT(g),fin)};
-  const f=SNDF[g];if(!f||!sndOK){fb();return}
+function sndLoad(path){if(!(path in sndUrl))sndUrl[path]=fetch(path).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>URL.createObjectURL(b)).catch(()=>null);return sndUrl[path]}
+const sndPath=(cat,x)=>SND_SET[cat].has(x)?'sons/'+cat+'/'+SKEY(x)+'.mp3':null;
+function sndPreload(gs,cat){gs.forEach(g=>{const p=sndPath(cat||'ph',g);if(p)sndLoad(p)})}
+/* joue un fichier son ; sinon la voix de l'appareil dit le texte de secours */
+function sndPlay(path,fbText,onend,rate){const tok=++sndTok;let done=false,fell=false;const fin=()=>{if(!done&&tok===sndTok){done=true;onend&&onend()}};
+  const fb=()=>{if(fell||tok!==sndTok)return;fell=true;say(fbText,fin,rate)};
+  if(!path){fb();return}
   try{if(hasTTS)speechSynthesis.cancel()}catch(e){}
-  sndLoad(f).then(u=>{if(tok!==sndTok)return;if(!u){fb();return}
+  sndLoad(path).then(u=>{if(tok!==sndTok)return;if(!u){fb();return}
     try{sndEl.pause();sndEl.onended=fin;sndEl.onerror=fb;sndEl.src=u;const p=sndEl.play();if(p&&p.catch)p.catch(fb)}catch(e){fb()}
-    setTimeout(fin,3200)})}
+    setTimeout(fin,3500)})}
+function snd(g,onend){sndPlay(sndPath('ph',g),SNDT(g),onend)}
 const pSn=g=>cb=>snd(g,cb);            /* lecteur : son enregistré */
-const pSy=s=>cb=>say(s,cb,.8);          /* lecteur : syllabe dite par la voix */
+const pSy=s=>cb=>sndPlay(sndPath('sy',s),s,cb,.8);   /* lecteur : syllabe */
+const pW=w=>cb=>sndPlay(sndPath('w',w),w,cb);          /* lecteur : mot */
 
 /* progression par paliers : le palier suivant ne s'ouvre que lorsque toutes les notions des paliers
    déjà ouverts sont acquises (3 réussites du premier coup). On ne brûle donc aucune étape. */
@@ -1358,11 +1363,11 @@ const beeNeed=()=>{const {C,V}=beeLetters();return ['a','i','o'].every(v=>V.incl
 MODS.bee={
   intro:"L'abeille fabrique des syllabes avec les sons des lettres. Écoute bien, et lis avec elle !",
   round(lv,A,opt){
-    const pool=beePool();const {C,V}=beeLetters();sndPreload([...C,...V]);
+    const pool=beePool();const {C,V}=beeLetters();sndPreload([...C,...V]);sndPreload(pool,'sy');
     const t=opt&&opt.t||wpick(pool,s=>focusW('S:'+s)*(C.length&&s[0]===C[C.length-1]?2:1));const key='S:'+t;const [c,v]=sylCV(t);
     const k=opt&&opt.k||(lv<=1?'hear':lv===2?pick(['hear','read']):lv===3?pick(['find','read','build']):lv===4?pick(['mem','build','read','find']):pick(['hear','read','find','mem','build']));
     const near=pool.filter(s=>s!==t&&(s[0]===c||s.slice(1)===v));const n=lv<=1?3:4;
-    const fuse=m=>say(m+' Écoute :',()=>snd(c,()=>snd(v,()=>say(t,null,.8))));
+    const fuse=m=>say(m+' Écoute :',()=>snd(c,()=>snd(v,()=>pSy(t)())));
     if(k==='hear'){const ch=shuffle([t,...distract(t,pool,n-1,near)]);
       hearRound(A,{t,choices:ch,big:true,disp:x=>({t:x,cur:lv>=4&&Math.random()<.4}),play:pSy,key,label:'syllabe',prompt:`Touche la syllabe ${t}.`,shown:'Écoute, puis touche la bonne syllabe.',
         hint:m=>{play.querySelectorAll('.scard').forEach(b=>{if(b.textContent===t)b.classList.add('hint')});fuse(m)}});return}
@@ -1391,7 +1396,7 @@ MODS.bee={
 const CPLX_ORDER=[['ou','ch'],['on','an'],['oi','in'],['au','eu'],['ai','gn']];
 const CPLX_ALL=CPLX_ORDER.flat();
 const CPLX_W={ou:['🐺','loup'],ch:['🐱','chat'],on:['🎈','ballon'],an:['🐘','éléphant'],oi:['👑','roi'],in:['🐰','lapin'],au:['🚗','auto'],eu:['🔥','feu'],ai:['🥛','lait'],gn:['🏔️','montagne']};
-const pCx=x=>cb=>snd(x,()=>say('comme dans '+CPLX_W[x][1],cb));
+const pCx=x=>cb=>snd(x,()=>say('comme dans',()=>pW(CPLX_W[x][1])(cb)));
 const swanNeed=()=>SKY_V.every(v=>status('Sn:'+v)==='acquis')&&SKY_ALL.filter(x=>!isV(x)&&status('Sn:'+x)==='acquis').length>=4;
 function cplxSyl(){const C=SKY_ALL.filter(x=>!isV(x)&&status('Sn:'+x)==='acquis'),X=CPLX_ALL.filter(x=>status('Sc:'+x)==='acquis'),V=SKY_V.filter(v=>status('Sn:'+v)==='acquis');const out=[];
   X.forEach(x=>{if(x==='ch')V.forEach(v=>out.push('ch'+v));else if(x!=='gn')C.forEach(c=>{if((c==='c'||c==='g')&&(x==='in'||x==='eu'))return;out.push(c+x)})});return out}
@@ -1426,8 +1431,8 @@ const MOTS_ALL=MOTS_ORDER.flat();
 const MOT_CTX={le:'le chat',la:'la lune',un:'un ballon',une:'une pomme',et:'papa et maman',les:'les fleurs',il:'il dort',elle:'elle chante',est:'il est grand',dans:'dans la maison',sur:'sur la table',de:'un verre de lait',je:'je joue',tu:'tu ris',des:'des bonbons',avec:'avec moi',pas:'je ne sais pas',mon:'mon vélo'};
 const MOT_SAY={est:'è'};
 const MOT_CONF=[['le','la','les','de','des'],['un','une','mon'],['il','elle'],['et','est','les'],['je','tu','de'],['dans','des','pas'],['sur','tu','un'],['avec','elle']];
-const pMo=w=>cb=>say(MOT_SAY[w]||w,cb,.8);
-const pMoC=w=>cb=>say((MOT_SAY[w]||w)+', comme dans : '+MOT_CTX[w],cb,.85);
+const pMo=w=>cb=>sndPlay(sndPath('mo',w),MOT_SAY[w]||w,cb,.8);
+const pMoC=w=>cb=>pMo(w)(()=>say('comme dans : '+MOT_CTX[w],cb,.85));
 const PHR=[['🐱','___ chat dort.','le'],['🌙','___ lune brille.','la'],['🎈','J’ai ___ ballon.','un'],['🍎','J’ai ___ pomme.','une'],['👨‍👩‍👧','Papa ___ maman.','et'],['🌸','___ fleurs sont jolies.','les'],
   ['👦','___ dort.','il'],['👧','___ chante.','elle'],['🐟','Le poisson ___ dans l’eau.','est'],['🏠','Le chat est ___ la maison.','dans'],['📚','Le livre est ___ la table.','sur'],['🥛','Un verre ___ lait.','de'],
   ['🎨','___ dessine.','je'],['🤸','___ sautes.','tu'],['🍬','Il mange ___ bonbons.','des'],['🐶','Je joue ___ mon chien.','avec'],['😴','Je ne dors ___.','pas'],['🚲','C’est ___ vélo.','mon']];
@@ -1478,30 +1483,30 @@ const sameStart=(x,pool)=>pool.filter(y=>y!==x&&y.w[0]===x.w[0]);
 MODS.eagle={
   intro:"L'aigle vole très haut et lit tous les mots du ciel. Lis-les avec lui, en entier, syllabe après syllabe !",
   round(lv,A,opt){
-    let pool=wdPool();if(pool.length<4)pool=WD.slice(0,6);
+    let pool=wdPool();if(pool.length<4)pool=WD.slice(0,6);sndPreload(pool.map(x=>x.w),'w');
     const t=opt&&opt.t||wpick(pool,x=>focusW('W:'+x.w));const key='W:'+t.w;
     const k=opt&&opt.k||(lv<=1?'pic':lv===2?pick(['pic','word']):lv===3?pick(['pic','word','build']):lv===4?pick(['mem','build','word','pic']):pick(['pic','word','build','mem']));
     const n=lv<=1?3:4;const col=h('div',{class:'col'});
     /* les intrus commencent par la même lettre : impossible de deviner avec la première lettre seulement */
     const ds=m=>{const a=shuffle(sameStart(t,pool)).slice(0,m);shuffle(pool.filter(y=>y!==t&&!a.includes(y)&&y.e!==t.e)).forEach(y=>{if(a.length<m)a.push(y)});return a};
     if(k==='pic'){play.append(col);const wEl=wordEl(t);col.append(wEl);const row=h('div',{class:'choices'});
-      shuffle([t,...ds(n-1)]).forEach(x=>{const b=h('button',{class:'pic','aria-label':'image'},x.e);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,cb=>say(t.w,cb),A);else wrongS(b,cb=>say('Ça, c’est '+x.w+'.',cb),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(h('div',{class:'picw'},b))});
+      shuffle([t,...ds(n-1)]).forEach(x=>{const b=h('button',{class:'pic','aria-label':'image'},x.e);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,pW(t.w),A);else wrongS(b,cb=>say('Ça, c’est',()=>pW(x.w)(cb)),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(h('div',{class:'picw'},b))});
       col.append(row);cur.hint=m=>{wEl.classList.add('colored');say(m+' Lis les syllabes une par une : ',()=>say(t.s.join(' … '),null,.6))};
       A.prompt('Lis le mot jusqu’au bout, puis touche la bonne image.','Lis le mot en entier, puis touche l’image.');return}
     if(k==='word'){play.append(col);col.append(h('div',{class:'bigpic'},t.e));const row=h('div',{class:'choices'});
-      shuffle([t,...ds(n-2)]).forEach(x=>{const b=h('button',{class:'wchoice'},x.w);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,cb=>say(t.w,cb),A);else wrongS(b,cb=>say('Ça, c’est écrit '+x.w+'.',cb),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(b)});
+      shuffle([t,...ds(n-2)]).forEach(x=>{const b=h('button',{class:'wchoice'},x.w);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,pW(t.w),A);else wrongS(b,cb=>say('Ça, c’est écrit',()=>pW(x.w)(cb)),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(b)});
       col.append(row);A.prompt('Regarde l’image. Lis bien chaque mot jusqu’au bout, et touche le bon.','Touche le mot qui va avec l’image.');return}
     if(k==='build'){play.append(col);const sy=t.s;let filled=[];col.append(h('div',{class:'bigpic'},t.e));
       const slots=h('div',{class:'slots'});const sl=sy.map(()=>{const s=h('div',{class:'slotb'});slots.append(s);return s});
       const extra=shuffle(pool.flatMap(x=>x.s).filter(s=>!sy.includes(s))).slice(0,sy.length>2?1:2);const row=h('div',{class:'tiles'});
       const upd=()=>sl.forEach((s,i)=>{s.textContent=filled[i]||'';s.classList.toggle('fill',!!filled[i])});
-      shuffle([...sy,...extra]).forEach(s=>{const b=h('button',{class:'scard','aria-label':'syllabe'},s);if(sy.includes(s))b.dataset.ok=sy.indexOf(s);b.onclick=()=>{if(!guard()||filled.length>=sy.length)return;filled.push(s);upd();say(s,null,.8);
-        if(filled.length===sy.length){if(filled.join('')===sy.join(''))rightS(slots,key,cb=>say(t.w,cb),A);else{const got=filled.join('');setTimeout(()=>{filled=[];upd()},500);wrongS(slots,cb=>say(got,cb,.8),A)}}};row.append(b)});
+      shuffle([...sy,...extra]).forEach(s=>{const b=h('button',{class:'scard','aria-label':'syllabe'},s);if(sy.includes(s))b.dataset.ok=sy.indexOf(s);b.onclick=()=>{if(!guard()||filled.length>=sy.length)return;filled.push(s);upd();pSy(s)();
+        if(filled.length===sy.length){if(filled.join('')===sy.join(''))rightS(slots,key,pW(t.w),A);else{const got=filled.join('');setTimeout(()=>{filled=[];upd()},500);wrongS(slots,cb=>say(got,cb,.8),A)}}};row.append(b)});
       slots.onclick=()=>{if(!guard())return;filled.pop();upd()};col.append(slots,row);upd();
       cur.hint=m=>{const nx=sy[filled.length]||sy[0];[...row.children].forEach(b=>{if(b.textContent===nx)b.classList.add('hint')});say(m+' Écoute les syllabes : '+sy.join(' … ')+'.',null,.7)};
       A.prompt(`Écris le mot ${t.w} avec les syllabes.`,'Écris le mot avec les syllabes.');return}
     const ids=shuffle([t,...ds((lv>=5?4:3)-1)]);
-    memRound(A,{pairs:ids.map(x=>({id:x.w,a:{t:x.e,cur:false},b:{t:x.w,cur:false}})),play:w=>cb=>say(w,cb),key:'Mm:eagle',
+    memRound(A,{pairs:ids.map(x=>({id:x.w,a:{t:x.e,cur:false},b:{t:x.w,cur:false}})),play:pW,key:'Mm:eagle',
       prompt:'Retourne les nuages et trouve les paires : un mot, et son image.',shown:'Trouve les paires : un mot et son image.'})
   }
 };
@@ -1691,7 +1696,7 @@ function openParents(){
     h('div',{class:'legend'},h('span',{class:'chip acquis'},'A'),'acquis',h('span',{class:'chip cours'},'A'),'en cours',h('span',{class:'chip nv'},'A'),'pas encore vu'));
   const zone=h('div',null);const resetBtn=h('button',{class:'danger',onclick:()=>{zone.innerHTML='';zone.append(h('div',{class:'confirm'},h('span',null,'Effacer toute la progression ?'),
     h('button',{class:'danger',onclick:()=>{st=fresh();forcePush=true;save();P.hidden=true;renderMap()}},'Oui, tout effacer'),h('button',{class:'bigbtn alt',style:'padding:8px 14px;font-size:.95rem',onclick:()=>{zone.innerHTML='';zone.append(resetBtn)}},'Annuler')))}},'Remettre la progression à zéro');
-  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone,h('p',{class:'muted',style:'margin-top:18px;font-size:.8rem'},'Sons enregistrés du Royaume des Nuages : Tableau des sons du français de Parle par Tingnova Inc. (getparle.app/french-sound-chart), licence CC BY 4.0 ; six extraits de Wikimedia Commons sous licence CC BY-SA 3.0 (voir sons/LICENSE.txt). Rognés et égalisés en volume.'));
+  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone,h('p',{class:'muted',style:'margin-top:18px;font-size:.8rem'},'Voix du Royaume des Nuages : synthèse vocale Piper, voix française « siwis » (corpus SIWIS, Université d’Édimbourg, licence CC BY 4.0), générée son par son à partir de phonèmes.'));
   P.append(sheet);P.hidden=false;P.scrollTop=0;
 }
 

@@ -1,0 +1,5 @@
+Sons du Royaume des Nuages
+
+Synthèse vocale : Piper (https://github.com/rhasspy/piper), voix fr_FR « siwis » medium.
+Données d'entraînement : corpus SIWIS, Université d'Édimbourg, licence CC BY 4.0 (https://datashare.is.ed.ac.uk/handle/10283/2353).
+Génération : chaque son, syllabe ou mot est produit à partir d'une suite de phonèmes choisie explicitement, puis rogné et égalisé en volume (MP3 48 kb/s).
