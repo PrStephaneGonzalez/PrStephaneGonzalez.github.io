@@ -1,0 +1,16 @@
+---
+title: "Apps"
+description-meta: "Educational apps designed by Stéphane Gonzalez."
+---
+
+Small educational apps I design, mostly for young learners. They run in any web browser and can be installed on a tablet's home screen.
+
+## Les Gardiens de la Forêt Enchantée
+
+*Grande section de maternelle → début du CP · en français*
+
+Un jeu pour apprendre en s'amusant : une sorcière a plongé la forêt dans l'ombre, et l'enfant libère les animaux en relevant des défis. Lettres sous toutes leurs formes (capitales, minuscules, attachées), sons et syllabes, premiers mots et phrases, dénombrement jusqu'à 20, formes, repérage dans l'espace, longueurs et masses, petits problèmes, et énigmes de logique (fioles à trier, chemins qui passent une seule fois par chaque fleur, suites, sudokus en images). Une fée lit toutes les consignes à voix haute ; un espace parents montre ce qui est acquis.
+
+[Jouer](apps/foret-enchantee/index.html){.btn .btn-primary}
+
+Sur iPad : ouvrir le jeu dans Safari, puis Partager → « Sur l'écran d'accueil ».
