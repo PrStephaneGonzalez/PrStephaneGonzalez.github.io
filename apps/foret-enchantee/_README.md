@@ -45,7 +45,16 @@ Quatrième territoire, ouvert dès que le hibou est libéré.
 - **Perroquet 🦜, les sons des lettres.** Paliers : a i o → u é e → l m r → s f v → n j p → t d b → c g z. Un palier ne s'ouvre que lorsque tous les sons des paliers précédents sont acquis (3 réussites du premier coup, clés `Sn:`). Exercices : écouter et toucher, lire et choisir le son, cherche et trouve, memory.
 - **Colombe 🕊️, les trois écritures.** Chaque lettre en grand, en petit et en attaché, par paliers de lettres (clés `Fo:`), avec les lettres qui se confondent (b d p q, m n u…).
 - **Abeille 🐝, les syllabes.** S'ouvre quand a, i, o et deux consonnes sont acquis. Ne propose que des syllabes faites de sons déjà acquis (clés `S:`, partagées avec le dragon). Exercices : écouter et toucher, lire et choisir, cherche et trouve, memory, fabriquer la syllabe.
-- **Trois licornes** : des sons, des trois écritures, des syllabes magiques.
+- **Cygne 🦢, les sons magiques** (ou, ch, on, an, oi, in, au, eu, ai, gn), par paires, chacun avec un mot-repère et son image (ou comme dans loup…). S'ouvre quand toutes les voyelles et quatre consonnes sont acquises (clés `Sc:`). Au dernier niveau, syllabes avec ces sons.
+- **Coccinelle 🐞, les petits mots** (le, la, un, une, et, les, il, elle, est, dans, sur, de, je, tu, des, avec, pas, mon), reconnus globalement, avec des phrases à compléter (clés `Mo:`).
+- **Aigle 🦅, les mots à lire.** Un mot n'apparaît que si tous ses sons sont acquis (les lettres muettes, en gris, ne comptent pas). Les intrus commencent par la même lettre que le bon mot, pour qu'on ne puisse pas deviner avec la première lettre (clés `W:`, partagées avec la biche).
+- **Six licornes** : des sons, des trois écritures, des syllabes magiques, des sons magiques, des petits mots, et la **super licorne du ciel** (lire 15 mots ; elle demande toutes les autres licornes du ciel). Elle libère l'arc-en-ciel, qui apparaît alors sur toutes les cartes.
+
+Dans la Prairie, la biche demande maintenant l'aigle.
+
+## Formes magiques et étoiles d'illumination
+
+Chaque niveau gagné transforme l'animal (étincelant, d'argent, d'or, arc-en-ciel), puis il devient légendaire avec une couronne quand tous ses niveaux sont réussis. Une étoile d'illumination tourne autour de lui pour chaque niveau gagné, et chaque nouvelle série de cinq étoiles après la couronne en ajoute une (`bonus`). La fenêtre de fin de niveau montre la prochaine transformation, et le bouton « Encore ! » est le bouton principal. Pendant le jeu, la prochaine forme est affichée à droite des étoiles.
 
 Une mauvaise bulle fait entendre son propre son, puis la consigne revient. Dans la Prairie, le dragon demande désormais l'abeille, et les licornes des syllabes et de la lecture demandent le perroquet et l'abeille : on ne lit pas de syllabes écrites avant d'en connaître les sons.
 
