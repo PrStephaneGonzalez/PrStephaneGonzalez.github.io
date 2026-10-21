@@ -12,6 +12,7 @@ C'est un site statique : un seul fichier `index.html`, sans dépendance ni étap
 | `manifest.webmanifest` | Nom et icônes quand le site est installé sur l'écran d'accueil |
 | `sw.js` | Fonctionnement hors connexion (après une première visite) |
 | `icons/` | Icônes 180, 192 et 512 px |
+| `sons/` | 35 sons du français enregistrés (`audio/*.m4a`), page d'écoute `index.html`, licences `LICENSE.txt` |
 
 ## Essayer chez soi
 
@@ -36,6 +37,19 @@ Quand vous publiez une nouvelle version, changez `VERSION` dans `sw.js` (par exe
 ## Installer sur l'iPad
 
 Ouvrir l'adresse dans Safari, toucher Partager, puis « Sur l'écran d'accueil ». Le jeu se lance ensuite en plein écran, comme une application. Faire une première partie avec du réseau pour que les polices et la page soient gardées en mémoire.
+
+## Le Royaume des Nuages (lecture pas à pas)
+
+Quatrième territoire, ouvert dès que le hibou est libéré.
+
+- **Perroquet 🦜, les sons des lettres.** Paliers : a i o → u é e → l m r → s f v → n j p → t d b → c g z. Un palier ne s'ouvre que lorsque tous les sons des paliers précédents sont acquis (3 réussites du premier coup, clés `Sn:`). Exercices : écouter et toucher, lire et choisir le son, cherche et trouve, memory.
+- **Colombe 🕊️, les trois écritures.** Chaque lettre en grand, en petit et en attaché, par paliers de lettres (clés `Fo:`), avec les lettres qui se confondent (b d p q, m n u…).
+- **Abeille 🐝, les syllabes.** S'ouvre quand a, i, o et deux consonnes sont acquis. Ne propose que des syllabes faites de sons déjà acquis (clés `S:`, partagées avec le dragon). Exercices : écouter et toucher, lire et choisir, cherche et trouve, memory, fabriquer la syllabe.
+- **Trois licornes** : des sons, des trois écritures, des syllabes magiques.
+
+Une mauvaise bulle fait entendre son propre son, puis la consigne revient. Dans la Prairie, le dragon demande désormais l'abeille, et les licornes des syllabes et de la lecture demandent le perroquet et l'abeille : on ne lit pas de syllabes écrites avant d'en connaître les sons.
+
+Les sons viennent du *Tableau des sons du français de Parle* (Tingnova Inc., CC BY 4.0) ; six extraits viennent de Wikimedia Commons (CC BY-SA 3.0). Ils ont été rognés et égalisés en volume. Les consonnes semblent contenues dans de courtes syllabes plutôt qu'isolées : à vérifier à l'écoute (`sons/index.html`).
 
 ## Où sont les données
 
