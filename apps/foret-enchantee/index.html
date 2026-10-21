@@ -41,7 +41,8 @@ svg.ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;str
 /* ---------- carte ---------- */
 .mapbar{display:flex;align-items:center;gap:12px;padding-block:10px;background:linear-gradient(var(--paper),rgba(255,250,244,.88));box-shadow:0 2px 0 rgba(43,33,66,.06);z-index:3}
 .brand{display:flex;flex-direction:column;line-height:1.05;min-width:0}
-.brand .t1{font:800 1.25rem/1 var(--display);color:var(--berry)}
+.brand .t1{font:800 1.25rem/1 var(--display);color:var(--berry);white-space:nowrap}
+.tally .ucount{font:800 .85rem/1 var(--body);color:var(--ink-soft);white-space:nowrap;align-self:center}
 .brand .t2{font:600 .9rem/1.2 var(--display);color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tally{display:flex;gap:2px;margin-left:auto;font-size:1.2rem;flex-wrap:wrap;justify-content:flex-end}
 .tally span{transition:filter .6s,opacity .6s}
@@ -266,6 +267,34 @@ svg.ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;str
 .lopt{display:flex;flex-direction:column;align-items:center;gap:10px}
 .lopt .spk{width:clamp(82px,20vw,112px);aspect-ratio:1;border-radius:50%;border:none;background:radial-gradient(circle at 35% 30%,#fff,var(--bc) 72%);font-size:clamp(2rem,8vw,3rem);box-shadow:0 4px 0 var(--shadow)}
 .lopt .spk.playing{box-shadow:0 0 0 6px var(--sun)}
+.fx1{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px #ffe680)}
+.fx2{filter:grayscale(.5) saturate(.85) brightness(1.25) drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #b9cdf0)}
+.fx3,.fx5{filter:sepia(1) saturate(3.4) hue-rotate(-10deg) brightness(1.12) drop-shadow(0 0 4px #ffe28a) drop-shadow(0 0 12px #ffcf3f)}
+.fx4{animation:rbw 3.2s linear infinite}
+.spot.free .ani.fx1{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px #ffe680)}
+.spot.free .ani.fx2{filter:grayscale(.5) saturate(.85) brightness(1.25) drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #b9cdf0)}
+.spot.free .ani.fx3,.spot.free .ani.fx5{filter:sepia(1) saturate(3.4) hue-rotate(-10deg) brightness(1.12) drop-shadow(0 0 4px #ffe28a) drop-shadow(0 0 12px #ffcf3f)}
+.spot.free .ani.fx4{animation:hop 2.8s ease-in-out infinite,rbw 3.2s linear infinite}
+@keyframes rbw{from{filter:hue-rotate(0deg) saturate(1.8) drop-shadow(0 0 6px #fff)}to{filter:hue-rotate(360deg) saturate(1.8) drop-shadow(0 0 6px #fff)}}
+.spot.free.mg1{box-shadow:0 0 0 5px #fff,0 0 0 10px var(--c),0 0 26px 8px rgba(255,240,160,.85)}
+.spot.free.mg2{background:radial-gradient(circle at 50% 38%,#fff,#e3eaf5 80%);box-shadow:0 0 0 5px #fff,0 0 0 10px #c3cfe2,0 0 28px 10px rgba(225,235,255,.95)}
+.spot.free.mg3{background:radial-gradient(circle at 50% 38%,#fffbea,#ffe7a0 80%);box-shadow:0 0 0 5px #fff6d6,0 0 0 10px #ffc93c,0 0 30px 12px rgba(255,214,90,.9)}
+.spot.free.mg4{box-shadow:0 0 0 5px #fff,0 0 30px 12px rgba(255,255,255,.9)}
+.spot.free.mg5{background:radial-gradient(circle at 50% 38%,#fffbea,#ffd86b 85%);box-shadow:0 0 0 5px #fff6d6,0 0 34px 14px rgba(255,220,120,.95)}
+.spot.mg4::before,.spot.mg5::before,.hero.mg4::before,.hero.mg5::before,.spot.uni.super::before{content:"";position:absolute;inset:-13px;border-radius:50%;background:conic-gradient(#ff9db9,#ffc98a,#fff09a,#a8e6a1,#9fd3ff,#c6a8ff,#ff9db9);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px));mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px));animation:spin 5s linear infinite;pointer-events:none}
+.spot .crown,.hero .crown{position:absolute;top:calc(var(--sz) * -.38);left:50%;transform:translateX(-50%) rotate(-8deg);font-size:calc(var(--sz) * .34);line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:2}
+.spot .orbit,.hero .orbit{position:absolute;inset:0;animation:spin 16s linear infinite;pointer-events:none}
+.spot .orbit i,.hero .orbit i{position:absolute;left:50%;top:50%;width:1em;height:1em;margin:-.5em 0 0 -.5em;text-align:center;font-style:normal;line-height:1;color:#ffd23f;font-size:calc(var(--sz) * .2);text-shadow:0 0 6px #fff,0 0 2px #b8860b}
+.hero.mgh{--sz:150px;position:relative}
+.hero.mg2{background:radial-gradient(circle at 50% 38%,#fff,#e3eaf5 80%)}.hero.mg3,.hero.mg5{background:radial-gradient(circle at 50% 38%,#fffbea,#ffd86b 85%)}
+.tease{display:flex;align-items:center;gap:12px;background:var(--paper-2);border-radius:20px;padding:10px 14px;margin:-4px 0 16px;text-align:left;color:var(--ink);font-weight:700;line-height:1.3}
+.tease .mini{font-size:44px;line-height:1;flex:none}.tease .mini b{color:#f0b51e}
+.nextf{display:inline-flex;align-items:center;gap:3px;margin-left:6px;font:700 1.05rem/1 var(--body);color:var(--ink-soft)}.nextf span{font-size:1.5rem}.nextf b{color:#f0b51e;font-size:1.4rem}
+.spot.uni.super{--sz:clamp(70px,13vmin,108px)}
+.spot.uni.super.free .ani{animation:rbw 3.2s linear infinite}
+.field .fb.long{font-size:clamp(1rem,3.9vmin,1.55rem)}
+.mc .long{font-size:clamp(.95rem,3.8vw,1.4rem)}
+.wd .g{display:inline}.wd .g.s1{color:#3f86d9}.wd .g.mute{color:#b4abc6}
 .lopt .pickb{border:none;border-radius:16px;background:var(--mint);color:#fff;font:700 1.5rem/1 var(--body);padding:8px 22px;box-shadow:0 4px 0 var(--mint-d)}
 .whoq{font-family:var(--fd,inherit);font-size:1.5rem;margin:6px 0 10px;color:#fff}
 #whoList{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px}
@@ -435,12 +464,17 @@ const GAMES=[
   {id:'lengths',t:'foret',ani:'🐌',name:"l'escargot",title:'Lianes et balances',max:5,c:'#8fe3a0',req:['shapes'],skill:'Comparer longueurs et masses'},
   {id:'sounds',t:'prairie',ani:'🐸',name:'la grenouille',title:'Les sons des mots',max:4,c:'#6fd67f',req:['letters'],skill:'Syllabes orales, rimes, premier son'},
   {id:'syll',t:'prairie',ani:'🐉',name:'le dragon',title:'Les œufs de dragon',max:5,c:'#ff9a6b',req:['sounds','bee'],skill:'Lire et écrire des syllabes'},
-  {id:'words',t:'prairie',ani:'🦌',name:'la biche',title:'Les mots magiques',max:5,c:'#e0a35a',req:['syll'],skill:'Lire des mots et des phrases'},
+  {id:'words',t:'prairie',ani:'🦌',name:'la biche',title:'Les mots magiques',max:5,c:'#e0a35a',req:['syll','eagle'],skill:'Lire des mots et des phrases'},
   {id:'cursive',t:'prairie',ani:'🦚',name:'le paon',title:'Les lettres attachées',max:5,c:'#5fb8ff',req:['letters'],skill:'Reconnaître lettres et mots en écriture cursive (attachée)'},
   {id:'parrot',t:'ciel',ani:'🦜',name:'le perroquet',title:'Les sons des lettres',max:5,c:'#6fd67f',req:['letters'],skill:'Associer chaque lettre à son son (voyelles, puis consonnes, une à une)'},
   {id:'dove',t:'ciel',ani:'🕊️',name:'la colombe',title:'Les trois écritures',max:5,c:'#b99bff',req:['letters'],skill:'Reconnaître chaque lettre en capitale, en script et en attaché'},
-  {id:'bee',t:'ciel',ani:'🐝',name:"l'abeille",title:'Les syllabes',max:5,c:'#ffd36b',req:['parrot'],skill:'Lire des syllabes simples, uniquement avec des sons déjà acquis',
+  {id:'bee',t:'ciel',ani:'🐝',name:"l'abeille",title:'Les syllabes',max:5,c:'#ffd36b',req:['parrot'],fem:1,skill:'Lire des syllabes simples, uniquement avec des sons déjà acquis',
    need:()=>beeNeed(),needAni:'🦜',needTxt:()=>{const {C,V}=beeLetters();return `L'abeille dort encore. Pour la réveiller, apprends avec le perroquet les sons a, i et o, puis deux consonnes. Tu connais déjà ${V.length+C.length<=1?(V.length+C.length?'un son':'aucun son'):NW[V.length+C.length]+' sons'}.`}},
+  {id:'swan',t:'ciel',ani:'🦢',name:'le cygne',title:'Les sons magiques',max:5,c:'#9fd3ff',req:['bee'],skill:'Sons écrits avec deux lettres : ou, ch, on, an, oi, in, au, eu, ai, gn',
+   need:()=>swanNeed(),needAni:'🦜',needTxt:()=>"Le cygne attend que tu connaisses, avec le perroquet, toutes les voyelles et quatre consonnes."},
+  {id:'ladybug',t:'ciel',ani:'🐞',name:'la coccinelle',title:'Les petits mots',max:5,c:'#ff7f7f',req:['parrot'],skill:'Reconnaître d’un coup d’œil les petits mots : le, la, un, et, est, dans…'},
+  {id:'eagle',t:'ciel',ani:'🦅',name:"l'aigle",title:'Les mots à lire',max:5,c:'#c98b5a',req:['bee'],skill:'Lire des mots entiers, faits uniquement de sons déjà acquis',
+   need:()=>eagleNeed(),needAni:'🦜',needTxt:()=>{const n=wdPool().length;return `L'aigle attend que tu puisses lire six mots avec les sons que tu connais. Tu en as déjà ${n<=1?(n?'un':'aucun'):NW[n]||n}. Continue avec le perroquet et le cygne !`}},
   {id:'potions',t:'lac',ani:'🦊',name:'le renard',title:'Les potions',max:5,c:'#ff9a6b',req:['nuts'],skill:'Logique : trier, anticiper'},
   {id:'problems',t:'lac',ani:'🐻',name:"l'ours",title:'Les énigmes de l’ours',max:5,c:'#c98b5a',req:['nuts'],skill:'Comparer, ajouter, retirer, compléter, calculer'},
   {id:'logic',t:'lac',ani:'🐢',name:'la tortue',title:'Les casse-têtes',max:6,c:'#5fb8ff',req:['path'],skill:'Suites logiques, intrus, sudokus, devinettes'},
@@ -467,15 +501,22 @@ const UNI=[
   {id:'u_forms',t:'ciel',h:'250deg',req:'dove',name:'la licorne des trois écritures',goal:'reconnaître les 26 lettres dans leurs trois écritures',total:26,
    keys:()=>FORM_ORDER.flat().map(x=>'Fo:'+x),round:A=>{const o=openItems(FORM_ORDER,'Fo:');MODS.dove.round(3,A,{t:focusPick(o,x=>'Fo:'+x),k:pick(['cl','lc','cc','ca'])})}},
   {id:'u_syl',t:'ciel',h:'330deg',req:'bee',name:'la licorne des syllabes magiques',goal:'lire 30 syllabes',total:30,
-   keys:()=>SYL_SKY.map(x=>'S:'+x),round:A=>{const p=beePool();MODS.bee.round(2,A,{t:focusPick(p,x=>'S:'+x),k:pick(['hear','read'])})}}
+   keys:()=>SYL_SKY.map(x=>'S:'+x),round:A=>{const p=beePool();MODS.bee.round(2,A,{t:focusPick(p,x=>'S:'+x),k:pick(['hear','read'])})}},
+  {id:'u_cplx',t:'ciel',h:'60deg',req:'swan',name:'la licorne des sons magiques',goal:'reconnaître les dix sons magiques : ou, ch, on, an, oi, in, au, eu, ai, gn',total:10,
+   keys:()=>CPLX_ALL.map(x=>'Sc:'+x),round:A=>{const o=openItems(CPLX_ORDER,'Sc:');MODS.swan.round(2,A,{t:focusPick(o,x=>'Sc:'+x),k:pick(['hear','read','pic'])})}},
+  {id:'u_mots',t:'ciel',h:'190deg',req:'ladybug',name:'la licorne des petits mots',goal:'reconnaître les 18 petits mots',total:18,
+   keys:()=>MOTS_ALL.map(x=>'Mo:'+x),round:A=>{const o=openItems(MOTS_ORDER,'Mo:');MODS.ladybug.round(3,A,{t:focusPick(o,x=>'Mo:'+x),k:pick(['hear','read','phr'])})}},
+  {id:'u_super',t:'ciel',h:'0deg',sup:1,req:'eagle',name:'la super licorne du ciel',goal:'lire quinze mots toute seule, jusqu’au bout',total:15,
+   keys:()=>WD.map(x=>'W:'+x.w),round:A=>{let p=wdPool();if(p.length<4)p=WD.slice(0,6);MODS.eagle.round(3,A,{t:focusPick(p,x=>'W:'+x.w),k:pick(['pic','word','pic'])})}}
 ];
 UNI.forEach(u=>{if(!u.prog)u.prog=()=>u.keys().filter(k=>status(k)==='acquis').length;
   /* progression partielle : une notion acquise vaut 1, sinon chaque réussite du premier coup vaut 1/4 (au plus 3/4 avant la confirmation un autre jour) */
   u.partial=u.keys?()=>{const ks=u.keys();const acq=ks.filter(k=>status(k)==='acquis').length;const rest=ks.filter(k=>status(k)!=='acquis').map(credit).sort((a,b)=>b-a).slice(0,Math.max(0,u.total-acq));return Math.min(u.total,acq+rest.reduce((a,b)=>a+b,0))}:u.prog});
 function credit(k){const it=st.items[k];if(!it)return 0;if(status(k)==='acquis')return 1;return Math.min(it.ok,3)/4}
 /* une licorne n'ouvre son défi que lorsque tous les exercices dont elle dépend sont libérés (toute la chaîne d'apprentissage) */
-const UNEEDS={u_let:['letters'],u_num:['nuts'],u_cur:['letters','cursive'],u_snd:['letters','sounds','parrot','bee','syll'],u_read:['letters','sounds','parrot','bee','syll','words'],u_sons:['letters','parrot'],u_forms:['letters','dove'],u_syl:['letters','parrot','bee'],u_log:['space','path','nuts','potions','logic']};
-const uniMissing=u=>(UNEEDS[u.id]||[u.req]).filter(id=>!st.games[id].freed).map(id=>GBY[id]);
+const UNEEDS={u_let:['letters'],u_num:['nuts'],u_cur:['letters','cursive'],u_snd:['letters','sounds','parrot','bee','syll'],u_read:['letters','sounds','parrot','bee','syll','words'],u_sons:['letters','parrot'],u_forms:['letters','dove'],u_syl:['letters','parrot','bee'],u_cplx:['letters','parrot','bee','swan'],u_mots:['letters','parrot','ladybug'],u_super:['letters','parrot','dove','bee','swan','ladybug','eagle'],u_log:['space','path','nuts','potions','logic']};
+const UNEEDU={u_super:['u_sons','u_forms','u_syl','u_cplx','u_mots']};
+const uniMissing=u=>(UNEEDS[u.id]||[u.req]).filter(id=>!st.games[id].freed).map(id=>GBY[id]).concat((UNEEDU[u.id]||[]).filter(id=>!st.unicorns[id]).map(id=>({name:UNI.find(v=>v.id===id).name,ani:'🦄'})));
 const uniAvail=u=>!!st.unicorns[u.id]||uniMissing(u).length===0;
 const listFr=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' et '+a[a.length-1];
 /* défi de licorne : priorité aux notions qui peuvent progresser aujourd'hui */
@@ -488,8 +529,8 @@ const POS={
            port:{sounds:[25,57],syll:[74,62],words:[27,84],cursive:[73,88],u_let:[17,13],u_num:[50,9],u_snd:[83,13],u_read:[17,34],u_log:[50,30],u_cur:[83,34]}},
   lac:{land:{potions:[14,30],problems:[38,18],logic:[84,28],siren:[56,68]},
        port:{potions:[24,13],problems:[74,22],logic:[26,40],siren:[56,73]}},
-  ciel:{land:{parrot:[20,74],dove:[50,84],bee:[80,74],u_sons:[22,30],u_forms:[50,18],u_syl:[78,30]},
-        port:{parrot:[24,58],dove:[74,66],bee:[32,86],u_sons:[18,18],u_forms:[50,10],u_syl:[82,18]}}
+  ciel:{land:{parrot:[9,66],dove:[26,84],bee:[43,66],swan:[60,84],ladybug:[77,66],eagle:[92,84],u_sons:[8,24],u_forms:[23,13],u_syl:[38,25],u_cplx:[62,25],u_mots:[77,13],u_super:[50,13]},
+        port:{parrot:[22,50],dove:[76,54],bee:[26,68],swan:[74,73],ladybug:[24,88],eagle:[74,91],u_sons:[15,11],u_forms:[85,11],u_syl:[15,29],u_cplx:[85,29],u_mots:[50,31],u_super:[50,12]}}
 };
 
 /* ================= état et maîtrise ================= */
@@ -572,22 +613,22 @@ function renderTabs(){const T=$('#tabs');T.innerHTML='';TERR.forEach(t=>{const g
 function renderMap(){
   const terr=st.terr;$('#terrName').textContent=TERR.find(t=>t.id===terr).name;renderTabs();
   const T=$('#tally');T.innerHTML='';GAMES.filter(g=>g.t===terr).forEach(g=>T.append(h('span',{class:st.games[g.id].freed?'':'off',title:g.name},g.ani)));
-  UNI.filter(u=>uT(u)===terr).forEach(u=>T.append(h('span',{class:st.unicorns[u.id]?'':'off',style:`filter:${st.unicorns[u.id]?'hue-rotate('+u.h+')':'grayscale(1)'}`},'🦄')));
+  {const us=UNI.filter(u=>uT(u)===terr);if(us.length>3){const f=us.filter(u=>st.unicorns[u.id]).length;T.append(h('span',{class:'ucount'+(f?'':' off')},'🦄 '+f+'/'+us.length))}else us.forEach(u=>T.append(h('span',{class:st.unicorns[u.id]?'':'off',style:`filter:${st.unicorns[u.id]?'hue-rotate('+u.h+')':'grayscale(1)'}`},'🦄')))}
   const S=$('#spots');S.innerHTML='';const L=POS[terr][layoutKey()];
   GAMES.filter(g=>g.t===terr).forEach(g=>{const gs=st.games[g.id];const [x,y]=L[g.id];const av=available(g);
     const done=gs.freed?(gs.level-1+(gs.mastered?1:0)):0;
-    const cls='spot '+(gs.freed?'free':av?'locked':'blocked')+(g.id==='siren'?' siren':'');
+    const fi=curForm(g);const cls='spot '+(gs.freed?'free':av?'locked':'blocked')+(g.id==='siren'?' siren':'')+(fi>0?' mg'+fi:'');
     const missing=reqOf(g).filter(r=>!st.games[r].freed);
-    const b=h('button',{class:cls,style:`left:${x}%;top:${y}%;--c:${g.c}`,'aria-label':(gs.freed?'Jouer avec ':'Libérer ')+g.name,onclick:()=>{sfx('tap');if(av)openGame(g.id);else blockedMsg(g,missing)}},
-      h('span',{class:'ani'},g.ani),gs.freed?h('span',{class:'spark'},'✨'):null,done>0?h('span',{class:'lv'},'★'.repeat(done)):null,
+    const b=h('button',{class:cls,style:`left:${x}%;top:${y}%;--c:${g.c}`,'aria-label':(gs.freed?'Jouer avec ':'Libérer ')+(fi>0?mName(g,fi):g.name),onclick:()=>{sfx('tap');if(av)openGame(g.id);else blockedMsg(g,missing)}},
+      h('span',{class:'ani'+(fi>0?' fx'+fi:'')},g.ani),gs.freed?h('span',{class:'spark'},'✨'):null,gs.freed?orbit(glowN(gs)):null,fi===5?h('span',{class:'crown'},'👑'):null,
       !av&&g.id!=='siren'?h('span',{class:'req'},missing.length?missing.map(r=>h('span',null,GBY[r].ani)):h('span',null,g.needAni||'⏳')):null,
       !av&&g.id==='siren'?h('span',{class:'lv'},`${reqOf(g).length-missing.length} / ${reqOf(g).length}`):null);
     S.append(b)});
   UNI.filter(u=>uT(u)===terr).forEach(u=>{const [x,y]=L[u.id];const fr=!!st.unicorns[u.id];const av=uniAvail(u);const p=u.partial()/u.total;
     const ring=sv('svg',{class:'uring',viewBox:'0 0 52 52'});ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'rgba(255,255,255,.35)'}));ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'#ffd36b',pathLength:100,'stroke-dasharray':`${Math.round(Math.min(1,p)*100)} 100`}));
-    S.append(h('button',{class:'spot uni '+(fr?'free':av?'locked':'blocked'),style:`left:${x}%;top:${y}%;--c:#ffd36b;--h:${u.h}`,'aria-label':u.name,
+    S.append(h('button',{class:'spot uni '+(fr?'free':av?'locked':'blocked')+(u.sup?' super':''),style:`left:${x}%;top:${y}%;--c:#ffd36b;--h:${u.h}`,'aria-label':u.name,
       onclick:()=>{sfx('tap');if(av)uniInfo(u);else say(`Pour approcher ${u.name}, libère d'abord ${listFr(uniMissing(u).map(g=>g.name))}.`)}},
-      h('span',{class:'ani'},'🦄'),fr?h('span',{class:'spark'},'✨'):ring,av?null:h('span',{class:'req'},h('span',null,uniMissing(u).map(g=>g.ani).join('')))))});
+      h('span',{class:'ani'},'🦄'),fr?h('span',{class:'spark'},'✨'):ring,av?null:h('span',{class:'req'},h('span',null,(m=>m.length>3?m.slice(0,2).join('')+'+'+(m.length-2):m.join(''))(uniMissing(u).map(g=>g.ani))))))});
   drawScene();
 }
 function blockedMsg(g,missing){
@@ -603,6 +644,15 @@ function uniInfo(u){const C=$('#celebrate');C.innerHTML='';const fr=!!st.unicorn
     h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;openUni(u)}},fr?'S’entraîner':'Relever le défi'),h('button',{class:'bigbtn alt',onclick:()=>{C.hidden=true}},'Plus tard'))));
   C.hidden=false;say(txt)}
 const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
+/* formes magiques : chaque niveau gagné transforme l'animal ; la dernière est toujours arc-en-ciel, puis légendaire (couronne) */
+const MAGIC=['','étincelant',"d'argent","d'or",'arc-en-ciel','légendaire'];
+const isFem=G=>G.name.startsWith('la ')||!!G.fem;
+function formIdx(G,lv,mastered){if(mastered)return 5;const s=lv-2;if(s<=0)return 0;return Math.max(1,4-(G.max-2-s))}
+function curForm(G){const g=st.games[G.id];return g.freed?formIdx(G,g.level,g.mastered):-1}
+function nextForm(G){const g=st.games[G.id];if(!g.freed)return 0;if(g.mastered)return 6;return g.level>=G.max?5:formIdx(G,g.level+1,false)}
+function mName(G,i){if(i<=0)return G.name;return G.name+' '+(i===1&&isFem(G)?'étincelante':MAGIC[i])}
+const glowN=g=>g.freed?Math.min(12,g.level-1+(g.mastered?1:0)+(g.bonus||0)):0;
+function orbit(n){const o=h('span',{class:'orbit'});for(let i=0;i<n;i++){const a=i*360/n;o.append(h('i',{style:`transform:rotate(${a}deg) translateY(calc(var(--sz) * -.68)) rotate(${-a}deg)`},'★'))}return o}
 function drawScene(){
   const stage=$('#stage'),cv=$('#forest');const W=stage.clientWidth,H=stage.clientHeight;if(!W||!H)return;const terr=st.terr;
   const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
@@ -614,6 +664,7 @@ function drawScene(){
   else{g.addColorStop(0,'#bfe6f2');g.addColorStop(.45,'#eef4e2');g.addColorStop(1,'#c9e6bc')}
   x.fillStyle=g;x.fillRect(0,0,W,H);
   x.fillStyle='rgba(255,222,110,.95)';x.beginPath();x.arc(W*.88,H*.09,M*.06,0,7);x.fill();
+  if(st.unicorns.u_super&&terr!=='ciel'){['#ff9db9','#ffc98a','#fff09a','#a8e6a1','#9fd3ff','#c6a8ff'].forEach((c,i)=>{x.strokeStyle=c;x.globalAlpha=.6;x.lineWidth=M*.022;x.beginPath();x.arc(W*.5,H*.62,Math.max(W,H)*.5-i*M*.022,Math.PI,2*Math.PI);x.stroke()});x.globalAlpha=1}
   x.fillStyle='rgba(255,255,255,.85)';[[.16,.07],[.52,.1]].forEach(([a,b])=>{const r=M*.035;x.beginPath();x.arc(W*a,H*b,r,0,7);x.arc(W*a+r,H*b-r*.4,r*1.2,0,7);x.arc(W*a+r*2.1,H*b,r,0,7);x.fill()});
   const hill=(y0,col,amp,fr,ph)=>{x.fillStyle=col;x.beginPath();x.moveTo(0,H);for(let i=0;i<=48;i++){const xx=i/48*W;x.lineTo(xx,y0+Math.sin(i/48*Math.PI*fr+ph)*H*.035*amp)}x.lineTo(W,H);x.closePath();x.fill()};
   const S=$('#spots');const off=S.offsetLeft,sw=S.clientWidth;const L=POS[terr][layoutKey()];
@@ -627,7 +678,7 @@ function drawScene(){
     for(let i=0;i<5;i++){const mx=W*(i/4),mh=H*(.18+R()*.1),bw=W*.22;x.fillStyle='#a9b8cf';x.beginPath();x.moveTo(mx-bw,H*.36);x.lineTo(mx,H*.36-mh);x.lineTo(mx+bw,H*.36);x.fill();x.fillStyle='#fff';x.beginPath();x.moveTo(mx-bw*.25,H*.36-mh*.75);x.lineTo(mx,H*.36-mh);x.lineTo(mx+bw*.25,H*.36-mh*.75);x.fill()}
     hill(H*.34,'#b9e0a8',.6,1.4,.4);hill(H*.44,'#a2d495',.5,2.2,1.6);
   }else if(terr==='ciel'){
-    const us=UNI.filter(u=>uT(u)==='ciel'),ra=us.filter(u=>st.unicorns[u.id]).length/us.length;
+    const us=UNI.filter(u=>uT(u)==='ciel'&&!u.sup),ra=st.unicorns.u_super?1.4:us.filter(u=>st.unicorns[u.id]).length/us.length;
     const cx=W*.5,cy=H*.95,r0=Math.max(W,H)*.62;['#ff9db9','#ffc98a','#fff09a','#a8e6a1','#9fd3ff','#c6a8ff'].forEach((c,i)=>{x.strokeStyle=c;x.globalAlpha=.12+.6*ra;x.lineWidth=M*.04;x.beginPath();x.arc(cx,cy,r0-i*M*.04,Math.PI,2*Math.PI);x.stroke()});x.globalAlpha=1;
     const bank=(y0,a,rr)=>{x.fillStyle=`rgba(255,255,255,${a})`;for(let i=-1;i<=W/(M*rr)+1;i++){const bx=i*M*rr*1.1+R()*M*rr*.4,by=y0+R()*M*rr*.3;x.beginPath();x.arc(bx,by,M*rr*(.8+R()*.5),0,7);x.fill()}x.fillRect(0,y0,W,H-y0)};
     bank(H*.46,.55,.09);bank(H*.62,.7,.1);bank(H*.8,.85,.11);
@@ -684,7 +735,8 @@ const A={
 };
 function renderStars(anim){const S=$('#stars');S.innerHTML='';
   if(cur.uni){const u=cur.uni;S.append(h('span',{class:'upill'+(anim?' new':''),'aria-label':'progression de la licorne'},`🦄 ${Math.min(u.total,u.prog())} / ${u.total}`));renderStrip(u,cur.lastKey);return}
-  renderStrip(null);const g=st.games[cur.id];for(let i=0;i<5;i++){const on=i<g.stars;const it=h('i',{class:(on?'s1':'s0')+(anim&&i===g.stars-1?' new':'')});it.innerHTML=ICON.star;S.append(it)}}
+  renderStrip(null);const g=st.games[cur.id];for(let i=0;i<5;i++){const on=i<g.stars;const it=h('i',{class:(on?'s1':'s0')+(anim&&i===g.stars-1?' new':'')});it.innerHTML=ICON.star;S.append(it)}
+  const G=GBY[cur.id],nf=nextForm(G);S.append(h('span',{class:'nextf',title:nf===6?'une étoile d’illumination de plus':'prochaine transformation : '+mName(G,nf)},'→',nf===6?h('b',null,'★'):h('span',{class:nf>0?'fx'+nf:''},G.ani)))}
 /* bandeau de la licorne : une case par notion, trois points à allumer, puis vert quand c'est confirmé un autre jour */
 function renderStrip(u,bump){const S=$('#ustrip');S.innerHTML='';if(!u||!u.keys){S.hidden=true;return}
   let ks=u.keys();if(ks.length>26)ks=ks.filter(k=>st.items[k]&&st.items[k].ok>0).sort((a,b)=>credit(b)-credit(a)).slice(0,18);
@@ -696,15 +748,15 @@ function renderStrip(u,bump){const S=$('#ustrip');S.innerHTML='';if(!u||!u.keys)
   S.hidden=false}
 function openGame(id){
   const G=GBY[id];cur={id,mod:MODS[id],rid:0,intro:MODS[id].intro};
-  $('#gAni').textContent=G.ani;$('#gAni').style.filter='';$('#gName').textContent=G.title;$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
+  $('#gAni').textContent=G.ani;$('#gAni').style.filter='';$('#gAni').className='a'+(curForm(G)>0?' fx'+curForm(G):'');$('#gName').textContent=G.title;$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
 }
 function openUni(u){
   const fr=!!st.unicorns[u.id];
   cur={id:u.id,uni:u,mod:{round:(lv,A)=>u.round(A)},rid:0,intro:fr?`${cap1(u.name)} veut jouer avec toi !`:`${cap1(u.name)} est prisonnière d'un sortilège. Pour la libérer, montre-lui que tu sais ${u.goal}.`};
-  $('#gAni').textContent='🦄';$('#gAni').style.filter=`hue-rotate(${u.h})`;$('#gName').textContent=cap1(u.name);$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
+  $('#gAni').textContent='🦄';$('#gAni').className='a';$('#gAni').style.filter=`hue-rotate(${u.h})`;$('#gName').textContent=cap1(u.name);$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
 }
 /* révision espacée : un tour sur quatre revient sur un niveau déjà passé */
-const REVIEW=new Set(['letters','nuts','shapes','space','lengths','sounds','syll','words','problems','cursive','parrot','dove','bee']);
+const REVIEW=new Set(['letters','nuts','shapes','space','lengths','sounds','syll','words','problems','cursive','parrot','dove','bee','swan','ladybug','eagle']);
 function levelFor(id){const lv=st.games[id].level;return REVIEW.has(id)&&lv>=3&&Math.random()<.25?rnd(1,lv-1):lv}
 function newRound(){if(!cur)return;cur.rid++;cur.firstTry=true;cur.errors=0;cur.busy=false;cur.lock=false;cur.pplay=null;cur.hint=null;play.innerHTML='';actions.innerHTML='';cur.mod.round(cur.uni?0:levelFor(cur.id),A)}
 function goHome(msg){cur=null;if(hasTTS)try{speechSynthesis.cancel()}catch(e){}$('#game').hidden=true;$('#map').hidden=false;$('#celebrate').hidden=true;renderMap();if(msg)setTimeout(()=>say(msg),250)}
@@ -712,7 +764,7 @@ $('#homeBtn').onclick=()=>goHome();
 $('#sayBtn').onclick=()=>{if(cur&&cur.prompt)replayPrompt()};
 function confetti(card){const sp=['✨','⭐','🌸','💖','🌈','🦋'];for(let i=0;i<26;i++)card.append(h('span',{class:'confetti',style:`left:${Math.random()*100}%;animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*.8}s`},pick(sp)))}
 function uniFreed(list,next){const u=list.shift();const C=$('#celebrate');C.innerHTML='';sfx('free');
-  const title=`Tu as libéré ${u.name} !`,txt=`Tu sais ${u.goal}. Elle galope maintenant dans ${uIn(u)}.`;
+  const title=u.sup?'Tu as libéré l’arc-en-ciel !':`Tu as libéré ${u.name} !`,txt=u.sup?'La super licorne du ciel fait briller un immense arc-en-ciel au-dessus de toute la forêt. Tu sais lire des mots toute seule : tu es une grande gardienne !':`Tu sais ${u.goal}. Elle galope maintenant dans ${uIn(u)}.`;
   const card=h('div',{class:'card'},h('div',{class:'hero'},h('span',{style:`filter:hue-rotate(${u.h})`},'🦄')),h('h2',null,title),h('p',null,txt),
     h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;if(list.length)uniFreed(list,next);else next()}},'Continuer')));confetti(card);
   C.append(card);C.hidden=false;say(title+' '+txt)}
@@ -720,20 +772,26 @@ function levelComplete(){
   const G=GBY[cur.id],g=st.games[cur.id];let kind;
   if(!g.freed){g.freed=true;kind='free';if(g.level<G.max)g.level++}
   else if(g.level<G.max){g.level++;kind='level'}
-  else{g.mastered=true;kind='master'}
+  else if(!g.mastered){g.mastered=true;kind='master'}
+  else{g.bonus=(g.bonus||0)+1;kind='bonus'}
   g.stars=0;save();
   const C=$('#celebrate');C.innerHTML='';sfx('free');
-  const name=cap1(G.name);const final=kind==='free'&&G.id==='siren';
+  const name=cap1(G.name),fem=isFem(G),il=fem?'elle':'il',fi=curForm(G),nf=nextForm(G);const final=kind==='free'&&G.id==='siren';
   const unlocked=kind==='free'?GAMES.filter(x=>x.id!==G.id&&!st.games[x.id].freed&&reqOf(x).includes(G.id)&&available(x)):[];
-  const title=final?'Tu as sauvé toute la forêt !':kind==='free'?`Tu as libéré ${G.name} !`:kind==='level'?`Niveau ${g.level} !`:'Grande gardienne !';
+  const ns=glowN(g);
+  const title=final?'Tu as sauvé toute la forêt !':kind==='free'?`Tu as libéré ${G.name} !`:kind==='level'?'Abracadabra !':kind==='master'?cap1(mName(G,5))+' !':'Une étoile d’illumination !';
   let text=final?'La sirène est libre. Tous les animaux ont retrouvé leurs couleurs. Tu es une vraie gardienne de la forêt enchantée !'
-    :kind==='free'?`${name} retrouve ses couleurs magiques.`:kind==='level'?`${name} a un défi un peu plus difficile pour toi.`:`Tu as réussi tous les défis de ${G.name}. Tu peux continuer à t'entraîner.`;
+    :kind==='free'?`${name} retrouve ses couleurs magiques.`:kind==='level'?`${name} se transforme : ${il} devient ${mName(G,fi)} ! Son défi devient un peu plus difficile.`
+    :kind==='master'?`Tu as réussi tous ses défis. ${name} porte maintenant la couronne des gardiens.`:`${cap1(mName(G,5))} brille encore plus fort. ${cap1(il)} a maintenant ${NW[ns]||ns} étoiles d’illumination.`;
   if(unlocked.length)text+=' Un nouvel ami t’attend : '+unlocked.map(x=>x.name).join(' et ')+' !';
-  const card=h('div',{class:'card'},h('div',{class:'hero'},G.ani),h('h2',null,title),h('p',null,text),
+  const tease=nf===6?`Encore cinq étoiles, et ${il} gagnera une étoile d’illumination de plus !`:`Encore cinq étoiles, et ${il} deviendra ${mName(G,nf)} !`;
+  const heroAni=h('span',{class:fi>0?'fx'+fi:''},G.ani);
+  const card=h('div',{class:'card'},h('div',{class:'hero mgh'+(fi>0?' mg'+fi:'')},heroAni,fi===5?h('span',{class:'crown'},'👑'):null,orbit(ns)),h('h2',null,title),h('p',null,text),
     unlocked.length?h('div',{style:'font-size:3rem;margin:-6px 0 14px'},unlocked.map(x=>x.ani).join(' ')):null,
-    h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>goHome(kind==='free'?'Regarde : la forêt reprend ses couleurs !':null)},'La carte'),
-      h('button',{class:'bigbtn',onclick:()=>{C.hidden=true;renderStars();newRound()}},'Encore !')));
-  confetti(card);C.append(card);C.hidden=false;say(title+' '+text);
+    final?null:h('div',{class:'tease'},h('span',{class:'mini'},nf===6?h('b',null,'★'):h('span',{class:nf>0?'fx'+nf:''},G.ani)),h('span',null,tease)),
+    h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;renderStars();newRound()}},'Encore ! ✨'),
+      h('button',{class:'bigbtn alt',onclick:()=>goHome(kind==='free'?'Regarde : la forêt reprend ses couleurs !':null)},'La carte')));
+  confetti(card);C.append(card);C.hidden=false;say(title+' '+text+(final?'':' '+tease));
 }
 /* compte à voix haute en illuminant les objets */
 function countAloud(els,done,startAt){const rid=cur.rid;let i=0;const base=startAt||0;
@@ -1204,7 +1262,7 @@ function wrongS(el,pl,A){if(!cur||cur.busy||cur.lock)return;cur.firstTry=false;c
 /* bonne réponse : on entend la bonne réponse, puis la fée félicite */
 function rightS(el,key,pl,A){if(!cur||cur.busy||cur.lock)return;cur.lock=true;el&&el.classList.add('pop');const rid=cur.rid;const go=()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;A.right(key)};pl?pl(go):go()}
 const guard=()=>cur&&!cur.busy&&!cur.lock;
-function face(d){return h('span',{class:d.cur?'cur':''},d.t)}
+function face(d){return h('span',{class:(d.cur?'cur':'')+(/[a-zà-ÿ]/i.test(d.t)&&d.t.length>3?' long':'')},d.t)}
 
 /* écoute, puis touche la bonne bulle */
 function hearRound(A,o){const col=h('div',{class:'col'});play.append(col);const row=h('div',{class:o.big?'tiles':'bubbles'});
@@ -1226,7 +1284,7 @@ function findRound(A,o){const col=h('div',{class:'col'});play.append(col);const 
   const portrait=innerWidth<innerHeight;const cols=portrait?3:(o.items.length>9?5:4),rows=portrait?Math.ceil(o.items.length/3)+1:3;const cells=shuffle([...Array(cols*rows).keys()]).slice(0,o.items.length);let got=0;const need=o.items.filter(x=>x.v===o.t).length;
   const upd=()=>{cnt.textContent='★'.repeat(got)+'☆'.repeat(need-got)};
   o.items.forEach((x,i)=>{const c=cells[i],cx=c%cols,cy=Math.floor(c/cols);const L=(cx+.5)/cols*100+(Math.random()-.5)*24/cols,T=(cy+.5)/rows*100+(Math.random()-.5)*24/rows;
-    const b=h('button',{class:'fb'+(x.d.cur?' cur':''),'aria-label':'bulle',style:`--bc:${BC[i%5]};animation-delay:${-Math.random()*4}s`},x.d.t);
+    const b=h('button',{class:'fb'+(x.d.cur?' cur':'')+(x.d.t.length>2?' long':''),'aria-label':'bulle',style:`--bc:${BC[i%5]};animation-delay:${-Math.random()*4}s`},x.d.t);
     b.onclick=()=>{if(!guard()||b.classList.contains('got'))return;
       if(x.v===o.t){b.classList.add('got');got++;upd();if(got===need)rightS(null,o.key,o.play(x.v),A);else{cur.lock=true;o.play(x.v)(()=>{if(cur)cur.lock=false})}}
       else wrongS(b,o.play(x.v),A)};
@@ -1325,6 +1383,126 @@ MODS.bee={
     const ids=shuffle([t,...distract(t,pool,(lv>=5?4:3)-1,near)]);
     memRound(A,{pairs:ids.map(x=>({id:x,a:{t:x,cur:false},b:{t:x,cur:true}})),play:pSy,key:'Mm:bee',
       prompt:'Retourne les nuages et trouve les paires : la même syllabe, écrite en petit et en attaché.',shown:'Trouve les paires de syllabes.'})
+  }
+};
+
+
+/* ---- Cygne : les sons qui s'écrivent avec deux lettres ---- */
+const CPLX_ORDER=[['ou','ch'],['on','an'],['oi','in'],['au','eu'],['ai','gn']];
+const CPLX_ALL=CPLX_ORDER.flat();
+const CPLX_W={ou:['🐺','loup'],ch:['🐱','chat'],on:['🎈','ballon'],an:['🐘','éléphant'],oi:['👑','roi'],in:['🐰','lapin'],au:['🚗','auto'],eu:['🔥','feu'],ai:['🥛','lait'],gn:['🏔️','montagne']};
+const pCx=x=>cb=>snd(x,()=>say('comme dans '+CPLX_W[x][1],cb));
+const swanNeed=()=>SKY_V.every(v=>status('Sn:'+v)==='acquis')&&SKY_ALL.filter(x=>!isV(x)&&status('Sn:'+x)==='acquis').length>=4;
+function cplxSyl(){const C=SKY_ALL.filter(x=>!isV(x)&&status('Sn:'+x)==='acquis'),X=CPLX_ALL.filter(x=>status('Sc:'+x)==='acquis'),V=SKY_V.filter(v=>status('Sn:'+v)==='acquis');const out=[];
+  X.forEach(x=>{if(x==='ch')V.forEach(v=>out.push('ch'+v));else if(x!=='gn')C.forEach(c=>{if((c==='c'||c==='g')&&(x==='in'||x==='eu'))return;out.push(c+x)})});return out}
+MODS.swan={
+  intro:"Le cygne connaît les sons magiques qui s'écrivent avec deux lettres. Écoute-les bien !",
+  round(lv,A,opt){
+    const open=openItems(CPLX_ORDER,'Sc:');sndPreload(open);const t=opt&&opt.t||stepTarget(CPLX_ORDER,'Sc:');const key='Sc:'+t;
+    const syl=cplxSyl();
+    const k=opt&&opt.k||(lv<=1?'hear':lv===2?pick(['hear','read','pic']):lv===3?pick(['find','read','pic']):lv===4?pick(['mem','find','pic','read']):pick(syl.length>=4?['syl','syl','hear','pic','mem']:['hear','pic','mem','find']));
+    const n=Math.min(open.length,lv<=1?3:4);
+    if(k==='syl'){const s=wpick(syl,x=>focusW('S:'+x));const near=syl.filter(x=>x!==s&&(x[0]===s[0]||x.slice(-2)===s.slice(-2)));
+      hearRound(A,{t:s,choices:shuffle([s,...distract(s,syl,3,near)]),big:true,disp:x=>({t:x,cur:false}),play:pSy,key:'S:'+s,label:'syllabe',prompt:`Touche la syllabe ${s}.`,shown:'Écoute, puis touche la bonne syllabe.'});return}
+    if(k==='hear'){hearRound(A,{t,choices:shuffle([t,...distract(t,open,n-1)]),disp:x=>({t:x,cur:lv>=4&&Math.random()<.3}),play:pCx,key,label:'son',prompt:'Touche le son…',shown:'Écoute le son, puis touche la bonne bulle.',pprompt:pCx(t)});return}
+    if(k==='read'){readRound(A,{t,choices:shuffle([t,...distract(t,open,Math.min(3,open.length)-1)]),disp:x=>({t:x,cur:false}),play:pSn,key,prompt:'Lis ce son. Écoute les sons, et choisis le bon.',shown:'Lis le son, puis choisis le bon.'});return}
+    if(k==='pic'){const [e,w]=CPLX_W[t];const col=h('div',{class:'col'});play.append(col);
+      col.append(h('div',{class:'bigpic'},e,h('button',{class:'ear','aria-label':'Écouter : '+w,onclick:()=>say(w)},'🔊')));
+      const row=h('div',{class:'bubbles'});shuffle([t,...distract(t,open,n-1)]).forEach((x,i)=>{const b=h('button',{class:'lb','aria-label':'son',style:`--bc:${BC[i%5]}`},x);
+        b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,pSn(x),A);else wrongS(b,pSn(x),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(b)});col.append(row);
+      A.prompt(`Écoute bien : ${w}. Quel son magique entends-tu dans ${w} ?`,'Quel son entends-tu dans ce mot ?');return}
+    if(k==='find'){const N=lv>=4?12:9,T=N>9?3:2;const others=open.filter(x=>x!==t);const items=[];
+      for(let i=0;i<T;i++)items.push({v:t,d:{t,cur:lv>=4&&i===1}});while(items.length<N){const x=pick(others);items.push({v:x,d:{t:x,cur:false}})}
+      findRound(A,{t,items:shuffle(items),play:pSn,key,prompt:'Trouve toutes les bulles du son…',shown:'Trouve toutes les bulles de ce son.',pprompt:pCx(t)});return}
+    const ids=shuffle([t,...distract(t,open,Math.min(open.length,lv>=5?4:3)-1)]);
+    memRound(A,{pairs:ids.map(x=>({id:x,a:{t:x,cur:false},b:{t:CPLX_W[x][0],cur:false}})),play:pCx,key:'Mm:swan',
+      prompt:'Retourne les nuages et trouve les paires : un son, et l’image d’un mot où on l’entend.',shown:'Trouve les paires : un son et son image.'})
+  }
+};
+
+/* ---- Coccinelle : les petits mots qu'on reconnaît d'un coup d'œil ---- */
+const MOTS_ORDER=[['le','la','un'],['une','et','les'],['il','elle','est'],['dans','sur','de'],['je','tu','des'],['avec','pas','mon']];
+const MOTS_ALL=MOTS_ORDER.flat();
+const MOT_CTX={le:'le chat',la:'la lune',un:'un ballon',une:'une pomme',et:'papa et maman',les:'les fleurs',il:'il dort',elle:'elle chante',est:'il est grand',dans:'dans la maison',sur:'sur la table',de:'un verre de lait',je:'je joue',tu:'tu ris',des:'des bonbons',avec:'avec moi',pas:'je ne sais pas',mon:'mon vélo'};
+const MOT_SAY={est:'è'};
+const MOT_CONF=[['le','la','les','de','des'],['un','une','mon'],['il','elle'],['et','est','les'],['je','tu','de'],['dans','des','pas'],['sur','tu','un'],['avec','elle']];
+const pMo=w=>cb=>say(MOT_SAY[w]||w,cb,.8);
+const pMoC=w=>cb=>say((MOT_SAY[w]||w)+', comme dans : '+MOT_CTX[w],cb,.85);
+const PHR=[['🐱','___ chat dort.','le'],['🌙','___ lune brille.','la'],['🎈','J’ai ___ ballon.','un'],['🍎','J’ai ___ pomme.','une'],['👨‍👩‍👧','Papa ___ maman.','et'],['🌸','___ fleurs sont jolies.','les'],
+  ['👦','___ dort.','il'],['👧','___ chante.','elle'],['🐟','Le poisson ___ dans l’eau.','est'],['🏠','Le chat est ___ la maison.','dans'],['📚','Le livre est ___ la table.','sur'],['🥛','Un verre ___ lait.','de'],
+  ['🎨','___ dessine.','je'],['🤸','___ sautes.','tu'],['🍬','Il mange ___ bonbons.','des'],['🐶','Je joue ___ mon chien.','avec'],['😴','Je ne dors ___.','pas'],['🚲','C’est ___ vélo.','mon']];
+MODS.ladybug={
+  intro:"La coccinelle connaît les petits mots qu'on rencontre partout. On les reconnaît d'un coup d'œil !",
+  round(lv,A,opt){
+    const open=openItems(MOTS_ORDER,'Mo:');const t=opt&&opt.t||stepTarget(MOTS_ORDER,'Mo:');const key='Mo:'+t;
+    const near=[...new Set(MOT_CONF.filter(g=>g.includes(t)).flat())];const phr=PHR.filter(p=>open.includes(p[2]));
+    const k=opt&&opt.k||(lv<=1?'hear':lv===2?pick(['hear','read']):lv===3?pick(['find','read','hear']):lv===4?pick(['mem','phr','read','find']):pick(['phr','phr','read','find','mem']));
+    const n=Math.min(open.length,lv<=1?3:4);
+    if(k==='phr'&&phr.length){const P=phr.find(p=>p[2]===t)||pick(phr);const ans=P[2];const col=h('div',{class:'col'});play.append(col);
+      const full=P[1].replace('___',P[1].startsWith('___')?cap1(ans):ans);
+      col.append(h('div',{class:'bigpic'},P[0]),h('div',{class:'sent'},P[1].replace('___','….')));
+      const row=h('div',{class:'choices'});shuffle([ans,...distract(ans,open,2,MOT_CONF.filter(g=>g.includes(ans)).flat())]).forEach(x=>{const b=h('button',{class:'wchoice'},x);
+        b.onclick=()=>{if(!guard())return;if(x===ans)rightS(b,'Mo:'+ans,cb=>say(full,cb,.85),A);else wrongS(b,pMo(x),A)};if(x===ans){A.hintEl(b);b.dataset.ok=1}row.append(b)});col.append(row);
+      A.prompt('Quel petit mot manque dans la phrase ?','Quel petit mot manque ?');return}
+    if(k==='hear'||k==='phr'){hearRound(A,{t,choices:shuffle([t,...distract(t,open,n-1,near)]),big:true,disp:x=>({t:x,cur:lv>=4&&Math.random()<.3}),play:pMo,key,label:'mot',prompt:'Touche le mot…',shown:'Écoute, puis touche le bon petit mot.',pprompt:pMoC(t)});return}
+    if(k==='read'){readRound(A,{t,choices:shuffle([t,...distract(t,open,Math.min(3,open.length)-1,near)]),disp:x=>({t:x,cur:false}),play:pMo,key,prompt:'Lis ce petit mot. Écoute, et choisis le bon.',shown:'Lis le mot, puis choisis le bon.'});return}
+    if(k==='find'){const N=lv>=4?12:9,T=N>9?3:2;const others=distract(t,open,6,near);const items=[];
+      for(let i=0;i<T;i++)items.push({v:t,d:{t,cur:lv>=4&&i===1}});while(items.length<N){const x=pick(others);items.push({v:x,d:{t:x,cur:false}})}
+      findRound(A,{t,items:shuffle(items),play:pMo,key,prompt:'Trouve tous les mots…',shown:'Trouve tous les mots que tu entends.',pprompt:pMoC(t)});return}
+    const ids=shuffle([t,...distract(t,open,Math.min(open.length,lv>=5?4:3)-1,near)]);
+    memRound(A,{pairs:ids.map(x=>({id:x,a:{t:x,cur:false},b:{t:x,cur:true}})),play:pMo,key:'Mm:ladybug',
+      prompt:'Retourne les nuages et trouve les paires : le même petit mot, écrit en petit et en attaché.',shown:'Trouve les paires de petits mots.'})
+  }
+};
+
+/* ---- Aigle : des mots entiers, seulement avec des sons déjà acquis ---- */
+/* [mot, image, graphies (· = lettre muette), syllabes] */
+const WD=[['lama','🦙','l a m a','la ma'],['moto','🏍️','m o t o','mo to'],['vélo','🚲','v é l o','vé lo'],['mur','🧱','m u r','mur'],['sofa','🛋️','s o f a','so fa'],['judo','🥋','j u d o','ju do'],
+ ['radio','📻','r a d i o','ra di o'],['piano','🎹','p i a n o','pi a no'],['lit','🛏️','l i ·t','lit'],['rat','🐀','r a ·t','rat'],['riz','🍚','r i ·z','riz'],['nid','🪺','n i ·d','nid'],['dé','🎲','d é','dé'],
+ ['bébé','👶','b é b é','bé bé'],['lune','🌙','l u n ·e','lu ne'],['tomate','🍅','t o m a t ·e','to ma te'],['salade','🥗','s a l a d ·e','sa la de'],['tulipe','🌷','t u l i p ·e','tu li pe'],
+ ['pirate','🏴‍☠️','p i r a t ·e','pi ra te'],['banane','🍌','b a n a n ·e','ba na ne'],['ananas','🍍','a n a n a ·s','a na nas'],['robe','👗','r o b ·e','ro be'],['café','☕','c a f é','ca fé'],
+ ['tortue','🐢','t o r t u ·e','tor tue'],['pomme','🍎','p o m ·m ·e','pom me'],['vache','🐄','v a ch ·e','va che'],['chat','🐱','ch a ·t','chat'],['loup','🐺','l ou ·p','loup'],['poule','🐔','p ou l ·e','pou le'],
+ ['mouton','🐑','m ou t on','mou ton'],['lapin','🐰','l a p in','la pin'],['sapin','🎄','s a p in','sa pin'],['melon','🍈','m e l on','me lon'],['cochon','🐷','c o ch on','co chon'],['canard','🦆','c a n a r ·d','ca nard'],
+ ['roi','👑','r oi','roi'],['feu','🔥','f eu','feu'],['auto','🚗','au t o','au to'],['lait','🥛','l ai ·t','lait'],['savon','🧼','s a v on','sa von'],['bouche','👄','b ou ch ·e','bou che'],['mouche','🪰','m ou ch ·e','mou che'],
+ ['lion','🦁','l i on','li on'],['pantalon','👖','p an t a l on','pan ta lon'],['souris','🐭','s ou r i ·s','sou ris'],['hibou','🦉','·h i b ou','hi bou'],['loupe','🔍','l ou p ·e','lou pe'],['poisson','🐟','p oi s s on','pois son'],
+ ['ballon','🎈','b a l l on','bal lon'],['montagne','🏔️','m on t a gn ·e','mon ta gne'],['chocolat','🍫','ch o c o l a ·t','cho co lat'],['bonbon','🍬','b on b on','bon bon'],['fourmi','🐜','f ou r m i','four mi']
+].map(([w,e,g,s])=>({w,e,g:g.split(' '),s:s.split(' ')}));
+const knownG=x=>CPLX_ALL.includes(x)?status('Sc:'+x)==='acquis':status('Sn:'+x)==='acquis';
+const decodable=x=>x.g.every(g=>g[0]==='·'||knownG(g));
+const wdPool=()=>WD.filter(decodable);
+const eagleNeed=()=>wdPool().length>=6;
+/* le mot écrit : syllabes de couleurs alternées, lettres muettes en gris */
+function wordEl(x,cls){const el=h('div',{class:'wbig wd'+(cls?' '+cls:'')});const sy=[];x.s.forEach((s,i)=>{for(const _ of s)sy.push(i)});let pos=0;
+  x.g.forEach(g=>{const mute=g[0]==='·',txt=mute?g.slice(1):g;el.append(h('span',{class:'g s'+(sy[pos]%2)+(mute?' mute':'')},txt));pos+=txt.length});return el}
+const sameStart=(x,pool)=>pool.filter(y=>y!==x&&y.w[0]===x.w[0]);
+MODS.eagle={
+  intro:"L'aigle vole très haut et lit tous les mots du ciel. Lis-les avec lui, en entier, syllabe après syllabe !",
+  round(lv,A,opt){
+    let pool=wdPool();if(pool.length<4)pool=WD.slice(0,6);
+    const t=opt&&opt.t||wpick(pool,x=>focusW('W:'+x.w));const key='W:'+t.w;
+    const k=opt&&opt.k||(lv<=1?'pic':lv===2?pick(['pic','word']):lv===3?pick(['pic','word','build']):lv===4?pick(['mem','build','word','pic']):pick(['pic','word','build','mem']));
+    const n=lv<=1?3:4;const col=h('div',{class:'col'});
+    /* les intrus commencent par la même lettre : impossible de deviner avec la première lettre seulement */
+    const ds=m=>{const a=shuffle(sameStart(t,pool)).slice(0,m);shuffle(pool.filter(y=>y!==t&&!a.includes(y)&&y.e!==t.e)).forEach(y=>{if(a.length<m)a.push(y)});return a};
+    if(k==='pic'){play.append(col);const wEl=wordEl(t);col.append(wEl);const row=h('div',{class:'choices'});
+      shuffle([t,...ds(n-1)]).forEach(x=>{const b=h('button',{class:'pic','aria-label':'image'},x.e);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,cb=>say(t.w,cb),A);else wrongS(b,cb=>say('Ça, c’est '+x.w+'.',cb),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(h('div',{class:'picw'},b))});
+      col.append(row);cur.hint=m=>{wEl.classList.add('colored');say(m+' Lis les syllabes une par une : ',()=>say(t.s.join(' … '),null,.6))};
+      A.prompt('Lis le mot jusqu’au bout, puis touche la bonne image.','Lis le mot en entier, puis touche l’image.');return}
+    if(k==='word'){play.append(col);col.append(h('div',{class:'bigpic'},t.e));const row=h('div',{class:'choices'});
+      shuffle([t,...ds(n-2)]).forEach(x=>{const b=h('button',{class:'wchoice'},x.w);b.onclick=()=>{if(!guard())return;if(x===t)rightS(b,key,cb=>say(t.w,cb),A);else wrongS(b,cb=>say('Ça, c’est écrit '+x.w+'.',cb),A)};if(x===t){A.hintEl(b);b.dataset.ok=1}row.append(b)});
+      col.append(row);A.prompt('Regarde l’image. Lis bien chaque mot jusqu’au bout, et touche le bon.','Touche le mot qui va avec l’image.');return}
+    if(k==='build'){play.append(col);const sy=t.s;let filled=[];col.append(h('div',{class:'bigpic'},t.e));
+      const slots=h('div',{class:'slots'});const sl=sy.map(()=>{const s=h('div',{class:'slotb'});slots.append(s);return s});
+      const extra=shuffle(pool.flatMap(x=>x.s).filter(s=>!sy.includes(s))).slice(0,sy.length>2?1:2);const row=h('div',{class:'tiles'});
+      const upd=()=>sl.forEach((s,i)=>{s.textContent=filled[i]||'';s.classList.toggle('fill',!!filled[i])});
+      shuffle([...sy,...extra]).forEach(s=>{const b=h('button',{class:'scard','aria-label':'syllabe'},s);if(sy.includes(s))b.dataset.ok=sy.indexOf(s);b.onclick=()=>{if(!guard()||filled.length>=sy.length)return;filled.push(s);upd();say(s,null,.8);
+        if(filled.length===sy.length){if(filled.join('')===sy.join(''))rightS(slots,key,cb=>say(t.w,cb),A);else{const got=filled.join('');setTimeout(()=>{filled=[];upd()},500);wrongS(slots,cb=>say(got,cb,.8),A)}}};row.append(b)});
+      slots.onclick=()=>{if(!guard())return;filled.pop();upd()};col.append(slots,row);upd();
+      cur.hint=m=>{const nx=sy[filled.length]||sy[0];[...row.children].forEach(b=>{if(b.textContent===nx)b.classList.add('hint')});say(m+' Écoute les syllabes : '+sy.join(' … ')+'.',null,.7)};
+      A.prompt(`Écris le mot ${t.w} avec les syllabes.`,'Écris le mot avec les syllabes.');return}
+    const ids=shuffle([t,...ds((lv>=5?4:3)-1)]);
+    memRound(A,{pairs:ids.map(x=>({id:x.w,a:{t:x.e,cur:false},b:{t:x.w,cur:false}})),play:w=>cb=>say(w,cb),key:'Mm:eagle',
+      prompt:'Retourne les nuages et trouve les paires : un mot, et son image.',shown:'Trouve les paires : un mot et son image.'})
   }
 };
 
@@ -1494,6 +1672,8 @@ function openParents(){
     h('h3',null,'Lettres en scriptes (minuscules)'),chips(ALPH.map(l=>'l:'+l),ALPH.map(l=>l.toLowerCase())),
     h('h3',null,'Sons des lettres (perroquet)'),chips(SKY_ALL.map(x=>'Sn:'+x),SKY_ALL),
     h('h3',null,'Trois écritures (colombe)'),chips(FORM_ORDER.flat().map(x=>'Fo:'+x),FORM_ORDER.flat()),
+    h('h3',null,'Sons magiques (cygne)'),chips(CPLX_ALL.map(x=>'Sc:'+x),CPLX_ALL),
+    h('h3',null,'Petits mots (coccinelle)'),chips(MOTS_ALL.map(x=>'Mo:'+x),MOTS_ALL),
     h('h3',null,'Syllabes lues'),seenChips('S:'),
     h('h3',null,'Mots lus'),seenChips('W:'),
     h('h3',null,'Lettres attachées (cursives)'),(()=>{const c=chips(ALPH.map(l=>'C:'+l),ALPH.map(l=>l.toLowerCase()));c.classList.add('cur');return c})(),
