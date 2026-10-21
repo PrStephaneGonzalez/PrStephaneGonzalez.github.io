@@ -1696,7 +1696,7 @@ function openParents(){
     h('div',{class:'legend'},h('span',{class:'chip acquis'},'A'),'acquis',h('span',{class:'chip cours'},'A'),'en cours',h('span',{class:'chip nv'},'A'),'pas encore vu'));
   const zone=h('div',null);const resetBtn=h('button',{class:'danger',onclick:()=>{zone.innerHTML='';zone.append(h('div',{class:'confirm'},h('span',null,'Effacer toute la progression ?'),
     h('button',{class:'danger',onclick:()=>{st=fresh();forcePush=true;save();P.hidden=true;renderMap()}},'Oui, tout effacer'),h('button',{class:'bigbtn alt',style:'padding:8px 14px;font-size:.95rem',onclick:()=>{zone.innerHTML='';zone.append(resetBtn)}},'Annuler')))}},'Remettre la progression à zéro');
-  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone,h('p',{class:'muted',style:'margin-top:18px;font-size:.8rem'},'Voix du Royaume des Nuages : synthèse vocale Piper, voix française « siwis » (corpus SIWIS, Université d’Édimbourg, licence CC BY 4.0), générée son par son à partir de phonèmes.'));
+  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone,h('p',{class:'muted',style:'margin-top:18px;font-size:.8rem'},'Voix des sons, syllabes et mots : enregistrée par Papa 💛 (la voix de synthèse Piper « siwis », licence CC BY 4.0, ne sert plus que de secours).'));
   P.append(sheet);P.hidden=false;P.scrollTop=0;
 }
 

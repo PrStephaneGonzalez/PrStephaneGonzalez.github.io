@@ -1,5 +1,9 @@
-Sons du Royaume des Nuages
+Sons du jeu « Les Gardiens de la Forêt Enchantée »
 
-Synthèse vocale : Piper (https://github.com/rhasspy/piper), voix fr_FR « siwis » medium.
-Données d'entraînement : corpus SIWIS, Université d'Édimbourg, licence CC BY 4.0 (https://datashare.is.ed.ac.uk/handle/10283/2353).
-Génération : chaque son, syllabe ou mot est produit à partir d'une suite de phonèmes choisie explicitement, puis rogné et égalisé en volume (MP3 48 kb/s).
+Voix : enregistrée par Stéphane Gonzalez (octobre 2026) avec la page enregistreur/,
+puis coupée, égalisée en volume et convertie en MP3 (script integrer.py). Tous droits réservés.
+Liste des fichiers enregistrés : voix-perso.txt.
+
+Ancienne voix (script gen.py, utilisable pour régénérer un son manquant) :
+synthèse vocale Piper (https://github.com/rhasspy/piper), voix fr_FR « siwis » medium,
+corpus SIWIS, Université d'Édimbourg, licence CC BY 4.0 (https://datashare.is.ed.ac.uk/handle/10283/2353).

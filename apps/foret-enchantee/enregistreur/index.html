@@ -35,6 +35,8 @@ p.lead{margin:.2rem 0 1rem;color:var(--mute);font-size:.95rem}
 .grid button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:4px 8px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink);min-width:34px}
 .grid button.done{background:var(--acc2);border-color:#9fcdb6}
 .grid button.cur{outline:2px solid var(--acc)}
+.grid button.redo{background:#fdecc8;border-color:#e0b25c}
+.tabs button.rf:not(.on){border-color:#e0b25c;background:#fdf3dc}
 details{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 summary{cursor:pointer;font-weight:600}
 .exp{display:block;width:100%;margin-top:16px;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:600;background:#3a5f8a;color:#fff;cursor:pointer}
@@ -74,7 +76,8 @@ summary{cursor:pointer;font-weight:600}
   <summary>Conseils</summary>
   <ul class="small">
     <li>Pièce calme, téléphone à une main de la bouche, toujours à la même distance.</li>
-    <li>Appuyez sur « Enregistrer », attendez une demi-seconde, dites le son, puis appuyez sur « Stop » (arrêt automatique au bout de 5 secondes).</li>
+    <li>Appuyez sur « Enregistrer », attendez une demi-seconde, dites le son, puis appuyez sur « Stop » une fois le son bien fini (arrêt automatique au bout de 5 secondes).</li>
+    <li>Les cases orange sont à refaire.</li>
     <li>Les sons qu'on peut tenir (f, s, m, l, r, v, z, j, ch, n) : tenez-les environ une seconde, « fffff ».</li>
     <li>Les sons brefs (p, t, c, b, d, g) : le son le plus court possible, sans dire « pé » ni « teu ».</li>
     <li>Le silence avant et après est coupé automatiquement, et le volume égalisé.</li>
@@ -92,7 +95,7 @@ const MOT_CTX={le:'le chat',la:'la lune',un:'un ballon',une:'une pomme',et:'papa
 const CATS=[['ph','Sons isolés'],['mo','Petits mots'],['w','Mots'],['sy','Syllabes (option)']];
 const SKEY=x=>x.replace(/é/g,'E').replace(/è/g,'H').replace(/ê/g,'X').replace(/â/g,'A').replace(/ô/g,'O').replace(/î/g,'I').replace(/[’']/g,'').replace(/ /g,'_');
 const $=id=>document.getElementById(id);
-let LISTS={},cat='ph',idx=0,done={},db,ctx,stream,rec=null,chunks=[],an,lvlRaf,stopT,player=new Audio();
+let LISTS={},cat='ph',idx=0,done={},doneT={},RF={keys:[],since:0},db,ctx,stream,rec=null,chunks=[],an,lvlRaf,stopT,player=new Audio();
 
 function showErr(t){$('err').hidden=false;$('err').textContent=t}
 function store(){try{localStorage.setItem('enr-pos',JSON.stringify({cat,idx}))}catch(e){}}
@@ -107,6 +110,9 @@ const dbDel=k=>db?tx('readwrite',s=>s.delete(k)):Promise.resolve(MEM.delete(k));
 const dbKeys=()=>db?tx('readonly',s=>s.getAllKeys()):Promise.resolve([...MEM.keys()]);
 
 const keyOf=(c,x)=>c+'/'+SKEY(x);
+const it=(c,i)=>c==='rf'?LISTS.rf[i].split('|'):[c,LISTS[c][i]];   /* « À refaire » mélange les catégories */
+const catName=c=>c==='rf'?'À refaire':CATS.find(x=>x[0]===c)[1];
+const redone=k=>(doneT[k]||0)>RF.since;
 function hintFor(c,x){
   if(c==='ph'){const h=PH_HINT[x]||[x,''];return['Dites le son : '+h[0],h[1]]}
   if(c==='sy'){const v=Object.keys(V_HINT).find(k=>x.endsWith(k)&&!(k==='u'&&/(ou|eu|au)$/.test(x))&&!(k==='e'&&/(é|è)$/.test(x)));return['Lisez la syllabe',v?V_HINT[v]:'']}
@@ -114,24 +120,25 @@ function hintFor(c,x){
   return['Lisez le mot','']
 }
 function render(){
-  const L=LISTS[cat],x=L[idx],k=keyOf(cat,x),[h1,h2]=hintFor(cat,x);
-  $('pos').textContent=CATS.find(c=>c[0]===cat)[1]+' — '+(idx+1)+' / '+L.length;
+  const L=LISTS[cat],[rc,x]=it(cat,idx),k=keyOf(rc,x),[h1,h2]=hintFor(rc,x);
+  $('pos').textContent=catName(cat)+' — '+(idx+1)+' / '+L.length;
   $('big').textContent=x;$('hint').textContent=h1;$('hint2').textContent=h2;
   $('mine').disabled=$('del').disabled=!done[k];
   $('prev').disabled=idx===0;$('next').textContent=idx===L.length-1?'Fin ✓':'Suivant →';
   $('state').className='state'+(done[k]?' ok':'');$('state').textContent=done[k]?'✓ Enregistré ('+done[k].toFixed(1)+' s)':'';
-  $('tabs').innerHTML=CATS.map(([c,n])=>{const l=LISTS[c]||[],d=l.filter(y=>done[keyOf(c,y)]).length;return`<button data-c="${c}" class="${c===cat?'on':''}">${n}<small>${d} / ${l.length}</small></button>`}).join('');
-  $('grid').innerHTML=L.map((y,i)=>`<button data-i="${i}" class="${done[keyOf(cat,y)]?'done':''} ${i===idx?'cur':''}">${y}</button>`).join('');
+  const tabs=(LISTS.rf&&LISTS.rf.length?[['rf','À refaire']]:[]).concat(CATS);
+  $('tabs').innerHTML=tabs.map(([c,n])=>{const l=LISTS[c]||[],d=l.filter((y,i)=>{const[a,b]=it(c,i),kk=keyOf(a,b);return c==='rf'?redone(kk):done[kk]}).length;return`<button data-c="${c}" class="${c===cat?'on':''} ${c==='rf'?'rf':''}">${n}<small>${d} / ${l.length}</small></button>`}).join('');
+  $('grid').innerHTML=L.map((y,i)=>{const[a,b]=it(cat,i),kk=keyOf(a,b),cl=cat==='rf'?(redone(kk)?'done':'redo'):(done[kk]?(RF.keys.includes(kk)&&!redone(kk)?'redo':'done'):'');return`<button data-i="${i}" class="${cl} ${i===idx?'cur':''}">${b}</button>`}).join('');
   const tot=Object.keys(done).length;$('expInfo').textContent=tot?tot+' enregistrement(s) prêt(s) à exporter.':'Aucun enregistrement pour l’instant.';
   store();
 }
 $('tabs').onclick=e=>{const b=e.target.closest('button');if(b&&!rec){cat=b.dataset.c;idx=0;render()}};
 $('grid').onclick=e=>{const b=e.target.closest('button');if(b&&!rec){idx=+b.dataset.i;render()}};
 $('prev').onclick=()=>{if(idx>0&&!rec){idx--;render()}};
-$('next').onclick=()=>{if(rec)return;const L=LISTS[cat];if(idx<L.length-1){idx++;render()}else{const ci=CATS.findIndex(c=>c[0]===cat);if(ci<CATS.length-1){cat=CATS[ci+1][0];idx=0;render()}}};
-$('ref').onclick=()=>{player.src='../sons/'+cat+'/'+SKEY(LISTS[cat][idx])+'.mp3';player.play().catch(()=>{})};
-$('mine').onclick=async()=>{const r=await dbGet(keyOf(cat,LISTS[cat][idx]));if(r){player.src=URL.createObjectURL(r.wav);player.play().catch(()=>{})}};
-$('del').onclick=async()=>{const k=keyOf(cat,LISTS[cat][idx]);await dbDel(k);delete done[k];render()};
+$('next').onclick=()=>{if(rec)return;const L=LISTS[cat];if(idx<L.length-1){idx++;render()}else if(cat!=='rf'){const ci=CATS.findIndex(c=>c[0]===cat);if(ci<CATS.length-1){cat=CATS[ci+1][0];idx=0;render()}}};
+$('ref').onclick=()=>{const[a,b]=it(cat,idx);player.src='../sons/'+a+'/'+SKEY(b)+'.mp3';player.play().catch(()=>{})};
+$('mine').onclick=async()=>{const r=await dbGet(keyOf(...it(cat,idx)));if(r){player.src=URL.createObjectURL(r.wav);player.play().catch(()=>{})}};
+$('del').onclick=async()=>{const k=keyOf(...it(cat,idx));await dbDel(k);delete done[k];delete doneT[k];render()};
 
 /* --- micro --- */
 async function mic(){
@@ -148,13 +155,14 @@ $('rec').onclick=async()=>{
   try{await mic()}catch(e){showErr('Le micro n’est pas accessible ('+(e.name||e)+'). Autorisez le micro pour ce site dans les réglages du navigateur, puis rechargez la page.');return}
   chunks=[];
   try{rec=new MediaRecorder(stream)}catch(e){showErr('Ce navigateur ne sait pas enregistrer. Essayez Safari ou Chrome à jour.');return}
-  const item=[cat,LISTS[cat][idx]];
+  const item=it(cat,idx);
   rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
   rec.onstop=()=>finish(item,new Blob(chunks,{type:rec.mimeType||'audio/mp4'}));
   rec.start();$('rec').textContent='■ Stop';$('rec').classList.add('going');$('state').className='state';$('state').textContent='J’écoute…';
   stopT=setTimeout(stopRec,5000);
 };
-function stopRec(){clearTimeout(stopT);if(rec&&rec.state!=='inactive')rec.stop();$('rec').textContent='● Enregistrer';$('rec').classList.remove('going')}
+function stopRec(){clearTimeout(stopT);const r=rec;if(!r||r._stopping)return;r._stopping=1;$('rec').textContent='…';
+  setTimeout(()=>{if(r.state!=='inactive')r.stop();$('rec').textContent='● Enregistrer';$('rec').classList.remove('going')},450)}   /* on garde la fin du son */
 
 /* --- coupe des silences, égalisation, conversion en WAV 22 kHz mono --- */
 async function finish([c,x],blob){
@@ -164,16 +172,16 @@ async function finish([c,x],blob){
     const buf=await new Promise((ok,ko)=>{const p=ctx.decodeAudioData(ab,ok,ko);if(p&&p.catch)p.catch(ko)});
     const out=await process(buf);
     if(!out){$('state').className='state warn';$('state').textContent='Je n’ai rien entendu. Rapprochez-vous du micro et recommencez.';return}
-    const k=keyOf(c,x);await dbPut(k,{wav:out.wav,dur:out.dur,t:Date.now()});done[k]=out.dur;
+    const k=keyOf(c,x),t=Date.now();await dbPut(k,{wav:out.wav,dur:out.dur,t});done[k]=out.dur;doneT[k]=t;
     render();
-    $('state').className='state'+(out.clip?' warn':' ok');
-    $('state').textContent=out.clip?'Enregistré, mais le son sature : éloignez un peu le micro et recommencez.':(out.dur>2.5&&c!=='w'?'Enregistré ('+out.dur.toFixed(1)+' s) — un peu long, vérifiez à l’écoute.':'✓ Enregistré ('+out.dur.toFixed(1)+' s)');
+    $('state').className='state'+(out.clip||out.cut?' warn':' ok');
+    $('state').textContent=out.cut?'Le son semble coupé : attendez une demi-seconde avant de parler, et appuyez sur Stop un peu après la fin.':out.clip?'Enregistré, mais le son sature : éloignez un peu le micro et recommencez.':(out.dur>2.5&&c!=='w'?'Enregistré ('+out.dur.toFixed(1)+' s) — un peu long, vérifiez à l’écoute.':'✓ Enregistré ('+out.dur.toFixed(1)+' s)');
     player.src=URL.createObjectURL(out.wav);player.play().catch(()=>{});
   }catch(e){$('state').className='state warn';$('state').textContent='Erreur pendant le traitement ('+(e&&e.message||e)+'). Recommencez.'}
 }
 async function process(buf){
   const sr=buf.sampleRate;let d=buf.getChannelData(0);
-  const skip=Math.floor(.12*sr);d=d.slice(skip,Math.max(skip,d.length-Math.floor(.08*sr)));   /* bruit du doigt sur l'écran */
+  const skip=Math.floor(.04*sr);d=d.slice(skip);
   let mean=0;for(const v of d)mean+=v;mean/=d.length||1;
   const F=Math.floor(.01*sr),n=Math.floor(d.length/F),rms=new Float32Array(n);
   for(let i=0;i<n;i++){let s=0;for(let j=i*F;j<(i+1)*F;j++){const v=d[j]-mean;s+=v*v}rms[i]=Math.sqrt(s/F)}
@@ -191,7 +199,7 @@ async function process(buf){
   const oc=new OAC(1,len,R),src=oc.createBufferSource(),ib=oc.createBuffer(1,seg.length,sr);
   ib.getChannelData(0).set(seg);src.buffer=ib;src.connect(oc.destination);src.start();
   const rb=await new Promise((ok,ko)=>{oc.oncomplete=e=>ok(e.renderedBuffer);const p=oc.startRendering();if(p&&p.then)p.then(ok,ko)});
-  return{wav:wavBlob(rb.getChannelData(0),R),dur:rb.length/R,clip:clip>sr*.003};
+  return{wav:wavBlob(rb.getChannelData(0),R),dur:rb.length/R,clip:clip>sr*.003,cut:b>=n-4||a<=1};
 }
 function wavBlob(f,sr){
   const b=new ArrayBuffer(44+f.length*2),v=new DataView(b),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
@@ -232,9 +240,14 @@ document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.tagName!==
 (async()=>{
   try{LISTS=await (await fetch('../sons/manifest.json')).json();LISTS=Object.fromEntries(CATS.map(([c])=>[c,LISTS[c]||[]]))}
   catch(e){showErr('Impossible de charger la liste des sons. Vérifiez la connexion et rechargez.');return}
-  try{db=await openDB();for(const k of await dbKeys()){const r=await dbGet(k);done[k]=r.dur||0}}
+  try{db=await openDB();for(const k of await dbKeys()){const r=await dbGet(k);done[k]=r.dur||0;doneT[k]=r.t||0}}
   catch(e){showErr('Le stockage local n’est pas disponible (navigation privée ?). Les enregistrements seront perdus si la page est fermée : exportez avant de quitter.');db=null}
-  try{const p=JSON.parse(localStorage.getItem('enr-pos')||'{}');if(LISTS[p.cat]){cat=p.cat;idx=Math.min(p.idx|0,LISTS[cat].length-1)}}catch(e){}
+  /* liste « à refaire » : lien ?refaire=sy/la,w/loup… (envoyé par Claude), gardée sur l'appareil */
+  try{const q=new URLSearchParams(location.search).get('refaire'),old=JSON.parse(localStorage.getItem('enr-rf')||'null');
+    if(q){const keys=q.split(',').filter(Boolean);if(!old||old.q!==q){RF={keys,since:Date.now(),q};localStorage.setItem('enr-rf',JSON.stringify(RF))}else RF=old;cat='rf'}else if(old)RF=old}catch(e){}
+  const back={};CATS.forEach(([c])=>LISTS[c].forEach(x=>back[c+'/'+SKEY(x)]=c+'|'+x));
+  LISTS.rf=RF.keys.map(k=>back[k]).filter(Boolean);
+  try{const p=JSON.parse(localStorage.getItem('enr-pos')||'{}');if((cat!=='rf'||p.cat==='rf')&&LISTS[p.cat]&&LISTS[p.cat].length){cat=p.cat;idx=Math.min(p.idx|0,LISTS[cat].length-1)}}catch(e){}
   if(!navigator.mediaDevices||!window.MediaRecorder)showErr('Ce navigateur ne permet pas d’enregistrer. Utilisez Safari (iPad, iPhone) ou Chrome à jour.');
   render();
 })();

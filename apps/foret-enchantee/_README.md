@@ -13,7 +13,7 @@ C'est un site statique : un seul fichier `index.html`, sans dépendance ni étap
 | `sw.js` | Fonctionnement hors connexion (après une première visite) |
 | `icons/` | Icônes 180, 192 et 512 px |
 | `enregistreur/` | Page pour enregistrer soi-même les sons (micro du téléphone ou de l'iPad), coupe des silences, export zip à intégrer dans `sons/` avec `sons/integrer.py` |
-| `sons/` | Sons en voix française : `ph/` sons isolés, `sy/` syllabes, `w/` mots, `mo/` petits mots (MP3), page d'écoute `index.html`, `CREDITS.txt`. Régénérables avec le script `gen.py` (Piper) |
+| `sons/` | Sons en voix française : `ph/` sons isolés, `sy/` syllabes, `w/` mots, `mo/` petits mots (MP3), page d'écoute `index.html`, `CREDITS.txt`. Voix de Stéphane (enregistreur), intégrée avec `integrer.py` ; `gen.py` (Piper) régénère une voix de synthèse de secours |
 
 ## Essayer chez soi
 
@@ -59,7 +59,7 @@ Chaque niveau gagné transforme l'animal (étincelant, d'argent, d'or, arc-en-ci
 
 Une mauvaise bulle fait entendre son propre son, puis la consigne revient. Dans la Prairie, le dragon demande désormais l'abeille, et les licornes des syllabes et de la lecture demandent le perroquet et l'abeille : on ne lit pas de syllabes écrites avant d'en connaître les sons.
 
-Les sons sont produits par la synthèse vocale Piper avec la voix française « siwis » (corpus SIWIS, Université d'Édimbourg, CC BY 4.0), son par son à partir de phonèmes choisis explicitement : les consonnes qui se prolongent sont tenues (« fff »), les autres sont suivies d'un petit « e » (« pe »). Les syllabes, les mots et les petits mots ont aussi leur fichier ; seules les consignes de la fée passent par la voix de l'appareil. Page d'écoute : `sons/index.html`.
+Les sons (sons isolés, syllabes, mots, petits mots) sont enregistrés par Stéphane avec la page `enregistreur/`, qui coupe les silences et égalise le volume, puis exporte un zip. On l'intègre avec `python3 sons/integrer.py export.zip sons` (conversion MP3, remplacement des fichiers, liste dans `sons/voix-perso.txt`). Pour faire refaire certains sons : `enregistreur/?refaire=sy/la,w/loup` affiche un onglet « À refaire ». Seules les consignes de la fée passent par la voix de l'appareil.
 
 ## Où sont les données
 
