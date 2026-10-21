@@ -1,0 +1,13 @@
+# Une requête par semaine pour que le projet Supabase gratuit de la Forêt Enchantée ne soit pas mis en pause.
+name: Supabase keepalive
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS "https://hwyckgbmguxhufnlenif.supabase.co/rest/v1/profils?select=nom&limit=1" \
+            -H "apikey: sb_publishable_ockdQA7mMQP4fSz02r3nHQ_BOzgZpxM"
