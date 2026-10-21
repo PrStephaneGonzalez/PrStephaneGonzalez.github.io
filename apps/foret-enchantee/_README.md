@@ -12,6 +12,7 @@ C'est un site statique : un seul fichier `index.html`, sans dépendance ni étap
 | `manifest.webmanifest` | Nom et icônes quand le site est installé sur l'écran d'accueil |
 | `sw.js` | Fonctionnement hors connexion (après une première visite) |
 | `icons/` | Icônes 180, 192 et 512 px |
+| `enregistreur/` | Page pour enregistrer soi-même les sons (micro du téléphone ou de l'iPad), coupe des silences, export zip à intégrer dans `sons/` avec `sons/integrer.py` |
 | `sons/` | Sons en voix française : `ph/` sons isolés, `sy/` syllabes, `w/` mots, `mo/` petits mots (MP3), page d'écoute `index.html`, `CREDITS.txt`. Régénérables avec le script `gen.py` (Piper) |
 
 ## Essayer chez soi
