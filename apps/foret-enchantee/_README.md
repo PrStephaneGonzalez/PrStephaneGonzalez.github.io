@@ -39,9 +39,9 @@ Ouvrir l'adresse dans Safari, toucher Partager, puis « Sur l'écran d'accueil �
 
 ## Où sont les données
 
-La progression est enregistrée dans le navigateur de l'appareil (`localStorage`, clé `gardiens-foret-v1`). Elle n'est donc ni partagée entre appareils ni sauvegardée en ligne. Effacer les données du site efface la progression. Le bouton « Remettre la progression à zéro » est dans l'espace parents (maintenir le cadenas appuyé 1,5 seconde, en haut à droite de la carte).
+Chaque joueur choisit son prénom au démarrage. La progression est enregistrée dans le navigateur (clé `gardiens-foret-v1:<prénom>`) et envoyée à une base Supabase (table `profils`, une ligne par prénom : niveaux, étoiles, réussites, aucune autre donnée). Sur un autre appareil, il suffit de saisir le même prénom : les deux sauvegardes sont fusionnées (on garde toujours le meilleur de chacune). Hors connexion, le jeu continue et renvoie la progression au retour du réseau (pastille « hors connexion » en bas à gauche de la carte).
 
-Pas encore fait : comptes, synchronisation entre appareils, code de sauvegarde. La structure est prévue pour que cela s'ajoute à un seul endroit (voir `load()` et `save()`).
+Le projet Supabase gratuit est mis en pause après une semaine sans activité : `.github/workflows/supabase-keepalive.yml` l'interroge chaque lundi. La clé publique (`SB_KEY` dans `index.html`) peut rester visible dans le code ; la table n'accepte que lecture, création et mise à jour, jamais la suppression. N'importe qui connaissant un prénom peut ouvrir ce profil : choisir des prénoms ou pseudos peu devinables si le lien circule beaucoup.
 
 ## Organisation du code
 

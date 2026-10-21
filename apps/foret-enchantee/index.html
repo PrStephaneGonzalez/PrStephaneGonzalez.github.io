@@ -249,6 +249,17 @@ svg.ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;str
 .pal{display:flex;gap:12px;justify-content:center}
 
 /* overlays */
+[hidden]{display:none!important}
+.whoq{font-family:var(--fd,inherit);font-size:1.5rem;margin:6px 0 10px;color:#fff}
+#whoList{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px}
+.whobtn{font:inherit;font-weight:800;font-size:1.35rem;border:0;border-radius:22px;padding:12px 24px;background:#fff;color:#4a3a78;box-shadow:0 4px 0 rgba(0,0,0,.18);cursor:pointer}
+.whobtn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+#whoForm{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+#whoName{font:inherit;font-size:1.3rem;padding:12px 16px;border-radius:18px;border:3px solid #fff;width:min(240px,70vw);text-align:center}
+.whomsg{min-height:1.4em;margin:8px 0 0;color:#fff;font-weight:700}
+#sync{position:absolute;left:8px;bottom:8px;z-index:15;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:14px;padding:5px 11px;background:rgba(255,255,255,.85);color:#4a3a78;cursor:pointer;opacity:.85}
+#sync.off{background:rgba(255,230,180,.95)}
+#game:not([hidden]) ~ #sync{display:none}
 .overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:rgba(43,33,66,.55)}
 .card{background:var(--paper);border-radius:34px;padding:28px 24px;max-width:min(92vw,460px);text-align:center;box-shadow:0 18px 40px rgba(20,10,40,.35);position:relative;overflow:hidden}
 .card h2{font:800 clamp(1.6rem,6vw,2.1rem)/1.15 var(--display);margin:6px 0 8px;text-wrap:balance;color:var(--berry)}
@@ -313,9 +324,6 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 @keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media (max-width:420px){.tally{font-size:1rem}.stars i{width:24px}.stars svg{width:23px;height:23px}.gtitle .n{display:none}.pad{grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,52px)}}
-[hidden]{display:none!important}
-:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-img{max-width:100%}
 </style>
 </head>
 <body>
@@ -356,10 +364,19 @@ img{max-width:100%}
       <div class="big" aria-hidden="true">🧚</div>
       <h1 class="ttl">Les Gardiens de la Forêt Enchantée</h1>
       <p class="sub">Une sorcière a plongé la forêt dans l'ombre.<br>Libère les animaux, puis la sirène !</p>
-      <button id="startBtn" class="bigbtn berry" style="font-size:1.6rem;padding:18px 34px"><svg class="ic" viewBox="0 0 24 24" style="fill:#fff;stroke:none"><path d="M8 5.5v13l10.5-6.5z"/></svg>Jouer</button>
+      <div id="who">
+        <h2 class="whoq">Qui joue ?</h2>
+        <div id="whoList"></div>
+        <form id="whoForm" autocomplete="off">
+          <input id="whoName" type="text" maxlength="20" placeholder="Écris ton prénom" aria-label="Ton prénom" autocapitalize="words" spellcheck="false">
+          <button id="whoGo" type="submit" class="bigbtn berry"><svg class="ic" viewBox="0 0 24 24" style="fill:#fff;stroke:none"><path d="M8 5.5v13l10.5-6.5z"/></svg>C'est moi !</button>
+        </form>
+        <p id="whoMsg" class="whomsg" aria-live="polite"></p>
+      </div>
       <small>Pour les parents : le son est nécessaire. Maintenez le cadenas, en haut à droite de la carte, pour voir les progrès.</small>
     </div>
   </div>
+  <button id="sync" type="button" hidden></button>
   <div id="celebrate" class="overlay" hidden></div>
   <div id="parents" class="overlay sheetwrap gut" hidden></div>
 </div>
@@ -448,9 +465,47 @@ const POS={
 const KEY='gardiens-foret-v1';
 const blank=()=>({level:1,stars:0,freed:false,mastered:false});
 function fresh(){const g={};GAMES.forEach(x=>g[x.id]=blank());return{games:g,items:{},days:{},visits:0,unicorns:{},terr:'foret'}}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.games){GAMES.forEach(x=>{if(!s.games[x.id])s.games[x.id]=blank()});s.items=s.items||{};s.days=s.days||{};s.visits=s.visits||0;s.unicorns=s.unicorns||{};s.terr=s.terr||'foret';return s}}catch(e){}return fresh()}
-let st=load();
-function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function norm(s){if(!s||!s.games)return null;GAMES.forEach(x=>{if(!s.games[x.id])s.games[x.id]=blank()});s.items=s.items||{};s.days=s.days||{};s.visits=s.visits||0;s.unicorns=s.unicorns||{};s.terr=s.terr||'foret';return s}
+function parse(raw){try{return norm(JSON.parse(raw))}catch(e){return null}}
+/* fusion de deux sauvegardes : on ne perd jamais de progrès */
+function mergeSt(a,b){const o=fresh();
+  GAMES.forEach(g=>{const x=a.games[g.id],y=b.games[g.id];const w=(x.level>y.level||(x.level===y.level&&x.stars>=y.stars))?x:y;
+    o.games[g.id]=Object.assign({},w,{freed:!!(x.freed||y.freed),mastered:!!(x.mastered||y.mastered)})});
+  new Set([...Object.keys(a.items),...Object.keys(b.items)]).forEach(k=>{const x=a.items[k]||{n:0,ok:0,days:[]},y=b.items[k]||{n:0,ok:0,days:[]};
+    o.items[k]={n:Math.max(x.n,y.n),ok:Math.max(x.ok,y.ok),days:[...new Set([...(x.days||[]),...(y.days||[])])].sort()}});
+  new Set([...Object.keys(a.days),...Object.keys(b.days)]).forEach(k=>{const x=a.days[k]||{rounds:0,ok:0},y=b.days[k]||{rounds:0,ok:0};o.days[k]={rounds:Math.max(x.rounds,y.rounds),ok:Math.max(x.ok,y.ok)}});
+  o.visits=Math.max(a.visits,b.visits);o.unicorns=Object.assign({},a.unicorns,b.unicorns);o.terr=a.terr;return o}
+
+/* ================= profils : sauvegarde locale + en ligne (Supabase) ================= */
+const SB_URL='https://hwyckgbmguxhufnlenif.supabase.co',SB_KEY='sb_publishable_ockdQA7mMQP4fSz02r3nHQ_BOzgZpxM';
+const PKEY='gardiens-foret-profiles';
+let st=fresh(),prof=null;           /* prof = {k:clé normalisée, n:prénom affiché} */
+let syncState='off',dirty=false,pushT=null,pushing=false,forcePush=false;
+const slug=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/ /g,'-').slice(0,30);
+function plist(){try{const p=JSON.parse(localStorage.getItem(PKEY));if(p&&Array.isArray(p.list))return p}catch(e){}return{list:[],last:null}}
+function psave(p){try{localStorage.setItem(PKEY,JSON.stringify(p))}catch(e){}}
+function save(){if(!prof)return;try{localStorage.setItem(KEY+':'+prof.k,JSON.stringify(st))}catch(e){}dirty=true;clearTimeout(pushT);pushT=setTimeout(push,2500)}
+function sbFetch(path,opt){const c=new AbortController();const t=setTimeout(()=>c.abort(),8000);
+  return fetch(SB_URL+'/rest/v1/'+path,Object.assign({signal:c.signal,headers:Object.assign({apikey:SB_KEY,'Content-Type':'application/json'},(opt&&opt.headers)||{})},opt&&{method:opt.method,body:opt.body,keepalive:opt.keepalive})).finally(()=>clearTimeout(t))}
+async function pull(k){const r=await sbFetch('profils?nom=eq.'+encodeURIComponent(k)+'&select=donnees');if(!r.ok)throw new Error(r.status);const a=await r.json();return a.length?parse(JSON.stringify(a[0].donnees)):null}
+async function push(final){if(!prof||pushing||!dirty)return;pushing=true;dirty=false;
+  try{if(!final&&!forcePush){const rem=await pull(prof.k);      /* un autre appareil a pu avancer entre-temps */
+      if(rem){const m=mergeSt(st,rem);const cp=Object.assign({},st);delete cp._n;if(JSON.stringify(m)!==JSON.stringify(cp)){Object.assign(st,m);try{localStorage.setItem(KEY+':'+prof.k,JSON.stringify(st))}catch(e){}}}}
+    const r=await sbFetch('profils',{method:'POST',keepalive:!!final,headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({nom:prof.k,donnees:Object.assign({},st,{_n:prof.n}),maj:new Date().toISOString()})});
+    if(!r.ok)throw new Error(r.status);forcePush=false;setSync('ok')}catch(e){dirty=true;setSync('off');clearTimeout(pushT);pushT=setTimeout(push,30000)}
+  pushing=false}
+function setSync(s){syncState=s;const b=$('#sync');if(!b)return;b.hidden=!prof;b.className=s==='ok'?'':'off';b.textContent=prof?(s==='ok'?'☁️ ':'📴 ')+prof.n+(s==='ok'?'':' (hors connexion)'):''}
+addEventListener('pagehide',()=>push(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')push(true)});
+addEventListener('online',()=>{if(prof){dirty=true;push()}});
+async function enter(name){
+  const k=slug(name);if(!k)return;const n=name.trim().replace(/\s+/g,' ');
+  const p=plist();let local=parse(localStorage.getItem(KEY+':'+k));
+  if(!local&&!p.list.length){const old=parse(localStorage.getItem(KEY));if(old)local=old}     /* ancienne sauvegarde d'avant les profils */
+  let remote=null,ok=true;try{remote=await pull(k)}catch(e){ok=false}
+  prof={k,n:(remote&&remote._n)||n};
+  st=local&&remote?mergeSt(local,remote):(remote||local||fresh());
+  if(!p.list.find(x=>x.k===k))p.list.push({k,n:prof.n});p.last=k;psave(p);
+  dirty=true;save();clearTimeout(pushT);await push()}
 function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function record(key,ok){const it=st.items[key]||(st.items[key]={n:0,ok:0,days:[]});it.n++;if(ok){it.ok++;const t=today();if(!it.days.includes(t))it.days.push(t)}
   const d=st.days[today()]||(st.days[today()]={rounds:0,ok:0});d.rounds++;if(ok)d.ok++;save()}
@@ -1241,21 +1296,31 @@ function openParents(){
     h('p',null,`Potions : ${sumN(/^P:\d$/)} · Chemins et circuits : ${sumN(/^H:/)} · Suites, intrus, sudokus, devinettes : ${sumN(/^T:/)}`),
     h('div',{class:'legend'},h('span',{class:'chip acquis'},'A'),'acquis',h('span',{class:'chip cours'},'A'),'en cours',h('span',{class:'chip nv'},'A'),'pas encore vu'));
   const zone=h('div',null);const resetBtn=h('button',{class:'danger',onclick:()=>{zone.innerHTML='';zone.append(h('div',{class:'confirm'},h('span',null,'Effacer toute la progression ?'),
-    h('button',{class:'danger',onclick:()=>{st=fresh();save();P.hidden=true;renderMap()}},'Oui, tout effacer'),h('button',{class:'bigbtn alt',style:'padding:8px 14px;font-size:.95rem',onclick:()=>{zone.innerHTML='';zone.append(resetBtn)}},'Annuler')))}},'Remettre la progression à zéro');
+    h('button',{class:'danger',onclick:()=>{st=fresh();forcePush=true;save();P.hidden=true;renderMap()}},'Oui, tout effacer'),h('button',{class:'bigbtn alt',style:'padding:8px 14px;font-size:.95rem',onclick:()=>{zone.innerHTML='';zone.append(resetBtn)}},'Annuler')))}},'Remettre la progression à zéro');
   zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone);
   P.append(sheet);P.hidden=false;P.scrollTop=0;
 }
 
 /* ================= démarrage ================= */
-$('#startBtn').onclick=()=>{$('#start').hidden=true;sfx('tap');try{document.fonts&&document.fonts.load('48px "Playwrite FR Trad"','abc')}catch(e){}st.visits++;save();renderMap();
+function showWho(){
+  const L=$('#whoList');L.innerHTML='';const p=plist();
+  p.list.forEach(x=>{const b=h('button',{class:'whobtn',type:'button',onclick:()=>choose(x.n)},x.n);L.append(b)});
+  $('#whoMsg').textContent='';$('#start').hidden=false;$('#whoName').value=''}
+async function choose(name){
+  const msg=$('#whoMsg');msg.textContent='Je te cherche…';
+  document.querySelectorAll('.whobtn,#whoGo').forEach(b=>b.disabled=true);
+  try{await enter(name)}catch(e){msg.textContent='Oups, réessaie.';document.querySelectorAll('.whobtn,#whoGo').forEach(b=>b.disabled=false);return}
+  document.querySelectorAll('.whobtn,#whoGo').forEach(b=>b.disabled=false);begin()}
+$('#whoForm').onsubmit=e=>{e.preventDefault();const v=$('#whoName').value.trim();if(!slug(v)){$('#whoMsg').textContent='Écris ton prénom avec des lettres.';return}choose(v)};
+$('#sync').onclick=()=>{push();if(hasTTS)try{speechSynthesis.cancel()}catch(e){}showWho()};
+function begin(){$('#start').hidden=true;sfx('tap');try{document.fonts&&document.fonts.load('48px "Playwrite FR Trad"','abc')}catch(e){}st.visits++;save();renderMap();
   const fr=GAMES.filter(g=>st.games[g.id].freed).length;
   say(st.visits<=1?"Bonjour, petite fée ! Une sorcière a plongé la forêt dans l'ombre. Les animaux sont prisonniers. Touche un animal pour l'aider !"
     :st.games.siren.freed?"Bravo, grande gardienne ! Toute la forêt est sauvée. Avec quel ami veux-tu jouer ?":`Te revoilà, petite fée ! Tu as déjà libéré ${fr<=1?(fr?'un animal':'aucun animal'):NW[fr]+' animaux'}. Quel ami veux-tu aider aujourd'hui ?`);
-  const uq=checkUnicorns();if(uq.length)setTimeout(()=>uniFreed(uq,()=>renderMap()),900)};
-renderMap();
+  const uq=checkUnicorns();if(uq.length)setTimeout(()=>uniFreed(uq,()=>renderMap()),900)}
+renderMap();showWho();
 })();
 if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 </script>
 </body>
 </html>
-
