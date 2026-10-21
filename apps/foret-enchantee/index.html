@@ -250,6 +250,23 @@ svg.ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;str
 
 /* overlays */
 [hidden]{display:none!important}
+.field{position:relative;width:100%;max-width:760px;height:min(56vh,500px);border-radius:28px;background:linear-gradient(#cfe4ff,#f3e8ff 60%,#fff2f8);box-shadow:inset 0 0 0 3px rgba(255,255,255,.75);overflow:hidden}
+.field .fw{position:absolute;transform:translate(-50%,-50%)}
+.field .fb{width:clamp(58px,12.5vmin,88px);aspect-ratio:1;border-radius:50%;border:none;padding:0;background:radial-gradient(circle at 35% 30%,#fff,var(--bc) 72%);box-shadow:0 4px 0 rgba(43,33,80,.14);font:700 clamp(1.5rem,5.6vmin,2.4rem)/1 var(--body);color:var(--ink);animation:float 4s ease-in-out infinite}
+.field .fb.cur{font:400 clamp(1.4rem,5.2vmin,2.2rem)/1 var(--cursive);padding-bottom:.15em}
+.field .fb.got{background:#c9f2d3;box-shadow:0 0 0 5px #4fb487;animation:none}
+.found{font-size:clamp(1.8rem,6vw,2.4rem);letter-spacing:.15em;min-height:1.2em;color:#f0b51e;text-shadow:0 2px 0 rgba(43,33,66,.15)}
+.mem{display:grid;gap:clamp(8px,2vw,14px);grid-template-columns:repeat(var(--mc),clamp(72px,19vw,120px))}
+.mc{aspect-ratio:3/4;border:none;border-radius:18px;background:linear-gradient(#bcd8ff,#e4d4ff);box-shadow:0 5px 0 var(--shadow);font:700 clamp(1.7rem,7vw,2.8rem)/1 var(--body);color:var(--ink);padding:0}
+.mc.up{background:var(--paper)}.mc .cur{font:400 clamp(1.5rem,6vw,2.4rem)/1 var(--cursive)}
+.mc.ok{background:#d7f4dc;box-shadow:0 0 0 4px #4fb487}
+.model.cur{font:400 clamp(3.4rem,13vw,5.4rem)/1.2 var(--cursive);padding-bottom:.2em}
+.scard.cur{font:400 clamp(1.9rem,8vw,3rem)/1.2 var(--cursive)}
+.lopts{display:flex;gap:clamp(14px,4vw,32px);justify-content:center;flex-wrap:wrap}
+.lopt{display:flex;flex-direction:column;align-items:center;gap:10px}
+.lopt .spk{width:clamp(82px,20vw,112px);aspect-ratio:1;border-radius:50%;border:none;background:radial-gradient(circle at 35% 30%,#fff,var(--bc) 72%);font-size:clamp(2rem,8vw,3rem);box-shadow:0 4px 0 var(--shadow)}
+.lopt .spk.playing{box-shadow:0 0 0 6px var(--sun)}
+.lopt .pickb{border:none;border-radius:16px;background:var(--mint);color:#fff;font:700 1.5rem/1 var(--body);padding:8px 22px;box-shadow:0 4px 0 var(--mint-d)}
 .whoq{font-family:var(--fd,inherit);font-size:1.5rem;margin:6px 0 10px;color:#fff}
 #whoList{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px}
 .whobtn{font:inherit;font-weight:800;font-size:1.35rem;border:0;border-radius:22px;padding:12px 24px;background:#fff;color:#4a3a78;box-shadow:0 4px 0 rgba(0,0,0,.18);cursor:pointer}
@@ -257,9 +274,8 @@ svg.ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;str
 #whoForm{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
 #whoName{font:inherit;font-size:1.3rem;padding:12px 16px;border-radius:18px;border:3px solid #fff;width:min(240px,70vw);text-align:center}
 .whomsg{min-height:1.4em;margin:8px 0 0;color:#fff;font-weight:700}
-#sync{position:absolute;left:8px;bottom:8px;z-index:15;font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:14px;padding:5px 11px;background:rgba(255,255,255,.85);color:#4a3a78;cursor:pointer;opacity:.85}
+#sync{display:inline-block;vertical-align:middle;margin-left:4px;font:700 .72rem/1.2 var(--body);border:0;border-radius:12px;padding:3px 9px;background:var(--paper-2);color:var(--ink-soft);cursor:pointer;max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #sync.off{background:rgba(255,230,180,.95)}
-#game:not([hidden]) ~ #sync{display:none}
 .overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:rgba(43,33,66,.55)}
 .card{background:var(--paper);border-radius:34px;padding:28px 24px;max-width:min(92vw,460px);text-align:center;box-shadow:0 18px 40px rgba(20,10,40,.35);position:relative;overflow:hidden}
 .card h2{font:800 clamp(1.6rem,6vw,2.1rem)/1.15 var(--display);margin:6px 0 8px;text-wrap:balance;color:var(--berry)}
@@ -332,7 +348,7 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 <div id="app">
   <section id="map" class="screen">
     <header class="mapbar gut">
-      <div class="brand"><span class="t1">Les Gardiens</span><span class="t2" id="terrName"></span></div>
+      <div class="brand"><span class="t1">Les Gardiens <button id="sync" type="button" hidden></button></span><span class="t2" id="terrName"></span></div>
       <div id="tally" class="tally" aria-label="Animaux libérés"></div>
       <button id="lockBtn" class="ibtn lock" aria-label="Espace parents : maintenir appuyé">
         <svg class="ic" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>
@@ -376,7 +392,6 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
       <small>Pour les parents : le son est nécessaire. Maintenez le cadenas, en haut à droite de la carte, pour voir les progrès.</small>
     </div>
   </div>
-  <button id="sync" type="button" hidden></button>
   <div id="celebrate" class="overlay" hidden></div>
   <div id="parents" class="overlay sheetwrap gut" hidden></div>
 </div>
@@ -410,7 +425,7 @@ const ARROW={U:'<svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
 function iconBtn(cls,svg,label,onclick,showLabel){const b=h('button',{class:cls,'aria-label':label,onclick});b.innerHTML=svg+(showLabel?'<span>'+label+'</span>':'');return b}
 
 /* ================= territoires, animaux, licornes ================= */
-const TERR=[{id:'foret',name:'Bois des Fées',short:'Bois',ic:'🌲'},{id:'prairie',name:'Prairie des Licornes',short:'Prairie',ic:'🌈'},{id:'lac',name:'Royaume des Sirènes',short:'Lac',ic:'🌊'}];
+const TERR=[{id:'foret',name:'Bois des Fées',short:'Bois',ic:'🌲'},{id:'prairie',name:'Prairie des Licornes',short:'Prairie',ic:'🌈'},{id:'lac',name:'Royaume des Sirènes',short:'Lac',ic:'🌊'},{id:'ciel',name:'Royaume des Nuages',short:'Ciel',ic:'☁️'}];
 const GAMES=[
   {id:'letters',t:'foret',ani:'🦉',name:'le hibou',title:'Bulles de lettres',max:6,c:'#b99bff',req:[],skill:'Reconnaître les 26 lettres (capitales, scriptes)'},
   {id:'nuts',t:'foret',ani:'🐿️',name:"l'écureuil",title:'Les noisettes',max:5,c:'#e0a35a',req:[],skill:'Dénombrer jusqu’à 20, compléter, dizaines'},
@@ -419,9 +434,13 @@ const GAMES=[
   {id:'path',t:'foret',ani:'🦋',name:'le papillon',title:'Le chemin des fleurs',max:6,c:'#ffd36b',req:['space'],skill:'Chemins et circuits hamiltoniens'},
   {id:'lengths',t:'foret',ani:'🐌',name:"l'escargot",title:'Lianes et balances',max:5,c:'#8fe3a0',req:['shapes'],skill:'Comparer longueurs et masses'},
   {id:'sounds',t:'prairie',ani:'🐸',name:'la grenouille',title:'Les sons des mots',max:4,c:'#6fd67f',req:['letters'],skill:'Syllabes orales, rimes, premier son'},
-  {id:'syll',t:'prairie',ani:'🐉',name:'le dragon',title:'Les œufs de dragon',max:5,c:'#ff9a6b',req:['sounds'],skill:'Lire et écrire des syllabes'},
+  {id:'syll',t:'prairie',ani:'🐉',name:'le dragon',title:'Les œufs de dragon',max:5,c:'#ff9a6b',req:['sounds','bee'],skill:'Lire et écrire des syllabes'},
   {id:'words',t:'prairie',ani:'🦌',name:'la biche',title:'Les mots magiques',max:5,c:'#e0a35a',req:['syll'],skill:'Lire des mots et des phrases'},
   {id:'cursive',t:'prairie',ani:'🦚',name:'le paon',title:'Les lettres attachées',max:5,c:'#5fb8ff',req:['letters'],skill:'Reconnaître lettres et mots en écriture cursive (attachée)'},
+  {id:'parrot',t:'ciel',ani:'🦜',name:'le perroquet',title:'Les sons des lettres',max:5,c:'#6fd67f',req:['letters'],skill:'Associer chaque lettre à son son (voyelles, puis consonnes, une à une)'},
+  {id:'dove',t:'ciel',ani:'🕊️',name:'la colombe',title:'Les trois écritures',max:5,c:'#b99bff',req:['letters'],skill:'Reconnaître chaque lettre en capitale, en script et en attaché'},
+  {id:'bee',t:'ciel',ani:'🐝',name:"l'abeille",title:'Les syllabes',max:5,c:'#ffd36b',req:['parrot'],skill:'Lire des syllabes simples, uniquement avec des sons déjà acquis',
+   need:()=>beeNeed(),needAni:'🦜',needTxt:()=>{const {C,V}=beeLetters();return `L'abeille dort encore. Pour la réveiller, apprends avec le perroquet les sons a, i et o, puis deux consonnes. Tu connais déjà ${V.length+C.length<=1?(V.length+C.length?'un son':'aucun son'):NW[V.length+C.length]+' sons'}.`}},
   {id:'potions',t:'lac',ani:'🦊',name:'le renard',title:'Les potions',max:5,c:'#ff9a6b',req:['nuts'],skill:'Logique : trier, anticiper'},
   {id:'problems',t:'lac',ani:'🐻',name:"l'ours",title:'Les énigmes de l’ours',max:5,c:'#c98b5a',req:['nuts'],skill:'Comparer, ajouter, retirer, compléter, calculer'},
   {id:'logic',t:'lac',ani:'🐢',name:'la tortue',title:'Les casse-têtes',max:6,c:'#5fb8ff',req:['path'],skill:'Suites logiques, intrus, sudokus, devinettes'},
@@ -442,14 +461,20 @@ const UNI=[
    keys:()=>WR.map(x=>'W:'+x.w),round:A=>MODS.words.round(4,A,{t:focusPick(WR,x=>'W:'+x.w)})},
   {id:'u_log',h:'40deg',req:'logic',name:'la licorne des énigmes',goal:'résoudre 15 grandes énigmes',total:15,
    prog:()=>Object.keys(st.items).filter(k=>/^(P|H|T):([3-9])$/.test(k)).reduce((a,k)=>a+st.items[k].ok,0),
-   round:A=>{const c=[()=>MODS.logic.round(rnd(3,6),A)];if(st.games.path.freed)c.push(()=>MODS.path.round(rnd(3,6),A));if(st.games.potions.freed)c.push(()=>MODS.potions.round(rnd(3,5),A));pick(c)()}}
+   round:A=>{const c=[()=>MODS.logic.round(rnd(3,6),A)];if(st.games.path.freed)c.push(()=>MODS.path.round(rnd(3,6),A));if(st.games.potions.freed)c.push(()=>MODS.potions.round(rnd(3,5),A));pick(c)()}},
+  {id:'u_sons',t:'ciel',h:'120deg',req:'parrot',name:'la licorne des sons',goal:'reconnaître le son des 22 lettres',total:22,
+   keys:()=>SKY_ALL.map(x=>'Sn:'+x),round:A=>{const o=openItems(SKY_ORDER,'Sn:');MODS.parrot.round(2,A,{t:focusPick(o,x=>'Sn:'+x),k:pick(['hear','read'])})}},
+  {id:'u_forms',t:'ciel',h:'250deg',req:'dove',name:'la licorne des trois écritures',goal:'reconnaître les 26 lettres dans leurs trois écritures',total:26,
+   keys:()=>FORM_ORDER.flat().map(x=>'Fo:'+x),round:A=>{const o=openItems(FORM_ORDER,'Fo:');MODS.dove.round(3,A,{t:focusPick(o,x=>'Fo:'+x),k:pick(['cl','lc','cc','ca'])})}},
+  {id:'u_syl',t:'ciel',h:'330deg',req:'bee',name:'la licorne des syllabes magiques',goal:'lire 30 syllabes',total:30,
+   keys:()=>SYL_SKY.map(x=>'S:'+x),round:A=>{const p=beePool();MODS.bee.round(2,A,{t:focusPick(p,x=>'S:'+x),k:pick(['hear','read'])})}}
 ];
 UNI.forEach(u=>{if(!u.prog)u.prog=()=>u.keys().filter(k=>status(k)==='acquis').length;
   /* progression partielle : une notion acquise vaut 1, sinon chaque réussite du premier coup vaut 1/4 (au plus 3/4 avant la confirmation un autre jour) */
   u.partial=u.keys?()=>{const ks=u.keys();const acq=ks.filter(k=>status(k)==='acquis').length;const rest=ks.filter(k=>status(k)!=='acquis').map(credit).sort((a,b)=>b-a).slice(0,Math.max(0,u.total-acq));return Math.min(u.total,acq+rest.reduce((a,b)=>a+b,0))}:u.prog});
 function credit(k){const it=st.items[k];if(!it)return 0;if(status(k)==='acquis')return 1;return Math.min(it.ok,3)/4}
 /* une licorne n'ouvre son défi que lorsque tous les exercices dont elle dépend sont libérés (toute la chaîne d'apprentissage) */
-const UNEEDS={u_let:['letters'],u_num:['nuts'],u_cur:['letters','cursive'],u_snd:['letters','sounds','syll'],u_read:['letters','sounds','syll','words'],u_log:['space','path','nuts','potions','logic']};
+const UNEEDS={u_let:['letters'],u_num:['nuts'],u_cur:['letters','cursive'],u_snd:['letters','sounds','parrot','bee','syll'],u_read:['letters','sounds','parrot','bee','syll','words'],u_sons:['letters','parrot'],u_forms:['letters','dove'],u_syl:['letters','parrot','bee'],u_log:['space','path','nuts','potions','logic']};
 const uniMissing=u=>(UNEEDS[u.id]||[u.req]).filter(id=>!st.games[id].freed).map(id=>GBY[id]);
 const uniAvail=u=>!!st.unicorns[u.id]||uniMissing(u).length===0;
 const listFr=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' et '+a[a.length-1];
@@ -462,7 +487,9 @@ const POS={
   prairie:{land:{sounds:[13,70],syll:[37,80],words:[62,80],cursive:[86,68],u_let:[9,30],u_num:[26,16],u_snd:[43,30],u_read:[60,16],u_log:[77,30],u_cur:[92,16]},
            port:{sounds:[25,57],syll:[74,62],words:[27,84],cursive:[73,88],u_let:[17,13],u_num:[50,9],u_snd:[83,13],u_read:[17,34],u_log:[50,30],u_cur:[83,34]}},
   lac:{land:{potions:[14,30],problems:[38,18],logic:[84,28],siren:[56,68]},
-       port:{potions:[24,13],problems:[74,22],logic:[26,40],siren:[56,73]}}
+       port:{potions:[24,13],problems:[74,22],logic:[26,40],siren:[56,73]}},
+  ciel:{land:{parrot:[20,74],dove:[50,84],bee:[80,74],u_sons:[22,30],u_forms:[50,18],u_syl:[78,30]},
+        port:{parrot:[24,58],dove:[74,66],bee:[32,86],u_sons:[18,18],u_forms:[50,10],u_syl:[82,18]}}
 };
 
 /* ================= état et maîtrise ================= */
@@ -498,7 +525,7 @@ async function push(final){if(!prof||pushing||!dirty)return;pushing=true;dirty=f
     const r=await sbFetch('profils',{method:'POST',keepalive:!!final,headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({nom:prof.k,donnees:Object.assign({},st,{_n:prof.n}),maj:new Date().toISOString()})});
     if(!r.ok)throw new Error(r.status);forcePush=false;setSync('ok')}catch(e){dirty=true;setSync('off');clearTimeout(pushT);pushT=setTimeout(push,30000)}
   pushing=false}
-function setSync(s){syncState=s;const b=$('#sync');if(!b)return;b.hidden=!prof;b.className=s==='ok'?'':'off';b.textContent=prof?(s==='ok'?'☁️ ':'📴 ')+prof.n+(s==='ok'?'':' (hors connexion)'):''}
+function setSync(s){syncState=s;const b=$('#sync');if(!b)return;b.hidden=!prof;b.className=s==='ok'?'':'off';b.textContent=prof?(s==='ok'?'☁️ ':'📴 ')+prof.n:'';b.title=s==='ok'?'Progression enregistrée en ligne. Toucher pour changer de joueur.':'Hors connexion : la progression sera envoyée au retour du réseau. Toucher pour changer de joueur.'}
 addEventListener('pagehide',()=>push(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')push(true)});
 addEventListener('online',()=>{if(prof){dirty=true;push()}});
 async function enter(name){
@@ -516,8 +543,8 @@ function record(key,ok){const it=st.items[key]||(st.items[key]={n:0,ok:0,days:[]
 /* Acquis : au moins 3 réussites du premier coup. */
 function status(key){const it=st.items[key];if(!it)return'nv';if(it.ok>=3)return'acquis';return'cours'}
 const freshW=k=>status(k)==='acquis'?1:3;
-function reqOf(G){return G.req==='ALL'?GAMES.filter(x=>x.id!==G.id).map(x=>x.id):G.req}
-function available(G){const s=st.games[G.id];return s.freed||reqOf(G).every(r=>st.games[r].freed)}
+function reqOf(G){return G.req==='ALL'?GAMES.filter(x=>x.id!==G.id&&x.t!=='ciel').map(x=>x.id):G.req}
+function available(G){const s=st.games[G.id];return s.freed||(reqOf(G).every(r=>st.games[r].freed)&&(!G.need||G.need()))}
 function checkUnicorns(){const out=[];UNI.forEach(u=>{if(!st.unicorns[u.id]&&uniAvail(u)&&u.prog()>=u.total){st.unicorns[u.id]=true;out.push(u)}});if(out.length)save();return out}
 
 /* ================= voix et sons ================= */
@@ -538,13 +565,14 @@ function sfx(k){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)()
 
 /* ================= carte ================= */
 function layoutKey(){const s=$('#stage');return s.clientWidth/s.clientHeight>1.05?'land':'port'}
-function terrRatio(t){const gs=GAMES.filter(g=>g.t===t);let n=gs.length,f=gs.filter(g=>st.games[g.id].freed).length;if(t==='prairie'){n+=UNI.length;f+=UNI.filter(u=>st.unicorns[u.id]).length}return f/n}
+function terrRatio(t){const gs=GAMES.filter(g=>g.t===t);let n=gs.length,f=gs.filter(g=>st.games[g.id].freed).length;const us=UNI.filter(u=>uT(u)===t);n+=us.length;f+=us.filter(u=>st.unicorns[u.id]).length;return f/n}
+const uT=u=>u.t||'prairie';const uWhere=u=>TERR.find(t=>t.id===uT(u)).name;const uIn=u=>uT(u)==='prairie'?'la Prairie des Licornes':'le '+uWhere(u);
 function renderTabs(){const T=$('#tabs');T.innerHTML='';TERR.forEach(t=>{const gs=GAMES.filter(g=>g.t===t.id);const f=gs.filter(g=>st.games[g.id].freed).length;
   T.append(h('button',{class:'tab'+(st.terr===t.id?' on':''),'aria-label':t.name,onclick:()=>{if(st.terr!==t.id){st.terr=t.id;save();sfx('tap');renderMap();say(t.name)}}},h('span',{class:'e'},t.ic),h('span',{class:'nm'},t.short+' '+f+'/'+gs.length)))})}
 function renderMap(){
   const terr=st.terr;$('#terrName').textContent=TERR.find(t=>t.id===terr).name;renderTabs();
   const T=$('#tally');T.innerHTML='';GAMES.filter(g=>g.t===terr).forEach(g=>T.append(h('span',{class:st.games[g.id].freed?'':'off',title:g.name},g.ani)));
-  if(terr==='prairie')UNI.forEach(u=>T.append(h('span',{class:st.unicorns[u.id]?'':'off',style:`filter:${st.unicorns[u.id]?'hue-rotate('+u.h+')':'grayscale(1)'}`},'🦄')));
+  UNI.filter(u=>uT(u)===terr).forEach(u=>T.append(h('span',{class:st.unicorns[u.id]?'':'off',style:`filter:${st.unicorns[u.id]?'hue-rotate('+u.h+')':'grayscale(1)'}`},'🦄')));
   const S=$('#spots');S.innerHTML='';const L=POS[terr][layoutKey()];
   GAMES.filter(g=>g.t===terr).forEach(g=>{const gs=st.games[g.id];const [x,y]=L[g.id];const av=available(g);
     const done=gs.freed?(gs.level-1+(gs.mastered?1:0)):0;
@@ -552,10 +580,10 @@ function renderMap(){
     const missing=reqOf(g).filter(r=>!st.games[r].freed);
     const b=h('button',{class:cls,style:`left:${x}%;top:${y}%;--c:${g.c}`,'aria-label':(gs.freed?'Jouer avec ':'Libérer ')+g.name,onclick:()=>{sfx('tap');if(av)openGame(g.id);else blockedMsg(g,missing)}},
       h('span',{class:'ani'},g.ani),gs.freed?h('span',{class:'spark'},'✨'):null,done>0?h('span',{class:'lv'},'★'.repeat(done)):null,
-      !av&&g.id!=='siren'?h('span',{class:'req'},missing.map(r=>h('span',null,GBY[r].ani))):null,
-      !av&&g.id==='siren'?h('span',{class:'lv'},`${GAMES.length-1-missing.length} / ${GAMES.length-1}`):null);
+      !av&&g.id!=='siren'?h('span',{class:'req'},missing.length?missing.map(r=>h('span',null,GBY[r].ani)):h('span',null,g.needAni||'⏳')):null,
+      !av&&g.id==='siren'?h('span',{class:'lv'},`${reqOf(g).length-missing.length} / ${reqOf(g).length}`):null);
     S.append(b)});
-  if(terr==='prairie')UNI.forEach(u=>{const [x,y]=L[u.id];const fr=!!st.unicorns[u.id];const av=uniAvail(u);const p=u.partial()/u.total;
+  UNI.filter(u=>uT(u)===terr).forEach(u=>{const [x,y]=L[u.id];const fr=!!st.unicorns[u.id];const av=uniAvail(u);const p=u.partial()/u.total;
     const ring=sv('svg',{class:'uring',viewBox:'0 0 52 52'});ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'rgba(255,255,255,.35)'}));ring.append(sv('circle',{cx:26,cy:26,r:23,stroke:'#ffd36b',pathLength:100,'stroke-dasharray':`${Math.round(Math.min(1,p)*100)} 100`}));
     S.append(h('button',{class:'spot uni '+(fr?'free':av?'locked':'blocked'),style:`left:${x}%;top:${y}%;--c:#ffd36b;--h:${u.h}`,'aria-label':u.name,
       onclick:()=>{sfx('tap');if(av)uniInfo(u);else say(`Pour approcher ${u.name}, libère d'abord ${listFr(uniMissing(u).map(g=>g.name))}.`)}},
@@ -564,10 +592,11 @@ function renderMap(){
 }
 function blockedMsg(g,missing){
   if(g.id==='siren'){say(`La sirène est enfermée dans une perle magique. Pour la libérer, il faut d'abord libérer tous les autres animaux. Encore ${missing.length===1?'un':NW[missing.length]||missing.length} !`);return}
-  const names=missing.map(r=>GBY[r].name);say(`Pour aider ${g.name}, libère d'abord ${names.join(' et ')}.`)}
+  if(!missing.length&&g.need){say(g.needTxt());return}
+  const names=missing.map(r=>GBY[r].name);say(`Pour aider ${g.name}, libère d'abord ${listFr(names)}.`)}
 function uniPending(u){if(!u.keys)return 0;return u.keys().filter(k=>{const it=st.items[k];return it&&it.ok>=3&&it.days.length<2}).length}
 function uniInfo(u){const C=$('#celebrate');C.innerHTML='';const fr=!!st.unicorns[u.id];const p=Math.min(u.total,u.prog());
-  let txt=fr?`${cap1(u.name)} est libre et galope dans la prairie. Tu peux encore t'entraîner avec elle.`:`Pour libérer ${u.name}, il faut ${u.goal}. Tu en connais déjà ${p} sur ${u.total}.`;
+  let txt=fr?`${cap1(u.name)} est libre et galope dans ${uIn(u)}. Tu peux encore t'entraîner avec elle.`:`Pour libérer ${u.name}, il faut ${u.goal}. Tu en connais déjà ${p} sur ${u.total}.`;
   if(!fr&&u.keys)txt+=' Chaque bonne réponse du premier coup allume un point. Avec trois points, la case devient verte.';
   C.append(h('div',{class:'card'},h('div',{class:'hero'+(fr?'':' dim')},h('span',{style:`filter:hue-rotate(${u.h})`},'🦄')),h('h2',null,cap1(u.name)),h('p',null,txt),
     fr?null:h('div',{class:'meter'},h('i',{style:`width:${Math.round(100*u.partial()/u.total)}%`})),
@@ -577,9 +606,10 @@ const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
 function drawScene(){
   const stage=$('#stage'),cv=$('#forest');const W=stage.clientWidth,H=stage.clientHeight;if(!W||!H)return;const terr=st.terr;
   const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
-  const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);const R=mulberry32(terr==='foret'?11:terr==='prairie'?23:37);const M=Math.min(W,H);
+  const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);const R=mulberry32(terr==='foret'?11:terr==='prairie'?23:terr==='ciel'?51:37);const M=Math.min(W,H);
   let g=x.createLinearGradient(0,0,0,H);
   if(terr==='prairie'){g.addColorStop(0,'#cfe6fb');g.addColorStop(.4,'#fbeaf4');g.addColorStop(1,'#d7efc2')}
+  else if(terr==='ciel'){g.addColorStop(0,'#a9cfff');g.addColorStop(.5,'#eadfff');g.addColorStop(1,'#ffe9f3')}
   else if(terr==='lac'){g.addColorStop(0,'#c3e3f7');g.addColorStop(.35,'#eef3ee');g.addColorStop(1,'#d9edc9')}
   else{g.addColorStop(0,'#bfe6f2');g.addColorStop(.45,'#eef4e2');g.addColorStop(1,'#c9e6bc')}
   x.fillStyle=g;x.fillRect(0,0,W,H);
@@ -596,6 +626,11 @@ function drawScene(){
   }else if(terr==='lac'){
     for(let i=0;i<5;i++){const mx=W*(i/4),mh=H*(.18+R()*.1),bw=W*.22;x.fillStyle='#a9b8cf';x.beginPath();x.moveTo(mx-bw,H*.36);x.lineTo(mx,H*.36-mh);x.lineTo(mx+bw,H*.36);x.fill();x.fillStyle='#fff';x.beginPath();x.moveTo(mx-bw*.25,H*.36-mh*.75);x.lineTo(mx,H*.36-mh);x.lineTo(mx+bw*.25,H*.36-mh*.75);x.fill()}
     hill(H*.34,'#b9e0a8',.6,1.4,.4);hill(H*.44,'#a2d495',.5,2.2,1.6);
+  }else if(terr==='ciel'){
+    const us=UNI.filter(u=>uT(u)==='ciel'),ra=us.filter(u=>st.unicorns[u.id]).length/us.length;
+    const cx=W*.5,cy=H*.95,r0=Math.max(W,H)*.62;['#ff9db9','#ffc98a','#fff09a','#a8e6a1','#9fd3ff','#c6a8ff'].forEach((c,i)=>{x.strokeStyle=c;x.globalAlpha=.12+.6*ra;x.lineWidth=M*.04;x.beginPath();x.arc(cx,cy,r0-i*M*.04,Math.PI,2*Math.PI);x.stroke()});x.globalAlpha=1;
+    const bank=(y0,a,rr)=>{x.fillStyle=`rgba(255,255,255,${a})`;for(let i=-1;i<=W/(M*rr)+1;i++){const bx=i*M*rr*1.1+R()*M*rr*.4,by=y0+R()*M*rr*.3;x.beginPath();x.arc(bx,by,M*rr*(.8+R()*.5),0,7);x.fill()}x.fillRect(0,y0,W,H-y0)};
+    bank(H*.46,.55,.09);bank(H*.62,.7,.1);bank(H*.8,.85,.11);
   }else{hill(H*.2,'#b9e0a8',1,1.4,.4);hill(H*.3,'#a2d495',.8,2.2,1.6);hill(H*.42,'#93cb88',.6,1.6,2.4)}
   let lake=null;
   if(terr==='lac'){const [lx,ly]=P('siren');lake={x:lx,y:ly,rx:Math.min(W*.42,W/2),ry:H*.22};
@@ -606,19 +641,20 @@ function drawScene(){
   const order=GAMES.filter(g=>g.t===terr&&g.id!=='siren').map(g=>g.id);const pts=order.map(P);
   const pw=Math.max(16,M*.035);
   const trace=()=>{x.beginPath();x.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++){const p=pts[i-1],q=pts[i];x.quadraticCurveTo(p[0]+(q[0]-p[0])*.5+(i%2?1:-1)*W*.06,p[1]+(q[1]-p[1])*.5,q[0],q[1])}};
-  x.lineCap='round';x.lineJoin='round';x.strokeStyle='#d8bf86';x.lineWidth=pw+6;trace();x.stroke();x.strokeStyle='#f2e3b8';x.lineWidth=pw;trace();x.stroke();
-  x.setLineDash([2,pw*.9]);x.strokeStyle='rgba(190,150,90,.6)';x.lineWidth=pw*.25;trace();x.stroke();x.setLineDash([]);
+  const sky=terr==='ciel';x.lineCap='round';x.lineJoin='round';x.strokeStyle=sky?'#cdb8f0':'#d8bf86';x.lineWidth=pw+6;trace();x.stroke();x.strokeStyle=sky?'#fffaff':'#f2e3b8';x.lineWidth=pw;trace();x.stroke();
+  x.setLineDash([2,pw*.9]);x.strokeStyle=sky?'rgba(160,130,220,.5)':'rgba(190,150,90,.6)';x.lineWidth=pw*.25;trace();x.stroke();x.setLineDash([]);
   const segD=(px,py)=>{let m=1e9;for(let i=1;i<pts.length;i++){const [ax,ay]=pts[i-1],[bx,by]=pts[i];const dx=bx-ax,dy=by-ay;const t=Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy||1)));m=Math.min(m,Math.hypot(px-ax-t*dx,py-ay-t*dy))}return m};
-  const dens=terr==='prairie'?14000:terr==='lac'?11000:6500;const n=Math.round(W*H/dens),trees=[];
+  const dens=terr==='prairie'?14000:terr==='lac'?11000:terr==='ciel'?16000:6500;const n=Math.round(W*H/dens),trees=[];
   for(let k=0;k<n*5&&trees.length<n;k++){const tx=R()*W,ty=H*.2+R()*H*.84;if(allSpots.some(p=>Math.hypot(p[0]-tx,p[1]-ty)<spotR))continue;if(segD(tx,ty)<pw*1.4)continue;if(inLake(tx,ty,30))continue;trees.push([tx,ty,terr==='prairie'?false:R()<.5,R()])}
   trees.sort((a,b)=>a[1]-b[1]);
   trees.forEach(([tx,ty,pine,r])=>{const s=(14+r*14)*(.55+ty/H*.75);
+    if(terr==='ciel'){x.fillStyle='rgba(255,255,255,.92)';x.beginPath();x.arc(tx-s*.5,ty,s*.45,0,7);x.arc(tx,ty-s*.25,s*.6,0,7);x.arc(tx+s*.55,ty,s*.42,0,7);x.fill();return}
     x.fillStyle='#8a5e3c';x.fillRect(tx-s*.12,ty-s*.35,s*.24,s*.55);
     if(pine){[['#3d8459',1],['#4a9566',.75],['#58a473',.5]].forEach(([c,f],i)=>{x.fillStyle=c;x.beginPath();x.moveTo(tx,ty-s*(1.25+i*.45));x.lineTo(tx+s*.75*f+s*.15,ty-s*(.25+i*.45));x.lineTo(tx-s*.75*f-s*.15,ty-s*(.25+i*.45));x.closePath();x.fill()})}
     else{x.fillStyle=terr==='prairie'?'#e9a6c8':'#4f9e62';x.beginPath();x.arc(tx,ty-s*.85,s*.7,0,7);x.fill();x.fillStyle=terr==='prairie'?'#f6c9de':'#6db878';x.beginPath();x.arc(tx-s*.2,ty-s*1.02,s*.38,0,7);x.fill()}});
   if(lake){for(let k=0;k<26;k++){const a=R()*6.28;const px=lake.x+Math.cos(a)*(lake.rx+8),py=lake.y+Math.sin(a)*(lake.ry+8);if(py<lake.y-lake.ry*.4)continue;x.strokeStyle='#5c9b56';x.lineWidth=2.5;x.beginPath();x.moveTo(px,py);x.lineTo(px+(R()-.5)*8,py-14-R()*12);x.stroke()}}
-  const fl=['#ff8fc8','#ffd36b','#b99bff','#fff'];const nf=terr==='prairie'?n*8:n*1.4;
-  for(let k=0;k<nf;k++){const fx=R()*W,fy=H*.38+R()*H*.62;if(allSpots.some(p=>Math.hypot(p[0]-fx,p[1]-fy)<spotR*.9))continue;if(inLake(fx,fy,10))continue;x.fillStyle=fl[k%4];x.beginPath();x.arc(fx,fy,2.2+R()*1.8,0,7);x.fill()}
+  const fl=terr==='ciel'?['#fff','#ffd36b','#fff','#ffe6f3']:['#ff8fc8','#ffd36b','#b99bff','#fff'];const nf=terr==='prairie'?n*8:terr==='ciel'?n*5:n*1.4;
+  for(let k=0;k<nf;k++){const fx=R()*W,fy=terr==='ciel'?H*.05+R()*H*.6:H*.38+R()*H*.62;if(allSpots.some(p=>Math.hypot(p[0]-fx,p[1]-fy)<spotR*.9))continue;if(inLake(fx,fy,10))continue;x.fillStyle=fl[k%4];x.beginPath();x.arc(fx,fy,2.2+R()*1.8,0,7);x.fill()}
   const fr=terrRatio(terr);cv.style.filter=`grayscale(${(.92*(1-fr)).toFixed(2)}) brightness(${(.78+.22*fr).toFixed(2)})`;$('#shade').style.opacity=(1-fr).toFixed(2);
 }
 let rT=0;new ResizeObserver(()=>{clearTimeout(rT);rT=setTimeout(()=>{if(!$('#map').hidden)renderMap()},120)}).observe($('#stage'));
@@ -629,7 +665,7 @@ const PRAISE=['Bravo !','Super !','Génial !','Bien joué !','Magnifique !','Exc
 const PRAISE2=['Oui, c’est ça !','Tu as trouvé !','Voilà !'];
 const play=$('#play'),actions=$('#actions');
 const A={
-  prompt(spoken,shown){cur.prompt=spoken;$('#ptext').textContent=shown||spoken;say((cur.intro?cur.intro+' ':'')+spoken);cur.intro=null},
+  prompt(spoken,shown){cur.prompt=spoken;cur.pplay=null;$('#ptext').textContent=shown||spoken;say((cur.intro?cur.intro+' ':'')+spoken);cur.intro=null},
   right(key){if(!cur||cur.busy)return;cur.busy=true;cur.lastKey=key;const U=cur.uni,g=U?null:st.games[cur.id],ft=cur.firstTry;const was=status(key);record(key,ft);sfx('ok');
     const gained=was!=='acquis'&&status(key)==='acquis';
     if(g&&ft){g.stars=Math.min(5,g.stars+1);save();renderStars(true);setTimeout(()=>sfx('star'),350)}
@@ -638,12 +674,12 @@ const A={
     let m=ft?pick(PRAISE):pick(PRAISE2);if(U&&gained)m+=' La licorne te fait un peu plus confiance !';
     say(m);const rid=cur.rid;
     setTimeout(()=>{if(!cur||cur.rid!==rid)return;
-      const next=U?(uq.includes(U)?()=>goHome(cap1(U.name)+' galope dans la prairie !'):newRound):()=>{if(g.stars>=5)levelComplete();else newRound()};
+      const next=U?(uq.includes(U)?()=>goHome(cap1(U.name)+' est libre !'):newRound):()=>{if(g.stars>=5)levelComplete();else newRound()};
       if(uq.length)uniFreed(uq,next);else next()},U&&gained?2800:1700)},
   wrong(el,msg){if(!cur||cur.busy)return;cur.firstTry=false;cur.errors++;sfx('no');shake(el);
     const m=msg||pick(['Essaie encore !','Presque ! Essaie encore.','Regarde bien, et essaie encore.']);
-    if(cur.errors>=2&&cur.hint)cur.hint(m);else say(m+' '+cur.prompt)},
-  hintEl(el){cur.hint=m=>{el.classList.add('hint');say(m+' Regarde ce qui brille. '+cur.prompt)}},
+    if(cur.errors>=2&&cur.hint)cur.hint(m);else replayPrompt(m)},
+  hintEl(el){cur.hint=m=>{el.classList.add('hint');replayPrompt(m+' Regarde ce qui brille.')}},
   action(el){actions.append(el)}
 };
 function renderStars(anim){const S=$('#stars');S.innerHTML='';
@@ -668,15 +704,15 @@ function openUni(u){
   $('#gAni').textContent='🦄';$('#gAni').style.filter=`hue-rotate(${u.h})`;$('#gName').textContent=cap1(u.name);$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
 }
 /* révision espacée : un tour sur quatre revient sur un niveau déjà passé */
-const REVIEW=new Set(['letters','nuts','shapes','space','lengths','sounds','syll','words','problems','cursive']);
+const REVIEW=new Set(['letters','nuts','shapes','space','lengths','sounds','syll','words','problems','cursive','parrot','dove','bee']);
 function levelFor(id){const lv=st.games[id].level;return REVIEW.has(id)&&lv>=3&&Math.random()<.25?rnd(1,lv-1):lv}
-function newRound(){if(!cur)return;cur.rid++;cur.firstTry=true;cur.errors=0;cur.busy=false;cur.hint=null;play.innerHTML='';actions.innerHTML='';cur.mod.round(cur.uni?0:levelFor(cur.id),A)}
+function newRound(){if(!cur)return;cur.rid++;cur.firstTry=true;cur.errors=0;cur.busy=false;cur.lock=false;cur.pplay=null;cur.hint=null;play.innerHTML='';actions.innerHTML='';cur.mod.round(cur.uni?0:levelFor(cur.id),A)}
 function goHome(msg){cur=null;if(hasTTS)try{speechSynthesis.cancel()}catch(e){}$('#game').hidden=true;$('#map').hidden=false;$('#celebrate').hidden=true;renderMap();if(msg)setTimeout(()=>say(msg),250)}
 $('#homeBtn').onclick=()=>goHome();
-$('#sayBtn').onclick=()=>{if(cur&&cur.prompt)say(cur.prompt)};
+$('#sayBtn').onclick=()=>{if(cur&&cur.prompt)replayPrompt()};
 function confetti(card){const sp=['✨','⭐','🌸','💖','🌈','🦋'];for(let i=0;i<26;i++)card.append(h('span',{class:'confetti',style:`left:${Math.random()*100}%;animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*.8}s`},pick(sp)))}
 function uniFreed(list,next){const u=list.shift();const C=$('#celebrate');C.innerHTML='';sfx('free');
-  const title=`Tu as libéré ${u.name} !`,txt=`Tu sais ${u.goal}. Elle galope maintenant dans la Prairie des Licornes.`;
+  const title=`Tu as libéré ${u.name} !`,txt=`Tu sais ${u.goal}. Elle galope maintenant dans ${uIn(u)}.`;
   const card=h('div',{class:'card'},h('div',{class:'hero'},h('span',{style:`filter:hue-rotate(${u.h})`},'🦄')),h('h2',null,title),h('p',null,txt),
     h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;if(list.length)uniFreed(list,next);else next()}},'Continuer')));confetti(card);
   C.append(card);C.hidden=false;say(title+' '+txt)}
@@ -1120,6 +1156,178 @@ MODS.cursive={
   }
 };
 
+/* ================= Royaume des Nuages : apprendre à lire pas à pas ================= */
+/* Sons enregistrés : Parle French Sound Chart (Tingnova Inc., CC BY 4.0), dossier sons/audio/.
+   Sans ces fichiers (aperçu claude.ai), la voix de l'appareil prend le relais avec un mot-repère. */
+const SNDF={a:'a',i:'i',o:'o_ferme',u:'y','é':'e_ferme','è':'e_ouvert',e:'schwa',l:'l',m:'m',r:'r',s:'s',f:'f',v:'v',n:'n',j:'j',p:'p',t:'t',d:'d',b:'b',c:'k',g:'g',z:'z',ch:'ch',ou:'u',on:'nasal_on',an:'nasal_an',in:'nasal_in',eu:'eu_ferme',au:'o_ferme',ai:'e_ouvert',gn:'gn'};
+const SNDW={l:'lune',m:'maman',r:'rat',s:'sac',f:'fée',v:'vélo',n:'nid',j:'jupe',p:'papa',t:'tomate',d:'dé',b:'bébé',c:'café',g:'gare',z:'zèbre',ch:'chat',gn:'montagne'};
+const SNDT=g=>({a:'a',i:'i',o:'o',u:'u','é':'é','è':'è',e:'eu',ou:'où',on:'on',an:'an',in:'hein',oi:'oie',au:'eau',eu:'eux',ai:'è'})[g]||('comme dans '+(SNDW[g]||g));
+let sndOK=true,sndTok=0;const sndUrl={};
+const sndEl=new Audio();sndEl.preload='auto';
+function sndUnlock(){try{sndEl.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';const p=sndEl.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+function sndLoad(f){if(!sndUrl[f])sndUrl[f]=fetch('sons/audio/'+f+'.m4a').then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>URL.createObjectURL(b)).catch(()=>{sndOK=false;return null});return sndUrl[f]}
+function sndPreload(gs){if(sndOK)gs.forEach(g=>{const f=SNDF[g];if(f)sndLoad(f)})}
+/* joue le son d'une graphie (a, l, ou, on…), puis appelle onend */
+function snd(g,onend){const tok=++sndTok;let done=false,fell=false;const fin=()=>{if(!done&&tok===sndTok){done=true;onend&&onend()}};
+  const fb=()=>{if(fell||tok!==sndTok)return;fell=true;say(SNDT(g),fin)};
+  const f=SNDF[g];if(!f||!sndOK){fb();return}
+  try{if(hasTTS)speechSynthesis.cancel()}catch(e){}
+  sndLoad(f).then(u=>{if(tok!==sndTok)return;if(!u){fb();return}
+    try{sndEl.pause();sndEl.onended=fin;sndEl.onerror=fb;sndEl.src=u;const p=sndEl.play();if(p&&p.catch)p.catch(fb)}catch(e){fb()}
+    setTimeout(fin,3200)})}
+const pSn=g=>cb=>snd(g,cb);            /* lecteur : son enregistré */
+const pSy=s=>cb=>say(s,cb,.8);          /* lecteur : syllabe dite par la voix */
+
+/* progression par paliers : le palier suivant ne s'ouvre que lorsque toutes les notions des paliers
+   déjà ouverts sont acquises (3 réussites du premier coup). On ne brûle donc aucune étape. */
+const okN=k=>{const it=st.items[k];return it?it.ok:0};
+function openPaliers(order,pre){let n=1;for(let i=0;i<order.length-1;i++){if(order[i].every(x=>okN(pre+x)>=3))n=i+2;else break}return n}
+const openItems=(order,pre)=>order.slice(0,openPaliers(order,pre)).flat();
+function stepTarget(order,pre){const open=openItems(order,pre),nw=order[openPaliers(order,pre)-1];
+  const fresh=nw.filter(x=>status(pre+x)!=='acquis');const pool=Math.random()<.65?(fresh.length?fresh:nw):open;return wpick(pool,x=>focusW(pre+x))}
+
+/* sons des lettres, dans l'ordre d'apprentissage (voyelles, puis consonnes qui se prolongent, puis consonnes brèves) */
+const SKY_ORDER=[['a','i','o'],['u','é','e'],['l','m','r'],['s','f','v'],['n','j','p'],['t','d','b'],['c','g','z']];
+const SKY_ALL=SKY_ORDER.flat();const SKY_V=['a','i','o','u','é','e'];const isV=g=>SKY_V.includes(g);
+/* les 26 lettres, pour les trois écritures */
+const FORM_ORDER=[['a','e','i','o','u'],['l','m','r','s','f','v'],['n','p','t','j','y','z'],['b','d','q','g','c','k'],['h','w','x']];
+const FORMN={cap:'en grand',low:'en petit',cur:'en attaché'};
+const fdisp=(x,f)=>({t:f==='cap'?x.toUpperCase():x,cur:f==='cur'});
+const BC=['#ffd6ea','#d5ebff','#fff0b3','#d7f4dc','#e7dbff'];
+
+/* ---- briques communes ---- */
+function replayPrompt(pre){if(!cur)return;say((pre?pre+' ':'')+cur.prompt,cur.pplay?()=>{if(cur&&cur.pplay)cur.pplay()}:null)}
+function promptS(A,spoken,shown,pl){cur.prompt=spoken;cur.pplay=pl||null;$('#ptext').textContent=shown||spoken;const t=(cur.intro?cur.intro+' ':'')+spoken;cur.intro=null;say(t,pl?()=>{if(cur&&cur.pplay===pl)pl()}:null)}
+/* mauvaise réponse : on entend ce que l'on a touché, puis la consigne */
+function wrongS(el,pl,A){if(!cur||cur.busy||cur.lock)return;cur.firstTry=false;cur.errors++;sfx('no');shake(el);const rid=cur.rid;cur.lock=true;
+  setTimeout(()=>{if(!cur||cur.rid!==rid)return;const go=()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;if(cur.errors>=2&&cur.hint)cur.hint('Essaie encore.');else replayPrompt('Essaie encore.')};pl?pl(go):go()},260)}
+/* bonne réponse : on entend la bonne réponse, puis la fée félicite */
+function rightS(el,key,pl,A){if(!cur||cur.busy||cur.lock)return;cur.lock=true;el&&el.classList.add('pop');const rid=cur.rid;const go=()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;A.right(key)};pl?pl(go):go()}
+const guard=()=>cur&&!cur.busy&&!cur.lock;
+function face(d){return h('span',{class:d.cur?'cur':''},d.t)}
+
+/* écoute, puis touche la bonne bulle */
+function hearRound(A,o){const col=h('div',{class:'col'});play.append(col);const row=h('div',{class:o.big?'tiles':'bubbles'});
+  o.choices.forEach((x,i)=>{const d=o.disp(x);const b=h('button',{class:(o.big?'scard':'lb')+(d.cur?' cur':''),'aria-label':o.label||'bulle',style:`--bc:${BC[i%5]};animation-delay:${-i*.8}s`},d.t);
+    b.onclick=()=>{if(!guard())return;if(x===o.t)rightS(b,o.key,o.play(x),A);else wrongS(b,o.play(x),A)};if(x===o.t){A.hintEl(b);b.dataset.ok=1}row.append(b)});
+  col.append(row);if(o.hint)cur.hint=o.hint;promptS(A,o.prompt,o.shown,o.pprompt)}
+/* lis, puis choisis le bon son parmi ceux que l'on écoute */
+function readRound(A,o){const col=h('div',{class:'col'});play.append(col);const d=o.disp(o.t);col.append(h('div',{class:'model'+(d.cur?' cur':'')},d.t));
+  const row=h('div',{class:'lopts'});let okBtn=null;
+  o.choices.forEach((x,i)=>{const spk=h('button',{class:'spk','aria-label':'écouter le son '+(i+1),style:`--bc:${BC[i%5]}`},'🔊');
+    spk.onclick=()=>{if(!guard())return;row.querySelectorAll('.spk').forEach(s=>s.classList.remove('playing'));spk.classList.add('playing');o.play(x)(()=>spk.classList.remove('playing'))};
+    const ok=h('button',{class:'pickb','aria-label':'choisir le son '+(i+1)},'✓');if(x===o.t){okBtn=ok;ok.dataset.ok=1}
+    ok.onclick=()=>{if(!guard())return;if(x===o.t)rightS(ok,o.key,o.play(x),A);else wrongS(ok,null,A)};
+    row.append(h('div',{class:'lopt'},spk,ok))});
+  col.append(row);cur.hint=m=>{okBtn.classList.add('hint');say(m+' Le bon son est celui-ci : ',()=>o.play(o.t)())};
+  A.prompt(o.prompt,o.shown)}
+/* cherche et trouve : toutes les bulles du même son dans un paysage de nuages */
+function findRound(A,o){const col=h('div',{class:'col'});play.append(col);const F=h('div',{class:'field'});const cnt=h('div',{class:'found'});
+  const portrait=innerWidth<innerHeight;const cols=portrait?3:(o.items.length>9?5:4),rows=portrait?Math.ceil(o.items.length/3)+1:3;const cells=shuffle([...Array(cols*rows).keys()]).slice(0,o.items.length);let got=0;const need=o.items.filter(x=>x.v===o.t).length;
+  const upd=()=>{cnt.textContent='★'.repeat(got)+'☆'.repeat(need-got)};
+  o.items.forEach((x,i)=>{const c=cells[i],cx=c%cols,cy=Math.floor(c/cols);const L=(cx+.5)/cols*100+(Math.random()-.5)*24/cols,T=(cy+.5)/rows*100+(Math.random()-.5)*24/rows;
+    const b=h('button',{class:'fb'+(x.d.cur?' cur':''),'aria-label':'bulle',style:`--bc:${BC[i%5]};animation-delay:${-Math.random()*4}s`},x.d.t);
+    b.onclick=()=>{if(!guard()||b.classList.contains('got'))return;
+      if(x.v===o.t){b.classList.add('got');got++;upd();if(got===need)rightS(null,o.key,o.play(x.v),A);else{cur.lock=true;o.play(x.v)(()=>{if(cur)cur.lock=false})}}
+      else wrongS(b,o.play(x.v),A)};
+    if(x.v===o.t)b.dataset.ok=1;F.append(h('span',{class:'fw',style:`left:${L}%;top:${T}%`},b))});
+  cur.hint=m=>{F.querySelectorAll('[data-ok]:not(.got)').forEach(b=>b.classList.add('hint'));replayPrompt(m+' Regarde ce qui brille.')};
+  col.append(cnt,F);upd();promptS(A,o.prompt,o.shown,o.pprompt)}
+/* memory : retrouver les paires ; une paire trouvée fait entendre son son */
+function memRound(A,o){const P=o.pairs.length;const cards=shuffle(o.pairs.flatMap(p=>[{id:p.id,d:p.a},{id:p.id,d:p.b}]));
+  const g=h('div',{class:'mem',style:`--mc:${P<=3?3:4}`});let open=[],found=0,mism=0;
+  const back=c=>{c.up=false;c.el.classList.remove('up');c.el.textContent='☁️'};
+  cards.forEach(c=>{const b=h('button',{class:'mc','aria-label':'carte','data-k':c.id},'☁️');c.el=b;
+    b.onclick=()=>{if(!guard()||c.up||open.length>=2)return;sfx('tap');c.up=true;b.classList.add('up');b.textContent='';b.append(face(c.d));open.push(c);
+      if(open.length<2)return;const [x,y]=open;
+      if(x.id===y.id){x.el.classList.add('ok');y.el.classList.add('ok');found++;open=[];cur.lock=true;const rid=cur.rid;
+        o.play(x.id)(()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;if(found===P){if(mism>P+1)cur.firstTry=false;A.right(o.key)}})}
+      else{mism++;setTimeout(()=>{back(x);back(y);open=[]},950)}};g.append(b)});
+  play.append(h('div',{class:'col'},g));A.prompt(o.prompt,o.shown)}
+/* lettres proches à ne pas confondre */
+function confOf(x,pool){const grp=[...new Set([...CONF,...CUR_CONF].filter(g=>g.includes(x)).flat())].filter(y=>y!==x&&pool.includes(y));return grp}
+function distract(t,pool,n,pref){pool=[...new Set(pool)];const a=shuffle((pref||[]).filter(x=>x!==t&&pool.includes(x))).slice(0,n);shuffle(pool.filter(x=>x!==t&&!a.includes(x))).forEach(x=>{if(a.length<n)a.push(x)});return a}
+
+/* ---- Perroquet : le son de chaque lettre ---- */
+MODS.parrot={
+  intro:"Le perroquet du ciel répète tous les sons des lettres. Écoute-le bien !",
+  round(lv,A,opt){
+    const open=openItems(SKY_ORDER,'Sn:');sndPreload(open);
+    const t=opt&&opt.t||stepTarget(SKY_ORDER,'Sn:');const key='Sn:'+t;
+    const k=opt&&opt.k||(lv<=1?'hear':lv===2?pick(['hear','read']):lv===3?pick(['find','read','hear']):lv===4?pick(['mem','find','read']):pick(['hear','read','find','mem']));
+    const n=Math.min(open.length,lv<=2?3:4);const forms=lv>=3?['low','cap','cur']:['low'];
+    const pref=isV(t)?open.filter(isV):open.filter(x=>!isV(x));
+    if(k==='hear'){const ch=shuffle([t,...distract(t,open,n-1,pref)]);const fm={};ch.forEach(x=>fm[x]=pick(forms));
+      hearRound(A,{t,choices:ch,disp:x=>fdisp(x,fm[x]),play:pSn,key,label:'lettre',prompt:'Touche la lettre qui fait…',shown:'Écoute le son, puis touche la bonne lettre.',pprompt:pSn(t)});return}
+    if(k==='read'){const ch=shuffle([t,...distract(t,open,n-1,pref)]);
+      readRound(A,{t,choices:ch,disp:x=>fdisp(x,pick(forms)),play:pSn,key,prompt:'Regarde bien cette lettre. Écoute les sons, et choisis le son de la lettre.',shown:'Écoute les sons, puis choisis celui de la lettre.'});return}
+    if(k==='find'){const N=lv>=4?12:9,T=N>9?3:2;const others=open.filter(x=>x!==t);const items=[];
+      for(let i=0;i<T;i++)items.push({v:t,d:fdisp(t,pick(forms))});while(items.length<N){const x=pick(others.length?others:open);if(x!==t)items.push({v:x,d:fdisp(x,pick(forms))})}
+      findRound(A,{t,items:shuffle(items),play:pSn,key,prompt:'Trouve toutes les lettres qui font…',shown:'Trouve toutes les lettres de ce son.',pprompt:pSn(t)});return}
+    const ids=shuffle([t,...distract(t,open,Math.min(open.length,lv>=5?4:3)-1)]);
+    memRound(A,{pairs:ids.map(x=>{const [f1,f2]=shuffle(['low','cap','cur']);return{id:x,a:fdisp(x,f1),b:fdisp(x,f2)}}),play:pSn,key:'Mm:parrot',
+      prompt:'Retourne les nuages et trouve les paires : la même lettre, écrite de deux façons.',shown:'Trouve les paires de lettres.'})
+  }
+};
+
+/* ---- Colombe : les trois écritures d'une lettre ---- */
+MODS.dove={
+  intro:"La colombe connaît les trois écritures : en grand, en petit, et en attaché. Apprends-les avec elle !",
+  round(lv,A,opt){
+    const open=openItems(FORM_ORDER,'Fo:');const t=opt&&opt.t||stepTarget(FORM_ORDER,'Fo:');const key='Fo:'+t,T=t.toUpperCase();
+    const k=opt&&opt.k||(lv<=1?'cl':lv===2?'lc':lv===3?pick(['cc','ca','lc','cl']):lv===4?pick(['mem','cc','ca']):pick(['conf','conf','mem','cc']));
+    if(k==='mem'){const ids=shuffle([t,...distract(t,open,Math.min(open.length,lv>=5?4:3)-1)]);
+      memRound(A,{pairs:ids.map(x=>{const [f1,f2]=pick([['cap','cur'],['low','cur'],['cap','low']]);return{id:x,a:fdisp(x,f1),b:fdisp(x,f2)}}),play:x=>cb=>say('la lettre '+LN[x.toUpperCase()],cb),key:'Mm:dove',
+        prompt:'Retourne les nuages et trouve les paires : la même lettre, dans deux écritures.',shown:'Trouve les paires de lettres.'});return}
+    const [fa,fb]=k==='cl'?['cap','low']:k==='lc'?['low','cur']:k==='cc'?['cap','cur']:k==='ca'?['cur','cap']:shuffle(['cap','low','cur']).slice(0,2);
+    const n=k==='conf'?5:lv<=1?3:4;const ds=distract(t,open,n-1,k==='conf'||lv>=3?confOf(t,open):null);
+    const col=h('div',{class:'col'});play.append(col);const md=fdisp(t,fa);col.append(h('div',{class:'model'+(md.cur?' cur':'')},md.t));
+    const bub=h('div',{class:'bubbles'});shuffle([t,...ds]).forEach((x,i)=>{const d=fdisp(x,fb);const b=h('button',{class:'lb'+(d.cur?' cur':''),'aria-label':'lettre',style:`--bc:${BC[i%5]};animation-delay:${-i*.8}s`},d.t);
+      b.onclick=()=>{if(!guard())return;if(x===t){b.classList.add('pop');A.right(key)}else A.wrong(b,`Ça, c'est la lettre ${LN[x.toUpperCase()]}.`)};if(x===t){A.hintEl(b);b.dataset.ok=1}bub.append(b)});
+    col.append(bub);
+    A.prompt(`Voici la lettre ${LN[T]}, écrite ${FORMN[fa]}. Trouve la même lettre, écrite ${FORMN[fb]}.`,`Trouve la même lettre, écrite ${FORMN[fb]}.`)
+  }
+};
+
+/* ---- Abeille : les syllabes, seulement avec des sons déjà acquis ---- */
+const SYL_BAD=new Set(['ci','ce','cé','cu','gi','ge','gé']);
+const sylOf=(C,V)=>C.flatMap(c=>V.map(v=>c+v)).filter(s=>!SYL_BAD.has(s));
+const SYL_SKY=sylOf(SKY_ALL.filter(x=>!isV(x)),SKY_V);
+function beeLetters(){const ok=x=>status('Sn:'+x)==='acquis';return{C:SKY_ALL.filter(x=>!isV(x)&&ok(x)),V:SKY_V.filter(ok)}}
+function beePool(){const {C,V}=beeLetters();const p=sylOf(C,V);return p.length>=4?p:['la','li','lo','ma','mi','mo']}
+const sylCV=s=>[s[0],s.slice(1)];
+const beeNeed=()=>{const {C,V}=beeLetters();return ['a','i','o'].every(v=>V.includes(v))&&C.length>=2};
+MODS.bee={
+  intro:"L'abeille fabrique des syllabes avec les sons des lettres. Écoute bien, et lis avec elle !",
+  round(lv,A,opt){
+    const pool=beePool();const {C,V}=beeLetters();sndPreload([...C,...V]);
+    const t=opt&&opt.t||wpick(pool,s=>focusW('S:'+s)*(C.length&&s[0]===C[C.length-1]?2:1));const key='S:'+t;const [c,v]=sylCV(t);
+    const k=opt&&opt.k||(lv<=1?'hear':lv===2?pick(['hear','read']):lv===3?pick(['find','read','build']):lv===4?pick(['mem','build','read','find']):pick(['hear','read','find','mem','build']));
+    const near=pool.filter(s=>s!==t&&(s[0]===c||s.slice(1)===v));const n=lv<=1?3:4;
+    const fuse=m=>say(m+' Écoute :',()=>snd(c,()=>snd(v,()=>say(t,null,.8))));
+    if(k==='hear'){const ch=shuffle([t,...distract(t,pool,n-1,near)]);
+      hearRound(A,{t,choices:ch,big:true,disp:x=>({t:x,cur:lv>=4&&Math.random()<.4}),play:pSy,key,label:'syllabe',prompt:`Touche la syllabe ${t}.`,shown:'Écoute, puis touche la bonne syllabe.',
+        hint:m=>{play.querySelectorAll('.scard').forEach(b=>{if(b.textContent===t)b.classList.add('hint')});fuse(m)}});return}
+    if(k==='read'){const ch=shuffle([t,...distract(t,pool,n-2,near)]);
+      readRound(A,{t,choices:ch,disp:x=>({t:x,cur:lv>=4&&Math.random()<.4}),play:pSy,key,prompt:'Lis cette syllabe. Écoute les sons, et choisis le bon.',shown:'Lis la syllabe, puis choisis le bon son.'});return}
+    if(k==='find'){const N=lv>=4?12:9,T=N>9?3:2;const others=distract(t,pool,6,near);const items=[];
+      for(let i=0;i<T;i++)items.push({v:t,d:{t,cur:lv>=4&&i===1}});while(items.length<N)items.push({v:pick(others),d:{t:'',cur:false}});items.forEach(x=>{if(!x.d.t)x.d.t=x.v});
+      findRound(A,{t,items:shuffle(items),play:pSy,key,prompt:`Trouve toutes les bulles ${t}.`,shown:'Trouve toutes les bulles de cette syllabe.'});return}
+    if(k==='build'){const cs=shuffle([c,...distract(c,C.length>=3?C:[...C,'l','m','r'],2)]),vs=shuffle([v,...distract(v,V,2)]);let sc=null,sv2=null;
+      const col=h('div',{class:'col'});play.append(col);const s1=h('div',{class:'slotb'}),s2=h('div',{class:'slotb'});const slots=h('div',{class:'slots'},s1,s2);
+      const upd=()=>{s1.textContent=sc||'';s2.textContent=sv2||'';s1.classList.toggle('fill',!!sc);s2.classList.toggle('fill',!!sv2)};
+      const check=()=>{if(!(sc&&sv2))return;const s=sc+sv2;if(s===t)rightS(slots,key,pSy(t),A);else{const got=s;sc=sv2=null;setTimeout(upd,500);wrongS(slots,pSy(got),A)}};
+      const mk=(arr,isC)=>{const r=h('div',{class:'tiles'});arr.forEach(x=>{const b=h('button',{class:'lb small','aria-label':'lettre',style:`--bc:${isC?'#d5ebff':'#ffd6ea'}`},x);
+        b.onclick=()=>{if(!guard())return;if(isC)sc=x;else sv2=x;upd();cur.lock=true;snd(x,()=>{if(!cur)return;cur.lock=false;check()})};if(x===(isC?c:v))b.dataset.ok=1;r.append(b)});return r};
+      col.append(slots,mk(cs,true),mk(vs,false));upd();
+      cur.hint=m=>{col.querySelectorAll('[data-ok]').forEach(b=>b.classList.add('hint'));fuse(m)};
+      A.prompt(`Fabrique la syllabe ${t}. Choisis une lettre bleue, puis une lettre rose.`,'Fabrique la syllabe que tu entends.');return}
+    const ids=shuffle([t,...distract(t,pool,(lv>=5?4:3)-1,near)]);
+    memRound(A,{pairs:ids.map(x=>({id:x,a:{t:x,cur:false},b:{t:x,cur:true}})),play:pSy,key:'Mm:bee',
+      prompt:'Retourne les nuages et trouve les paires : la même syllabe, écrite en petit et en attaché.',shown:'Trouve les paires de syllabes.'})
+  }
+};
+
 /* ---- Renard : potions ---- */
 function pour(t,a,b,cap){const A=t[a],B=t[b];if(a===b||!A.length||B.length>=cap)return 0;const c=A[A.length-1];if(B.length&&B[B.length-1]!==c)return 0;let n=0;while(A.length&&A[A.length-1]===c&&B.length<cap){B.push(A.pop());n++}return n}
 const pSolved=(t,cap)=>t.every(x=>!x.length||(x.length===cap&&x.every(y=>y===x[0])));
@@ -1281,9 +1489,11 @@ function openParents(){
       h('tbody',null,GAMES.map(g=>{const s=st.games[g.id];const av=available(g);return h('tr',null,h('td',null,g.ani+' '+g.title),h('td',null,g.skill),h('td',{class:'num'},`${s.level} / ${g.max}`+(s.mastered?' ✓':'')),
         h('td',null,h('span',{class:'pill '+(s.freed?'ok':av?'no':'bl')},s.freed?'libéré':av?'à libérer':'verrouillé')))})))),
     h('h3',null,'Licornes'),
-    h('div',{class:'tbl'},h('table',null,h('tbody',null,UNI.map(u=>{const p=Math.min(u.total,u.prog());return h('tr',null,h('td',null,'🦄 '+cap1(u.name)),h('td',null,cap1(u.goal),h('div',{class:'muted'},uniAvail(u)?'Défi ouvert : toucher la licorne dans la prairie':'Défi ouvert après '+listFr(uniMissing(u).map(g=>g.name)))),h('td',{class:'num'},`${p} / ${u.total}`),h('td',null,h('span',{class:'pill '+(st.unicorns[u.id]?'ok':'no')},st.unicorns[u.id]?'libérée':'en cours')))})))),
+    h('div',{class:'tbl'},h('table',null,h('tbody',null,UNI.map(u=>{const p=Math.min(u.total,u.prog());return h('tr',null,h('td',null,'🦄 '+cap1(u.name)),h('td',null,cap1(u.goal),h('div',{class:'muted'},uniAvail(u)?'Défi ouvert : toucher la licorne ('+uWhere(u)+')':'Défi ouvert après '+listFr(uniMissing(u).map(g=>g.name)))),h('td',{class:'num'},`${p} / ${u.total}`),h('td',null,h('span',{class:'pill '+(st.unicorns[u.id]?'ok':'no')},st.unicorns[u.id]?'libérée':'en cours')))})))),
     h('h3',null,'Lettres en capitales'),chips(ALPH.map(l=>'L:'+l),ALPH),
     h('h3',null,'Lettres en scriptes (minuscules)'),chips(ALPH.map(l=>'l:'+l),ALPH.map(l=>l.toLowerCase())),
+    h('h3',null,'Sons des lettres (perroquet)'),chips(SKY_ALL.map(x=>'Sn:'+x),SKY_ALL),
+    h('h3',null,'Trois écritures (colombe)'),chips(FORM_ORDER.flat().map(x=>'Fo:'+x),FORM_ORDER.flat()),
     h('h3',null,'Syllabes lues'),seenChips('S:'),
     h('h3',null,'Mots lus'),seenChips('W:'),
     h('h3',null,'Lettres attachées (cursives)'),(()=>{const c=chips(ALPH.map(l=>'C:'+l),ALPH.map(l=>l.toLowerCase()));c.classList.add('cur');return c})(),
@@ -1301,7 +1511,7 @@ function openParents(){
     h('div',{class:'legend'},h('span',{class:'chip acquis'},'A'),'acquis',h('span',{class:'chip cours'},'A'),'en cours',h('span',{class:'chip nv'},'A'),'pas encore vu'));
   const zone=h('div',null);const resetBtn=h('button',{class:'danger',onclick:()=>{zone.innerHTML='';zone.append(h('div',{class:'confirm'},h('span',null,'Effacer toute la progression ?'),
     h('button',{class:'danger',onclick:()=>{st=fresh();forcePush=true;save();P.hidden=true;renderMap()}},'Oui, tout effacer'),h('button',{class:'bigbtn alt',style:'padding:8px 14px;font-size:.95rem',onclick:()=>{zone.innerHTML='';zone.append(resetBtn)}},'Annuler')))}},'Remettre la progression à zéro');
-  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone);
+  zone.append(resetBtn);sheet.append(h('h3',null,'Réglages'),zone,h('p',{class:'muted',style:'margin-top:18px;font-size:.8rem'},'Sons enregistrés du Royaume des Nuages : Tableau des sons du français de Parle par Tingnova Inc. (getparle.app/french-sound-chart), licence CC BY 4.0 ; six extraits de Wikimedia Commons sous licence CC BY-SA 3.0 (voir sons/LICENSE.txt). Rognés et égalisés en volume.'));
   P.append(sheet);P.hidden=false;P.scrollTop=0;
 }
 
@@ -1317,7 +1527,7 @@ async function choose(name){
   document.querySelectorAll('.whobtn,#whoGo').forEach(b=>b.disabled=false);begin()}
 $('#whoForm').onsubmit=e=>{e.preventDefault();const v=$('#whoName').value.trim();if(!slug(v)){$('#whoMsg').textContent='Écris ton prénom avec des lettres.';return}choose(v)};
 $('#sync').onclick=()=>{push();if(hasTTS)try{speechSynthesis.cancel()}catch(e){}showWho()};
-function begin(){$('#start').hidden=true;sfx('tap');try{document.fonts&&document.fonts.load('48px "Playwrite FR Trad"','abc')}catch(e){}st.visits++;save();renderMap();
+function begin(){$('#start').hidden=true;sfx('tap');sndUnlock();try{document.fonts&&document.fonts.load('48px "Playwrite FR Trad"','abc')}catch(e){}st.visits++;save();renderMap();
   const fr=GAMES.filter(g=>st.games[g.id].freed).length;
   say(st.visits<=1?"Bonjour, petite fée ! Une sorcière a plongé la forêt dans l'ombre. Les animaux sont prisonniers. Touche un animal pour l'aider !"
     :st.games.siren.freed?"Bravo, grande gardienne ! Toute la forêt est sauvée. Avec quel ami veux-tu jouer ?":`Te revoilà, petite fée ! Tu as déjà libéré ${fr<=1?(fr?'un animal':'aucun animal'):NW[fr]+' animaux'}. Quel ami veux-tu aider aujourd'hui ?`);
