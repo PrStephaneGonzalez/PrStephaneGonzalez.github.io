@@ -469,7 +469,7 @@ const GAMES=[
   {id:'parrot',t:'ciel',ani:'🦜',name:'le perroquet',title:'Les sons des lettres',max:5,c:'#6fd67f',req:['letters'],skill:'Associer chaque lettre à son son (voyelles, puis consonnes, une à une)'},
   {id:'dove',t:'ciel',ani:'🕊️',name:'la colombe',title:'Les trois écritures',max:5,c:'#b99bff',req:['letters'],skill:'Reconnaître chaque lettre en capitale, en script et en attaché'},
   {id:'bee',t:'ciel',ani:'🐝',name:"l'abeille",title:'Les syllabes',max:5,c:'#ffd36b',req:['parrot'],fem:1,skill:'Lire des syllabes simples, uniquement avec des sons déjà acquis',
-   need:()=>beeNeed(),needAni:'🦜',needTxt:()=>{const {C,V}=beeLetters();return `L'abeille dort encore. Pour la réveiller, apprends avec le perroquet les sons a, i et o, puis deux consonnes. Tu connais déjà ${V.length+C.length<=1?(V.length+C.length?'un son':'aucun son'):NW[V.length+C.length]+' sons'}.`}},
+   need:()=>beeNeed(),needAni:'🦜',needTxt:()=>"L'abeille dort encore. "+beeHint()},
   {id:'swan',t:'ciel',ani:'🦢',name:'le cygne',title:'Les sons magiques',max:5,c:'#9fd3ff',req:['bee'],skill:'Sons écrits avec deux lettres : ou, ch, on, an, oi, in, au, eu, ai, gn',
    need:()=>swanNeed(),needAni:'🦜',needTxt:()=>"Le cygne attend que tu connaisses, avec le perroquet, toutes les voyelles et quatre consonnes."},
   {id:'ladybug',t:'ciel',ani:'🐞',name:'la coccinelle',title:'Les petits mots',max:5,c:'#ff7f7f',req:['parrot'],skill:'Reconnaître d’un coup d’œil les petits mots : le, la, un, et, est, dans…'},
@@ -748,7 +748,9 @@ function renderStrip(u,bump){const S=$('#ustrip');S.innerHTML='';if(!u||!u.keys)
   S.hidden=false}
 function openGame(id){
   const G=GBY[id];cur={id,mod:MODS[id],rid:0,intro:MODS[id].intro};
-  $('#gAni').textContent=G.ani;$('#gAni').style.filter='';$('#gAni').className='a'+(curForm(G)>0?' fx'+curForm(G):'');$('#gName').textContent=G.title;$('#map').hidden=true;$('#game').hidden=false;renderStars();newRound();
+  $('#gAni').textContent=G.ani;$('#gAni').style.filter='';$('#gAni').className='a'+(curForm(G)>0?' fx'+curForm(G):'');$('#gName').textContent=G.title;$('#map').hidden=true;$('#game').hidden=false;renderStars();
+  if(st.games[id].stars>=5){levelComplete();return}   /* 5e étoile gagnée juste avant de quitter : la récompense n'est pas perdue */
+  newRound();
 }
 function openUni(u){
   const fr=!!st.unicorns[u.id];
@@ -768,8 +770,23 @@ function uniFreed(list,next){const u=list.shift();const C=$('#celebrate');C.inne
   const card=h('div',{class:'card'},h('div',{class:'hero'},h('span',{style:`filter:hue-rotate(${u.h})`},'🦄')),h('h2',null,title),h('p',null,txt),
     h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;if(list.length)uniFreed(list,next);else next()}},'Continuer')));confetti(card);
   C.append(card);C.hidden=false;say(title+' '+txt)}
+/* un animal du ciel ne se transforme que si l'enfant a vraiment appris : pour quitter le niveau L (sur max),
+   il faut avoir acquis au moins L/max des notions de son programme ; la couronne demande tout le programme. */
+const ORD={parrot:()=>[SKY_ALL,'Sn:','sons'],dove:()=>[FORM_ORDER.flat(),'Fo:','lettres'],swan:()=>[CPLX_ALL,'Sc:','sons magiques'],ladybug:()=>[MOTS_ALL,'Mo:','petits mots']};
+function gateMissing(G,g){const o=ORD[G.id];if(!o||!g.freed||g.mastered)return 0;const [all,pre]=o();
+  const acq=all.filter(x=>status(pre+x)==='acquis').length;return Math.max(0,Math.ceil(all.length*Math.min(g.level,G.max)/G.max)-acq)}
+function notYet(G,miss){
+  const C=$('#celebrate');C.innerHTML='';sfx('free');const fem=isFem(G),il=fem?'elle':'il',fi=curForm(G),nf=nextForm(G);
+  const unit=ORD[G.id]()[2],n=miss===1?(unit==='lettres'?'une lettre':unit==='petits mots'?'un petit mot':unit==='sons magiques'?'un son magique':'un son'):(NW[miss]||miss)+' '+unit;
+  let text=`${cap1(G.name)} est ${fem?'fière':'fier'} de toi ! Pour devenir ${nf===5?mName(G,5):mName(G,nf)}, ${il} veut que tu apprennes encore ${n}. Chaque bonne réponse du premier coup t'en rapproche.`;
+  if(G.id==='parrot'&&!st.games.bee.freed&&!beeNeed())text+=' Et l’abeille t’attend ! '+beeHint();
+  const card=h('div',{class:'card'},h('div',{class:'hero mgh'+(fi>0?' mg'+fi:'')},h('span',{class:fi>0?'fx'+fi:''},G.ani),orbit(glowN(st.games[G.id]))),h('h2',null,'Bravo !'),h('p',null,text),
+    h('div',{class:'row'},h('button',{class:'bigbtn berry',onclick:()=>{C.hidden=true;renderStars();newRound()}},'Encore ! ✨'),h('button',{class:'bigbtn alt',onclick:()=>goHome()},'La carte')));
+  confetti(card);C.append(card);C.hidden=false;say('Bravo ! '+text);
+}
 function levelComplete(){
   const G=GBY[cur.id],g=st.games[cur.id];let kind;
+  {const miss=gateMissing(G,g);if(miss){g.stars=0;save();notYet(G,miss);return}}
   if(!g.freed){g.freed=true;kind='free';if(g.level<G.max)g.level++}
   else if(g.level<G.max){g.level++;kind='level'}
   else if(!g.mastered){g.mastered=true;kind='master'}
@@ -1360,6 +1377,10 @@ function beeLetters(){const ok=x=>status('Sn:'+x)==='acquis';return{C:SKY_ALL.fi
 function beePool(){const {C,V}=beeLetters();const p=sylOf(C,V);return p.length>=4?p:['la','li','lo','ma','mi','mo']}
 const sylCV=s=>[s[0],s.slice(1)];
 const beeNeed=()=>{const {C,V}=beeLetters();return ['a','i','o'].every(v=>V.includes(v))&&C.length>=2};
+/* ce qui manque pour réveiller l'abeille, dit simplement (sans épeler les consonnes, que la voix lit mal) */
+function beeHint(){const {C,V}=beeLetters(),mv=['a','i','o'].filter(v=>!V.includes(v)),nc=Math.max(0,2-C.length);
+  const want=[mv.length?'les sons '+listFr(mv):null,nc===2?'deux consonnes':nc===1?'encore une consonne':null].filter(Boolean);
+  return `Elle se réveillera quand tu connaîtras, avec le perroquet, ${want.join(' et ')}. `+(C.length?`Tu connais déjà ${C.length===1?'une consonne':NW[C.length]+' consonnes'} : continue !`:'Continue avec le perroquet !')}
 MODS.bee={
   intro:"L'abeille fabrique des syllabes avec les sons des lettres. Écoute bien, et lis avec elle !",
   round(lv,A,opt){
