@@ -161,3 +161,13 @@
     border-radius: 16px;
   }
 }
+
+/* Discreet highlight line (e.g. upcoming major event) */
+.sg-notice {
+  font-size: 0.9rem;
+  color: #6c757d;
+  border-left: 3px solid #dee2e6;
+  padding-left: 0.75rem;
+  margin: 0 0 1.5rem;
+}
+.sg-notice p { margin: 0; }
