@@ -1,6 +1,6 @@
 /* Fonctionnement hors connexion : on garde la page, l'icône et les polices déjà chargées.
    Pour publier une nouvelle version, changez le numéro ci-dessous. */
-const VERSION = 'foret-v10';
+const VERSION = 'foret-v11';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
