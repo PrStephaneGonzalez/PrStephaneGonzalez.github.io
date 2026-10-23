@@ -63,7 +63,7 @@ export function homeHTML(state, { name = '', level = 1, storyReady = false } = {
   const statuses = academyRoomStatus(state),
     wp = worldProgress(state, statuses);
   return `<section class="sw-home" aria-labelledby="sw-home-title">
-  <div class="sw-hello"><span class="sw-avatar" aria-hidden="true">${apprentice(level)}</span><div><h1 id="sw-home-title">${name ? 'Bonjour ' + esc(name) + ' !' : 'Bonjour !'}</h1><p>Choisis un monde.</p></div>${storyReady ? '<button class="sw-story-chip" id="home-story">📜 Un nouveau chapitre !</button>' : ''}</div>
+  <div class="sw-hello"><span class="sw-avatar" aria-hidden="true">${apprentice(level)}</span><div><h1 id="sw-home-title">${name ? 'Bonjour ' + esc(name.charAt(0).toLocaleUpperCase('fr') + name.slice(1)) + ' !' : 'Bonjour !'}</h1><p>Choisis un monde.</p></div>${storyReady ? '<button class="sw-story-chip" id="home-story">📜 Un nouveau chapitre !</button>' : ''}</div>
   <div class="sw-worlds">${UNIVERSES.map((u) => {
     const ms = members(state, u.id, wp, statuses),
       lit = ms.filter((m) => m.light >= 2).length;

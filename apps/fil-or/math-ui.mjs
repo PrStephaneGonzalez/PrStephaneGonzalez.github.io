@@ -46,10 +46,10 @@ export function mountMath(main, ctx, { session, block, tier }) {
   const items = () => math.events.filter((e) => e.session === session);
   function shell(content) {
     const meta = blockById(block);
-    main.innerHTML = `<div class="page-head activity-head"><button class="back" id="math-back" aria-label="Retour">←</button><div><p class="eyebrow">L’école des nombres · Carte ${slot + 1} sur 6</p><h1>${esc(meta.label)}</h1><p class="subtle">${esc(meta.tiers[tier])}</p></div><button class="quiet" id="math-pause">☾ Pause</button></div><article class="learning-board math-work">${content}<div id="math-feedback" role="status" aria-live="polite"></div></article><details class="activity-options" id="activity-options"><summary>Aides et autres choix</summary><button class="quiet" id="math-help">Une méthode</button><button class="quiet" id="math-easier">Un peu plus simple</button><button class="quiet" id="math-harder">Un peu plus difficile</button><button class="quiet" id="math-skip">Garder cette étape pour plus tard</button></details>`;
+    main.innerHTML = `<div class="page-head activity-head"><button class="back" id="math-back" aria-label="Retour">←</button><div><p class="eyebrow">L’école des nombres · Carte ${slot + 1} sur 6</p><h1>${esc(meta.label)}</h1><p class="subtle">${esc(meta.tiers[tier])}</p></div><button class="quiet" id="math-pause">☾ Pause</button></div><article class="learning-board math-work">${content}<div id="math-feedback" role="status" aria-live="polite"></div></article><details class="activity-options" id="activity-options"><summary>Aides et autres choix</summary><button class="quiet" id="math-help">Une méthode</button><button class="quiet" id="math-easier">Un peu plus simple</button><button class="quiet" id="math-harder">Un peu plus difficile</button>${ctx.free ? '' : '<button class="quiet" id="math-skip">Garder cette étape pour plus tard</button>'}</details>`;
     q('#math-back').onclick = ctx.onExit;
     q('#math-pause').onclick = ctx.onExit;
-    q('#math-skip').onclick = ctx.onSkip || ctx.onExit;
+    if (q('#math-skip')) q('#math-skip').onclick = ctx.onSkip || ctx.onExit;
     q('#math-help').onclick = () => {
       assisted = true;
       record.helped = [...new Set([...record.helped, slot])];

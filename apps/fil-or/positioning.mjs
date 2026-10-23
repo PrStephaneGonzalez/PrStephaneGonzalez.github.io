@@ -110,7 +110,7 @@ export function mountPositioning(main, ctx) {
       if (index < STARTER_TASKS.length) draw();
       else {
         main.innerHTML =
-          '<div class="page-head"><h1>Les recherches sont terminées</h1></div><p>Un adulte peut choisir les points de départ à essayer.</p><button id="starter-return" class="primary">Revenir au château</button>';
+          '<div class="page-head"><h1>Les recherches sont terminées</h1></div><p>Un adulte peut choisir les points de départ à essayer.</p><button id="starter-return" class="primary">Revenir aux mondes</button>';
         main.querySelector('#starter-return').onclick = ctx.onCancel;
         ctx.onDone(outcomes);
       }

@@ -125,6 +125,8 @@ export function renderLearningHub(
     initialId,
     initialSkill,
     onNext,
+    nextLabel,
+    listLabel,
     onOutcome: notifyOutcome,
     onPause,
     onBrowse,
@@ -441,13 +443,15 @@ export function renderLearningHub(
         <div id="learning-feedback" aria-live="polite"></div>
         <div class="learning-bottom">
           <button class="primary" id="activity-next" ${a.type === 'fact' ? '' : 'hidden'}>
-            ${onNext
+            ${nextLabel
+              ? nextLabel
+              : onNext
               ? 'Poursuivre l’aventure'
               : a.type === 'fact'
                 ? 'Une autre découverte'
                 : 'Une autre carte'}
             ↗</button
-          ><button class="quiet" id="activity-list">Retour à la compétence</button>
+          ><button class="quiet" id="activity-list">${listLabel || 'Retour à la compétence'}</button>
         </div>
         ${a.source
           ? `<p class="fact-source">Pour les curieux : <a href="${a.source.url}" target="_blank" rel="noopener">${a.source.label}</a></p>`

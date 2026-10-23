@@ -181,8 +181,8 @@ export function roomAccess(state, id, statuses = academyRoomStatus(state)) {
     statuses[id] !== 'dark' ? [] : hall.requires.filter((key) => statuses[key] === 'dark');
   return { open: missing.length === 0, missing };
 }
-export function nextRoomActivity(state, skill, tier) {
-  const pool = ACTIVITIES.filter((a) => a.skill === skill && a.tier === tier);
+export function nextRoomActivity(state, skill, tier, exceptId = null) {
+  const pool = ACTIVITIES.filter((a) => a.skill === skill && a.tier === tier && a.id !== exceptId);
   const outcomes = state.learning?.outcomes || {};
   const completed = new Set(state.learning?.completed || []);
   return (

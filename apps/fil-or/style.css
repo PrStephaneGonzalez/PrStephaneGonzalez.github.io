@@ -4396,6 +4396,8 @@ body {
   border-radius: 26px;
   text-align: left;
   color: var(--ink);
+  background: var(--panel);
+  border: 2px solid var(--uc);
   background:
     radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--uc) 45%, transparent), transparent 60%),
     linear-gradient(160deg, color-mix(in srgb, var(--uc) 28%, var(--panel)), var(--panel));
@@ -4476,6 +4478,8 @@ body {
   min-height: 190px;
   text-align: center;
   color: var(--ink);
+  background: var(--panel);
+  border: 2px solid var(--uc);
   background: linear-gradient(170deg, color-mix(in srgb, var(--uc) 18%, var(--panel)), var(--panel));
   border: 2px solid color-mix(in srgb, var(--uc) 40%, transparent);
 }
@@ -4653,4 +4657,9 @@ body {
 
 .sw-entry .topbar > nav {
   display: none;
+}
+
+.home-shortcuts {
+  max-width: none;
+  margin: 16px 0 4px;
 }
