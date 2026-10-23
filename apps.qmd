@@ -14,3 +14,11 @@ Un jeu pour apprendre en s'amusant : une sorcière a plongé la forêt dans l'om
 [Jouer](apps/foret-enchantee/index.html){.btn .btn-primary}
 
 Sur iPad : ouvrir le jeu dans Safari, puis Partager → « Sur l'écran d'accueil ».
+
+## L'École de magie du Fil d'Or
+
+*CM2 · en français*
+
+Une apprentie magicienne parcourt une carte du monde : le Château des Récits (lecture, vocabulaire, grammaire, écriture), les Forges des Nombres (numération, calcul, problèmes), l'Observatoire céleste (fractions, mesures, géométrie) et le Jardin des énigmes (jeux de logique). Chaque lieu s'illumine quand un apprentissage est confirmé sur plusieurs jours, des défis plus difficiles attendent ceux qui reviennent, et une histoire en douze chapitres se dévoile au fil des progrès. Progression enregistrée en ligne avec un nom de magicienne et un petit code ; espace parents avec suivi détaillé.
+
+[Jouer](apps/fil-or/index.html){.btn .btn-primary}

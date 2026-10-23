@@ -1,0 +1,26 @@
+{
+  "name": "L’École de magie du Fil d’Or",
+  "short_name": "Fil d’Or",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#171b32",
+  "theme_color": "#191c34",
+  "lang": "fr",
+  "description": "Une apprentie magicienne, des mots et des nombres à apprivoiser.",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
