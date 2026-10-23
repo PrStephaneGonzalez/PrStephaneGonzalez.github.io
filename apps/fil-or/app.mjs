@@ -12,7 +12,8 @@ import { apprentice, magicSchool } from './academy-art.mjs';
 import { reconcileCollection, awardTreasure, costumeProfile, treasureArt } from './treasures.mjs';
 import { roomAccess, roomById } from './academy-rooms.mjs';
 import { renderCastleRoom } from './castle-map.mjs';
-import { worldMapHTML, bindWorldMap, GAME_SPOTS, gameProgress, worldProgress } from './world-map.mjs';
+import { GAME_SPOTS, gameProgress, worldProgress } from './world-map.mjs';
+import { welcomeHTML, homeHTML, worldPageHTML, bindHome, bindWorldPage, worldOfRoom } from './home-simple.mjs';
 import { storyStatus } from './story.mjs';
 import { renderStoryBook } from './story-ui.mjs';
 import { TEXTS, TEXT_LEVELS } from './reading-texts.mjs';
@@ -211,6 +212,19 @@ cloud = createSync({
 let activeJourney = null,
   journeyAssisted = false;
 let guestSession = false;
+try {
+  guestSession = localStorage.getItem('fil-or-guest') === '1';
+} catch {}
+function setGuest(on) {
+  guestSession = on;
+  try {
+    if (on) localStorage.setItem('fil-or-guest', '1');
+    else localStorage.removeItem('fil-or-guest');
+  } catch {}
+}
+// page « centrale » où l'on revient : l'accueil, un monde, ou la séance du jour
+let hub = 'castle',
+  currentWorld = 'recits';
 let view = 'castle',
   trainingGame = false,
   room = 0,
@@ -276,8 +290,9 @@ function save() {
     playCue('unlock');
   const ready = storyReady();
   if (ready && storyWasReady === false)
-    setTimeout(() => toast('📜 Un nouveau chapitre de l’histoire t’attend à l’école !'), 2600);
+    setTimeout(() => toast('📜 Un nouveau chapitre de l’histoire t’attend ! Touche « Histoire » en haut.'), 2600);
   storyWasReady = ready;
+  document.querySelector('#nav-story')?.classList.toggle('ready', ready);
   cloud?.changed();
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
@@ -355,7 +370,14 @@ function playCue(kind) {
     });
   } catch {}
 }
+let gamesBack = null;
+// sortie d'un menu de jeux : vers le Jardin des énigmes si on y est entré par là
+function gamesExit() {
+  if (gamesBack === 'world') navigate('castle');
+  else renderTrainingGames();
+}
 function setNav(name) {
+  if (name === 'library') name = gamesBack === 'world' ? 'castle' : 'seance';
   document
     .querySelectorAll('.navbtn')
     .forEach((b) => b.classList.toggle('active', b.id === `nav-${name}`));
@@ -368,6 +390,7 @@ function cancelHint() {
 }
 function navigate(name, r = room) {
   clearScreen();
+  document.body.classList.remove('sw-entry');
   dailyGame = null;
   activeJourney = null;
   trainingGame = false;
@@ -380,8 +403,12 @@ function navigate(name, r = room) {
   selected = -1;
   current = null;
   history = [];
-  setNav(name === 'progress' ? 'progress' : name === 'library' ? 'library' : 'castle');
-  if (name === 'castle') renderCastle();
+  if (name === 'seance') {
+    hub = 'seance';
+    view = 'castle';
+  }
+  setNav(name === 'progress' ? 'progress' : name === 'library' ? 'seance' : name === 'castle' || name === 'seance' ? (hub === 'seance' ? 'seance' : 'castle') : 'castle');
+  if (name === 'castle' || name === 'seance') renderCastle();
   if (name === 'progress') renderProgress();
   if (name === 'room') renderRoom();
   if (name === 'friends') renderFriends();
@@ -448,6 +475,93 @@ function currentDayPlan(restart = false) {
   return plan;
 }
 function renderCastle() {
+  view = 'castle';
+  document.body.classList.remove('sw-entry');
+  if (hub === 'seance') return renderSeance();
+  if (!cloud.profile && !guestSession) return renderWelcome();
+  if (hub === 'world') return renderWorldPage();
+  const wizard = wizardProfile();
+  main.innerHTML = homeHTML(state, {
+    name: cloud.profile?.name || '',
+    level: wizard.outfit?.level || wizard.level,
+    storyReady: storyReady(),
+  });
+  document.querySelector('#nav-story')?.classList.toggle('ready', storyReady());
+  bindHome(main, {
+    onWorld: (uid) => {
+      currentWorld = uid;
+      hub = 'world';
+      navigate('castle');
+    },
+    onStory: openStory,
+  });
+}
+function renderWorldPage() {
+  main.innerHTML = worldPageHTML(state, currentWorld);
+  bindWorldPage(main, {
+    onBack: () => {
+      hub = 'castle';
+      navigate('castle');
+    },
+    onRoom: visitCastleRoom,
+    onGame: openGameSpot,
+  });
+}
+function renderWelcome() {
+  main.innerHTML = welcomeHTML();
+  document.body.classList.add('sw-entry');
+  const status = main.querySelector('#welcome-status'),
+    button = main.querySelector('#welcome-enter');
+  main.querySelector('#welcome-guest').onclick = () => {
+    setGuest(true);
+    renderCastle();
+  };
+  let pendingNew = null;
+  main.querySelector('#welcome-form').onsubmit = async (event) => {
+    event.preventDefault();
+    const name = main.querySelector('#welcome-name').value.trim(),
+      pin = main.querySelector('#welcome-code').value;
+    button.disabled = true;
+    status.textContent = 'Je cherche ton école…';
+    try {
+      if (pendingNew && pendingNew.name === name && pendingNew.pin === pin) {
+        await cloud.createAccount(name, pin);
+        status.textContent = '';
+        setGuest(false);
+        toast('Bienvenue ' + name + ' ! Retiens bien ton nom et ton code.');
+        return renderCastle();
+      }
+      await cloud.connectAccount(name, pin);
+      setGuest(false);
+      renderCastle();
+    } catch (error) {
+      button.disabled = false;
+      if (error.status === 404) {
+        pendingNew = { name, pin };
+        status.innerHTML = `Je ne connais pas encore <strong>${esc(name)}</strong> avec ce code. Si tu es nouvelle, touche encore le bouton pour créer ton compte. Sinon, vérifie ton nom et ton code.`;
+        button.textContent = 'Créer mon compte ✦';
+        return;
+      }
+      status.textContent =
+        error.message === 'name'
+          ? 'Choisis un nom de 2 à 24 lettres ou chiffres.'
+          : error.message === 'pin'
+            ? 'Le code a 4 à 6 chiffres.'
+            : error.message === 'busy'
+              ? 'Un instant, la connexion se termine. Réessaie.'
+              : 'La connexion ne répond pas. Tu peux jouer sans compte sur cet appareil.';
+    }
+  };
+  for (const id of ['#welcome-name', '#welcome-code'])
+    main.querySelector(id).oninput = () => {
+      if (pendingNew) {
+        pendingNew = null;
+        button.textContent = 'Entrer dans l’école ✦';
+        status.textContent = '';
+      }
+    };
+}
+function renderSeance() {
   const wizard = wizardProfile();
   const plan = currentDayPlan(),
     step = nextPlanStep(plan);
@@ -473,8 +587,8 @@ function renderCastle() {
     '<section class="hero school-home"><div class="hero-copy"><p class="eyebrow">' +
     (cloud.profile ? esc(cloud.profile.name) + ' · Ton plan du jour' : 'Ton plan du jour') +
     '</p><h1>' +
-    (step ? 'Bienvenue à<br /><em>l’école de magie.</em>' : 'Une belle journée à l’école.') +
-    '</h1><p class="subtle">Explore les quatre univers ou suis ta séance du jour.</p><div class="hero-actions"><button class="primary" id="enter-map">Ouvrir la carte du monde ↗</button><button class="secondary" id="start">' +
+    (step ? 'Ma séance<br /><em>du jour.</em>' : 'Séance terminée. Bravo !') +
+    '</h1><p class="subtle">Quatre petites étapes, choisies pour toi chaque jour.</p><div class="hero-actions"><button class="primary" id="start">' +
     (step
       ? plan.done.length || plan.readingStarted
         ? 'Reprendre ma séance'
@@ -517,46 +631,20 @@ function renderCastle() {
       })
       .join('') +
     '</section>' +
-    worldMapHTML(state, wizard, { name: cloud.profile?.name }) +
-    '<section class="home-shortcuts"><button class="shortcut-card" id="see-progress"><strong>Ma progression</strong><span>Mon carnet et mes apprentissages ↗</span></button><button class="shortcut-card" id="free-training"><strong>S’entraîner</strong><span>Français, mathématiques et jeux ↗</span></button></section>';
+    '<section class="home-shortcuts"><button class="shortcut-card" id="free-training"><strong>S’entraîner librement</strong><span>Français, mathématiques et jeux ↗</span></button></section>';
   $('#start').onclick = () => {
     if (!step) currentDayPlan(true);
     goAdventure();
   };
-  $('#enter-map').onclick = () => {
-    const enter = () => {
-      renderCastle();
-      $('#world-title').setAttribute('tabindex', '-1');
-      $('#world-title').focus({ preventScroll: true });
-      $('.world-map')?.scrollIntoView?.({
-        block: 'start',
-        behavior: state.settings.motion ? 'smooth' : 'instant',
-      });
-    };
-    if (!cloud.profile && !guestSession) openSchoolAccount(enter);
-    else enter();
-  };
-  $('#see-progress').onclick = () => navigate('progress');
   $('#wizard-profile').onclick = () => navigate('progress');
   $('#free-training').onclick = () => navigate('library');
-  bindWorldMap(main, {
-    onRoom: visitCastleRoom,
-    onGame: openGameSpot,
-    onStory: openStory,
-    motion: state.settings.motion,
-    onMove: (id) => {
-      if (id === 'hub' || id.startsWith('game-')) {
-        state.training.castle = { room: id, at: Date.now() };
-        save();
-      }
-    },
-  });
   main
     .querySelectorAll('[data-day-step]')
     .forEach((button) => (button.onclick = () => goAdventure({ step: button.dataset.dayStep })));
 }
 function openGameSpot(type) {
   const g = GAME_SPOTS.find((x) => x.id === type);
+  gamesBack = 'world';
   if (!g) return navigate('castle');
   const tier = gameProgress(state, g).nextTier || 0;
   if (g.extra) showExtraMenu(type, tier);
@@ -568,7 +656,7 @@ function openStory() {
   dailyGame = null;
   activeJourney = null;
   view = 'story';
-  setNav('castle');
+  setNav('story');
   renderStoryBook(main, {
     state,
     save,
@@ -595,6 +683,11 @@ function visitCastleRoom(id, initial = {}) {
   activeJourney = null;
   view = 'castle-room';
   setNav('castle');
+  const w = worldOfRoom(id);
+  if (w && hub !== 'seance') {
+    currentWorld = w;
+    hub = 'world';
+  }
   if (roomAccess(state, id).open) {
     state.training.castle = { room: id, at: Date.now() };
     save();
@@ -965,6 +1058,7 @@ function story(i) {
   $('#close-story').onclick = () => modal.close();
 }
 function renderLibrary() {
+  gamesBack = null;
   setNav('library');
   renderLearningHub(main, {
     state,
@@ -1162,7 +1256,7 @@ function showBaseGameMenu(type, tier = 0) {
         )
         .join('')}
     </div>`;
-  $('#base-game-back').onclick = renderTrainingGames;
+  $('#base-game-back').onclick = gamesExit;
   main
     .querySelectorAll('[data-game-tier]')
     .forEach(
@@ -1272,7 +1366,7 @@ function start(id, inJourney = false) {
         : navigate('room');
   $('#back').onclick = leaveGame;
   $('#switch').onclick = daily ? changeDailyGame : leaveGame;
-  $('#pause').onclick = () => (practice ? renderTrainingGames() : navigate('pause'));
+  $('#pause').onclick = () => (practice ? gamesExit() : navigate('pause'));
   $('#speak').onclick = () => speak(rules[l.type]);
   $('#undo').onclick = undo;
   $('#hint').onclick = requestHint;
@@ -2336,7 +2430,7 @@ function startExtra(l, inJourney = false) {
       save();
     },
     onExit: () => (practice ? showExtraMenu(l.type, l.tier) : navigate('castle')),
-    onPause: () => (practice ? renderTrainingGames() : navigate('pause')),
+    onPause: () => (practice ? gamesExit() : navigate('pause')),
     onControls: () => (inJourney ? journeyControls() : null),
     onDone: ({ correct, assisted, explanation }) => {
       if (correct) {
@@ -2384,7 +2478,7 @@ function startExtra(l, inJourney = false) {
           : practice
             ? showExtraMenu(l.type, l.tier)
             : goAdventure({ advance: true });
-      $('#extra-done-pause').onclick = () => (practice ? renderTrainingGames() : navigate('pause'));
+      $('#extra-done-pause').onclick = () => (practice ? gamesExit() : navigate('pause'));
       $('#extra-home').onclick = () => navigate(practice ? 'library' : 'castle');
     },
   });
@@ -2420,7 +2514,7 @@ function showExtraMenu(type, tier = 0) {
         )
         .join('')}
     </div>`;
-  $('#extra-menu-back').onclick = renderTrainingGames;
+  $('#extra-menu-back').onclick = gamesExit;
   main
     .querySelectorAll('[data-extra-tier]')
     .forEach((b) => (b.onclick = () => showExtraMenu(type, Number(b.dataset.extraTier))));
@@ -2521,7 +2615,7 @@ function openSchoolAccount(onReady = null, mode = cloud.profile ? 'manage' : 'cr
     openSchoolAccount(onReady, creating ? 'login' : 'create');
   $('#school-account-legacy').onclick = openJourneyAccount;
   $('#school-account-local').onclick = () => {
-    guestSession = true;
+    setGuest(true);
     enter();
   };
   $('#school-account-form').onsubmit = async (event) => {
@@ -2537,7 +2631,7 @@ function openSchoolAccount(onReady = null, mode = cloud.profile ? 'manage' : 'cr
     try {
       if (creating) await cloud.createAccount(name, pin);
       else await cloud.connectAccount(name, pin);
-      guestSession = false;
+      setGuest(false);
       if (creating) {
         dialog(
           `${dialogTop('Bienvenue à l’école')}<div class="school-account"><div class="account-emblem" aria-hidden="true">✦</div><h3>${esc(name)}</h3><p>Ton parcours est enregistré. Garde ces deux repères pour un autre appareil.</p><dl class="account-reminder"><dt>Nom</dt><dd>${esc(name)}</dd><dt>Code</dt><dd>${esc(pin)}</dd></dl><button class="primary" id="school-account-enter">Ouvrir la carte du monde</button></div>`,
@@ -2687,10 +2781,15 @@ function openJourneyAccount() {
       'application/json',
     );
 }
-$('#home').onclick = () => navigate('castle');
-$('#nav-castle').onclick = () => navigate('castle');
+const goHome = () => {
+  hub = 'castle';
+  navigate('castle');
+};
+$('#home').onclick = goHome;
+$('#nav-castle').onclick = goHome;
+$('#nav-seance').onclick = () => navigate('seance');
+$('#nav-story').onclick = openStory;
 $('#nav-progress').onclick = () => navigate('progress');
-$('#nav-library').onclick = () => navigate('library');
 $('#parents').onclick = openParentGate;
 $('#access').onclick = openAccess;
 modal.addEventListener('close', () => {

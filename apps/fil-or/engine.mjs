@@ -623,6 +623,12 @@ export function restore(raw) {
         )
         .slice(-150),
     );
+  if (raw.learning?.roomChoice && typeof raw.learning.roomChoice === 'object')
+    base.learning.roomChoice = Object.fromEntries(
+      Object.entries(raw.learning.roomChoice)
+        .filter(([id, c]) => /^[a-z]{2,12}$/.test(id) && typeof c === 'string' && c.length < 100)
+        .slice(0, 20),
+    );
   if (raw.learning?.outcomes && typeof raw.learning.outcomes === 'object')
     base.learning.outcomes = Object.fromEntries(
       Object.entries(raw.learning.outcomes)

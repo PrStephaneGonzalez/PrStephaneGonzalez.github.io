@@ -17,7 +17,7 @@ const esc = (s) =>
 
 export const UNIVERSES = [
   { id: 'recits', name: 'Château des Récits', icon: '📖', color: '#b48cff', cx: 23, cy: 24, rx: 21, ry: 19 },
-  { id: 'forges', name: 'Forges des Nombres', icon: '⚒', color: '#ff9f5a', cx: 77, cy: 24, rx: 21, ry: 19 },
+  { id: 'forges', name: 'Forges des Nombres', icon: '⚒️', color: '#ff9f5a', cx: 77, cy: 24, rx: 21, ry: 19 },
   { id: 'observatoire', name: 'Observatoire céleste', icon: '🔭', color: '#6fb8ff', cx: 77, cy: 76, rx: 21, ry: 19 },
   { id: 'jardin', name: 'Jardin des énigmes', icon: '🌿', color: '#7fd99a', cx: 23, cy: 76, rx: 21, ry: 19 },
 ];
@@ -130,7 +130,8 @@ export function worldProgress(state, statuses = academyRoomStatus(state)) {
 const FLAME = ['○', '🔹', '🔸', '🌟'];
 const LIGHT_NAME = ['À découvrir', 'Flamme bleue · en éveil', 'Flamme dorée · illuminée', 'Flamme étoilée'];
 export const lightName = (l) => LIGHT_NAME[l];
-function universeLight(u, wp) {
+export const universeRooms = (uid) => Object.keys(SPOTS).filter((k) => SPOTS[k].u === uid);
+export function universeLight(u, wp) {
   const ids = u.id === 'jardin' ? GAME_SPOTS.map((g) => g.id) : Object.keys(SPOTS).filter((k) => SPOTS[k].u === u.id);
   const ls = ids.map((id) => (u.id === 'jardin' ? wp.games[id].light : wp.lights[id]));
   return { sum: ls.reduce((a, b) => a + b, 0), max: ls.length * 3, lit: ls.filter((l) => l >= 2).length, n: ls.length };

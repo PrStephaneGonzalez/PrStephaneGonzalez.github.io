@@ -1,9 +1,10 @@
-const CACHE='fil-or-shell-23e6567d6f7f3dea';
+const CACHE='fil-or-shell-fa7b5cc30e543a9b';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app.mjs',
+  './home-simple.mjs',
   './art.mjs',
   './academy.mjs',
   './treasures.mjs',

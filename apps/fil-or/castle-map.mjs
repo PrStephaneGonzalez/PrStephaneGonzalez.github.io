@@ -54,7 +54,7 @@ export function renderCastleRoom(main, ctx, roomId) {
     access = roomAccess(ctx.state, roomId);
   if (!hall) return ctx.onBack();
   const status = academyRoomStatus(ctx.state)[roomId];
-  const head = `<div class="page-head"><button class="back" id="hall-back" aria-label="Retour à la carte">←</button><div><p class="eyebrow">Mon château · ${access.open ? roomStatusLabel(status) : 'Porte à ouvrir'}</p><h1>${esc(hall.name)}</h1><p class="subtle">${esc(hall.subject)}</p></div></div>`;
+  const head = `<div class="page-head sw-roomhead"><button class="back" id="hall-back" aria-label="Retour au monde">←</button><span class="sw-place-icon" aria-hidden="true">${access.open ? hall.icon : '🔒'}</span><div><h1>${esc(hall.name)}</h1><p class="subtle">${esc(hall.subject)}</p></div></div>`;
   if (!access.open) {
     main.innerHTML =
       head +
@@ -68,12 +68,16 @@ export function renderCastleRoom(main, ctx, roomId) {
   const skills = roomSkills(roomId),
     core = MATH_BLOCKS.some((b) => b.id === roomId),
     special = ['reading', 'words'].includes(roomId);
-  let choice =
-    ctx.initialChoice && skills.some((s) => s.id === ctx.initialChoice)
-      ? ctx.initialChoice
+  const marks0 = ctx.state.academy?.unlocked || [];
+  const remembered = ctx.state.learning.roomChoice?.[roomId];
+  const valid = (c) => c && (c === 'module' ? core || special : skills.some((s) => s.id === c));
+  let choice = valid(ctx.initialChoice)
+    ? ctx.initialChoice
+    : valid(remembered)
+      ? remembered
       : core || special
         ? 'module'
-        : skills[0]?.id;
+        : (skills.find((s) => !marks0.some((m) => m.startsWith(`school:${s.id}:`) || m.startsWith(`lesson:${s.id}:`))) || skills[0])?.id;
   let tier = Number.isInteger(ctx.initialTier)
     ? ctx.initialTier
     : core
@@ -106,28 +110,61 @@ export function renderCastleRoom(main, ctx, roomId) {
       .map(Number);
     const best = learnedTiers.length ? Math.max(...learnedTiers) : -1;
     const challenge =
-      stages && best >= 0 && best < stages.length - 1
-        ? tier <= best
-          ? `<div class="mastery-challenge"><p><strong>Défi de maîtrise ✦</strong> Tu as illuminé l’étape ${best + 1}. L’étape ${best + 2} est plus difficile : la réussir plusieurs jours de suite ${light >= 3 ? 'ajoute une nouvelle lumière' : 'donne une flamme étoilée'}, et ses objets sont plus rares.</p><button class="primary" id="hall-challenge">Relever le défi de l’étape ${best + 2} ↗</button></div>`
-          : `<div class="mastery-challenge"><p><strong>Défi en cours ✦</strong> Tu travailles une étape au-dessus de ce que tu as déjà illuminé. Courage !</p></div>`
+      stages && best >= 0 && best < stages.length - 1 && tier <= best
+        ? `<div class="mastery-challenge"><p><strong>Défi ✦</strong> L’étape ${best + 2} est plus difficile. Réussis-la pour gagner une flamme étoilée et des objets plus rares.</p><button class="secondary" id="hall-challenge">Relever le défi ↗</button></div>`
         : '';
+    const choiceLabel =
+      choice === 'module'
+        ? core
+          ? blockById(roomId).label
+          : roomId === 'reading'
+            ? 'Une nouvelle lecture'
+            : 'Mon carnet de mots'
+        : skill?.label || '';
+    const startLabel =
+      choice === 'module'
+        ? roomId === 'reading'
+          ? 'Lire une histoire'
+          : roomId === 'words'
+            ? 'Ouvrir mon carnet'
+            : 'Commencer'
+        : 'Commencer';
+    const options = [
+      ...(core || special ? [{ id: 'module', label: core ? blockById(roomId).label : roomId === 'reading' ? 'Une nouvelle lecture' : 'Mon carnet de mots' }] : []),
+      ...skills.map((s) => ({ id: s.id, label: s.label })),
+    ];
     main.innerHTML =
       head +
-      `<p class="room-flames"><b aria-hidden="true">${['○', '🔹', '🔸', '🌟'][light]}</b>${lightName(light)}</p>${challenge}<article class="hall-interior ${status}"><div class="hall-banner"><span aria-hidden="true">${hall.icon}</span><p>${status === 'lit' ? 'Une lumière de plus dans ton école.' : 'Un petit entraînement, à ton rythme.'}</p></div><label class="field">Que veux-tu travailler ?<select id="hall-notion">${core || special ? `<option value="module" ${choice === 'module' ? 'selected' : ''}>${core ? esc(blockById(roomId).label) : roomId === 'reading' ? 'Une nouvelle lecture' : 'Mon carnet de mots'}</option>` : ''}${skills.map((s) => `<option value="${s.id}" ${s.id === choice ? 'selected' : ''}>${esc(s.label)}</option>`).join('')}</select></label>${stages ? `<label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label><p class="hall-stage"><span aria-hidden="true">${[0, 1, 2, 3, 4, 5].map((i) => `<i class="${i === tier ? 'current' : ''}"></i>`).join('')}</span>Étape ${tier + 1} sur 6${learned.some((m) => m.endsWith(':' + tier)) ? ' · Un apprentissage confirmé ici' : ''}</p>` : ''}<button class="primary" id="hall-start">${choice === 'module' ? (roomId === 'reading' ? 'Commencer une lecture' : roomId === 'words' ? 'Ouvrir mon carnet' : 'Commencer mes six cartes') : 'Commencer un exercice'} ↗</button><details class="hall-course" id="hall-course"><summary>Je découvre la notion · mini-cours</summary><h2>${esc(course.title)}</h2>${course.steps.map((step) => `<p>${esc(step)}</p>`).join('')}<div class="hall-example"><strong>Un exemple</strong><p>${esc(course.example)}</p></div><button class="quiet" id="hall-course-listen">♬ Écouter le mini-cours</button>${course.video ? `<a class="secondary lesson-video" href="${esc(course.video.url)}" target="_blank" rel="noopener noreferrer">▶ ${esc(course.video.title)} · ${course.video.provider} ↗</a><small>La vidéo s’ouvre dans un autre onglet et demande une connexion.</small>` : ''}</details></article>`;
+      `<article class="sw-room ${status}"><p class="room-flames"><b aria-hidden="true">${['○', '🔹', '🔸', '🌟'][light]}</b>${lightName(light)}</p>
+      <div class="sw-room-go"><p class="sw-room-now">${esc(choiceLabel)}${stages ? ` · <span>étape ${tier + 1}</span>` : ''}</p><button class="primary sw-big" id="hall-start">▶ ${startLabel}</button></div>
+      ${challenge}
+      ${options.length > 1 ? `<details class="sw-more"><summary>Choisir autre chose</summary><div class="sw-notions">${options.map((o) => `<button class="sw-notion ${o.id === choice ? 'current' : ''}" data-notion="${o.id}">${esc(o.label)}</button>`).join('')}</div>${stages ? `<label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label>` : ''}</details>` : stages ? `<details class="sw-more"><summary>Changer d’étape</summary><label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label></details>` : ''}
+      <details class="hall-course sw-more" id="hall-course"><summary>📖 Le mini-cours</summary><h2>${esc(course.title)}</h2>${course.steps.map((step) => `<p>${esc(step)}</p>`).join('')}<div class="hall-example"><strong>Un exemple</strong><p>${esc(course.example)}</p></div><button class="quiet" id="hall-course-listen">♬ Écouter le mini-cours</button>${course.video ? `<a class="secondary lesson-video" href="${esc(course.video.url)}" target="_blank" rel="noopener noreferrer">▶ ${esc(course.video.title)} · ${course.video.provider} ↗</a><small>La vidéo s’ouvre dans un autre onglet et demande une connexion.</small>` : ''}</details></article>`;
     main.querySelector('#hall-back').onclick = ctx.onBack;
-    main.querySelector('#hall-notion').onchange = (e) => {
-      choice = e.target.value;
-      tier =
-        choice === 'module' && core
-          ? suggestedTier(
-              ctx.state.training.math,
-              roomId,
-              ctx.state.trainingSettings.mathStarts?.[roomId] ??
-                ctx.state.trainingSettings.mathStart,
-            )
-          : (ctx.state.learning.browseStages?.[choice] ?? schoolTier(ctx.state.training, choice));
-      draw();
+    const tierFor = (c) =>
+      c === 'module' && core
+        ? suggestedTier(
+            ctx.state.training.math,
+            roomId,
+            ctx.state.trainingSettings.mathStarts?.[roomId] ?? ctx.state.trainingSettings.mathStart,
+          )
+        : (ctx.state.learning.browseStages?.[c] ?? schoolTier(ctx.state.training, c));
+    const remember = () => {
+      ctx.state.learning.roomChoice ??= {};
+      ctx.state.learning.roomChoice[roomId] = choice;
     };
+    // une notion touchée lance directement l'exercice
+    main.querySelectorAll('[data-notion]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          choice = b.dataset.notion;
+          tier = tierFor(choice);
+          remember();
+          ctx.save();
+          draw();
+          main.querySelector('#hall-start').onclick();
+        }),
+    );
     if (stages)
       main.querySelector('#hall-tier').onchange = (e) => {
         tier = Number(e.target.value);
@@ -152,8 +189,10 @@ export function renderCastleRoom(main, ctx, roomId) {
       };
     main.querySelector('#hall-course-listen').onclick = () =>
       ctx.speak([course.title, ...course.steps, course.example].join('. '));
-    main.querySelector('#hall-start').onclick = () =>
+    main.querySelector('#hall-start').onclick = () => {
+      remember();
       ctx.onStart({ roomId, tier, skillId: skill?.id || null, activityId: activity?.id || null });
+    };
   }
   draw();
 }
