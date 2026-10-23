@@ -12,6 +12,7 @@ import { MATH_BLOCKS, blockById, suggestedTier } from './math-core.mjs';
 import { miniCourse } from './mini-courses.mjs';
 import { apprentice } from './academy-art.mjs';
 import { roomLight, lightName } from './world-map.mjs';
+import { wordBook } from './training-state.mjs';
 const esc = (s) =>
   String(s ?? '').replace(
     /[&<>"']/g,
@@ -75,12 +76,12 @@ export function renderCastleRoom(main, ctx, roomId) {
     ? ctx.initialChoice
     : valid(remembered)
       ? remembered
-      : core || special
+      : core || (special && !(roomId === 'words' && !wordBook(ctx.state.training).active.length))
         ? 'module'
         : (skills.find((s) => !marks0.some((m) => m.startsWith(`school:${s.id}:`) || m.startsWith(`lesson:${s.id}:`))) || skills[0])?.id;
   let tier = Number.isInteger(ctx.initialTier)
     ? ctx.initialTier
-    : core
+    : choice === 'module' && core
       ? suggestedTier(
           ctx.state.training.math,
           roomId,
@@ -133,13 +134,15 @@ export function renderCastleRoom(main, ctx, roomId) {
       ...(core || special ? [{ id: 'module', label: core ? blockById(roomId).label : roomId === 'reading' ? 'Une nouvelle lecture' : 'Mon carnet de mots' }] : []),
       ...skills.map((s) => ({ id: s.id, label: s.label })),
     ];
+    const wasOpen = ['#hall-more', '#hall-course'].filter((id) => main.querySelector(id)?.open);
     main.innerHTML =
       head +
       `<article class="sw-room ${status}"><p class="room-flames"><b aria-hidden="true">${['○', '🔹', '🔸', '🌟'][light]}</b>${lightName(light)}</p>
       <div class="sw-room-go"><p class="sw-room-now">${esc(choiceLabel)}${stages ? ` · <span>étape ${tier + 1}</span>` : ''}</p><button class="primary sw-big" id="hall-start">▶ ${startLabel}</button></div>
       ${challenge}
-      ${options.length > 1 ? `<details class="sw-more"><summary>Choisir autre chose</summary><div class="sw-notions">${options.map((o) => `<button class="sw-notion ${o.id === choice ? 'current' : ''}" data-notion="${o.id}">${esc(o.label)}</button>`).join('')}</div>${stages ? `<label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label>` : ''}</details>` : stages ? `<details class="sw-more"><summary>Changer d’étape</summary><label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label></details>` : ''}
+      ${options.length > 1 ? `<details class="sw-more" id="hall-more"><summary>Choisir autre chose</summary><div class="sw-notions">${options.map((o) => `<button class="sw-notion ${o.id === choice ? 'current' : ''}" data-notion="${o.id}">${esc(o.label)}</button>`).join('')}</div>${stages ? `<label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label>` : ''}</details>` : stages ? `<details class="sw-more" id="hall-more"><summary>Changer d’étape</summary><label class="field">Mon étape<select id="hall-tier">${stages.map((label, i) => `<option value="${i}" ${tier === i ? 'selected' : ''}>${i + 1}. ${esc(label)}</option>`).join('')}</select></label></details>` : ''}
       <details class="hall-course sw-more" id="hall-course"><summary>📖 Le mini-cours</summary><h2>${esc(course.title)}</h2>${course.steps.map((step) => `<p>${esc(step)}</p>`).join('')}<div class="hall-example"><strong>Un exemple</strong><p>${esc(course.example)}</p></div><button class="quiet" id="hall-course-listen">♬ Écouter le mini-cours</button>${course.video ? `<a class="secondary lesson-video" href="${esc(course.video.url)}" target="_blank" rel="noopener noreferrer">▶ ${esc(course.video.title)} · ${course.video.provider} ↗</a><small>La vidéo s’ouvre dans un autre onglet et demande une connexion.</small>` : ''}</details></article>`;
+    for (const id of wasOpen) if (main.querySelector(id)) main.querySelector(id).open = true;
     main.querySelector('#hall-back').onclick = ctx.onBack;
     const tierFor = (c) =>
       c === 'module' && core

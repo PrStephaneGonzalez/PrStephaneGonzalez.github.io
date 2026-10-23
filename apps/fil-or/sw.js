@@ -1,4 +1,4 @@
-const CACHE='fil-or-shell-fa7b5cc30e543a9b';
+const CACHE='fil-or-shell-e9dfafb5d1071cc0';
 const ASSETS = [
   './',
   './index.html',

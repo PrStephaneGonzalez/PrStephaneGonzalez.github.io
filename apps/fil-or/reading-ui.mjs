@@ -50,9 +50,9 @@ export function mountReading(main, ctx, text) {
       '<article class="learning-board reading-work">' +
       content +
       '</article>' +
-      leaveOption;
+      (ctx.free ? '' : leaveOption);
     bindHead(main, ctx);
-    q('#training-skip').onclick = ctx.onSkip || ctx.onExit;
+    if (q('#training-skip')) q('#training-skip').onclick = ctx.onSkip || ctx.onExit;
   }
   function entry() {
     shell(
@@ -189,9 +189,9 @@ export function mountWordWork(main, ctx, { text, onlyWord = null } = {}) {
       '<article class="learning-board word-work">' +
       content +
       '</article>' +
-      leaveOption;
+      (ctx.free ? '' : leaveOption);
     bindHead(main, ctx);
-    q('#training-skip').onclick = ctx.onSkip || ctx.onExit;
+    if (q('#training-skip')) q('#training-skip').onclick = ctx.onSkip || ctx.onExit;
   }
   function judge() {
     phase = 'judgment';

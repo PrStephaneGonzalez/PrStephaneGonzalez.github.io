@@ -10,7 +10,7 @@ import { mountMath } from './math-ui.mjs';
 import { reconcileAcademy, SPELLS, RANKS } from './academy.mjs';
 import { apprentice, magicSchool } from './academy-art.mjs';
 import { reconcileCollection, awardTreasure, costumeProfile, treasureArt } from './treasures.mjs';
-import { roomAccess, roomById } from './academy-rooms.mjs';
+import { roomAccess, roomById, nextRoomActivity } from './academy-rooms.mjs';
 import { renderCastleRoom } from './castle-map.mjs';
 import { GAME_SPOTS, gameProgress, worldProgress } from './world-map.mjs';
 import { welcomeHTML, homeHTML, worldPageHTML, bindHome, bindWorldPage, worldOfRoom } from './home-simple.mjs';
@@ -538,7 +538,7 @@ function renderWelcome() {
       button.disabled = false;
       if (error.status === 404) {
         pendingNew = { name, pin };
-        status.innerHTML = `Je ne connais pas encore <strong>${esc(name)}</strong> avec ce code. Si tu es nouvelle, touche encore le bouton pour créer ton compte. Sinon, vérifie ton nom et ton code.`;
+        status.innerHTML = `Je ne trouve pas <strong>${esc(name)}</strong> avec ce code.<br />Tu as déjà joué ? Vérifie ton nom et ton code.<br />Tu es nouvelle ? Touche encore le bouton pour créer ton compte.`;
         button.textContent = 'Créer mon compte ✦';
         return;
       }
@@ -645,6 +645,8 @@ function renderSeance() {
 function openGameSpot(type) {
   const g = GAME_SPOTS.find((x) => x.id === type);
   gamesBack = 'world';
+  hub = 'world';
+  currentWorld = 'jardin';
   if (!g) return navigate('castle');
   const tier = gameProgress(state, g).nextTier || 0;
   if (g.extra) showExtraMenu(type, tier);
@@ -707,25 +709,42 @@ function visitCastleRoom(id, initial = {}) {
         if (skillId && activityId) {
           clearScreen();
           view = 'learning-play';
-          renderLearningActivity(
-            main,
-            {
-              state,
-              save,
-              speak,
-              stopVoice,
-              story,
-              onBrowse: back,
-              onPause: back,
-              onNext: back,
-              onOutcome: (outcome) => {
-                save();
-                if (typeof outcome.correct === 'boolean')
-                  playCue(outcome.correct ? 'success' : 'retry');
+          // dans une salle, les cartes de la même notion s'enchaînent ; le retour ramène à la salle
+          let currentId = activityId;
+          const play = (id) => {
+            currentId = id;
+            renderLearningActivity(
+              main,
+              {
+                state,
+                save,
+                speak,
+                stopVoice,
+                story,
+                onBrowse: back,
+                onPause: back,
+                nextLabel:
+                  ACTIVITIES.filter((a) => a.skill === skillId && a.tier === tier).length > 1
+                    ? 'Carte suivante'
+                    : 'Retour à la salle',
+                listLabel: 'Retour à la salle',
+                onNext: () => {
+                  const next = nextRoomActivity(state, skillId, tier, currentId);
+                  if (next) {
+                    play(next.id);
+                    window.scrollTo?.({ top: 0, behavior: 'instant' });
+                  } else back();
+                },
+                onOutcome: (outcome) => {
+                  save();
+                  if (typeof outcome.correct === 'boolean')
+                    playCue(outcome.correct ? 'success' : 'retry');
+                },
               },
-            },
-            activityId,
-          );
+              id,
+            );
+          };
+          play(activityId);
         } else if (roomId === 'words') openWordBook(true, back);
         else if (roomId === 'reading') {
           const used = new Set(state.training.starts.map((s) => s.textId));
@@ -891,11 +910,11 @@ function renderProgress() {
   const collection = reconcileCollection(state);
   main.innerHTML = /* HTML */ `<div class="page-head progress-head">
       <div>
-        <p class="eyebrow">Ma progression</p>
+        <p class="eyebrow">Mes trésors</p>
         <h1>Ma magicienne grandit</h1>
         <p class="subtle">Tes pouvoirs se tissent au fil de tes apprentissages.</p>
       </div>
-      <button class="primary" id="progress-continue">Continuer mon aventure ↗</button>
+      <button class="primary" id="progress-continue">Retour aux mondes ↗</button>
     </div>
     <section class="wizard-profile" aria-label="Mon apprentie et son évolution">
       <div class="wizard-portrait">${apprentice(wizard.outfit.level)}</div>
@@ -989,7 +1008,7 @@ function renderProgress() {
         </article>`;
       }).join('')}
     </div>`;
-  $('#progress-continue').onclick = () => goAdventure();
+  $('#progress-continue').onclick = () => goHome();
   $('#progress-book').onclick = () => openWordBook();
   main
     .querySelectorAll('[data-practice-skill]')
@@ -1276,10 +1295,10 @@ function renderPause() {
         : 'La sauvegarde n’est pas disponible sur cet appareil.'}
     </p>
     <button class="primary" id="resume">Reprendre</button
-    ><button class="quiet" id="pause-home">Revenir au château</button>
+    ><button class="quiet" id="pause-home">Revenir aux mondes</button>
   </section>`;
   $('#resume').onclick = () => goAdventure();
-  $('#pause-home').onclick = () => navigate('castle');
+  $('#pause-home').onclick = () => goHome();
 }
 function start(id, inJourney = false) {
   if (!inJourney) activeJourney = null;
@@ -1728,7 +1747,12 @@ function win() {
   const localNext = roomIds(room)
     .map((id) => BY_ID[id])
     .find((x) => x.id !== l.id && allowed(x) && !state.completed.includes(x.id));
-  const next = localNext || nextLevel();
+  const garden = gamesBack === 'world' && !wasDaily && !activeJourney;
+  // depuis le Jardin : l'énigme suivante est du même jeu, au même niveau si possible
+  const sameGame = LEVELS.filter((x) => x.type === l.type && x.id !== l.id && allowed(x) && !state.completed.includes(x.id));
+  const next = garden
+    ? sameGame.find((x) => levelMode(x) === levelMode(l)) || sameGame[0]
+    : localNext || nextLevel();
   if (activeJourney) {
     finishStep(
       state.journey,
@@ -1744,7 +1768,7 @@ function win() {
         ? '<div class="door-frame" aria-hidden="true"><div class="door-panel"></div></div>'
         : '<div class="fade-star" aria-hidden="true">✦</div>'}
       <h2 id="modal-title">
-        ${newFriend ? `Voici ${ROOMS[room].friend} !` : 'Une nouvelle lumière au château.'}
+        ${newFriend ? `Voici ${ROOMS[room].friend} !` : 'Une nouvelle lumière à l’école.'}
       </h2>
       ${newFriend ? animal(ROOMS[room].animal) : ''}
       <p>
@@ -1755,7 +1779,7 @@ function win() {
       <p class="success-positive">${successMessage(state, first)}</p>
       ${next || activeJourney || wasDaily
         ? `<button class="primary" id="next">${wasDaily ? 'Terminer ma séance' : activeJourney ? 'Poursuivre l’aventure' : 'Découvrir une autre énigme'} ↗</button>`
-        : ''}<button class="secondary" id="success-map">Explorer le château</button>
+        : ''}<button class="secondary" id="success-map">${garden ? 'Retour au Jardin' : 'Retour aux mondes'}</button>
       <button class="quiet" id="success-pause">Faire une pause</button>
     </div>`,
   );
@@ -1766,7 +1790,7 @@ function win() {
         : activeJourney
           ? goAdventure({ advance: true })
           : start(next.id);
-  $('#success-map').onclick = () => navigate('castle');
+  $('#success-map').onclick = () => (garden ? navigate('castle') : goHome());
   $('#success-pause').onclick = () => navigate('pause');
 }
 function dialog(html) {
@@ -2251,13 +2275,14 @@ function goAdventure(options = {}) {
   cancelHint();
   activeJourney = null;
   trainingGame = false;
+  hub = 'seance';
   if (modal.open) modal.close();
   const plan = currentDayPlan(),
     day = plan.day;
   const step = options.step || nextPlanStep(plan);
   if (!step) return navigate('castle');
   view = 'daily-play';
-  setNav('castle');
+  setNav('seance');
   const complete = () => {
     finishPlanStep(state.training, day, step);
     save();
@@ -2466,9 +2491,9 @@ function startExtra(l, inJourney = false) {
                 : 'Poursuivre l’aventure'}
             ↗</button
           ><button class="quiet" id="extra-done-pause">
-            ${practice ? 'Retour aux jeux' : 'Faire une pause'}</button
+            ${practice ? (gamesBack === 'world' ? 'Retour au Jardin' : 'Retour aux jeux') : 'Faire une pause'}</button
           ><button class="quiet" id="extra-home">
-            ${practice ? 'Retour à l’entraînement' : 'Explorer le château'}
+            ${practice && gamesBack !== 'world' ? 'Retour à l’entraînement' : 'Retour aux mondes'}
           </button>
         </div>`,
       );
@@ -2479,7 +2504,7 @@ function startExtra(l, inJourney = false) {
             ? showExtraMenu(l.type, l.tier)
             : goAdventure({ advance: true });
       $('#extra-done-pause').onclick = () => (practice ? gamesExit() : navigate('pause'));
-      $('#extra-home').onclick = () => navigate(practice ? 'library' : 'castle');
+      $('#extra-home').onclick = () => (practice && gamesBack !== 'world' ? navigate('library') : goHome());
     },
   });
   if (daily) dailyGameOptions();
@@ -2594,7 +2619,7 @@ function openSchoolAccount(onReady = null, mode = cloud.profile ? 'manage' : 'cr
   };
   if (mode === 'manage' && cloud.profile) {
     dialog(
-      `${dialogTop('Mon compte de magicienne')}<div class="school-account"><div class="account-emblem" aria-hidden="true">✦</div><h3>${esc(cloud.profile.name)}</h3><p id="school-account-status" role="status">${esc(cloud.status)}</p><button class="primary" id="school-account-continue">Retour au château</button><button class="secondary" id="school-account-sync">Synchroniser maintenant</button><details class="parent-details"><summary>Changer de compte ou retrouver un ancien code</summary><p>Chaque magicienne garde son propre parcours. Les réglages et notes des parents restent sur cet appareil.</p><button class="quiet" id="school-account-change">Ouvrir un autre compte</button><button class="quiet" id="school-account-legacy">Code de voyage et copie du parcours</button></details></div>`,
+      `${dialogTop('Mon compte de magicienne')}<div class="school-account"><div class="account-emblem" aria-hidden="true">✦</div><h3>${esc(cloud.profile.name)}</h3><p id="school-account-status" role="status">${esc(cloud.status)}</p><button class="primary" id="school-account-continue">Retour aux mondes</button><button class="secondary" id="school-account-sync">Synchroniser maintenant</button><details class="parent-details"><summary>Changer de compte ou retrouver un ancien code</summary><p>Chaque magicienne garde son propre parcours. Les réglages et notes des parents restent sur cet appareil.</p><button class="quiet" id="school-account-change">Ouvrir un autre compte</button><button class="quiet" id="school-account-legacy">Code de voyage et copie du parcours</button></details></div>`,
     );
     bindClose();
     $('#school-account-continue').onclick = enter;
@@ -2634,7 +2659,7 @@ function openSchoolAccount(onReady = null, mode = cloud.profile ? 'manage' : 'cr
       setGuest(false);
       if (creating) {
         dialog(
-          `${dialogTop('Bienvenue à l’école')}<div class="school-account"><div class="account-emblem" aria-hidden="true">✦</div><h3>${esc(name)}</h3><p>Ton parcours est enregistré. Garde ces deux repères pour un autre appareil.</p><dl class="account-reminder"><dt>Nom</dt><dd>${esc(name)}</dd><dt>Code</dt><dd>${esc(pin)}</dd></dl><button class="primary" id="school-account-enter">Ouvrir la carte du monde</button></div>`,
+          `${dialogTop('Bienvenue à l’école')}<div class="school-account"><div class="account-emblem" aria-hidden="true">✦</div><h3>${esc(name)}</h3><p>Ton parcours est enregistré. Garde ces deux repères pour un autre appareil.</p><dl class="account-reminder"><dt>Nom</dt><dd>${esc(name)}</dd><dt>Code</dt><dd>${esc(pin)}</dd></dl><button class="primary" id="school-account-enter">Entrer dans l’école ✦</button></div>`,
         );
         bindClose();
         $('#school-account-enter').onclick = enter;

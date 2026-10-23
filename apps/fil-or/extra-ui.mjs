@@ -29,7 +29,7 @@ export function mountExtra(main, l, ctx) {
   }
   function render() {
     main.innerHTML = /* HTML */ `<div class="page-head">
-        <button class="back" id="extra-back" aria-label="Retour au château">←</button>
+        <button class="back" id="extra-back" aria-label="Retour">←</button>
         <div>
           <p class="eyebrow">Une petite énigme des gardiens</p>
           <h1>${EXTRA_NAMES[l.type]}</h1>

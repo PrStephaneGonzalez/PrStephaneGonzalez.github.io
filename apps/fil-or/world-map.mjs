@@ -23,11 +23,11 @@ export const UNIVERSES = [
 ];
 export const GAME_SPOTS = [
   { id: 'flow', name: 'Les fils de lumière', icon: '⌁', x: 10, y: 61, extra: false },
-  { id: 'potion', name: 'Les potions', icon: '⚗', x: 25, y: 58, extra: false },
-  { id: 'circuit', name: 'Les circuits', icon: '✧', x: 38, y: 68, extra: false },
+  { id: 'potion', name: 'Les potions enchantées', icon: '⚗', x: 25, y: 58, extra: false },
+  { id: 'circuit', name: 'Les circuits magiques', icon: '✧', x: 38, y: 68, extra: false },
   { id: 'cross', name: 'La croisée des nombres', icon: '⊞', x: 9, y: 77, extra: true },
   { id: 'maze', name: 'Les jardins à colorer', icon: '▧', x: 24, y: 74, extra: true },
-  { id: 'pattern', name: 'Les mosaïques', icon: '◈', x: 37, y: 84, extra: true },
+  { id: 'pattern', name: 'Les mosaïques de Plume', icon: '◈', x: 37, y: 84, extra: true },
   { id: 'logic', name: 'Le cabinet des énigmes', icon: '◇', x: 22, y: 88, extra: true },
 ];
 // positions des salles (en % de la carte) et univers d'appartenance

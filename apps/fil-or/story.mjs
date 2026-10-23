@@ -261,7 +261,7 @@ export function missingFor(chapter, p) {
     out = [];
   if (n.objects && p.objects < n.objects)
     out.push(plural(n.objects - p.objects, 'un objet magique', 'objets magiques'));
-  if (n.awake && !(p.awake[n.awake] > 0)) out.push('une salle ' + UNIVERSE_WORD[n.awake] + ' en éveil');
+  if (n.awake && !(p.awake[n.awake] > 0)) out.push('un lieu ' + UNIVERSE_WORD[n.awake] + ' essayé');
   if (n.games && p.games < n.games)
     out.push(
       n.games === 1
@@ -269,9 +269,9 @@ export function missingFor(chapter, p) {
         : plural(n.games - p.games, 'un jeu de plus du Jardin', 'jeux de plus du Jardin'),
     );
   if (n.lit && p.lit < n.lit)
-    out.push(plural(n.lit - p.lit, 'une salle illuminée', 'salles illuminées') + (p.lit ? ' de plus' : ''));
+    out.push(plural(n.lit - p.lit, 'un lieu doré', 'lieux dorés') + (p.lit ? ' de plus' : ''));
   if (n.fullUniverse && p.fullUniverse < n.fullUniverse)
-    out.push('toutes les salles d’un même univers en éveil');
+    out.push('tous les lieux d’un même monde essayés');
   if (n.star && p.star < n.star) out.push('une flamme étoilée');
   return out;
 }

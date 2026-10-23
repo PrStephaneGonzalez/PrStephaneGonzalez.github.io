@@ -14,7 +14,7 @@ export function renderStoryBook(main, ctx) {
   const wp = worldProgress(ctx.state);
   const st = storyStatus(ctx.state.story, { ...wp, games: wp.gamesPlayed });
   const done = new Set(ctx.state.story.done);
-  main.innerHTML = `<div class="page-head"><button class="back" id="story-back" aria-label="Retour à la carte">←</button><div><p class="eyebrow">L’École du Fil d’Or</p><h1>L’histoire du Fil d’Or</h1><p class="subtle">${done.size} chapitre${done.size > 1 ? 's' : ''} sur ${CHAPTERS.length}. Chaque chapitre revient quand tu as assez travaillé dans les univers.</p></div></div>
+  main.innerHTML = `<div class="page-head"><button class="back" id="story-back" aria-label="Retour">←</button><div><p class="eyebrow">L’École du Fil d’Or</p><h1>L’histoire du Fil d’Or</h1><p class="subtle">${done.size} chapitre${done.size > 1 ? 's' : ''} sur ${CHAPTERS.length}. Un nouveau chapitre arrive quand tu as assez travaillé dans les mondes.</p></div></div>
   <div class="story-thread" aria-hidden="true">${CHAPTERS.map((c) => `<i class="${done.has(c.id) ? 'on' : st.next?.id === c.id && st.ready ? 'ready' : ''}"></i>`).join('')}</div>
   <ol class="story-list">${CHAPTERS.map((c, i) => {
     const isNext = st.next?.id === c.id;
@@ -68,7 +68,7 @@ export function renderChapter(main, ctx, id) {
         const item = ctx.onReward?.(c, index);
         ctx.save();
         const next = CHAPTERS[index + 1];
-        fb.innerHTML = `<strong>Le parchemin se referme dans un éclat doré.</strong> Un anneau du Fil d’Or brille de nouveau autour de la tour.${item ? ` Tu reçois : <em>${esc(item.name)}</em> (${esc(item.rarity)}).` : ''}${next ? ` <br />${esc(c.teaser || '')}` : ' <br />Fin… pour l’instant.'}<br /><button class="primary" id="chapter-done">Retour à la carte ↗</button>`;
+        fb.innerHTML = `<strong>Le parchemin se referme dans un éclat doré.</strong> Un anneau du Fil d’Or brille de nouveau autour de la tour.${item ? ` Tu reçois : <em>${esc(item.name)}</em> (${esc(item.rarity)}).` : ''}${next ? ` <br />${esc(c.teaser || '')}` : ' <br />Fin… pour l’instant.'}<br /><button class="primary" id="chapter-done">Continuer ↗</button>`;
         main.querySelector('#chapter-done').onclick = ctx.onBack;
       }),
   );
