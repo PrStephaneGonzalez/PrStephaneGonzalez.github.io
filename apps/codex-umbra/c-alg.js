@@ -720,6 +720,73 @@
       'Calcule Δ = b² − 4ac. Son signe te dit combien il y a de solutions. Pour une racine, écris par exemple (1+√5)/2 ou (1+racine(5))/2.',
     );
   }
+  /* q3 Maître — la formule du discriminant se démontre : trois exercices guidés.
+     (L'Oracle, q6, redonne la démonstration complète à remettre dans l'ordre.) */
+  // 1. Redécouverte sur un trinôme numérique : ax²+bx+c = a[(x+u)² − v], et 4a²v = Δ.
+  const discGuided = () => {
+    let a, b, c;
+    do {
+      a = R.pick([1, 2, 3, -1, -2, -3]);
+      b = R.int(-8, 8);
+      c = R.int(-9, 9);
+    } while (b === 0 && c === 0);
+    const D = b * b - 4 * a * c,
+      u = b / (2 * a),
+      v = D / (4 * a * a);
+    return K.nums(
+      T`On cherche à écrire $$${pt([c, b, a])} = ${N.k(a)}\Big[(x+u)^2 - v\Big]$$ Trouve $u$ et $v$, puis calcule le discriminant $\Delta=b^2-4ac$ de ce trinôme. Compare ensuite $4a^2v$ et $\Delta$.`,
+      ['$u =$', '$v =$', '$\\Delta =$'],
+      [u, v, D],
+      T`On met $a$ en facteur : $a\left[x^2+\frac ba x+\frac ca\right]$, donc $u=\frac b{2a}=${num(u)}$. Le terme constant impose $a u^2 - a v = c$, donc $v=u^2-\frac ca=${num(u * u)}${N.s(-c / a)}=${num(v)}$. Enfin $\Delta = ${N.p(b)}^2 - 4\times${N.p(a)}\times${N.p(c)} = ${b * b}${N.s(-4 * a * c)} = ${D}$. Et $4a^2v=${4 * a * a}\times${N.p(v)}=${D}=\Delta$ : ce n’est pas un hasard, c’est la formule $v=\dfrac{\Delta}{4a^2}$. Comme $(x+u)^2\geqslant0$, c’est le signe de $\Delta$ qui décide du nombre de solutions.`,
+      'Factorise a, puis complète le carré : u est la moitié du coefficient de x une fois a mis en facteur. Pour v, développe a[(x+u)² − v] et identifie le terme constant.',
+    );
+  };
+  // 2. Pourquoi le signe de Δ décide : on tranche entre des raisonnements (dont un piège de signe).
+  const discWhy = () => {
+    const concl = (k) => (k > 0 ? T`$v>0$, donc $(x+u)^2=v$ a deux solutions` : k === 0 ? T`$v=0$, donc $(x+u)^2=0$ n’a qu’une solution` : T`$v<0$, donc $(x+u)^2=v$ n’a aucune solution (un carré n’est jamais négatif)`);
+    const cls = (d) => (d > 0 ? 1 : d === 0 ? 0 : -1);
+    const claim = (d, k) => T`$\Delta=${d}$ : ${concl(k)}`;
+    let a, b, c, D, W;
+    do {
+      a = R.nz(-4, 4);
+      b = R.int(-7, 7);
+      c = R.nz(-8, 8);
+      D = b * b - 4 * a * c;
+      W = b * b + 4 * a * c; // le piège : oublier que −4ac change de signe
+    } while (cls(D) === cls(W));
+    const other = (k) => R.pick([1, 0, -1].filter((x) => x !== k));
+    const ok = claim(D, cls(D));
+    return K.choice(
+      T`Soit $f(x)=${pt([c, b, a])}$. On sait que $f(x)=a\Big[(x+u)^2-v\Big]$ avec $v=\dfrac{\Delta}{4a^2}$. Combien l’équation $f(x)=0$ a-t-elle de solutions, et pourquoi ?`,
+      [ok, claim(W, cls(W)), claim(D, other(cls(D))), claim(W, other(cls(W)))],
+      T`$\Delta = ${N.p(b)}^2 - 4\times${N.p(a)}\times${N.p(c)} = ${b * b}${N.s(-4 * a * c)} = ${D}$. ${ok}. Le piège : $-4ac$ change de signe avec $ac$ ; avec un mauvais signe on trouverait $${W}$ et la mauvaise conclusion.`,
+      'Calcule Δ avec soin (attention au signe de −4ac), puis regarde le signe de v = Δ/(4a²) : que peut-on dire de (x + u)² = v ?',
+    );
+  };
+  // 3. Le terme manquant d'une étape de la démonstration.
+  const discGap = () => {
+    const t = R.int(0, 2);
+    if (t === 0)
+      return K.choice(
+        T`Dans la démonstration, on écrit $$x^2+\frac ba\,x=\left(x+\frac b{2a}\right)^2-\boxed{\ ?\ }$$ Que vaut le terme manquant ?`,
+        ['$\\dfrac{b^2}{4a^2}$', '$\\dfrac{b^2}{2a^2}$', '$\\dfrac{b^2}{a^2}$', '$\\dfrac{b}{4a}$'],
+        T`$\left(x+\frac b{2a}\right)^2=x^2+\frac ba x+\frac{b^2}{4a^2}$ : le terme en trop est le carré de la moitié de $\frac ba$, soit $\left(\frac b{2a}\right)^2=\frac{b^2}{4a^2}$.`,
+        'Développe (x + b/(2a))² : quel terme apparaît en plus de x² + (b/a)x ?',
+      );
+    if (t === 1)
+      return K.choice(
+        T`Pour réduire au même dénominateur $4a^2$ : $$\frac ca=\frac{\boxed{\ ?\ }}{4a^2}$$`,
+        ['$4ac$', '$4a^2c$', '$ac$', '$4c$'],
+        T`On multiplie le numérateur et le dénominateur par $4a$ : $\frac ca=\frac{c\times4a}{a\times4a}=\frac{4ac}{4a^2}$.`,
+        'Par quoi faut-il multiplier le dénominateur a pour obtenir 4a² ? Fais la même chose en haut.',
+      );
+    return K.choice(
+      T`On obtient $-\dfrac{b^2}{4a^2}+\dfrac{4ac}{4a^2}$. En factorisant le signe : $$-\frac{b^2}{4a^2}+\frac{4ac}{4a^2}=-\frac{\boxed{\ ?\ }}{4a^2}$$`,
+      ['$b^2-4ac$', '$b^2+4ac$', '$4ac-b^2$', '$b^2-ac$'],
+      T`Mettre le signe $-$ en facteur change le signe de chaque terme : $-b^2+4ac=-(b^2-4ac)$. Le numérateur $b^2-4ac$ est précisément le discriminant $\Delta$.`,
+      'Le signe − devant la fraction s’applique à tout le numérateur : change le signe de chaque terme.',
+    );
+  };
   CU.addSkill({
     id: 'q3',
     region: 'quad',
@@ -733,7 +800,8 @@
     law: T`$\Delta=b^2-4ac$. Si $\Delta>0$ : deux racines $\frac{-b\pm\sqrt\Delta}{2a}$ ; si $\Delta=0$ : une racine $-\frac b{2a}$ ; si $\Delta<0$ : aucune racine réelle.`,
     lessons: [
       T`<p>Pour $ax^2+bx+c$ ($a\neq0$), le <b>discriminant</b> est $$\Delta=b^2-4ac.$$ Il vient de la forme canonique : $ax^2+bx+c=a\left[\left(x+\frac b{2a}\right)^2-\frac{\Delta}{4a^2}\right]$.</p>
-<p class="ex">$2x^2-3x-5$ : $\Delta=9+40=49$.</p>`,
+<p class="ex">$2x^2-3x-5$ : $\Delta=9+40=49$.</p>
+<p class="tip">Cette formule n’est pas à croire : au rang Maître, tu la démontres toi-même, étape par étape.</p>`,
       T`<p>Le signe de $\Delta$ donne le nombre de solutions de $ax^2+bx+c=0$ :</p>
 <ul><li>$\Delta>0$ : deux solutions $x_1=\dfrac{-b-\sqrt\Delta}{2a}$ et $x_2=\dfrac{-b+\sqrt\Delta}{2a}$ ;</li><li>$\Delta=0$ : une solution $x_0=-\dfrac b{2a}$ ;</li><li>$\Delta<0$ : aucune solution réelle.</li></ul>
 <p class="tip">Saisie : <code>(3+√5)/2 ; (3-√5)/2</code>, ou le bouton « aucune ».</p>`,
@@ -772,6 +840,10 @@
           const vals = neg ? [-s, s] : [-t, -s, s, t];
           return K.set(T`Équation bicarrée : résous $$x^4 ${N.s(B)}x^2 ${N.s(C)} = 0$$`, vals, T`On pose $X = x^2$ : $X^2 ${N.s(B)}X ${N.s(C)} = 0$, de racines $X = ${X1}$ et $X = ${X2}$. ${neg ? T`$x^2 = ${X2}$ est impossible ; $x^2=${X1}$ donne $x=\pm${s}$.` : T`$x^2 = ${X1}$ donne $x = \pm ${s}$ ; $x^2 = ${X2}$ donne $x = \pm ${t}$.`}`, 'Pose X = x². Résous en X, puis reviens à x — sans oublier qu’un carré n’est jamais négatif.');
         },
+        // la formule se démontre (forme canonique, a[(x+u)² − v] avec v = Δ/4a²)
+        discGuided,
+        discWhy,
+        discGap,
       ),
     ],
   });
