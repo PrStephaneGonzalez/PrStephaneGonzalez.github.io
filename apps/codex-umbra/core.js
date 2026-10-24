@@ -645,21 +645,54 @@ CU.save = {
       }).catch(() => {});
     } catch {}
   },
-  // fusion : on garde toujours le meilleur des deux
-  merge(a, b) {
-    if (!a) return b;
-    if (!b) return a;
-    const o = JSON.parse(JSON.stringify(a));
-    o.xp = Math.max(a.xp || 0, b.xp || 0);
-    o.skills = o.skills || {};
-    for (const [id, s] of Object.entries(b.skills || {})) {
-      const m = o.skills[id];
-      if (!m) o.skills[id] = s;
-      else {
-        const hi = (s.tier || 0) > (m.tier || 0) || ((s.tier || 0) === (m.tier || 0) && (s.prog || 0) > (m.prog || 0)) ? s : m;
-        o.skills[id] = { ...m, ...s, tier: hi.tier || 0, prog: hi.prog || 0, last: Math.max(m.last || 0, s.last || 0), seen: m.seen || s.seen, done: Math.max(m.done || 0, s.done || 0) };
-      }
+  /* Format de sauvegarde (champ v).
+     v1 : format d'origine.
+     v2 : identifiants figés (ids.js) et renommages appliqués, valeurs normalisées,
+          champs inconnus conservés (une version plus ancienne du jeu ne les efface plus).
+     migrate() est idempotente et ne fait jamais baisser une progression. */
+  migrate(st) {
+    if (!isObj(st)) return st;
+    if ((+st.v || 1) > CU.SAVE_V) return st; // écrite par une version plus récente : on n'y touche pas
+    const ren = (CU.IDS && CU.IDS.renamed) || {};
+    const rid = (id) => ren[id] || id;
+    const skills = {};
+    for (const [id0, s0] of Object.entries(isObj(st.skills) ? st.skills : {})) {
+      if (!isObj(s0)) continue;
+      const s = { ...s0, tier: Math.min(3, Math.floor(nn(s0.tier))), prog: nn(s0.prog), done: nn(s0.done), last: nn(s0.last), seen: Array.isArray(s0.seen) ? s0.seen : [] };
+      const id = rid(id0);
+      skills[id] = skills[id] ? mergeSkill(skills[id], s) : s;
     }
+    st.skills = skills;
+    if (isObj(st.mem)) {
+      const mem = {};
+      for (const [k, m] of Object.entries(st.mem)) {
+        if (!isObj(m)) continue;
+        const i = k.lastIndexOf(':');
+        const key = i < 0 ? rid(k) : rid(k.slice(0, i)) + k.slice(i);
+        const x = { ...m, b: nn(m.b), t: nn(m.t), due: nn(m.due) };
+        mem[key] = !mem[key] || x.t > mem[key].t ? x : mem[key];
+      }
+      st.mem = mem;
+    }
+    st.frags = Array.isArray(st.frags) ? [...new Set(st.frags)] : [];
+    st.bosses = isObj(st.bosses) ? st.bosses : {};
+    st.stats = isObj(st.stats) ? st.stats : { solved: 0, bestCombo: 0 };
+    st.xp = nn(st.xp);
+    st.v = CU.SAVE_V;
+    return st;
+  },
+  // fusion : on garde toujours le meilleur des deux (a = cet appareil, b = l'autre source)
+  merge(a, b) {
+    if (!a && !b) return a || b;
+    if (!a || !b) return this.migrate(clone(a || b));
+    a = this.migrate(clone(a));
+    b = this.migrate(clone(b));
+    // champs inconnus de cette version (ajoutés par une version plus récente) : conservés
+    const o = { ...b, ...a };
+    o.v = Math.max(+a.v || 1, +b.v || 1);
+    o.xp = Math.max(a.xp || 0, b.xp || 0);
+    o.skills = { ...(a.skills || {}) };
+    for (const [id, s] of Object.entries(b.skills || {})) o.skills[id] = o.skills[id] ? mergeSkill(o.skills[id], s) : s;
     o.bosses = { ...(b.bosses || {}), ...(a.bosses || {}) };
     o.frags = [...new Set([...(a.frags || []), ...(b.frags || [])])];
     o.stats = { solved: Math.max(a.stats?.solved || 0, b.stats?.solved || 0), bestCombo: Math.max(a.stats?.bestCombo || 0, b.stats?.bestCombo || 0) };
@@ -698,7 +731,42 @@ CU.save = {
     o.updated = Math.max(a.updated || 0, b.updated || 0);
     return o;
   },
+  // fusionne src dans l'état en cours SANS remplacer ses objets : une épreuve en cours garde
+  // ses références (sk(id), memOf…) et ce qu'elle y écrit ensuite n'est pas perdu.
+  mergeInto(st, src) {
+    if (!st || !src) return false;
+    const before = JSON.stringify(st);
+    assignInPlace(st, this.merge(st, src));
+    return JSON.stringify(st) !== before;
+  },
 };
+CU.SAVE_V = 2;
+function isObj(x) {
+  return !!x && typeof x === 'object' && !Array.isArray(x);
+}
+function nn(x) {
+  return Number.isFinite(+x) && +x > 0 ? +x : 0;
+}
+function clone(x) {
+  return x == null ? x : JSON.parse(JSON.stringify(x));
+}
+// une Loi vue sur deux appareils : le rang le plus haut, puis la progression la plus avancée
+function mergeSkill(m, s) {
+  const hi = (s.tier || 0) > (m.tier || 0) || ((s.tier || 0) === (m.tier || 0) && (s.prog || 0) > (m.prog || 0)) ? s : m;
+  const sa = m.seen || [],
+    sb = s.seen || [];
+  const seen = Array.from({ length: Math.max(sa.length, sb.length) }, (_, i) => !!(sa[i] || sb[i]));
+  return { ...m, ...s, tier: hi.tier || 0, prog: hi.prog || 0, last: Math.max(m.last || 0, s.last || 0), seen, done: Math.max(m.done || 0, s.done || 0) };
+}
+function assignInPlace(t, s) {
+  for (const k of Object.keys(t)) if (!(k in s)) delete t[k];
+  for (const [k, v] of Object.entries(s)) {
+    if (isObj(v) && isObj(t[k])) assignInPlace(t[k], v);
+    else t[k] = clone(v);
+  }
+  return t;
+}
+CU.save._t = { mergeSkill, assignInPlace };
 
 /* ---------- sons (synthétisés, aucun fichier) ---------- */
 // appareil modeste (Android, peu de cœurs ou de mémoire) : moteur audio allégé
