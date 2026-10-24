@@ -24,7 +24,44 @@
   let needHeal = false,
     heals = 0,
     sessionSet = false;
+  // iPhone : le commutateur « silencieux » coupe tout le son web. Une piste muette lue en boucle
+  // fait passer la page en « lecture média », ce qui contourne le commutateur (comme une vidéo).
+  let hush = null;
+  const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function iosUnmute() {
+    if (hush || !isIOS()) return;
+    try {
+      const n = 8000,
+        b = new Uint8Array(44 + n),
+        dv = new DataView(b.buffer),
+        w = (o, s) => [...s].forEach((c, i) => (b[o + i] = c.charCodeAt(0)));
+      w(0, 'RIFF');
+      dv.setUint32(4, 36 + n, true);
+      w(8, 'WAVEfmt ');
+      dv.setUint32(16, 16, true);
+      dv.setUint16(20, 1, true);
+      dv.setUint16(22, 1, true);
+      dv.setUint32(24, 8000, true);
+      dv.setUint32(28, 8000, true);
+      dv.setUint16(32, 1, true);
+      dv.setUint16(34, 8, true);
+      w(36, 'data');
+      dv.setUint32(40, n, true);
+      b.fill(128, 44);
+      hush = new Audio(URL.createObjectURL(new Blob([b], { type: 'audio/wav' })));
+      hush.loop = true;
+      hush.setAttribute('playsinline', '');
+      hush.play().catch(() => {});
+      document.addEventListener('visibilitychange', () => {
+        if (!hush) return;
+        if (document.hidden) hush.pause();
+        else hush.play().catch(() => {});
+      });
+    } catch {}
+  }
   const startMusic = () => {
+    iosUnmute();
+    if (hush && hush.paused && !document.hidden) hush.play().catch(() => {});
     if (!sessionSet) {
       sessionSet = true;
       try {
