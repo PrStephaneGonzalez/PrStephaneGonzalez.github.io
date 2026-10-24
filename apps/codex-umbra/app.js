@@ -19,12 +19,29 @@
   // la musique ne peut démarrer qu'après un geste de l'utilisateur
   // iPhone/iPad : le son ne se débloque que sur un vrai « toucher relâché » ou un clic,
   // pas sur pointerdown ; on réessaie donc à chaque geste tant que ce n'est pas joué.
-  try {
-    if (navigator.audioSession) navigator.audioSession.type = 'playback';
-  } catch {}
+  // Si le contexte audio ne tourne pas après un geste (iOS le met parfois en « interrupted »),
+  // on le recrée au geste suivant, jusqu'à 3 fois.
+  let needHeal = false,
+    heals = 0,
+    sessionSet = false;
   const startMusic = () => {
+    if (!sessionSet) {
+      sessionSet = true;
+      try {
+        if (navigator.audioSession) navigator.audioSession.type = 'playback';
+      } catch {}
+    }
+    if (needHeal && heals < 3) {
+      heals++;
+      needHeal = false;
+      CU.sfx.reset();
+      CU.music && CU.music.rebuild();
+    }
     CU.sfx.unlock();
     CU.music && CU.music.start();
+    setTimeout(() => {
+      if (CU.sfx.status() !== 'running' && !document.hidden) needHeal = true;
+    }, 900);
   };
   for (const ev of ['click', 'touchend', 'keydown']) addEventListener(ev, startMusic, { passive: true });
   const mood = (m) => CU.music && CU.music.mode(m);
@@ -526,6 +543,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
     const bg = sheet(`<h2 style="margin-bottom:14px">Menu</h2><div class="menu">
 <button class="btn" id="m-snd">${CU.settings.sound ? '🔊 Sons activés' : '🔇 Sons coupés'}</button>
 <button class="btn" id="m-mus">${CU.settings.musicOn !== false ? '🎵 Musique : oui' : '🎵 Musique : non'}</button>
+<button class="btn" id="m-test">🔈 Tester le son</button>
 <label class="vol">Volume de la musique<input type="range" id="m-vol" min="0" max="1" step="0.05" value="${CU.settings.musicVol ?? 0.5}" /></label>
 <button class="btn" id="m-pro">📜 Revoir le prologue</button>
 <button class="btn" id="m-out">🚪 Changer d’Arpenteur</button>
@@ -542,6 +560,22 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       CU.music.enable(CU.settings.musicOn === false);
       saveSettings();
       e.target.textContent = CU.settings.musicOn !== false ? '🎵 Musique : oui' : '🎵 Musique : non';
+    };
+    $('#m-test', bg).onclick = (e) => {
+      const b = e.target;
+      if (CU.sfx.status() !== 'running' && heals < 6) {
+        heals++;
+        CU.sfx.reset();
+        CU.music && CU.music.rebuild();
+      }
+      const wasOff = CU.settings.sound === false;
+      CU.settings.sound = true;
+      CU.sfx.unlock();
+      CU.music && CU.music.start();
+      CU.sfx.right(3);
+      CU.settings.sound = !wasOff;
+      b.textContent = '🔈 Son : ' + CU.sfx.status() + ' — entends-tu une note ?';
+      setTimeout(() => (b.textContent = '🔈 Son : ' + CU.sfx.status() + (wasOff ? ' (sons coupés dans le jeu)' : '')), 1200);
     };
     $('#m-vol', bg).oninput = (e) => {
       CU.music.volume(+e.target.value);

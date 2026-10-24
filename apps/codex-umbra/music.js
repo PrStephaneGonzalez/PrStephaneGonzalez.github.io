@@ -36,6 +36,7 @@
     nextChord = 0,
     nextBell = 0,
     nextBeat = 0,
+    hooked = false,
     step = 0;
 
   function level() {
@@ -72,13 +73,25 @@
     rev.connect(wet);
     dry.connect(bus);
     wet.connect(bus);
-    document.addEventListener('visibilitychange', () => {
-      if (!A) return;
-      if (document.hidden) A.suspend && A.suspend();
-      else A.resume && A.resume();
-    });
-    // iOS peut suspendre le contexte audio sans prévenir : on le relance au besoin
-    setInterval(() => on && A.state !== 'running' && !document.hidden && A.resume && A.resume().catch(() => {}), 2000);
+    if (!hooked) {
+      hooked = true;
+      // en arrière-plan on coupe le son ; au retour on le relance (le geste suivant achèvera le travail sur iOS)
+      document.addEventListener('visibilitychange', () => {
+        if (!A) return;
+        try {
+          if (document.hidden) A.suspend && A.suspend().catch(() => {});
+          else A.resume && A.resume().catch(() => {});
+        } catch {}
+      });
+      // iOS peut suspendre le contexte audio sans prévenir : on le relance au besoin
+      setInterval(() => {
+        if (on && A && A.state !== 'running' && !document.hidden) {
+          try {
+            A.resume().catch(() => {});
+          } catch {}
+        }
+      }, 2000);
+    }
     return true;
   }
   // une voix de nappe : deux oscillateurs légèrement désaccordés, enveloppe très lente
@@ -211,6 +224,12 @@
       clearInterval(timer);
       timer = setInterval(schedule, 200);
       schedule();
+    },
+    // le contexte audio a été recréé : on repart de zéro sur le nouveau
+    rebuild() {
+      clearInterval(timer);
+      on = false;
+      A = bus = pad = rev = null;
     },
     stop() {
       if (!on || !A) return;

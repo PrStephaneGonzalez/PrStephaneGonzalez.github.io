@@ -677,7 +677,7 @@ CU.sfx = (function () {
     drone = null;
   const on = () => CU.settings && CU.settings.sound !== false;
   function ac() {
-    if (!ctx) {
+    if (!ctx || ctx.state === 'closed') {
       const A = window.AudioContext || window.webkitAudioContext;
       if (!A) return null;
       ctx = new A();
@@ -687,7 +687,13 @@ CU.sfx = (function () {
       master.connect(comp);
       comp.connect(ctx.destination);
     }
-    if (ctx.state === 'suspended') ctx.resume();
+    // 'suspended' mais aussi 'interrupted' (iOS : appel, verrouillage, changement d'appli)
+    if (ctx.state !== 'running') {
+      try {
+        const p = ctx.resume();
+        if (p && p.catch) p.catch(() => {});
+      } catch {}
+    }
     return ctx;
   }
   function tone(freq, t0, dur, type = 'sine', vol = 0.25, attack = 0.005) {
@@ -729,6 +735,16 @@ CU.sfx = (function () {
   const hz = (semi) => 293.66 * Math.pow(2, semi / 12);
   return {
     unlock: () => ac(),
+    status: () => (ctx ? ctx.state : 'none'),
+    // dernier recours : repartir d'un contexte audio neuf (à appeler pendant un geste)
+    reset() {
+      try {
+        ctx && ctx.close && ctx.close().catch(() => {});
+      } catch {}
+      ctx = null;
+      master = null;
+      return ac();
+    },
     right(combo = 0) {
       if (!on()) return;
       const s = scale[Math.min(combo, scale.length - 1)];
