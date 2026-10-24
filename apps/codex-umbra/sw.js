@@ -1,5 +1,5 @@
 // Codex Umbra — fonctionnement hors connexion. Changer VERSION à chaque publication.
-const VERSION = 'codex-umbra-v4';
+const VERSION = 'codex-umbra-v5';
 const SHELL = ['./', './index.html', './style.css', './core.js', './kit.js', './c-vec.js', './c-alg.js', './c-misc.js', './story.js', './art.js', './music.js', './app.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
@@ -19,11 +19,11 @@ self.addEventListener('fetch', (e) => {
   }
   // nos fichiers : réseau d'abord (pour les mises à jour), cache hors connexion
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: 'no-cache' })
       .then((res) => {
         if (res.ok) caches.open(VERSION).then((c) => c.put(e.request, res.clone()));
         return res;
       })
-      .catch(() => caches.match(e.request).then((r) => r || caches.match('./index.html'))),
+      .catch(() => caches.match(e.request, { ignoreSearch: true }).then((r) => r || caches.match('./index.html'))),
   );
 });
