@@ -198,9 +198,16 @@
       return;
     }
     if (!dockEl.firstChild)
-      dockEl.innerHTML = `<div class="xd-in"><div class="xd-rank"><small>RANG</small><b id="xd-name"></b></div><div class="xd-track"><i class="xd-fill" id="xd-fill"></i><i class="xd-spark" id="xd-spark"></i><span class="xd-txt" id="xd-txt"></span></div><div class="xd-next" id="xd-next"></div></div>`;
+      dockEl.innerHTML = `<div class="xd-in"><div class="xd-flame" id="xd-flame"></div><div class="xd-rank"><small>RANG</small><b id="xd-name"></b></div><div class="xd-track"><i class="xd-fill" id="xd-fill"></i><i class="xd-spark" id="xd-spark"></i><span class="xd-txt" id="xd-txt"></span></div><div class="xd-next" id="xd-next"></div></div>`;
     dockEl.classList.add('on');
     document.body.classList.add('hasdock');
+    const fl = $('#xd-flame');
+    if (fl && st.streak) {
+      const today = dk(Date.now());
+      fl.textContent = '🔥' + streakCur();
+      fl.className = 'xd-flame' + (hasDay(today) ? ' lit' : '');
+      fl.title = hasDay(today) ? 'Défis du jour accomplis' : 'Défis du jour à accomplir';
+    }
     const fill = $('#xd-fill'),
       name = $('#xd-name'),
       txt = $('#xd-txt'),
@@ -249,7 +256,7 @@
   }
   function banner(top, big) {
     const b = document.createElement('div');
-    b.className = 'rankbanner';
+    b.className = 'rankbanner' + (String(big).length > 22 ? ' long' : '');
     b.innerHTML = `<small>${top}</small><b>${esc(big)}</b>`;
     document.body.appendChild(b);
     setTimeout(() => b.remove(), 3200);
@@ -491,6 +498,9 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
     st.frags = st.frags || [];
     st.bosses = st.bosses || {};
     st.stats = st.stats || { solved: 0, bestCombo: 0 };
+    qinit();
+    dailyRoll();
+    checkAch();
     save(true);
     startMusic();
     if (!st.prologue) renderPrologue(0);
@@ -525,7 +535,7 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
     const x = xpInfo();
     return `<header class="hud">
 ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.label)}</span></button>` : `<span style="font-size:1.4rem;color:var(--gold)" aria-hidden="true">✦</span>`}
-<div class="who"><div class="name">${esc(st.name)}</div><div class="rank">${esc(x.name)} · ${st.xp} XP</div></div>
+<div class="who"><div class="name">${esc(st.name)}${st.title ? ` <small class="wtitle">${esc(st.title)}</small>` : ''}</div><div class="rank">${esc(x.name)} · ${st.xp} XP</div></div>
 <button class="icon-btn" id="cdx" aria-label="Le Codex" title="Le Codex">📖</button>
 <button class="icon-btn" id="snd" aria-label="Son" title="Son">${CU.settings.sound ? '🔊' : '🔇'}</button>
 <button class="icon-btn" id="mnu" aria-label="Menu" title="Menu">☰</button>
@@ -559,6 +569,8 @@ ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.
     return best;
   }
   function renderWorld() {
+    dailyRoll();
+    checkAch();
     view = { kind: 'world' }; mood('explore');
     setHue('#d9ab5b');
     const regs = CU.REGIONS.map((g) => ({ ...g, p: regionP(g.id), open: regionOpen(g.id), boss: !!st.bosses[g.id] }));
@@ -569,6 +581,7 @@ ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.
     app.innerHTML =
       hud() +
       `<div class="wrap">
+${questPanel()}
 <div class="world-head"><h1>Les Terres Brisées</h1><div class="ital">${tp === 0 ? 'Tout est brume. Choisis où commencer : chaque région se rallume à mesure que tu en comprends les Lois.' : tp < 0.5 ? 'La brume recule là où tu passes. Les Informes, eux, se font plus nerveux.' : 'Le monde se souvient de lui-même. Le Sanctuaire t’attend.'}</div></div>
 ${
   sug
@@ -947,10 +960,12 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       mode: replay && mode === 'normal' ? 'replay' : mode,
       rid: s.region,
       xp0: st.xp,
+      pure: true,
       need: mode === 'revive' ? 3 : need(id),
       got: mode === 'normal' && !replay ? ss.prog || 0 : 0,
       combo: 0,
     };
+    T0.pure = T0.got === 0;
     view = T0;
     mood('focus');
     history.pushState(null, '', '#/t/' + id);
@@ -975,8 +990,16 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
     c.textContent = v.combo >= 2 ? '×' + v.combo : '';
     c.classList.toggle('on', v.combo >= 2);
   }
+  // une erreur : la série d'affilée du monde retombe, et la question suivante devient un « redressement »
+  function koEvent(v) {
+    const sid = v.kind === 'trial' ? v.id : v.kind === 'arena' ? v.cur && v.cur.id : v.kind === 'recall' ? v.item && v.item.id : v.ex && v.ex._sid;
+    if (sid) quest('ko', { rid: S(sid).region });
+  }
   function nextQuestion() {
     const v = view;
+    v.prevKo = !!(v.ex && (v.tries > 0 || v.gaveUp));
+    v.grimKo = false;
+    v.gaveUp = false;
     let ex;
     if (v.kind === 'boss') {
       const id = R.pick(v.pool);
@@ -1023,6 +1046,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
         CU.sfx.click();
         const sid = v.kind === 'recall' ? v.item.id : v.id,
           ti = v.kind === 'recall' ? v.item.ti : v.ti;
+        if (v.prevKo && !v.answered) v.grimKo = true;
         if (v.kind === 'recall' && !v.answered && !v.peek) {
           v.peek = true;
           toast('Grimoire ouvert : ce souvenir comptera comme à revoir.');
@@ -1041,6 +1065,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     CU.sfx.click();
     if (!v.hinted) {
       v.hinted = true;
+      v.pure = false;
       v.combo = 0;
       paintShards();
       $('#extra').insertAdjacentHTML('beforeend', `<div class="hintbox">${H(v.ex.hint)}</div>`);
@@ -1050,6 +1075,10 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
   function reveal(gaveUp) {
     const v = view;
     v.answered = true;
+    if (gaveUp) {
+      v.gaveUp = true;
+      koEvent(v);
+    }
     if (v.ui.reveal) v.ui.reveal();
     $('#extra').insertAdjacentHTML('beforeend', `<div class="sol">${H(v.ex.sol)}</div>`);
     if (gaveUp) {
@@ -1112,6 +1141,8 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     void card.offsetWidth;
     card.classList.add('bad');
     if (v.ui.wrong) v.ui.wrong(ans);
+    v.pure = false;
+    koEvent(v);
     fb.className = 'feedback ' + (res.close ? 'close' : 'bad');
     fb.innerHTML = H(res.msg || 'Ce n’est pas ça. ' + (v.tries < 2 ? 'Encore un essai.' : ''));
     paintShards();
@@ -1124,6 +1155,23 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
   function success() {
     const v = view,
       first = v.tries === 0 && !v.hinted && !v.peek;
+    // ce que les défis et exploits ont besoin de savoir, mesuré AVANT la mise à jour
+    const sid = v.kind === 'trial' ? v.id : v.kind === 'arena' ? v.cur.id : v.kind === 'recall' ? v.item.id : v.ex._sid;
+    const sk0 = st.skills[sid] || {};
+    const qe = {
+      kind: v.kind,
+      first,
+      mode: v.mode,
+      sid,
+      rid: S(sid).region,
+      type: v.ex.type,
+      code: !!v.ex.code,
+      afterKo: !!v.prevKo,
+      grim: !!v.grimKo,
+      stale: tierOf(sid) >= 1 && (sk0.last || 0) > 0 && Date.now() - sk0.last > 7 * DAY,
+      fresh: !sk0.done,
+      wasDue: v.kind === 'recall' && memOf(v.item.id, v.item.ti).due <= Date.now(),
+    };
     v.answered = true;
     const card = $('#card');
     card.classList.add('good');
@@ -1162,7 +1210,8 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     fb.className = 'feedback good';
     fb.textContent = (COMBO[v.combo] || (first ? R.pick(GOOD) : v.kind === 'recall' ? 'Juste — mais avec le Grimoire ouvert : ce souvenir reviendra plus tôt.' : 'Juste — mais cette fois, sans éclat de sceau (il faut réussir du premier coup, sans indice).')) + '';
     paintShards();
-    if (rankIdx(st.xp) > before) setTimeout(() => toast('✦ Nouveau rang : <b>' + rankName(st.xp) + '</b>'), 700);
+    if (first && v.kind === 'trial' && v.got === v.need - 1) fb.textContent += ' Plus qu’un éclat avant le sceau !';
+    quest('ok', qe);
     save();
     if (v.kind === 'boss') return bossHit(first);
     if (v.kind === 'arena') return arenaHit();
@@ -1220,6 +1269,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
       sub = 'Revenir sur ses pas, c’est aussi avancer.';
     }
     s.last = Date.now();
+    quest('tier', { mode: v.mode, id: v.id, ti: v.ti, pure: v.mode === 'normal' && v.pure });
     const frs = newFragments();
     if (rankIdx(st.xp) > beforeRank) gains.push(`✦ Nouveau rang : <b>${esc(rankName(st.xp))}</b>`);
     save(true);
@@ -1311,6 +1361,7 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     sparks(x, y, '#ff6b7d', crit ? 34 : 18);
     if (crit) floatText(x + 30, y, 'CRITIQUE ×2');
     $('#taunt').textContent = crit ? 'Coup critique ! Le gardien hurle.' : R.pick(HITS);
+    if (v.hp === 1) $('#taunt').textContent = 'Il vacille : encore un coup et il tombe !';
     paintBoss();
     $('#extra').insertAdjacentHTML('beforeend', `<details class="sol" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mute)">Voir l’explication</summary>${H(v.ex.sol)}</details>`);
     if (v.hp <= 0) {
@@ -1346,6 +1397,7 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     const key = v.final ? 'final' : v.rid;
     const firstWin = !st.bosses[key];
     st.bosses[key] = true;
+    quest('boss', { rid: key, flawless: v.lives === 3 });
     const gain = firstWin ? (v.final ? 1000 : 300) : 60;
     st.xp += gain;
     save(true);
@@ -1505,6 +1557,7 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
   function arenaHit() {
     const v = view;
     stopClock();
+    if (st.arena && st.arena.best && v.score === st.arena.best) toast('Record égalé — encore un pour le battre !');
     paintArena();
     // on enchaîne vite : c'est le rythme qui fait l'automatisme
     setTimeout(() => {
@@ -1537,6 +1590,7 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     st.arena.best = Math.max(st.arena.best, v.score);
     st.arena.runs++;
     if (rec && v.score >= 3) st.xp += 40;
+    quest('arena', { score: v.score });
     save(true);
     return rec;
   }
@@ -1566,6 +1620,299 @@ ${xpInline(v.xp0)}
       renderWorld();
     };
     setTimeout(() => $('#ov-again', ov).focus(), 300);
+  }
+
+  /* ================= défis du jour, série de jours, exploits =================
+     Principe : on ne récompense que des comportements qui servent l'apprentissage
+     (réussir du premier coup, se corriger après une erreur, revoir à temps, varier
+     les sujets), jamais le simple volume ni la simple présence. */
+  const pad2 = (n) => String(n).padStart(2, '0');
+  // le jour change à 4 h du matin : une partie à minuit compte pour la veille
+  const dk = (ts) => {
+    const d = new Date(ts - 4 * 3600e3);
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  };
+  const dshift = (key, n) => {
+    const [y, m, d] = key.split('-').map(Number);
+    const t = new Date(y, m - 1, d + n, 12);
+    return t.getFullYear() + '-' + pad2(t.getMonth() + 1) + '-' + pad2(t.getDate());
+  };
+  const ddiff = (a, b) => {
+    const p = (k) => {
+      const [y, m, d] = k.split('-').map(Number);
+      return Date.UTC(y, m - 1, d);
+    };
+    return Math.round((p(b) - p(a)) / DAY);
+  };
+  function qinit() {
+    st.streak = st.streak || { days: [], rep: [], best: 0 };
+    st.cnt = st.cnt || {};
+    st.ach = st.ach || {};
+  }
+  const hasDay = (k) => st.streak.days.includes(k);
+  // longueur de la série qui se termine le jour k
+  function runTo(k) {
+    let n = 0;
+    while (hasDay(k)) {
+      n++;
+      k = dshift(k, -1);
+    }
+    return n;
+  }
+  function streakCur() {
+    if (!st || !st.streak) return 0;
+    const t = dk(Date.now());
+    return hasDay(t) ? runTo(t) : runTo(dshift(t, -1));
+  }
+  function addDay(k) {
+    if (!hasDay(k)) st.streak.days.push(k);
+    st.streak.days.sort();
+    if (st.streak.days.length > 400) st.streak.days = st.streak.days.slice(-400);
+    st.streak.best = Math.max(st.streak.best || 0, streakCur());
+  }
+  // une série d'au moins 3 jours, interrompue hier seulement, et pas de rachat depuis 7 jours
+  function repairable(t) {
+    const y = dshift(t, -1),
+      y2 = dshift(t, -2);
+    return !hasDay(y) && hasDay(y2) && runTo(y2) >= 3 && !(st.streak.rep || []).some((k) => ddiff(k, t) < 7);
+  }
+  // hasard reproductible : mêmes défis pour un même jour, sur tous les appareils
+  function seeded(str) {
+    let h = 1779033703;
+    for (const c of str) h = Math.imul(h ^ c.charCodeAt(0), 3432918353), (h = (h << 13) | (h >>> 19));
+    return () => {
+      h = Math.imul(h ^ (h >>> 16), 2246822507);
+      h = Math.imul(h ^ (h >>> 13), 3266489909);
+      return ((h ^= h >>> 16) >>> 0) / 4294967296;
+    };
+  }
+  const openRegions = () => CU.REGIONS.filter((g) => regionOpen(g.id)).length;
+  const PROOFS = ['v7', 'f6', 'q6'];
+  // catalogue des défis du jour, en trois familles : mémoire, progression, variété
+  const CH = {
+    revenant: { fam: 'M', goal: 1, txt: () => 'Réussis du premier coup une Loi que tu n’as pas travaillée depuis 7 jours', ok: (e) => e.first && e.stale, can: () => CU.ORDER.some((id) => tierOf(id) >= 1 && (sk(id).last || 0) < Date.now() - 7 * DAY) },
+    raviver: { fam: 'M', goal: 2, txt: (g) => `Ravive ${g} souvenirs à l’Autel ou au Cloître (du premier coup)`, ok: (e) => e.kind === 'recall' && e.first && e.wasDue, can: () => dueN('all') >= 2 },
+    autel: { fam: 'M', goal: 1, txt: () => 'Mène une séance d’Autel ou du Cloître jusqu’au bout', on: 'recall', test: (e) => e.win, can: () => CU.REGIONS.some((g) => recallOpen(g.id)) },
+    eclats: { fam: 'P', goal: 4, txt: (g) => `Gagne ${g} éclats de sceau`, ok: (e) => e.kind === 'trial' && e.mode === 'normal' && e.first, can: () => !!suggestion() },
+    sceau: { fam: 'P', goal: 1, txt: () => 'Brise un nouveau sceau', on: 'tier', test: (e) => e.mode === 'normal', can: () => !!suggestion() },
+    preuve: { fam: 'P', goal: 1, txt: () => 'Réussis une démonstration du premier coup', ok: (e) => e.first && e.type === 'order' && !e.code, can: () => PROOFS.some((id) => tierOf(id) >= 1) },
+    nouveau: { fam: 'P', goal: 1, txt: () => 'Réussis une Loi que tu n’as encore jamais travaillée', ok: (e) => e.first && e.fresh, can: () => CU.ORDER.some((id) => available(id) && !(st.skills[id] && st.skills[id].done)) },
+    deux: { fam: 'V', goal: 2, txt: (g) => `Dans ${g} mondes différents, réussis 2 défis d’affilée du premier coup`, count: (d) => Object.keys(d.two).length, can: () => openRegions() >= 2 },
+    redresseur: { fam: 'V', goal: 2, txt: (g) => `Après une erreur, réussis le défi suivant du premier coup (${g} fois)`, ok: (e) => e.first && e.afterKo, can: () => true },
+    mondes: { fam: 'V', goal: 3, txt: (g) => `Réussis un défi dans ${g} mondes différents`, count: (d) => Object.keys(d.w).length, can: () => openRegions() >= 3 },
+  };
+  function genCh(day) {
+    const rnd = seeded(day + '|' + st.name),
+      pick = (a) => a[Math.floor(rnd() * a.length)];
+    const ok = Object.keys(CH).filter((t) => CH[t].can());
+    const out = [];
+    for (const fam of ['M', 'P', 'V']) {
+      const c = ok.filter((t) => CH[t].fam === fam && !out.includes(t));
+      if (c.length) out.push(pick(c));
+    }
+    while (out.length < 3) {
+      const c = ok.filter((t) => !out.includes(t));
+      if (!c.length) break;
+      out.push(pick(c));
+    }
+    const rep = repairable(day) ? ok.filter((t) => !out.includes(t)).sort(() => rnd() - 0.5).slice(0, 2) : [];
+    return out.map((t) => ({ t, goal: CH[t].goal, prog: 0, done: false })).concat(rep.map((t) => ({ t, goal: CH[t].goal, prog: 0, done: false, rep: true })));
+  }
+  function dailyRoll() {
+    if (!st) return;
+    qinit();
+    const t = dk(Date.now());
+    if (st.daily && st.daily.day === t) return;
+    const last = st.streak.days[st.streak.days.length - 1];
+    st.daily = { day: t, ch: genCh(t), w: {}, two: {}, rc: {}, done: false, repDone: false, lost: false, absent: last ? ddiff(last, t) : 0 };
+  }
+  const chTxt = (c) => CH[c.t].txt(c.goal);
+  // file d'annonces : une à la fois
+  const bannerQ = [];
+  let bannerBusy = false;
+  function announce(top, big) {
+    bannerQ.push([top, big]);
+    if (bannerBusy) return;
+    const next = () => {
+      const b = bannerQ.shift();
+      if (!b) return (bannerBusy = false);
+      bannerBusy = true;
+      banner(b[0], b[1]);
+      setTimeout(next, 2600);
+    };
+    next();
+  }
+  // tout ce qui se passe en jeu passe par ici
+  function quest(type, e = {}) {
+    if (!st) return;
+    dailyRoll();
+    const d = st.daily,
+      c = st.cnt;
+    if (type === 'ok') {
+      d.w[e.rid] = 1;
+      d.rc[e.rid] = e.first ? (d.rc[e.rid] || 0) + 1 : 0;
+      if (d.rc[e.rid] >= 2) d.two[e.rid] = 1;
+      if (e.first && e.afterKo) c.redress = (c.redress || 0) + 1;
+      if (e.first && e.grim) c.grim = (c.grim || 0) + 1;
+      if (e.first && e.type === 'order' && !e.code) c.proofs = (c.proofs || 0) + 1;
+      c.maxWorlds = Math.max(c.maxWorlds || 0, Object.keys(d.w).length);
+      c.maxTwo = Math.max(c.maxTwo || 0, Object.keys(d.two).length);
+    }
+    if (type === 'ko' && e.rid) d.rc[e.rid] = 0;
+    if (type === 'recall') {
+      if (!e.win) d.lost = true;
+      else {
+        if (d.lost) c.phoenix = 1;
+        if (e.perfect) c.perfectRecall = 1;
+      }
+    }
+    if (type === 'boss' && e.flawless) c.flawless = 1;
+    if (type === 'tier' && e.pure) c.pure = 1;
+    for (const ch of d.ch) {
+      if (ch.done) continue;
+      const def = CH[ch.t];
+      if (def.count) ch.prog = Math.min(ch.goal, def.count(d));
+      else if (type === 'ok' && def.ok && def.ok(e)) ch.prog++;
+      else if (def.on === type && def.test(e)) ch.prog++;
+      if (ch.prog >= ch.goal) {
+        ch.done = true;
+        st.xp += 15;
+        announce(ch.rep ? '◈ Rattrapage accompli · +15 XP' : '✦ Défi accompli · +15 XP', chTxt(ch));
+      }
+    }
+    const base = d.ch.filter((x) => !x.rep),
+      extra = d.ch.filter((x) => x.rep);
+    if (!d.done && base.length && base.every((x) => x.done)) {
+      d.done = true;
+      addDay(d.day);
+      c.days = (c.days || 0) + 1;
+      if (d.absent >= 14) c.retour = 1;
+      st.xp += 30;
+      announce('🔥 Défis du jour accomplis · +30 XP', streakCur() > 1 ? `Série : ${streakCur()} jours` : 'Une série commence');
+    }
+    if (d.done && extra.length && !d.repDone && extra.every((x) => x.done)) {
+      d.repDone = true;
+      addDay(dshift(d.day, -1));
+      st.streak.rep = (st.streak.rep || []).concat(d.day).slice(-20);
+      c.rachat = 1;
+      st.xp += 20;
+      announce('🔥 La braise est rallumée · +20 XP', `Série : ${streakCur()} jours`);
+    }
+    checkAch();
+  }
+
+  /* ---------- exploits : nombreux, discrets, jamais au centre ---------- */
+  const maxBox = () => Math.max(0, ...Object.values(st.mem || {}).map((m) => m.b || 0));
+  const boxN = (b) => Object.values(st.mem || {}).filter((m) => (m.b || 0) >= b).length;
+  const goldN = () => CU.ORDER.filter((id) => tierOf(id) >= 3).length;
+  const regionsWon = () => CU.REGIONS.filter((g) => recallWins(g.id) >= 1).length;
+  const ACH = [
+    // constance
+    { id: 's3', fam: 'Constance', name: 'Première braise', desc: 'Une série de 3 jours', goal: 3, xp: 40, p: () => st.streak.best },
+    { id: 's7', fam: 'Constance', name: 'Semaine de feu', desc: 'Une série de 7 jours', goal: 7, xp: 80, title: 'Gardien de la Flamme', p: () => st.streak.best },
+    { id: 's10', fam: 'Constance', name: 'Dix veilles', desc: 'Une série de 10 jours', goal: 10, xp: 120, p: () => st.streak.best },
+    { id: 's30', fam: 'Constance', name: 'Une lune entière', desc: 'Une série de 30 jours', goal: 30, xp: 300, title: 'Veilleur', p: () => st.streak.best },
+    { id: 's100', fam: 'Constance', name: 'Cent nuits', desc: 'Une série de 100 jours', goal: 100, xp: 800, title: 'Flamme d’Ysembre', p: () => st.streak.best },
+    { id: 'd7', fam: 'Constance', name: 'Fidèle aux défis', desc: 'Accomplir les défis du jour 7 jours (pas forcément de suite)', goal: 7, xp: 60, p: () => st.cnt.days || 0 },
+    { id: 'd30', fam: 'Constance', name: 'Pèlerin', desc: 'Accomplir les défis du jour 30 jours', goal: 30, xp: 200, title: 'Pèlerin', p: () => st.cnt.days || 0 },
+    // mémoire
+    { id: 'm7', fam: 'Mémoire', name: 'Souvenir tenace', desc: 'Repousser une révision à 7 jours', goal: 2, xp: 30, p: maxBox, unit: 'boîte' },
+    { id: 'm15', fam: 'Mémoire', name: 'Souvenir ancré', desc: 'Repousser une révision à 15 jours', goal: 3, xp: 50, p: maxBox, unit: 'boîte' },
+    { id: 'm30', fam: 'Mémoire', name: 'Souvenir de 30 jours', desc: 'Repousser une révision à 30 jours : la preuve d’un vrai souvenir', goal: 4, xp: 120, p: maxBox, unit: 'boîte' },
+    { id: 'm60', fam: 'Mémoire', name: 'Mémoire de pierre', desc: 'Repousser une révision à 60 jours', goal: 5, xp: 200, title: 'Mémoire vive', p: maxBox, unit: 'boîte' },
+    { id: 'm30x5', fam: 'Mémoire', name: 'Cinq souvenirs gravés dans la pierre', desc: 'Cinq paliers repoussés à 30 jours ou plus', goal: 5, xp: 200, p: () => boxN(4) },
+    { id: 'a1', fam: 'Mémoire', name: 'Premier souvenir gravé', desc: 'Mener une séance d’Autel jusqu’au bout', goal: 1, xp: 30, p: () => Object.values(st.recall || {}).reduce((s, r) => s + (r.wins || 0), 0) },
+    { id: 'aall', fam: 'Mémoire', name: 'Les cinq autels', desc: 'Graver un souvenir dans l’autel de chaque région', goal: 5, xp: 150, p: regionsWon },
+    { id: 'clo', fam: 'Mémoire', name: 'Le Cloître', desc: 'Graver un souvenir au Cloître de la Mémoire', goal: 1, xp: 60, p: () => recallWins('all') },
+    { id: 'aperf', fam: 'Mémoire', name: 'Mémoire sans faille', desc: 'Une séance d’Autel sans aucune erreur', goal: 1, xp: 80, p: () => st.cnt.perfectRecall || 0 },
+    // erreurs fécondes
+    { id: 'r5', fam: 'Erreurs fécondes', name: 'Le Redresseur', desc: 'Après une erreur, réussir le défi suivant du premier coup — 5 fois', goal: 5, xp: 40, p: () => st.cnt.redress || 0 },
+    { id: 'r25', fam: 'Erreurs fécondes', name: 'Le Phénix', desc: 'Se redresser après une erreur 25 fois', goal: 25, xp: 120, title: 'Phénix', p: () => st.cnt.redress || 0 },
+    { id: 'g3', fam: 'Erreurs fécondes', name: 'Lecteur avisé', desc: 'Après une erreur, ouvrir le Grimoire puis réussir du premier coup — 3 fois', goal: 3, xp: 50, p: () => st.cnt.grim || 0 },
+    // variété
+    { id: 'w3', fam: 'Variété', name: 'Trois horizons', desc: 'Réussir dans 3 mondes le même jour', goal: 3, xp: 40, p: () => st.cnt.maxWorlds || 0 },
+    { id: 'w5', fam: 'Variété', name: 'Les cinq terres', desc: 'Réussir dans les 5 mondes le même jour', goal: 5, xp: 120, p: () => st.cnt.maxWorlds || 0 },
+    { id: 'tour', fam: 'Variété', name: 'Le Grand Tour', desc: 'Dans les 5 mondes, 2 réussites d’affilée du premier coup, le même jour', goal: 5, xp: 200, title: 'Arpenteur des Terres', p: () => st.cnt.maxTwo || 0 },
+    // maîtrise
+    { id: 'x1', fam: 'Maîtrise', name: 'Première Loi d’or', desc: 'Une Loi au rang Maître', goal: 1, xp: 50, p: goldN },
+    { id: 'x10', fam: 'Maîtrise', name: 'Dix Lois d’or', desc: 'Dix Lois au rang Maître', goal: 10, xp: 200, p: goldN },
+    { id: 'xr', fam: 'Maîtrise', name: 'Une terre restaurée', desc: 'Toutes les Lois d’une région au rang Maître', goal: 1, xp: 250, p: () => CU.REGIONS.filter((g) => regionSkills(g.id).every((id) => tierOf(id) >= 3)).length },
+    { id: 'b1', fam: 'Maîtrise', name: 'Premier gardien', desc: 'Vaincre un gardien', goal: 1, xp: 60, p: () => CU.REGIONS.filter((g) => st.bosses[g.id]).length },
+    { id: 'b3', fam: 'Maîtrise', name: 'Trois gardiens', desc: 'Vaincre trois gardiens', goal: 3, xp: 150, p: () => CU.REGIONS.filter((g) => st.bosses[g.id]).length },
+    { id: 'roi', fam: 'Maîtrise', name: 'Le Roi Sans Loi', desc: 'Vaincre le Roi Sans Loi', goal: 1, xp: 400, title: 'Libérateur d’Aldmor', p: () => (st.bosses.final ? 1 : 0) },
+    // démonstration
+    { id: 'p1', fam: 'Démonstration', name: 'Première preuve', desc: 'Réussir une démonstration du premier coup', goal: 1, xp: 40, p: () => st.cnt.proofs || 0 },
+    { id: 'p10', fam: 'Démonstration', name: 'Dix preuves', desc: 'Réussir dix démonstrations du premier coup', goal: 10, xp: 150, title: 'Logicien', p: () => st.cnt.proofs || 0 },
+    { id: 'pall', fam: 'Démonstration', name: 'Le Tribunal suprême', desc: 'Les trois Lois de démonstration au rang Maître', goal: 3, xp: 250, p: () => PROOFS.filter((id) => tierOf(id) >= 3).length },
+    // arène
+    { id: 'ar10', fam: 'Arène', name: 'Réflexes', desc: 'Un score de 10 dans l’Arène', goal: 10, xp: 50, p: () => (st.arena && st.arena.best) || 0 },
+    { id: 'ar20', fam: 'Arène', name: 'Éclair', desc: 'Un score de 20 dans l’Arène', goal: 20, xp: 120, p: () => (st.arena && st.arena.best) || 0 },
+    { id: 'ar30', fam: 'Arène', name: 'Foudre', desc: 'Un score de 30 dans l’Arène', goal: 30, xp: 250, title: 'Foudre', p: () => (st.arena && st.arena.best) || 0 },
+    // secrets
+    { id: 'xcombo', fam: 'Secrets', secret: true, name: 'Sans filet', desc: '10 réussites du premier coup d’affilée', goal: 10, xp: 100, p: () => st.stats.bestCombo || 0 },
+    { id: 'xpure', fam: 'Secrets', secret: true, name: 'Sceau pur', desc: 'Briser un sceau sans la moindre erreur ni le moindre indice', goal: 1, xp: 60, p: () => st.cnt.pure || 0 },
+    { id: 'xboss', fam: 'Secrets', secret: true, name: 'Intouchable', desc: 'Vaincre un gardien sans perdre une seule lueur', goal: 1, xp: 120, title: 'Intouchable', p: () => st.cnt.flawless || 0 },
+    { id: 'xphoe', fam: 'Secrets', secret: true, name: 'Renaissance', desc: 'Perdre une séance d’Autel, puis en réussir une le même jour', goal: 1, xp: 60, p: () => st.cnt.phoenix || 0 },
+    { id: 'xback', fam: 'Secrets', secret: true, name: 'Le Retour', desc: 'Revenir après deux semaines d’absence et accomplir les défis du jour', goal: 1, xp: 80, p: () => st.cnt.retour || 0 },
+    { id: 'xrach', fam: 'Secrets', secret: true, name: 'La braise rallumée', desc: 'Racheter une série interrompue', goal: 1, xp: 50, p: () => st.cnt.rachat || 0 },
+  ];
+  function checkAch() {
+    if (!st) return;
+    qinit();
+    // première fois : on reconnaît la progression déjà faite, sans fanfare
+    const silent = !st.cnt.achInit;
+    let quiet = 0;
+    for (const a of ACH) {
+      if (st.ach[a.id]) continue;
+      if (a.p() >= a.goal) {
+        st.ach[a.id] = Date.now();
+        st.xp += a.xp;
+        if (silent) quiet++;
+        else announce('🏆 Exploit · +' + a.xp + ' XP', a.name + (a.title ? ' — titre « ' + a.title + ' »' : ''));
+      }
+    }
+    if (silent) {
+      st.cnt.achInit = 1;
+      if (quiet) setTimeout(() => toast(`🏆 ${quiet} exploit${quiet > 1 ? 's' : ''} reconnu${quiet > 1 ? 's' : ''} d’après ta progression : vois le Codex.`), 1200);
+    }
+  }
+  // les exploits les plus proches : le « presque » qui donne envie de continuer
+  function nearAch(n = 3) {
+    return ACH.filter((a) => !a.secret && !st.ach[a.id])
+      .map((a) => ({ a, f: Math.min(1, a.p() / a.goal) }))
+      .filter((x) => x.f > 0 && x.f < 1)
+      .sort((x, y) => y.f - x.f)
+      .slice(0, n);
+  }
+  const titles = () => ACH.filter((a) => a.title && st.ach[a.id]).map((a) => a.title);
+  const MILES = [3, 7, 10, 30, 100];
+  // le panneau des défis, en tête de la carte du monde
+  function questPanel() {
+    dailyRoll();
+    checkAch();
+    const d = st.daily,
+      t = d.day,
+      cur = streakCur(),
+      y = dshift(t, -1);
+    const base = d.ch.filter((x) => !x.rep),
+      extra = d.ch.filter((x) => x.rep);
+    const next = MILES.find((m) => !st.ach['s' + m]);
+    const nextA = next && ACH.find((a) => a.id === 's' + next);
+    const lastDay = st.streak.days[st.streak.days.length - 1];
+    let note = '';
+    if (extra.length && !d.repDone)
+      note = `<div class="qnote warm">🔥 Ta série de <b>${runTo(dshift(t, -2))} jours</b> vacille : hier, la braise est restée froide. Accomplis les défis du jour <b>et</b> les deux défis de rattrapage avant demain 4 h pour la rallumer.</div>`;
+    else if (!d.done && lastDay && lastDay < y && runTo(lastDay) >= 2)
+      note = `<div class="qnote">La braise s’est éteinte : ta série de ${runTo(lastDay)} jours s’arrête là (record : ${st.streak.best}). Une nouvelle commence aujourd’hui.</div>`;
+    const row = (c) => `<li class="${c.done ? 'done' : ''}"><span class="qk">${c.done ? '✓' : c.rep ? '◈' : '◇'}</span><span class="qt">${esc(chTxt(c))}</span><span class="qp"><i style="width:${(100 * Math.min(c.prog, c.goal)) / c.goal}%"></i></span><span class="qn">${Math.min(c.prog, c.goal)}/${c.goal}</span></li>`;
+    const near = nearAch(1)[0];
+    return `<section class="quests ${d.done ? 'alldone' : ''}">
+<div class="qhead"><div><small>DÉFIS DU JOUR</small><b>${d.done ? 'Accomplis — reviens demain' : base.filter((x) => x.done).length + ' sur ' + base.length}</b></div><div class="qflame ${hasDay(t) ? 'lit' : ''}"><span>🔥 ${cur}</span><small>${cur > 1 ? 'jours' : 'jour'} · record ${st.streak.best || 0}</small></div></div>
+${note}
+<ul class="qlist">${base.map(row).join('')}</ul>
+${extra.length && !d.repDone ? `<div class="qsub">Rattrapage</div><ul class="qlist">${extra.map(row).join('')}</ul>` : ''}
+<div class="qfoot">${nextA ? `<span>Prochain palier : <b>${next} jours</b> (+${nextA.xp} XP)</span>` : ''}${near ? `<span>Presque : <b>${esc(near.a.name)}</b></span>` : ''}</div>
+</section>`;
   }
 
   /* ================= autels du souvenir (révision espacée et entrelacée) ================= */
@@ -1706,6 +2053,7 @@ ${
       if (firstWin && v.sc !== 'all' && allAdept(v.sc) && !st.bosses[v.sc]) gains.push(`⚔ <b>${esc(CU.region(v.sc).boss.name)}</b> s’éveille !`);
       if (firstWin && v.sc === 'all' && CU.FINAL.needs.every((x) => st.bosses[x]) && !st.bosses.final) gains.push('⚔ <b>Le Sanctuaire du Codex</b> s’ouvre !');
     }
+    quest('recall', { sc: v.sc, win, perfect: win && v.res.every((x) => x.ok) });
     gains.unshift(`<b>+${st.xp - v.xp0} XP</b> en tout · ${v.score} souvenir${v.score > 1 ? 's' : ''} retrouvé${v.score > 1 ? 's' : ''} du premier coup`);
     save(true);
     if (win) {
@@ -1775,7 +2123,22 @@ ${xpInline(v.xp0)}
             })
             .join('')}</div>`,
       ).join('');
-    else
+    else if (tab === 'exp') {
+      checkAch();
+      const fams = [...new Set(ACH.map((a) => a.fam))];
+      const card = (a) => {
+        const got = st.ach[a.id];
+        if (!got && a.secret) return `<div class="ach secret"><b>??? </b><small>Exploit secret — il se révélera de lui-même.</small></div>`;
+        const p = Math.min(a.goal, a.p());
+        return `<div class="ach ${got ? 'got' : ''}"><div class="ach-h"><b>${got ? '🏆 ' : ''}${esc(a.name)}</b><span>+${a.xp} XP${a.title ? ' · titre' : ''}</span></div><small>${esc(a.desc)}${a.title ? ` — titre « ${esc(a.title)} »` : ''}</small>${got ? `<small class="ach-d">Obtenu le ${new Date(got).toLocaleDateString('fr-FR')}</small>` : a.goal > 1 && !a.unit ? `<div class="ach-bar"><i style="width:${(100 * p) / a.goal}%"></i></div><small class="ach-d">${p} / ${a.goal}</small>` : ''}</div>`;
+      };
+      const near = nearAch(3);
+      const tl = titles();
+      body =
+        `<div class="achtitles"><small>TITRE PORTÉ</small><div class="chips"><button class="chip ${!st.title ? 'on' : ''}" data-title="">Aucun</button>${tl.map((t) => `<button class="chip ${st.title === t ? 'on' : ''}" data-title="${esc(t)}">${esc(t)}</button>`).join('')}</div>${tl.length ? '' : '<small class="note">Certains exploits donnent un titre, affiché sous ton nom.</small>'}</div>` +
+        (near.length ? `<h2 class="achfam">PRESQUE</h2><div class="achs">${near.map((x) => card(x.a)).join('')}</div>` : '') +
+        fams.map((f) => `<h2 class="achfam">${esc(f.toUpperCase())}</h2><div class="achs">${ACH.filter((a) => a.fam === f).map(card).join('')}</div>`).join('');
+    } else
       body =
         `<div class="pages"><div class="frag"><h4>PROLOGUE</h4>${CU.PROLOGUE.map((p) => `<p style="margin:0 0 10px">${p}</p>`).join('')}</div>` +
         CU.FRAGMENTS.map((f) => (st.frags.includes(f.id) ? `<div class="frag"><h4>${esc(f.title.toUpperCase())}</h4>${f.text}</div>` : `<div class="page torn">Fragment scellé — se révèle au ${f.at}<sup>e</sup> sceau brisé (${tt}/${f.at}).</div>`)).join('') +
@@ -1787,10 +2150,19 @@ ${xpInline(v.xp0)}
     app.innerHTML =
       hud({ label: 'Carte', hash: '#/world' }) +
       `<div class="wrap"><div class="world-head"><h1>Le Codex</h1><div class="ital">${tt} sceaux brisés sur ${3 * CU.ORDER.length}. Chaque Loi comprise s’y réécrit.</div></div>
-${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pour ouvrir son Grimoire : cours, méthode pas à pas et exemples résolus, pour chaque rang.</p>' : ''}<div class="tabs"><button class="${tab === 'lois' ? 'on' : ''}" data-tab="lois">Les Lois</button><button class="${tab === 'frag' ? 'on' : ''}" data-tab="frag">L’histoire</button></div>${body}</div>`;
+${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pour ouvrir son Grimoire : cours, méthode pas à pas et exemples résolus, pour chaque rang.</p>' : ''}<div class="tabs"><button class="${tab === 'lois' ? 'on' : ''}" data-tab="lois">Les Lois</button><button class="${tab === 'frag' ? 'on' : ''}" data-tab="frag">L’histoire</button><button class="${tab === 'exp' ? 'on' : ''}" data-tab="exp">Exploits</button></div>${body}</div>`;
     wireHud({ label: 'Carte', hash: '#/world' });
     $$('[data-tab]').forEach((b) => (b.onclick = () => (CU.sfx.click(), renderCodex(b.dataset.tab))));
     $$('[data-lesson]').forEach((b) => (b.onclick = () => (CU.sfx.click(), openLesson(b.dataset.lesson, Math.min(2, Math.max(0, tierOf(b.dataset.lesson) - 1))))));
+    $$('[data-title]').forEach(
+      (b) =>
+        (b.onclick = () => {
+          CU.sfx.click();
+          st.title = b.dataset.title || '';
+          save();
+          renderCodex('exp');
+        }),
+    );
   }
 
   /* ================= composants d'exercice ================= */
@@ -2233,5 +2605,5 @@ ${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pou
     setTimeout(wait, 50);
   })();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('./sw.js').catch(() => {});
-  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena, openLesson, startRecall, openRecallSheet };
+  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena, openLesson, startRecall, openRecallSheet, q: { dk, dshift, streakCur, quest, dailyRoll, repairable, ACH, checkAch } };
 })();

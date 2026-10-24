@@ -2109,3 +2109,248 @@ body.hasdock {
 .xpin .xd-fill {
   transition-duration: 1.6s;
 }
+
+/* ---------- défis du jour ---------- */
+.quests {
+  max-width: 640px;
+  margin: 14px auto 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(245, 215, 154, 0.3);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(245, 215, 154, 0.1), transparent 60%),
+    var(--panel);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+}
+.quests.alldone {
+  border-color: rgba(126, 226, 168, 0.35);
+}
+.qhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.qhead small {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+.qhead b {
+  font-family: var(--font-t);
+  font-size: 1.05rem;
+}
+.qflame {
+  text-align: right;
+  line-height: 1.15;
+  filter: grayscale(0.85) brightness(0.8);
+}
+.qflame.lit {
+  filter: none;
+}
+.qflame span {
+  display: block;
+  font: 800 1.35rem var(--font-u);
+  color: #ffb36b;
+}
+.qflame small {
+  color: var(--mute);
+  letter-spacing: 0.02em;
+  font-size: 0.72rem;
+}
+.qlist {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.qlist li {
+  display: grid;
+  grid-template-columns: 20px 1fr 54px 34px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+.qlist li.done .qt {
+  color: var(--mute);
+  text-decoration: line-through;
+  text-decoration-color: rgba(126, 226, 168, 0.6);
+}
+.qk {
+  color: var(--gold2);
+  text-align: center;
+}
+.qlist li.done .qk {
+  color: #7ee2a8;
+}
+.qp {
+  height: 6px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.qp i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #8a6123, #f5d79a);
+  transition: width 0.6s;
+}
+.qlist li.done .qp i {
+  background: #7ee2a8;
+}
+.qn {
+  font-size: 0.75rem;
+  color: var(--mute);
+  text-align: right;
+}
+.qsub {
+  margin-top: 12px;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: #ffb36b;
+}
+.qnote {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--mute);
+}
+.qnote.warm {
+  background: rgba(255, 140, 60, 0.1);
+  border: 1px solid rgba(255, 160, 90, 0.35);
+  color: var(--ink);
+}
+.qfoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin-top: 10px;
+  font-size: 0.76rem;
+  color: var(--mute);
+}
+.qfoot b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.xd-flame {
+  flex: none;
+  font: 800 0.95rem var(--font-u);
+  color: #ffb36b;
+  filter: grayscale(0.9) brightness(0.75);
+}
+.xd-flame.lit {
+  filter: none;
+  text-shadow: 0 0 10px rgba(255, 150, 60, 0.6);
+}
+.wtitle {
+  font-family: var(--font-u);
+  font-weight: 500;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- exploits (Codex) ---------- */
+.achtitles {
+  margin: 18px 0 6px;
+}
+.achtitles > small {
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.chip {
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  color: var(--mute);
+  font: 500 0.82rem var(--font-u);
+  cursor: pointer;
+}
+.chip.on {
+  border-color: var(--gold);
+  color: var(--gold2);
+}
+.achfam {
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  margin: 22px 0 8px;
+}
+.achs {
+  display: grid;
+  gap: 8px;
+}
+.ach {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  opacity: 0.78;
+}
+.ach.got {
+  opacity: 1;
+  border-color: rgba(245, 215, 154, 0.4);
+  background: linear-gradient(90deg, rgba(245, 215, 154, 0.08), transparent), var(--panel);
+}
+.ach.secret {
+  opacity: 0.5;
+  font-style: italic;
+}
+.ach-h {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ach-h span {
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--gold);
+}
+.ach small {
+  display: block;
+  color: var(--mute);
+  font-size: 0.84rem;
+}
+.ach .ach-d {
+  font-size: 0.74rem;
+  margin-top: 2px;
+}
+.ach-bar {
+  height: 5px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-top: 6px;
+}
+.ach-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #8a6123, #f5d79a);
+}
+.rankbanner {
+  max-width: min(86vw, 460px);
+  width: max-content;
+}
+.rankbanner.long b {
+  font-family: var(--font-u);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.rankbanner small {
+  line-height: 1.5;
+}
