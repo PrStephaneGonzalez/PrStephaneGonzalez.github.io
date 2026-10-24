@@ -63,6 +63,7 @@ import {
   restoreExtras,
 } from './extra-games.mjs';
 import { mountExtra } from './extra-ui.mjs';
+import { playSound, showAnswerLine, hideAnswerLine, suspendAudio } from './feedback.mjs';
 import { makeJourneyCatalog, finishStep, adjustStage, STAGE_LABELS } from './journey.mjs';
 const $ = (s) => document.querySelector(s),
   main = $('#main'),
@@ -341,34 +342,22 @@ function speak(t, lang = 'fr-FR') {
   u.rate = 0.86;
   speechSynthesis.speak(u);
 }
-let audio;
 function chime() {
   playCue('success');
 }
-let lastUnlockCue = 0;
+// kind : 'success' | 'retry' | 'unlock' (voir feedback.mjs)
 function playCue(kind) {
-  if (!state.settings.sound) return;
-  if (kind !== 'unlock' && performance.now() - lastUnlockCue < 500) return;
-  try {
-    audio ??= new (window.AudioContext || window.webkitAudioContext)();
-    void audio.resume();
-    if (kind === 'unlock') lastUnlockCue = performance.now();
-    const notes = kind === 'unlock' ? [523, 659, 784] : kind === 'retry' ? [392, 349] : [523, 659];
-    notes.forEach((frequency, i) => {
-      const o = audio.createOscillator(),
-        g = audio.createGain(),
-        t = audio.currentTime + i * (kind === 'unlock' ? 0.14 : 0.09);
-      o.type = 'sine';
-      o.frequency.value = frequency;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(kind === 'retry' ? 0.012 : 0.025, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + (kind === 'unlock' ? 0.42 : 0.24));
-      o.connect(g);
-      g.connect(audio.destination);
-      o.start(t);
-      o.stop(t + (kind === 'unlock' ? 0.45 : 0.26));
-    });
-  } catch {}
+  playSound(kind, state.settings.sound);
+}
+// Réponse donnée : son + phrase (félicitation, ou « ce n'est pas juste, mais courage »).
+function answerFeedback(correct) {
+  playCue(correct ? 'success' : 'retry');
+  showAnswerLine(correct);
+}
+// Fiches guidées : la phrase est déjà dans la carte, on ajoute seulement le son.
+function outcomeCue(outcome) {
+  if (typeof outcome?.correct !== 'boolean' || outcome.revealed) return;
+  playCue(outcome.correct ? 'success' : 'retry');
 }
 let gamesBack = null;
 // sortie d'un menu de jeux : vers le Jardin des énigmes si on y est entré par là
@@ -390,6 +379,7 @@ function cancelHint() {
 }
 function navigate(name, r = room) {
   clearScreen();
+  hideAnswerLine();
   document.body.classList.remove('sw-entry');
   dailyGame = null;
   activeJourney = null;
@@ -672,6 +662,7 @@ function openStory() {
       playCue('success');
       return item;
     },
+    onWrong: () => playCue('retry'),
   });
   main.focus({ preventScroll: true });
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -737,8 +728,7 @@ function visitCastleRoom(id, initial = {}) {
                 },
                 onOutcome: (outcome) => {
                   save();
-                  if (typeof outcome.correct === 'boolean')
-                    playCue(outcome.correct ? 'success' : 'retry');
+                  outcomeCue(outcome);
                 },
               },
               id,
@@ -811,7 +801,7 @@ function readingContext(onDone, onSkip, day = calendarDay()) {
       const loot = awardTreasure(state, 'reading:' + record.id, record.level + 1);
       if (loot) showTreasure(loot);
     },
-    onFeedback: (correct) => playCue(correct ? 'success' : 'retry'),
+    onFeedback: answerFeedback,
     onDone,
     onSkip,
     onExit: () => navigate('castle'),
@@ -2321,7 +2311,8 @@ function goAdventure(options = {}) {
           onPause: () => navigate('castle'),
           onBrowse: () => navigate('castle'),
           onNext: complete,
-          onOutcome: () => {
+          onOutcome: (outcome) => {
+            outcomeCue(outcome);
             plan.languageFinished = true;
             stepFinished();
           },
@@ -2382,6 +2373,7 @@ function goAdventure(options = {}) {
         onOutcome: (outcome) => {
           if (responded) return;
           responded = true;
+          outcomeCue(outcome);
           stepFinished();
         },
       },
@@ -2457,6 +2449,7 @@ function startExtra(l, inJourney = false) {
     onExit: () => (practice ? showExtraMenu(l.type, l.tier) : navigate('castle')),
     onPause: () => (practice ? gamesExit() : navigate('pause')),
     onControls: () => (inJourney ? journeyControls() : null),
+    onWrong: () => playCue('retry'),
     onDone: ({ correct, assisted, explanation }) => {
       if (correct) {
         const loot = awardTreasure(
@@ -2471,12 +2464,12 @@ function startExtra(l, inJourney = false) {
       if (activeJourney)
         finishStep(state.journey, activeJourney, { correct, assisted }, JOURNEY_CATALOG);
       save();
-      playCue(correct ? 'success' : 'retry');
+      if (correct) playCue('success');
       dialog(
         /* HTML */ `<div class="success">
           <div class="fade-star">✦</div>
           <h2 id="modal-title">
-            ${correct ? 'Une belle trouvaille !' : 'Une idée de plus à emporter.'}
+            ${correct ? 'Une belle trouvaille !' : 'Ce n’est pas la solution, mais c’est une idée de plus à emporter.'}
           </h2>
           <p>
             ${correct
@@ -2830,7 +2823,7 @@ document.addEventListener('visibilitychange', () => {
   }
   if (document.hidden) {
     stopVoice();
-    if (audio) audio.suspend();
+    suspendAudio();
   }
 });
 applySettings();

@@ -55,7 +55,9 @@ export function renderChapter(main, ctx, id) {
           fb = main.querySelector('#chapter-feedback');
         if (!o.good) {
           b.disabled = true;
-          fb.textContent = 'Pas tout à fait. Relis le chapitre : la réponse s’y cache.';
+          fb.textContent =
+            'Ce n’est pas la bonne réponse, mais courage ! Relis le chapitre : la réponse s’y cache.';
+          ctx.onWrong?.();
           return;
         }
         main.querySelectorAll('[data-choice]').forEach((x) => (x.disabled = true));

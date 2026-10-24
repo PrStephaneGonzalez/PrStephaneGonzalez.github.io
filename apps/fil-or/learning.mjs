@@ -3,6 +3,7 @@ import { schoolTier } from './school-progress.mjs';
 import { typedCorrect } from './deep-practice.mjs';
 import { operationCorrect } from './written-operations.mjs';
 import { mountGuided } from './guided-ui.mjs';
+import { answerLine } from './feedback.mjs';
 import { WORKSHOPS, ACTIVITIES, ACTIVITY_BY_ID, SKILLS } from './catalog.mjs';
 const esc = (s) =>
   String(s).replace(
@@ -365,6 +366,7 @@ export function renderLearningHub(
     }
     const group = ACTIVITIES.filter((x) => x.group === a.group);
     let answered = false,
+      revealed = false,
       reported = false,
       assisted = false,
       listened = false,
@@ -486,6 +488,7 @@ export function renderLearningHub(
           assisted,
           listened,
           readingSupported: listened && a.group === 'sounds',
+          revealed,
         });
       }
       save();
@@ -590,7 +593,9 @@ export function renderLearningHub(
               ? 'Belle trouvaille !'
               : correct === null
                 ? 'Une découverte de plus.'
-                : 'Voici comment chercher.'}</strong
+                : revealed
+                  ? 'Voici comment chercher.'
+                  : esc(answerLine(false))}</strong
           >
           <p>
             ${a.type === 'text'
@@ -670,6 +675,7 @@ export function renderLearningHub(
     }
     main.querySelector('#show-answer').onclick = () => {
       assisted = true;
+      revealed = true;
       explain(a.type === 'mission' ? null : false);
     };
     main.querySelectorAll('[data-answer]').forEach(

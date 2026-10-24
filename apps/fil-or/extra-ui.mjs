@@ -9,6 +9,7 @@ import {
   mazeSolved,
   mazeHint,
 } from './extra-games.mjs';
+import { answerLine } from './feedback.mjs';
 const cp = (x) => JSON.parse(JSON.stringify(x));
 const desc = {
   cross:
@@ -148,8 +149,9 @@ export function mountExtra(main, l, ctx) {
       else {
         const completed = board.every((x) => x !== null);
         main.querySelector('#extra-feedback').textContent = completed
-          ? 'Ces nombres ne donnent pas encore tous les résultats. Tu peux les déplacer ou demander une piste.'
+          ? 'Ce n’est pas encore la bonne solution : ces nombres ne donnent pas tous les résultats. Tu peux les déplacer ou demander une piste.'
           : 'Il reste des cases à compléter. Tu peux aussi demander une piste.';
+        if (completed) ctx.onWrong?.();
       }
     };
   }
@@ -236,6 +238,8 @@ export function mountExtra(main, l, ctx) {
           if (correct) success();
           else {
             assisted = true;
+            main.querySelector('#extra-feedback').textContent = answerLine(false) + ' ' + l.explanation;
+            ctx.onWrong?.();
             main.querySelectorAll('[data-pattern]').forEach((x) => {
               x.disabled = true;
               if (Number(x.dataset.pattern) === l.answer) x.classList.add('correct');
@@ -263,7 +267,8 @@ export function mountExtra(main, l, ctx) {
           if (value === l.answer) success();
           else {
             assisted = true;
-            main.querySelector('#extra-feedback').textContent = l.explanation;
+            main.querySelector('#extra-feedback').textContent = answerLine(false) + ' ' + l.explanation;
+            ctx.onWrong?.();
             main.querySelectorAll('[data-logic]').forEach((x) => {
               x.disabled = true;
               if (l.options[Number(x.dataset.logic)] === l.answer) x.classList.add('correct');

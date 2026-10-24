@@ -1,4 +1,5 @@
 import { guidedCorrect } from './guided-data.mjs';
+import { answerLine } from './feedback.mjs';
 const esc = (s) =>
   String(s).replace(
     /[&<>"']/g,
@@ -101,7 +102,11 @@ export function mountGuided(main, a, ctx) {
     done = true;
     assisted = assisted || solution;
     delete drafts[a.id];
-    const feedback = correct ? a.success : 'Voici une façon de comprendre cette étape.';
+    const feedback = correct
+      ? a.success
+      : solution
+        ? 'Voici une façon de comprendre cette étape.'
+        : answerLine(false);
     q('#learning-feedback').innerHTML = /* HTML */ `<div class="explanation">
       <strong>${esc(feedback)}</strong>
       <p>${esc(a.explanation)}</p>
@@ -135,6 +140,7 @@ export function mountGuided(main, a, ctx) {
       assisted,
       listened,
       readingSupported: a.mode === 'reading' && listened,
+      revealed: solution,
     });
     ctx.save();
   }
