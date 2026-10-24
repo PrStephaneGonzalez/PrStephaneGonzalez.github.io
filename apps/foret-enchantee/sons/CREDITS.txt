@@ -7,3 +7,5 @@ Liste des fichiers enregistrés : voix-perso.txt.
 Ancienne voix (script gen.py, utilisable pour régénérer un son manquant) :
 synthèse vocale Piper (https://github.com/rhasspy/piper), voix fr_FR « siwis » medium,
 corpus SIWIS, Université d'Édimbourg, licence CC BY 4.0 (https://datashare.is.ed.ac.uk/handle/10283/2353).
+
+sons/ln/ : noms des 26 lettres et phrases du hibou, voix Piper « siwis » (CC BY 4.0), ajoutés le 24/10/2026 pour que le hibou parle même quand la voix de l'iPad est muette. À remplacer par la voix de Papa si souhaité.
