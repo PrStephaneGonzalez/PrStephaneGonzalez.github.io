@@ -612,7 +612,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       CU.sfx.right(3);
       CU.settings.sound = !wasOff;
       b.textContent = '🔈 Son : ' + CU.sfx.status() + ' — entends-tu une note ?';
-      setTimeout(() => (b.textContent = '🔈 Son : ' + CU.sfx.status() + (wasOff ? ' (sons coupés dans le jeu)' : '')), 1200);
+      setTimeout(() => (b.textContent = '🔈 Son : ' + CU.sfx.status() + (CU.LITE ? ' (léger)' : '') + (wasOff ? ' (sons coupés dans le jeu)' : '')), 1200);
     };
     $('#m-vol', bg).oninput = (e) => {
       CU.music.volume(+e.target.value);

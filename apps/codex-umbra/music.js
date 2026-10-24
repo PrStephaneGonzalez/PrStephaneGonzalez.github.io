@@ -57,9 +57,10 @@
     pad.Q.value = 0.5;
     // réverbération : réponse impulsionnelle de bruit décroissant
     rev = A.createConvolver();
-    const len = Math.floor(A.sampleRate * 4.2),
-      ir = A.createBuffer(2, len, A.sampleRate);
-    for (let c = 0; c < 2; c++) {
+    const nch = CU.LITE ? 1 : 2,
+      len = Math.floor(A.sampleRate * (CU.LITE ? 1.6 : 4.2)),
+      ir = A.createBuffer(nch, len, A.sampleRate);
+    for (let c = 0; c < nch; c++) {
       const d = ir.getChannelData(c);
       for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
     }
@@ -102,10 +103,7 @@
     g.gain.setValueAtTime(vol, t0 + dur * 0.7);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur + 4);
     g.connect(pad);
-    for (const [type, det] of [
-      ['triangle', 0],
-      ['sawtooth', 6],
-    ]) {
+    for (const [type, det] of CU.LITE ? [['triangle', 0]] : [['triangle', 0], ['sawtooth', 6]]) {
       const o = A.createOscillator();
       o.type = type;
       o.frequency.value = f;
