@@ -18,7 +18,7 @@
     () => {
       const a = R.int(2, 20),
         b = R.int(2, 20);
-      return K.text(T`Un automate exécute ce programme. Qu’affiche-t-il ? (sépare les valeurs par un espace)` + code(`a = ${a}\nb = ${b}\na = a + b\nb = a - b\na = a - b\nprint(a, b)`), `${b} ${a}`, T`Ligne par ligne : $a=${a+b}$, puis $b = ${a+b}-${b} = ${a}$, puis $a = ${a+b}-${a} = ${b}$. Affichage : <code>${b} ${a}</code>. Ce programme <b>échange</b> les valeurs de $a$ et $b$ sans variable auxiliaire.`, 'Tiens un petit tableau : la valeur de a et de b après chaque ligne.');
+      return K.text(T`Un automate exécute ce programme. Qu’affiche-t-il ? (écris seulement les valeurs affichées, dans l’ordre, séparées par un espace)` + code(`a = ${a}\nb = ${b}\na = a + b\nb = a - b\na = a - b\nprint(a, b)`), `${b} ${a}`, T`Ligne par ligne : $a=${a+b}$, puis $b = ${a+b}-${b} = ${a}$, puis $a = ${a+b}-${a} = ${b}$. Affichage : <code>${b} ${a}</code>. Ce programme <b>échange</b> les valeurs de $a$ et $b$ sans variable auxiliaire.`, 'Tiens un petit tableau : la valeur de a et de b après chaque ligne.');
     },
     () => {
       const x = R.int(-5, 9),

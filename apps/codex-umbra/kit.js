@@ -56,12 +56,18 @@
       return K.nums(q, names, [x, y], sol, hint, { inline: true });
     },
     text(q, expected, sol, hint, label = 'Ce qui s’affiche', extra = {}) {
-      const norm = (s) => String(s).trim().replace(/\s+/g, ' ').replace(/^'|'$/g, '');
+      // Réponse tolérante : « 4 16 », « 4, 16 », « (4, 16) », « a=4 b=16 », « "deux" », « true »… sont équivalents.
+      const norm = (s, exp) => {
+        let t = String(s).replace(/[−–]/g, '-').toLowerCase();
+        t = t.replace(/["'«»“”‘’`]/g, ' ').replace(/\b[a-z_]\w*\s*=\s*(?=-?\d)/g, ' ');
+        if (!/[.,]/.test(exp)) t = t.replace(/[,;()\[\]]/g, ' ');
+        return t.replace(/\s+/g, ' ').trim();
+      };
       return {
         type: 'fields',
         q,
         fields: [{ label, kind: 'text' }],
-        check: (a) => (norm(a[0]) === norm(expected) ? { ok: true } : { ok: false, msg: 'Ce n’est pas ce qu’affiche le programme. Exécute-le ligne par ligne.' }),
+        check: (a) => (norm(a[0], String(expected)) === norm(expected, String(expected)) ? { ok: true } : { ok: false, msg: 'Ce n’est pas ce qu’affiche le programme. Exécute-le ligne par ligne. (Écris seulement ce qui est affiché, valeurs séparées par un espace.)' }),
         sol,
         hint,
         ...extra,
