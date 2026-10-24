@@ -12,10 +12,15 @@
 
   /* ================= réglages ================= */
   try {
-    CU.settings = Object.assign({ sound: true, music: false }, JSON.parse(localStorage.getItem('codex-umbra-settings') || '{}'));
+    CU.settings = Object.assign({ sound: true, musicOn: true, musicVol: 0.5 }, JSON.parse(localStorage.getItem('codex-umbra-settings') || '{}'));
   } catch {
-    CU.settings = { sound: true, music: false };
+    CU.settings = { sound: true, musicOn: true, musicVol: 0.5 };
   }
+  // la musique ne peut démarrer qu'après un geste de l'utilisateur
+  const startMusic = () => CU.music && CU.music.start();
+  addEventListener('pointerdown', startMusic, { once: true });
+  addEventListener('keydown', startMusic, { once: true });
+  const mood = (m) => CU.music && CU.music.mode(m);
   const saveSettings = () => {
     try {
       localStorage.setItem('codex-umbra-settings', JSON.stringify(CU.settings));
@@ -187,7 +192,8 @@
     if (h === '/codex') return renderCodex();
     if (h.startsWith('/t/') && view && view.kind === 'trial') return; // déjà affiché
     if (h.startsWith('/b/') && view && view.kind === 'boss') return;
-    if (h.startsWith('/t/') || h.startsWith('/b/')) {
+    if (h === '/a' && view && view.kind === 'arena') return;
+    if (h.startsWith('/t/') || h.startsWith('/b/') || h === '/a') {
       const rid = view && view.rid;
       return rid ? go('#/r/' + rid) : renderWorld();
     }
@@ -196,7 +202,7 @@
 
   /* ================= écran titre ================= */
   function renderTitle() {
-    view = { kind: 'title' };
+    view = { kind: 'title' }; mood('explore');
     setHue('#d9ab5b');
     let last = null;
     try {
@@ -249,7 +255,7 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
     st.bosses = st.bosses || {};
     st.stats = st.stats || { solved: 0, bestCombo: 0 };
     save(true);
-    if (CU.settings.music) CU.sfx.drone(true);
+    startMusic();
     if (!st.prologue) renderPrologue(0);
     else {
       if (!location.hash || location.hash === '#') go('#/world');
@@ -316,7 +322,7 @@ ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.
     return best;
   }
   function renderWorld() {
-    view = { kind: 'world' };
+    view = { kind: 'world' }; mood('explore');
     setHue('#d9ab5b');
     const regs = CU.REGIONS.map((g) => ({ ...g, p: regionP(g.id), open: regionOpen(g.id), boss: !!st.bosses[g.id] }));
     const tp = totalTiers() / (3 * CU.ORDER.length);
@@ -342,6 +348,7 @@ ${
           return `<button class="rcard ${g.open ? '' : 'locked'}" data-region="${g.id}" style="--hue:${g.hue}"><span class="ic">${esc(g.icon)}</span><h3>${esc(g.name)}</h3><div class="sub">${esc(g.open ? g.sub : lockedWhy)}</div><div class="prog"><i style="width:${(100 * g.p).toFixed(0)}%"></i></div><div class="meta"><span>${g.short} · ${done}/${ids.length} Lois maîtrisées</span><span>${g.boss ? '👑 Gardien vaincu' : bossOpen(g.id) ? '⚔ Gardien éveillé' : ''}</span></div></button>`;
         })
         .join('')}
+<button class="rcard final-card arena-card ${arenaPool().length ? '' : 'locked'}" id="arena"><span class="ic">⏳</span><h3>L’Arène des Automatismes</h3><div class="sub">${arenaPool().length ? 'Calcul mental, développements, discriminants… contre la montre.' : 'S’ouvre dès ton premier sceau de calcul.'}</div><div class="meta"><span>${st.arena && st.arena.best ? 'Record : ' + st.arena.best : arenaPool().length ? arenaPool().length + ' types de calculs' : ''}</span></div></button>
 <button class="rcard final-card ${fo ? '' : 'locked'}" id="fin"><span class="ic">${CU.FINAL.glyph}</span><h3>Le Sanctuaire du Codex</h3><div class="sub">${fd ? 'Le Roi Sans Loi est vaincu. Le Codex t’appartient.' : fo ? 'Le Roi Sans Loi t’attend.' : 'Vaincs les gardiens des Remparts, des Cryptes et de la Tour pour ouvrir le Sanctuaire.'}</div><div class="meta"><span>${CU.FINAL.needs.map((r) => (st.bosses[r] ? '👑' : '◇')).join(' ')}</span></div></button>
 </div>
 <div class="foot"><span class="syncdot"></span></div>
@@ -361,6 +368,7 @@ ${
     });
     const fin = () => (fo ? startBoss('final') : (CU.sfx.wrong(), toast('Le Sanctuaire est scellé par trois gardiens.')));
     $('#fin').onclick = fin;
+    $('#arena').onclick = () => (CU.sfx.click(), openArenaSheet());
     const fs = $('[data-final]');
     if (fs) fs.onclick = fin;
     if (sug) $('#sug').onclick = () => (CU.sfx.click(), launch(sug, tierOf(sug)));
@@ -368,7 +376,7 @@ ${
 
   /* ================= région ================= */
   function renderRegion(rid, flashId) {
-    view = { kind: 'region', rid };
+    view = { kind: 'region', rid }; mood('explore');
     const g = CU.region(rid);
     setHue(g.hue, g.deep);
     const ids = regionSkills(rid);
@@ -500,7 +508,8 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
     CU.sfx.click();
     const bg = sheet(`<h2 style="margin-bottom:14px">Menu</h2><div class="menu">
 <button class="btn" id="m-snd">${CU.settings.sound ? '🔊 Sons activés' : '🔇 Sons coupés'}</button>
-<button class="btn" id="m-mus">${CU.settings.music ? '🎵 Ambiance sonore : oui' : '🎵 Ambiance sonore : non'}</button>
+<button class="btn" id="m-mus">${CU.settings.musicOn !== false ? '🎵 Musique : oui' : '🎵 Musique : non'}</button>
+<label class="vol">Volume de la musique<input type="range" id="m-vol" min="0" max="1" step="0.05" value="${CU.settings.musicVol ?? 0.5}" /></label>
 <button class="btn" id="m-pro">📜 Revoir le prologue</button>
 <button class="btn" id="m-out">🚪 Changer d’Arpenteur</button>
 </div><p class="note" style="margin-top:16px">Progression de <b>${esc(st.name)}</b> : ${totalTiers()} sceaux brisés sur ${3 * CU.ORDER.length}, ${st.stats.solved} défis réussis, meilleure série : ${st.stats.bestCombo}. Elle est enregistrée sur cet appareil et en ligne (nom + code). <span class="syncdot"></span></p>`);
@@ -513,10 +522,13 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       if (s) s.textContent = CU.settings.sound ? '🔊' : '🔇';
     };
     $('#m-mus', bg).onclick = (e) => {
-      CU.settings.music = !CU.settings.music;
+      CU.music.enable(CU.settings.musicOn === false);
       saveSettings();
-      CU.sfx.drone(CU.settings.music);
-      e.target.textContent = CU.settings.music ? '🎵 Ambiance sonore : oui' : '🎵 Ambiance sonore : non';
+      e.target.textContent = CU.settings.musicOn !== false ? '🎵 Musique : oui' : '🎵 Musique : non';
+    };
+    $('#m-vol', bg).oninput = (e) => {
+      CU.music.volume(+e.target.value);
+      saveSettings();
     };
     $('#m-pro', bg).onclick = () => (closeSheet(), renderPrologue(0));
     $('#m-out', bg).onclick = () => {
@@ -524,7 +536,6 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       save(true);
       st = null;
       KEY = null;
-      CU.sfx.drone(false);
       try {
         localStorage.removeItem('codex-umbra-last');
       } catch {}
@@ -565,6 +576,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       combo: 0,
     };
     view = T0;
+    mood('focus');
     history.pushState(null, '', '#/t/' + id);
     app.innerHTML = `<div class="trial">
 <div class="trial-head"><button class="back" id="quit" aria-label="Quitter">‹</button><div class="ttl"><small>${T0.mode === 'revive' ? '🔥 Ravivage' : TN[ti]}${T0.mode === 'replay' ? ' · révision' : ''}</small><b>${esc(s.name)}</b></div><div class="combo" id="combo"></div><div class="shards" id="shards"></div></div>
@@ -580,6 +592,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
   function paintShards() {
     const v = view;
     if (v.kind === 'boss') return paintBoss();
+    if (v.kind === 'arena') return paintArena();
     $('#shards').innerHTML = [...Array(v.need)].map((_, i) => `<i class="shard ${i < v.got ? 'on' : ''}"></i>`).join('');
     const c = $('#combo');
     c.textContent = v.combo >= 2 ? '×' + v.combo : '';
@@ -592,7 +605,8 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       const id = R.pick(v.pool);
       ex = S(id).gen[R.pick([1, 2, 2])]();
       ex._sid = id;
-    } else ex = S(v.id).gen[v.ti]();
+    } else if (v.kind === 'arena') ex = arenaQuestion();
+    else ex = S(v.id).gen[v.ti]();
     v.ex = ex;
     v.tries = 0;
     v.hinted = false;
@@ -604,7 +618,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
   function renderQuestion() {
     const v = view,
       ex = v.ex,
-      boss = v.kind === 'boss';
+      boss = v.kind === 'boss' || v.kind === 'arena';
     const stage = $('#stage');
     stage.innerHTML = `<div class="card" id="card">
 ${boss ? `<div class="place" style="color:var(--hue);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">${esc(S(ex._sid).name)}</div>` : ''}
@@ -627,6 +641,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     const first = $('.inp', zone);
     if (first && matchMedia('(pointer:fine)').matches) first.focus();
     window.scrollTo({ top: 0 });
+    if (v.kind === 'arena') arenaClock();
   }
   function hint() {
     const v = view;
@@ -659,7 +674,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     setTimeout(() => n.focus({ preventScroll: true }), 50);
   }
   addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' || !view || (view.kind !== 'trial' && view.kind !== 'boss')) return;
+    if (e.key !== 'Enter' || !view || (view.kind !== 'trial' && view.kind !== 'boss' && view.kind !== 'arena')) return;
     if ($('.sheet-bg') || $('.cu-ov')) return;
     if (view.answered) {
       const n = $('#nxt');
@@ -709,6 +724,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     fb.innerHTML = H(res.msg || 'Ce n’est pas ça. ' + (v.tries < 2 ? 'Encore un essai.' : ''));
     paintShards();
     if (v.kind === 'boss') return bossHurt();
+    if (v.kind === 'arena') return arenaMiss(false);
     if (v.tries >= 2) reveal(false);
   }
 
@@ -727,6 +743,11 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     } else v.combo = 0;
     if (v.kind === 'boss') {
       gain = first ? 15 : 5;
+    } else if (v.kind === 'arena') {
+      gain = 5 + v.cur.t * 2;
+      v.score++;
+      const s = sk(v.cur.id);
+      s.last = Date.now();
     } else {
       const base = [10, 18, 28][v.ti];
       gain = first ? Math.round(base * (1 + 0.1 * Math.min(v.combo - 1, 10))) : 4;
@@ -749,11 +770,13 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     if (rankIdx(st.xp) > before) setTimeout(() => toast('✦ Nouveau rang : <b>' + rankName(st.xp) + '</b>'), 700);
     save();
     if (v.kind === 'boss') return bossHit(first);
+    if (v.kind === 'arena') return arenaHit();
     $('#extra').insertAdjacentHTML('beforeend', `<details class="sol" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mute)">Voir l’explication</summary>${H(v.ex.sol)}</details>`);
     nextButton(v.got >= v.need ? 'Briser le sceau ✦' : 'Suivant →');
   }
   function afterAnswer() {
     const v = view;
+    if (v.kind === 'arena') return v.over ? arenaEnd() : nextQuestion();
     if (v.kind === 'boss') {
       if (v.over) return;
       return nextQuestion();
@@ -798,6 +821,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     if (rankIdx(st.xp) > beforeRank) gains.push(`✦ Nouveau rang : <b>${esc(rankName(st.xp))}</b>`);
     save(true);
     CU.sfx.tier();
+    CU.music && CU.music.swell();
     flash(g.hue);
     const canNext = v.mode === 'normal' && s.tier < 3 && s.tier <= maxAllowed(v.id);
     const ov = document.createElement('div');
@@ -843,6 +867,7 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     setHue('#e0475b', '#3a0f16');
     const pool = fin ? CU.ORDER.filter((id) => CU.FINAL.needs.includes(S(id).region)) : regionSkills(rid);
     view = { kind: 'boss', rid: fin ? null : rid, final: fin, b, pool, hp: b.hp, lives: 3, combo: 0, over: false };
+    mood('boss');
     history.pushState(null, '', '#/b/' + rid);
     app.innerHTML = `<div class="trial">
 <div class="trial-head"><button class="back" id="quit" aria-label="Fuir">‹</button><div class="ttl"><small style="color:#ff8494">${esc(b.title)}</small><b>${esc(b.name)}</b></div><div class="combo" id="combo"></div><div class="lives" id="lives"></div></div>
@@ -920,6 +945,7 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     st.xp += gain;
     save(true);
     CU.sfx.victory();
+    CU.music && CU.music.swell();
     flash('#f5d79a');
     const g = v.final ? null : CU.region(v.rid);
     const ov = document.createElement('div');
@@ -958,9 +984,184 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
     };
   }
 
+
+  /* ================= arène des automatismes (chronométrée) ================= */
+  // seuls les automatismes sont chronométrés ; le temps dépend du type de calcul
+  const AUTO = [
+    { id: 'v1', t: 2, s: 30 },
+    { id: 'v2', t: 1, s: 25 },
+    { id: 'v3', t: 0, s: 35 },
+    { id: 'v4', t: 0, s: 25 },
+    { id: 'v4', t: 1, s: 40 },
+    { id: 'v5', t: 0, s: 25 },
+    { id: 'v6', t: 0, s: 25 },
+    { id: 'f1', t: 0, s: 35 },
+    { id: 'f1', t: 1, s: 45 },
+    { id: 'f2', t: 0, s: 25 },
+    { id: 'f2', t: 1, s: 35 },
+    { id: 'f2', t: 2, s: 35 },
+    { id: 'f3', t: 0, s: 25 },
+    { id: 'f3', t: 1, s: 30 },
+    { id: 'f4', t: 0, s: 20 },
+    { id: 'f4', t: 1, s: 35 },
+    { id: 'f5', t: 0, s: 35 },
+    { id: 'q1', t: 0, s: 45 },
+    { id: 'q2', t: 0, s: 25 },
+    { id: 'q2', t: 1, s: 45 },
+    { id: 'q3', t: 0, s: 30 },
+  ];
+  const arenaPool = () => AUTO.filter((a) => tierOf(a.id) > a.t);
+  function openArenaSheet() {
+    const pool = arenaPool(),
+      best = (st.arena && st.arena.best) || 0;
+    const names = [...new Set(pool.map((a) => S(a.id).name))];
+    const bg = sheet(
+      `<div class="top"><div class="bigg">⏳</div><div><div class="place">Contre la montre</div><h2>L’Arène des Automatismes</h2><div class="ital" style="font-size:1.05rem;margin-top:4px">Ici, on ne démontre pas : on dégaine. Ce qu’on sait vraiment, on doit le savoir vite.</div></div></div>
+<p style="color:var(--mute);margin-top:14px">Des calculs tirés des Lois que tu as déjà brisées, l’un après l’autre. Chacun a son temps, plus long pour les calculs plus lourds, et le temps se resserre à mesure que ton score monte. Un temps écoulé ou une erreur te coûtent une lueur ; à la troisième, la partie s’arrête. Pas d’indice.</p>
+${best ? `<p class="law" style="text-align:center">Ton record : <b>${best}</b></p>` : ''}
+${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : ${names.map(esc).join(', ')}.</p>` : `<div class="req">L’Arène s’ouvre dès que tu as brisé un premier sceau de calcul (vecteurs, calcul littéral ou second degré).</div>`}
+<div class="actions">${pool.length ? '<button class="btn primary gold" id="ar-go">Entrer dans l’Arène</button>' : ''}<button class="btn ghost" id="ar-cl">Fermer</button></div>`,
+      '#d9ab5b',
+    );
+    $('#ar-cl', bg).onclick = closeSheet;
+    if (pool.length) $('#ar-go', bg).onclick = () => (closeSheet(), startArena());
+  }
+  function startArena() {
+    const pool = arenaPool();
+    if (!pool.length) return;
+    setHue('#d9ab5b');
+    view = { kind: 'arena', pool, lives: 3, score: 0, combo: 0, over: false, last: null, cur: null, xp0: st.xp };
+    mood('arena');
+    history.pushState(null, '', '#/a');
+    app.innerHTML = `<div class="trial">
+<div class="trial-head"><button class="back" id="quit" aria-label="Quitter">‹</button><div class="ttl"><small>Contre la montre</small><b>L’Arène des Automatismes</b></div><div class="combo" id="combo"></div><div class="arscore" id="arscore">0</div><div class="lives" id="lives"></div></div>
+<div class="clock"><i id="clockbar"></i><span id="clocktxt"></span></div>
+<div id="stage"></div></div>`;
+    $('#quit').onclick = () => {
+      CU.sfx.click();
+      stopClock();
+      const v = view;
+      view = null;
+      if (v.score) recordArena(v);
+      go('#/world');
+    };
+    paintArena();
+    nextQuestion();
+  }
+  function arenaQuestion() {
+    const v = view;
+    let a;
+    do a = R.pick(v.pool);
+    while (v.pool.length > 1 && a === v.last);
+    v.last = a;
+    v.cur = a;
+    const ex = S(a.id).gen[a.t]();
+    ex._sid = a.id;
+    // le temps se resserre avec le score, sans descendre sous 60 %
+    v.limit = a.s * Math.max(0.6, 1 - 0.015 * v.score);
+    return ex;
+  }
+  function paintArena() {
+    const v = view;
+    $('#lives').innerHTML = [0, 1, 2].map((i) => `<span class="${i >= v.lives ? 'lost' : ''}">🕯</span>`).join('');
+    $('#arscore').textContent = v.score;
+    const c = $('#combo');
+    c.textContent = v.combo >= 2 ? '×' + v.combo : '';
+    c.classList.toggle('on', v.combo >= 2);
+  }
+  let clockRaf = null;
+  function stopClock() {
+    cancelAnimationFrame(clockRaf);
+    clockRaf = null;
+  }
+  function arenaClock() {
+    const v = view;
+    stopClock();
+    v.remaining = v.limit * 1000;
+    let lastT = performance.now();
+    const bar = $('#clockbar'),
+      txt = $('#clocktxt');
+    const tick = (now) => {
+      if (view !== v || v.answered) return;
+      // l'horloge s'arrête quand la page est cachée
+      if (!document.hidden) v.remaining -= now - lastT;
+      lastT = now;
+      const f = Math.max(0, v.remaining / (v.limit * 1000));
+      bar.style.width = (100 * f).toFixed(1) + '%';
+      bar.className = f < 0.25 ? 'low' : '';
+      txt.textContent = Math.ceil(Math.max(0, v.remaining) / 1000) + ' s';
+      if (v.remaining <= 0) return arenaMiss(true);
+      clockRaf = requestAnimationFrame(tick);
+    };
+    clockRaf = requestAnimationFrame(tick);
+  }
+  function arenaHit() {
+    const v = view;
+    stopClock();
+    paintArena();
+    // on enchaîne vite : c'est le rythme qui fait l'automatisme
+    setTimeout(() => {
+      if (view === v && !v.over) nextQuestion();
+    }, 650);
+  }
+  function arenaMiss(timeout) {
+    const v = view;
+    stopClock();
+    v.answered = true;
+    v.combo = 0;
+    v.lives--;
+    if (timeout) {
+      CU.sfx.wrong();
+      const card = $('#card');
+      card.classList.add('bad');
+      $('#fb').className = 'feedback bad';
+      $('#fb').textContent = 'Temps écoulé !';
+      if (v.ui.lock) v.ui.lock();
+    }
+    if (v.ui.reveal) v.ui.reveal();
+    $('#extra').insertAdjacentHTML('beforeend', `<div class="sol">${H(v.ex.sol)}</div>`);
+    paintArena();
+    if (v.lives <= 0) v.over = true;
+    nextButton(v.over ? 'Fin de la partie' : 'Suivant →');
+  }
+  function recordArena(v) {
+    st.arena = st.arena || { best: 0, runs: 0 };
+    const rec = v.score > st.arena.best;
+    st.arena.best = Math.max(st.arena.best, v.score);
+    st.arena.runs++;
+    if (rec && v.score >= 3) st.xp += 40;
+    save(true);
+    return rec;
+  }
+  function arenaEnd() {
+    const v = view;
+    const prev = (st.arena && st.arena.best) || 0;
+    const rec = recordArena(v);
+    if (rec && v.score >= 3) {
+      CU.sfx.victory();
+      CU.music && CU.music.swell();
+    }
+    const ov = document.createElement('div');
+    ov.className = 'ov cu-ov';
+    ov.style.setProperty('--hue', '#d9ab5b');
+    ov.innerHTML = `<div class="ov-inner"><div class="arena-big">${v.score}</div><h2>${rec && v.score ? 'Nouveau record !' : 'Fin de la partie'}</h2>
+<div class="ital">${v.score >= 20 ? 'Tes automatismes sont des réflexes. Les Informes n’ont même pas le temps de te voir.' : v.score >= 10 ? 'Rapide et sûr. Encore un peu, et ce sera un réflexe.' : 'Chaque partie aiguise la lame. Reviens demain : la vitesse vient avec la répétition.'}</div>
+<div class="gains"><div class="gain"><b>+${st.xp - v.xp0} XP</b> gagnés dans l’Arène</div><div class="gain">Record : <b>${Math.max(prev, v.score)}</b>${rec && prev ? ` (ancien : ${prev})` : ''}${rec && v.score >= 3 ? ' — bonus de record <b>+40 XP</b>' : ''}</div></div>
+<div class="actions"><button class="btn primary gold" id="ov-again">Rejouer</button><button class="btn" id="ov-back">Retour à la carte</button></div></div>`;
+    document.body.appendChild(ov);
+    $('#ov-again', ov).onclick = () => (ov.remove(), startArena());
+    $('#ov-back', ov).onclick = () => {
+      ov.remove();
+      view = null;
+      history.replaceState(null, '', '#/world');
+      renderWorld();
+    };
+    setTimeout(() => $('#ov-again', ov).focus(), 300);
+  }
+
   /* ================= codex ================= */
   function renderCodex(tab = 'lois') {
-    view = { kind: 'codex' };
+    view = { kind: 'codex' }; mood('explore');
     setHue('#d9ab5b');
     const tt = totalTiers();
     let body;
@@ -1433,5 +1634,5 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
     setTimeout(wait, 50);
   })();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('./sw.js').catch(() => {});
-  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion };
+  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena };
 })();

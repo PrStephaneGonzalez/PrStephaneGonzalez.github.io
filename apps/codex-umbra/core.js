@@ -650,6 +650,7 @@ CU.save = {
     o.frags = [...new Set([...(a.frags || []), ...(b.frags || [])])];
     o.stats = { solved: Math.max(a.stats?.solved || 0, b.stats?.solved || 0), bestCombo: Math.max(a.stats?.bestCombo || 0, b.stats?.bestCombo || 0) };
     o.prologue = a.prologue || b.prologue;
+    o.arena = { best: Math.max(a.arena?.best || 0, b.arena?.best || 0), runs: Math.max(a.arena?.runs || 0, b.arena?.runs || 0) };
     o.updated = Math.max(a.updated || 0, b.updated || 0);
     return o;
   },
@@ -756,43 +757,7 @@ CU.sfx = (function () {
       [0, 7, 12, 15, 19, 24].forEach((s, i) => tone(hz(s), i * 0.13, 2.2, 'triangle', 0.15));
       [0, 7, 12].forEach((s) => tone(hz(s - 12), 0.8, 2.5, 'sine', 0.12, 0.2));
     },
-    drone(play) {
-      const c = ac();
-      if (!c) return;
-      if (play && !drone && CU.settings.music !== false) {
-        const g = c.createGain(),
-          f = c.createBiquadFilter(),
-          lfo = c.createOscillator(),
-          lg = c.createGain();
-        g.gain.value = 0.0001;
-        g.gain.exponentialRampToValueAtTime(0.05, c.currentTime + 3);
-        f.type = 'lowpass';
-        f.frequency.value = 420;
-        lfo.frequency.value = 0.07;
-        lg.gain.value = 180;
-        lfo.connect(lg);
-        lg.connect(f.frequency);
-        const os = [73.42, 73.42 * 1.004, 110, 87.31].map((fr, i) => {
-          const o = c.createOscillator();
-          o.type = i < 2 ? 'sawtooth' : 'triangle';
-          o.frequency.value = fr;
-          o.connect(f);
-          o.start();
-          return o;
-        });
-        f.connect(g);
-        g.connect(master);
-        lfo.start();
-        drone = { g, os, lfo };
-      } else if (!play && drone) {
-        const d = drone;
-        drone = null;
-        d.g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 1);
-        setTimeout(() => {
-          d.os.forEach((o) => o.stop());
-          d.lfo.stop();
-        }, 1200);
-      }
-    },
+    // le moteur musical (music.js) se branche sur le même contexte audio
+    audio: () => (ac() ? { ctx, master } : null),
   };
 })();

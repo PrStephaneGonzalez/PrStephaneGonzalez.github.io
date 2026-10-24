@@ -1608,3 +1608,59 @@ svg.board .x {
   font-size: 1.5rem;
   padding: 0 14px;
 }
+
+.arena-card {
+  --hue: var(--gold);
+}
+.arscore {
+  min-width: 34px;
+  text-align: center;
+  font: 800 1.2rem var(--font-u);
+  color: var(--gold2);
+}
+.clock {
+  position: relative;
+  height: 22px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.clock i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  background: linear-gradient(90deg, #8a6123, var(--gold2));
+  box-shadow: 0 0 12px var(--gold);
+}
+.clock i.low {
+  background: linear-gradient(90deg, #9b1c2e, #ff6b7d);
+  box-shadow: 0 0 14px #e0475b;
+}
+.clock span {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  line-height: 22px;
+  font: 700 0.8rem var(--font-u);
+  color: #120e08;
+  mix-blend-mode: screen;
+  color: #fff;
+}
+.arena-big {
+  font: 900 4.5rem var(--font-t);
+  color: var(--gold2);
+  text-shadow: 0 0 40px var(--gold);
+  line-height: 1;
+}
+.vol {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--mute);
+  padding: 4px 6px;
+}
+.vol input {
+  width: 100%;
+  accent-color: var(--gold);
+}
