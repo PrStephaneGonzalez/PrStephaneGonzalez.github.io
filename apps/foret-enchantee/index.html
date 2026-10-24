@@ -598,9 +598,17 @@ if(hasTTS){pickVoice();try{speechSynthesis.addEventListener('voiceschanged',pick
 function say(t,onend,rate){
   let done=false;const fin=()=>{if(!done){done=true;onend&&onend()}};
   if(!hasTTS){if(onend)setTimeout(fin,500+t.length*40);return}
-  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='fr-FR';if(voice)u.voice=voice;u.rate=rate||.88;u.pitch=1.1;
-    if(onend){u.onend=fin;u.onerror=fin;setTimeout(fin,1600+t.length*95)}speechSynthesis.speak(u)}catch(e){if(onend)setTimeout(fin,600)}
+  try{const ss=speechSynthesis;
+    const mk=withVoice=>{const u=new SpeechSynthesisUtterance(t);u.lang='fr-FR';if(withVoice&&voice)u.voice=voice;u.rate=rate||.88;u.pitch=1.1;if(onend){u.onend=fin;u.onerror=fin}return u};
+    const go=()=>{let started=false;const u=mk(true);u.onstart=()=>{started=true};sayU=u;try{ss.resume()}catch(e){}ss.speak(u);
+      /* iPad : parfois la voix ne démarre pas (voix choisie absente, moteur bloqué) : on relance une fois, avec la voix par défaut */
+      setTimeout(()=>{if(started||sayU!==u||done)return;try{ss.cancel()}catch(e){}const u2=mk(false);let st2=false;u2.onstart=()=>{st2=true};sayU=u2;try{ss.resume()}catch(e){}ss.speak(u2);
+        setTimeout(()=>{if(!st2&&sayU===u2)fin()},1500)},1300);   /* voix muette : on passe tout de suite au son enregistré */
+      if(onend)setTimeout(fin,2900+t.length*95)};
+    if(ss.speaking||ss.pending){ss.cancel();setTimeout(go,60)}else go();
+  }catch(e){if(onend)setTimeout(fin,600)}
 }
+let sayU=null;
 let ac=null;
 function sfx(k){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const now=ac.currentTime;
   const seq={ok:[[523,0],[659,.09],[784,.18],[1047,.28]],no:[[262,0],[220,.13]],pop:[[880,0],[1320,.05]],star:[[1175,0],[1568,.09],[2093,.18]],tap:[[700,0]],free:[[523,0],[659,.12],[784,.24],[1047,.36],[1319,.5],[1568,.64]],step:[[600,0]]}[k];
@@ -1243,7 +1251,14 @@ const SNDW={l:'lune',m:'maman',r:'rat',s:'sac',f:'fée',v:'vélo',n:'nid',j:'jup
 const SNDT=g=>({a:'a',i:'i',o:'o',u:'u','é':'é','è':'è',e:'eu',ou:'où',on:'on',an:'an',in:'hein',oi:'oie',au:'eau',eu:'eux',ai:'è'})[g]||('comme dans '+(SNDW[g]||g));
 let sndTok=0;const sndUrl={};
 const sndEl=new Audio();sndEl.preload='auto';
-function sndUnlock(){try{sndEl.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';const p=sndEl.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+/* iPad : le son et la voix ne sont autorisés qu'après un geste de l'enfant. On les « réveille » au premier toucher
+   (et à chaque toucher tant que ce n'est pas réussi), avant toute attente réseau. */
+let sndOK=false,ttsOK=false;
+function sndUnlock(){
+  try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state!=='running')ac.resume()}catch(e){}
+  if(!sndOK&&sndEl.paused){try{sndEl.src='data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';const p=sndEl.play();if(p&&p.then)p.then(()=>{sndOK=true}).catch(()=>{});else sndOK=true}catch(e){}}
+  if(hasTTS&&!ttsOK){try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='fr-FR';speechSynthesis.speak(u);ttsOK=true}catch(e){}}}
+['pointerdown','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,sndUnlock,{capture:true,passive:true}));
 function sndLoad(path){if(!(path in sndUrl))sndUrl[path]=fetch(path).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>URL.createObjectURL(b)).catch(()=>null);return sndUrl[path]}
 const sndPath=(cat,x)=>SND_SET[cat].has(x)?'sons/'+cat+'/'+SKEY(x)+'.mp3':null;
 function sndPreload(gs,cat){gs.forEach(g=>{const p=sndPath(cat||'ph',g);if(p)sndLoad(p)})}
