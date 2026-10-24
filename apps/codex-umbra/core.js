@@ -680,6 +680,21 @@ CU.save = {
         y = (b.recall || {})[k] || {};
       o.recall[k] = { wins: Math.max(x.wins || 0, y.wins || 0), runs: Math.max(x.runs || 0, y.runs || 0) };
     }
+    // série de jours : union des jours accomplis et des rachats
+    const sa = a.streak || {},
+      sb = b.streak || {};
+    o.streak = {
+      days: [...new Set([...(sa.days || []), ...(sb.days || [])])].sort().slice(-400),
+      rep: [...new Set([...(sa.rep || []), ...(sb.rep || [])])].sort().slice(-20),
+      best: Math.max(sa.best || 0, sb.best || 0),
+    };
+    // défis du jour : le jour le plus récent ; même jour, celui qui a le plus avancé
+    const prog = (d) => (d && d.ch ? d.ch.reduce((s, x) => s + (x.prog || 0) + (x.done ? 100 : 0), 0) : -1);
+    if (a.daily || b.daily) o.daily = !a.daily ? b.daily : !b.daily ? a.daily : a.daily.day !== b.daily.day ? (a.daily.day > b.daily.day ? a.daily : b.daily) : prog(b.daily) > prog(a.daily) ? b.daily : a.daily;
+    o.ach = { ...(b.ach || {}), ...(a.ach || {}) };
+    o.cnt = {};
+    for (const k of new Set([...Object.keys(a.cnt || {}), ...Object.keys(b.cnt || {})])) o.cnt[k] = Math.max((a.cnt || {})[k] || 0, (b.cnt || {})[k] || 0);
+    o.title = a.title || b.title || '';
     o.updated = Math.max(a.updated || 0, b.updated || 0);
     return o;
   },

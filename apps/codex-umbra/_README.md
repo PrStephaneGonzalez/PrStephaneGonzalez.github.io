@@ -64,3 +64,8 @@ Nom d'Arpenteur + code de 4 à 6 chiffres. Progression dans le navigateur et dan
 - Les braises 🔥 signalent un palier dont la révision a plus de deux jours de retard.
 - Sauvegarde : `mem` (état de chaque palier) et `recall` (séances) sont fusionnés entre appareils.
 - Son : musique adaptative générée (`music.js`), Arène chronométrée réservée aux automatismes, moteur allégé sur Android, contournement du commutateur silencieux de l’iPhone.
+- **Barre d’expérience centrale** : fixée en bas de l’écran, XP qui volent vers elle, célébration des montées de rang, barre qui se remplit sur les écrans de fin.
+- **Défis du jour** (3 par jour : un de mémoire, un de progression, un de variété), tirés selon l’état du joueur ; le jour change à 4 h. Les défis ne récompensent que des comportements utiles à l’apprentissage (premier coup, redressement après erreur, révision à l’échéance, variété des mondes), jamais le volume.
+- **Série de jours** : un jour compte quand les 3 défis sont accomplis. Une série d’au moins 3 jours interrompue la veille se rachète le jour même avec les 3 défis + 2 défis de rattrapage (au plus un rachat par semaine). Paliers 3, 7, 10, 30, 100 jours, récompensés une seule fois.
+- **Exploits** : 39, rangés par famille dans un onglet du Codex (constance, mémoire, erreurs fécondes, variété, maîtrise, démonstration, arène, secrets), sans compteur global ; les plus proches apparaissent en « Presque ». Certains donnent un **titre**, affiché sous le nom.
+- **« Presque »** pendant le jeu : dernier éclat avant le sceau, gardien qui vacille, record égalé dans l’Arène.
