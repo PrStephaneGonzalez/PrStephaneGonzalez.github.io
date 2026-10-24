@@ -91,7 +91,7 @@
   /* ================= état & progression ================= */
   let st = null,
     KEY = null;
-  const blank = (name) => ({ v: 1, name, xp: 0, skills: {}, bosses: {}, frags: [], stats: { solved: 0, bestCombo: 0 }, prologue: false, updated: Date.now() });
+  const blank = (name) => ({ v: CU.SAVE_V, name, xp: 0, skills: {}, bosses: {}, frags: [], stats: { solved: 0, bestCombo: 0 }, prologue: false, updated: Date.now() });
   const sk = (id) => st.skills[id] || (st.skills[id] = { tier: 0, prog: 0, seen: [], last: 0, done: 0 });
   const tierOf = (id) => (st.skills[id] || {}).tier || 0;
   const S = (id) => CU.SKILLS[id];
@@ -118,13 +118,27 @@
   };
   // ce qu'il manque pour ouvrir un rang : une liste d'alternatives (une par variante)
   const missingFor = (id, ti) => ti > 2 ? [] : [...new Set(allVariants(id, ti).map((v) => (v.needs || []).filter((n) => !needMet(n)).map(needLabel).join(' et ')).filter(Boolean))];
-  const available = (id) => S(id).req.every((r) => tierOf(r) >= 1) && tierContent(id, 0);
+  /* Droits acquis : quand le graphe change (nouveaux prérequis, nouvelles variantes), une Loi
+     déjà commencée reste ouverte, et un rang déjà entamé (au moins un éclat gagné) aussi.
+     Un rang que l'on vient seulement d'atteindre suit les règles normales : sinon un sceau brisé
+     ouvrirait le rang suivant même quand il utilise une notion pas encore acquise. */
+  const started = (id) => {
+    const s = st.skills[id];
+    return !!s && ((s.tier || 0) > 0 || (s.prog || 0) > 0 || (s.done || 0) > 0);
+  };
+  const available = (id) => started(id) || (S(id).req.every((r) => tierOf(r) >= 1) && tierContent(id, 0));
   // indice (0..2) du palier le plus haut que l'on peut tenter
   const maxAllowed = (id) => {
     if (!available(id)) return -1;
     const m = S(id).req.every((r) => tierOf(r) >= 2) ? 2 : 1;
-    for (let ti = 0; ti <= m; ti++) if (!tierContent(id, ti)) return ti - 1;
-    return m;
+    let r = m;
+    for (let ti = 0; ti <= m; ti++)
+      if (!tierContent(id, ti)) {
+        r = ti - 1;
+        break;
+      }
+    const s = st.skills[id];
+    return s && (s.prog || 0) > 0 && (s.tier || 0) < 3 ? Math.max(r, s.tier || 0) : r;
   };
   const regionSkills = (rid) => CU.ORDER.filter((id) => S(id).region === rid);
   const regionP = (rid) => {
@@ -336,6 +350,13 @@
       return paintSync();
     }
     try {
+      // on relit d'abord le cloud : un autre appareil a pu y écrire depuis notre dernier passage,
+      // et l'envoi remplace la sauvegarde distante. La fusion garde le meilleur des deux.
+      const c = await CU.save.cloudGet(KEY);
+      if (c && CU.save.mergeInto(st, c)) {
+        CU.save.storeLocal(KEY, st);
+        paintXp();
+      }
       await CU.save.cloudPut(KEY, st);
       syncState = 'ok';
     } catch {
@@ -521,7 +542,7 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
     } catch {
       syncState = 'offline';
     }
-    st = all || blank(name);
+    st = all ? CU.save.migrate(all) : blank(name);
     st.name = st.name || name;
     st.frags = st.frags || [];
     st.bosses = st.bosses || {};
@@ -752,6 +773,8 @@ ${(() => {
           return `<li class="${met ? 'met' : ''}">${met ? '✓' : '◇'} ${esc(S(r).name)} — rang ${TN[lvl - 1]} (${esc(CU.region(S(r).region).short)})</li>`;
         })
         .join('')}</ul>`;
+    // droits acquis : le rang ouvert d'une Loi commencée n'est jamais présenté comme fermé
+    if (started(id) && t < 3 && t <= maxAllowed(id)) return '';
     if (!s.req.every((r) => tierOf(r) >= 1)) return `<div class="req"><b>Cette Loi est scellée.</b> Il faut d’abord :${reqList(1)}</div>`;
     if (t >= 3) return '';
     if (t >= 2 && !s.req.every((r) => tierOf(r) >= 2)) return `<div class="req"><b>Le sceau Maître est encore scellé.</b> Il faut d’abord :${reqList(2)}</div>`;
@@ -2625,16 +2648,18 @@ ${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pou
     // reprise automatique sur cet appareil
     if (last && CU.save.local(last.key)) {
       KEY = last.key;
-      st = CU.save.local(last.key);
+      st = CU.save.migrate(CU.save.local(last.key));
       if (!st.prologue) return renderPrologue(0);
       if (location.hash.startsWith('#/t/') || location.hash.startsWith('#/b/')) history.replaceState(null, '', '#/world');
       route();
       CU.save
         .cloudGet(KEY)
         .then((c) => {
-          if (c && c.updated > st.updated) {
-            st = CU.save.merge(st, c);
+          // toujours fusionner (les horloges des appareils peuvent différer) ; sur place, sans
+          // remplacer les objets que l'écran affiché utilise déjà
+          if (c && CU.save.mergeInto(st, c)) {
             CU.save.storeLocal(KEY, st);
+            paintXp();
             if (view && (view.kind === 'world' || view.kind === 'region')) route();
           }
           syncState = 'ok';
