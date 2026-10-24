@@ -173,11 +173,124 @@
     return { name: CU.RANKS[i][1], pct: i + 1 >= CU.RANKS.length ? 100 : (100 * (st.xp - lo)) / (hi - lo), next: CU.RANKS[i + 1] };
   }
 
+  /* ---------- barre d'expérience : toujours visible, elle monte à chaque gain ---------- */
+  const xpPct = (xp) => {
+    const i = rankIdx(xp),
+      lo = CU.RANKS[i][0],
+      hi = (CU.RANKS[i + 1] || [lo + 1])[0];
+    return i + 1 >= CU.RANKS.length ? 100 : Math.max(0, Math.min(100, (100 * (xp - lo)) / (hi - lo)));
+  };
+  const xpLabel = (xp) => {
+    const i = rankIdx(xp),
+      nx = CU.RANKS[i + 1];
+    return nx ? `${xp - CU.RANKS[i][0]} / ${nx[0] - CU.RANKS[i][0]}` : `${xp} XP`;
+  };
+  let shownXp = null,
+    dockEl = null,
+    dockTimer = null;
+  function paintXp() {
+    dockEl = dockEl || $('#xpdock');
+    if (!dockEl) return;
+    if (!st || !st.prologue) {
+      dockEl.classList.remove('on');
+      document.body.classList.remove('hasdock');
+      shownXp = null;
+      return;
+    }
+    if (!dockEl.firstChild)
+      dockEl.innerHTML = `<div class="xd-in"><div class="xd-rank"><small>RANG</small><b id="xd-name"></b></div><div class="xd-track"><i class="xd-fill" id="xd-fill"></i><i class="xd-spark" id="xd-spark"></i><span class="xd-txt" id="xd-txt"></span></div><div class="xd-next" id="xd-next"></div></div>`;
+    dockEl.classList.add('on');
+    document.body.classList.add('hasdock');
+    const fill = $('#xd-fill'),
+      name = $('#xd-name'),
+      txt = $('#xd-txt'),
+      nx = $('#xd-next');
+    const setStatic = (xp) => {
+      const nxr = CU.RANKS[rankIdx(xp) + 1];
+      name.textContent = CU.RANKS[rankIdx(xp)][1];
+      nx.textContent = nxr ? '→ ' + nxr[1] : '✦ max';
+      txt.textContent = xpLabel(xp);
+      fill.style.width = xpPct(xp) + '%';
+    };
+    if (shownXp === null || st.xp < shownXp) {
+      shownXp = st.xp;
+      return setStatic(st.xp);
+    }
+    if (st.xp === shownXp) return;
+    const from = shownXp,
+      to = st.xp;
+    shownXp = to;
+    const up = rankIdx(to) > rankIdx(from);
+    clearTimeout(dockTimer);
+    dockEl.classList.remove('gain');
+    void dockEl.offsetWidth;
+    dockEl.classList.add('gain');
+    txt.textContent = xpLabel(up ? from : to);
+    if (!up) {
+      fill.style.width = xpPct(to) + '%';
+      dockTimer = setTimeout(() => dockEl.classList.remove('gain'), 1400);
+      return;
+    }
+    // changement de rang : la barre se remplit, éclate, puis repart du nouveau rang
+    fill.style.width = '100%';
+    dockTimer = setTimeout(() => {
+      dockEl.classList.add('rankup');
+      CU.sfx.tier();
+      const [x, y] = center($('#xd-fill'));
+      sparks(x, y, '#f5d79a', 36);
+      banner('✦ Nouveau rang', CU.RANKS[rankIdx(to)][1]);
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      void fill.offsetWidth;
+      fill.style.transition = '';
+      setStatic(to);
+      setTimeout(() => dockEl.classList.remove('rankup', 'gain'), 1800);
+    }, 950);
+  }
+  function banner(top, big) {
+    const b = document.createElement('div');
+    b.className = 'rankbanner';
+    b.innerHTML = `<small>${top}</small><b>${esc(big)}</b>`;
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 3200);
+  }
+  // le « +N XP » vole vers la barre
+  function flyXp(x, y, n) {
+    const d = $('#xpdock');
+    if (!d || !d.classList.contains('on')) return floatText(x, y, '+' + n + ' XP');
+    const t = $('#xd-fill').getBoundingClientRect();
+    const e = document.createElement('div');
+    e.className = 'flyxp';
+    e.textContent = '+' + n + ' XP';
+    e.style.left = x - 30 + 'px';
+    e.style.top = y - 20 + 'px';
+    fx.appendChild(e);
+    requestAnimationFrame(() => {
+      e.style.transform = `translate(${Math.min(innerWidth - 80, t.left + t.width) - x}px, ${t.top - y}px) scale(.7)`;
+      e.style.opacity = '.15';
+    });
+    setTimeout(() => e.remove(), 900);
+  }
+  // barre intégrée aux écrans de fin : de l'XP du début de l'épreuve à l'XP actuel
+  function xpInline(from) {
+    const to = st.xp,
+      i = rankIdx(to),
+      up = rankIdx(from) < i;
+    const p0 = up ? 0 : xpPct(from);
+    return `<div class="xpin" data-p="${xpPct(to).toFixed(1)}"><div class="xpin-h"><b>${esc(CU.RANKS[i][1])}</b><span>${xpLabel(to)}${CU.RANKS[i + 1] ? ' → ' + esc(CU.RANKS[i + 1][1]) : ''}</span></div><div class="xd-track big"><i class="xd-fill" style="width:${p0.toFixed(1)}%"></i></div>${to > from ? `<div class="xpin-g">+${to - from} XP${up ? ' · <b>nouveau rang !</b>' : ''}</div>` : ''}</div>`;
+  }
+  function growInline(root) {
+    const el = $('.xpin', root);
+    if (!el) return;
+    setTimeout(() => ($('.xd-fill', el).style.width = el.dataset.p + '%'), 900);
+  }
+
   /* ================= sauvegarde ================= */
   let cloudTimer = null,
     syncState = 'local';
   function save(now = false) {
     st.updated = Date.now();
+    paintXp();
     CU.save.storeLocal(KEY, st);
     clearTimeout(cloudTimer);
     cloudTimer = setTimeout(pushCloud, now ? 50 : 2500);
@@ -252,6 +365,7 @@
     return [r.left + r.width / 2, r.top + r.height / 2];
   };
   function setHue(h, deep) {
+    paintXp();
     document.documentElement.style.setProperty('--hue', h);
     document.documentElement.style.setProperty('--hueDeep', deep || '#2b2112');
     embers.hue = h;
@@ -322,6 +436,7 @@
 
   /* ================= écran titre ================= */
   function renderTitle() {
+    paintXp();
     view = { kind: 'title' }; mood('explore');
     setHue('#d9ab5b');
     let last = null;
@@ -410,7 +525,7 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
     const x = xpInfo();
     return `<header class="hud">
 ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.label)}</span></button>` : `<span style="font-size:1.4rem;color:var(--gold)" aria-hidden="true">✦</span>`}
-<div class="who"><div class="name">${esc(st.name)}</div><div class="rank">${esc(x.name)} · ${st.xp} XP</div><div class="xpbar" title="${x.next ? 'Prochain rang : ' + esc(x.next[1]) + ' à ' + x.next[0] + ' XP' : 'Rang maximal'}"><i style="width:${x.pct.toFixed(1)}%"></i></div></div>
+<div class="who"><div class="name">${esc(st.name)}</div><div class="rank">${esc(x.name)} · ${st.xp} XP</div></div>
 <button class="icon-btn" id="cdx" aria-label="Le Codex" title="Le Codex">📖</button>
 <button class="icon-btn" id="snd" aria-label="Son" title="Son">${CU.settings.sound ? '🔊' : '🔇'}</button>
 <button class="icon-btn" id="mnu" aria-label="Menu" title="Menu">☰</button>
@@ -831,6 +946,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       ti,
       mode: replay && mode === 'normal' ? 'replay' : mode,
       rid: s.region,
+      xp0: st.xp,
       need: mode === 'revive' ? 3 : need(id),
       got: mode === 'normal' && !replay ? ss.prog || 0 : 0,
       combo: 0,
@@ -1041,7 +1157,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     CU.sfx.right(v.combo);
     const [x, y] = center($('#ok') || $('#zone'));
     sparks(x, y, getComputedStyle(document.documentElement).getPropertyValue('--hue').trim() || '#fff', first ? 22 : 10);
-    floatText(x, y, '+' + gain + ' XP');
+    flyXp(x, y, gain);
     const fb = $('#fb');
     fb.className = 'feedback good';
     fb.textContent = (COMBO[v.combo] || (first ? R.pick(GOOD) : v.kind === 'recall' ? 'Juste — mais avec le Grimoire ouvert : ce souvenir reviendra plus tôt.' : 'Juste — mais cette fois, sans éclat de sceau (il faut réussir du premier coup, sans indice).')) + '';
@@ -1118,9 +1234,11 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
 <h2>${esc(title)}</h2><div class="ital">${esc(sub)}</div>
 ${v.mode === 'normal' && v.ti === 0 ? `<div class="law" style="text-align:left">${H(sd.law)}</div>` : ''}
 <div class="gains">${gains.map((x, i) => `<div class="gain" style="animation-delay:${0.6 + i * 0.15}s">${x}</div>`).join('')}</div>
+${xpInline(v.xp0)}
 ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUpperCase())}</h4>${f.text}</div>`).join('')}
 <div class="actions">${canNext ? `<button class="btn primary" id="ov-next">Continuer — ${TN[s.tier]}</button>` : ''}<button class="btn ${canNext ? '' : 'primary'}" id="ov-back">Retour : ${esc(g.short)}</button></div></div>`;
     document.body.appendChild(ov);
+    growInline(ov);
     if (canNext)
       $('#ov-next', ov).onclick = () => {
         ov.remove();
@@ -1153,7 +1271,7 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     const b = fin ? CU.FINAL : g.boss;
     setHue('#e0475b', '#3a0f16');
     const pool = fin ? CU.ORDER.filter((id) => CU.FINAL.needs.includes(S(id).region)) : regionSkills(rid);
-    view = { kind: 'boss', rid: fin ? null : rid, final: fin, b, pool, hp: b.hp, lives: 3, combo: 0, over: false };
+    view = { kind: 'boss', rid: fin ? null : rid, final: fin, b, pool, hp: b.hp, lives: 3, combo: 0, over: false, xp0: st.xp };
     mood('boss');
     history.pushState(null, '', '#/b/' + rid);
     app.innerHTML = `<div class="trial">
@@ -1240,9 +1358,11 @@ ${frs.map((f) => `<div class="frag"><h4>FRAGMENT DU CODEX — ${esc(f.title.toUp
     ov.style.setProperty('--hue', '#f5d79a');
     ov.innerHTML = `<div class="ov-inner">${CU.ART.seal('#f5d79a', v.b.glyph)}<h2>${esc(v.b.name)} est vaincu${v.b.name.startsWith('La ') || v.b.name.startsWith('L’Archère') ? 'e' : ''}</h2>
 <div class="gains"><div class="gain"><b>+${gain} XP</b>${firstWin ? '' : ' — revanche'}</div>${firstWin && !v.final ? `<div class="gain">👑 ${esc(g.name)} sont libérés de la brume.</div>` : ''}</div>
+${xpInline(v.xp0)}
 ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX — ' + esc(g.name.toUpperCase())}</h4>${CU.BOSS_TEXT[key]}</div>` : ''}
 <div class="actions"><button class="btn primary" id="ov-back">${v.final ? 'Contempler le monde' : 'Voir la région restaurée'}</button></div></div>`;
     document.body.appendChild(ov);
+    growInline(ov);
     $('#ov-back', ov).onclick = () => {
       ov.remove();
       view = null;
@@ -1434,8 +1554,10 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     ov.innerHTML = `<div class="ov-inner"><div class="arena-big">${v.score}</div><h2>${rec && v.score ? 'Nouveau record !' : 'Fin de la partie'}</h2>
 <div class="ital">${v.score >= 20 ? 'Tes automatismes sont des réflexes. Les Informes n’ont même pas le temps de te voir.' : v.score >= 10 ? 'Rapide et sûr. Encore un peu, et ce sera un réflexe.' : 'Chaque partie aiguise la lame. Reviens demain : la vitesse vient avec la répétition.'}</div>
 <div class="gains"><div class="gain"><b>+${st.xp - v.xp0} XP</b> gagnés dans l’Arène</div><div class="gain">Record : <b>${Math.max(prev, v.score)}</b>${rec && prev ? ` (ancien : ${prev})` : ''}${rec && v.score >= 3 ? ' — bonus de record <b>+40 XP</b>' : ''}</div></div>
+${xpInline(v.xp0)}
 <div class="actions"><button class="btn primary gold" id="ov-again">Rejouer</button><button class="btn" id="ov-back">Retour à la carte</button></div></div>`;
     document.body.appendChild(ov);
+    growInline(ov);
     $('#ov-again', ov).onclick = () => (ov.remove(), startArena());
     $('#ov-back', ov).onclick = () => {
       ov.remove();
@@ -1614,9 +1736,11 @@ ${
 <h2>${win ? 'Les souvenirs sont gravés' : 'L’Oubli l’emporte — pour cette fois'}</h2>
 <div class="ital">${win ? 'Ce que l’on retrouve sans aide, on le garde. Chaque séance repousse l’Oubli un peu plus loin.' : 'Les Lois manquées reviendront dès demain. C’est en se trompant ici, et non le jour du combat, qu’on apprend le mieux.'}</div>
 <div class="gains">${gains.map((x, i) => `<div class="gain" style="animation-delay:${0.5 + i * 0.15}s">${x}</div>`).join('')}</div>
+${xpInline(v.xp0)}
 <details class="memlist" open><summary>Tes souvenirs</summary><ul>${rows}</ul></details>
 <div class="actions">${!win ? '<button class="btn primary" id="ov-again">Recommencer</button>' : ''}<button class="btn ${win ? 'primary' : ''}" id="ov-back">${v.sc === 'all' ? 'Retour à la carte' : 'Retour : ' + esc(CU.region(v.sc).short)}</button></div></div>`;
     document.body.appendChild(ov);
+    growInline(ov);
     const again = $('#ov-again', ov);
     if (again) again.onclick = () => (ov.remove(), startRecall(v.sc));
     $('#ov-back', ov).onclick = () => {
