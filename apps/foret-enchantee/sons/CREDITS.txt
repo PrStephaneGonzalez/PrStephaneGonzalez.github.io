@@ -9,3 +9,4 @@ synthèse vocale Piper (https://github.com/rhasspy/piper), voix fr_FR « siwis �
 corpus SIWIS, Université d'Édimbourg, licence CC BY 4.0 (https://datashare.is.ed.ac.uk/handle/10283/2353).
 
 sons/ln/ : noms des 26 lettres et phrases du hibou, voix Piper « siwis » (CC BY 4.0), ajoutés le 24/10/2026 pour que le hibou parle même quand la voix de l'iPad est muette. À remplacer par la voix de Papa si souhaité.
+sons/v/ : consignes et phrases du jeu (1923 phrases), voix Piper « siwis » (CC BY 4.0), ajoutées le 24/10/2026 car la voix de l'iPad ne parlait plus. Les sons, syllabes et mots restent ceux enregistrés par Papa.
