@@ -1117,7 +1117,7 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
     let s = `<svg viewBox="0 0 ${W} ${Hh}" xmlns="http://www.w3.org/2000/svg"><defs>
 <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hue)"/></marker>
 <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f5d79a"/></marker>
-<filter id="ggl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+<filter id="ggl" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${Hh}"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
     for (let x = g.x0; x <= g.x1; x++) s += `<line x1="${px(x)}" y1="${py(g.y1) - U / 2}" x2="${px(x)}" y2="${py(g.y0) + U / 2}" stroke="${x === 0 ? '#5a5266' : '#1f1b27'}" stroke-width="${x === 0 ? 2 : 1}"/>`;
     for (let y = g.y0; y <= g.y1; y++) s += `<line x1="${px(g.x0) - U / 2}" y1="${py(y)}" x2="${px(g.x1) + U / 2}" y2="${py(y)}" stroke="${y === 0 ? '#5a5266' : '#1f1b27'}" stroke-width="${y === 0 ? 2 : 1}"/>`;
     if (opts.labels !== false) {
@@ -1329,7 +1329,7 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
     const X = (x) => m + ((x + 0.5) / (sc.xmax + 0.5)) * (W - 2 * m),
       Y = (y) => Hh - m - ((y + 0.5) / (sc.ymax + 0.5)) * (Hh - 2 * m);
     const sceneSvg = (traj, hit) => {
-      let s = `<svg viewBox="0 0 ${W} ${Hh}"><defs><filter id="bgl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+      let s = `<svg viewBox="0 0 ${W} ${Hh}"><defs><filter id="bgl" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${Hh}"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
       for (let x = 0; x <= sc.xmax; x++) s += `<line x1="${X(x)}" y1="${Y(0)}" x2="${X(x)}" y2="${Y(sc.ymax)}" stroke="#1a1622"/>${x % 2 === 0 ? `<text x="${X(x)}" y="${Y(0) + 16}" font-size="11" fill="#6f6878" text-anchor="middle">${x}</text>` : ''}`;
       for (let y = 0; y <= sc.ymax; y++) s += `<line x1="${X(0)}" y1="${Y(y)}" x2="${X(sc.xmax)}" y2="${Y(y)}" stroke="#1a1622"/>${y && y % 2 === 0 ? `<text x="${X(0) - 6}" y="${Y(y) + 4}" font-size="11" fill="#6f6878" text-anchor="end">${y}</text>` : ''}`;
       s += `<rect x="0" y="${Y(0)}" width="${W}" height="${Hh - Y(0)}" fill="#120f18"/><line x1="0" y1="${Y(0)}" x2="${W}" y2="${Y(0)}" stroke="#5a5266" stroke-width="2"/>`;
