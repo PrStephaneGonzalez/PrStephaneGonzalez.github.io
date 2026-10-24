@@ -470,7 +470,7 @@
         },
       ),
       CU.oneOf(
-        () => {
+        CU.needs(['q3:2'], () => {
           // u(m, p), v(q, m + r) : m² + r m - pq = 0, racines entières m1, m2
           for (;;) {
             const m1 = R.nz(-6, 6),
@@ -489,7 +489,7 @@
               'Écris det = 0 : tu obtiens une équation du second degré. Cherche deux nombres dont la somme et le produit conviennent pour factoriser.',
             );
           }
-        },
+        }),
         () => {
           const A = [R.int(-8, 8), R.int(-8, 8)],
             u = [R.nz(-5, 5), R.nz(-5, 5)];
@@ -668,6 +668,6 @@
       T`<p>L’outil central est la <b>relation de Chasles</b>, utilisée pour « insérer » un point : $\overrightarrow{MA}=\overrightarrow{MI}+\overrightarrow{IA}$. On choisit le point à insérer en regardant ce que l’on veut faire apparaître.</p>`,
       T`<p>Une démonstration se lit aussi d’un œil critique : chaque étape doit découler des précédentes. Pour trouver une erreur, on vérifie chaque implication isolément. Une erreur classique : passer d’une égalité de longueurs à une égalité de vecteurs.</p>`,
     ],
-    gen: [() => R.pick(VPROOF1)(), () => R.pick(VPROOF2)(), () => R.pick(VPROOF3)()],
+    gen: [CU.oneOf(...VPROOF1), CU.oneOf(...VPROOF2), CU.oneOf(...VPROOF3)],
   });
 })();

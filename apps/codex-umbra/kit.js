@@ -87,6 +87,9 @@
   // petit utilitaire : choix parmi des générateurs
   // les variantes restent accessibles (exemples résolus du Grimoire)
   CU.oneOf = (...gens) => Object.assign(() => R.pick(gens)(), { variants: gens });
+  // variante qui mobilise une notion d'une autre Loi : ['q3'] = sceau Novice de q3 brisé,
+  // ['q3:2'] = sceau Adepte brisé. Elle n'est proposée qu'une fois ces sceaux brisés.
+  CU.needs = (list, fn) => Object.assign(fn, { needs: list });
   CU.sqTex = (n) => {
     const [k, m] = CU.sqrtSimp(n);
     return m === 1 ? String(k) : (k === 1 ? '' : k) + '\\sqrt{' + m + '}';
