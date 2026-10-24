@@ -671,6 +671,8 @@ CU.save = {
 };
 
 /* ---------- sons (synthétisés, aucun fichier) ---------- */
+// appareil modeste (Android, peu de cœurs ou de mémoire) : moteur audio allégé
+CU.LITE = /Android/i.test(navigator.userAgent) || (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 3;
 CU.sfx = (function () {
   let ctx = null,
     master = null,
@@ -680,7 +682,12 @@ CU.sfx = (function () {
     if (!ctx || ctx.state === 'closed') {
       const A = window.AudioContext || window.webkitAudioContext;
       if (!A) return null;
-      ctx = new A();
+      try {
+        // tampon plus large sur appareil modeste : évite les coupures
+        ctx = CU.LITE ? new A({ latencyHint: 'playback' }) : new A();
+      } catch {
+        ctx = new A();
+      }
       master = ctx.createGain();
       master.gain.value = 0.55;
       const comp = ctx.createDynamicsCompressor();
