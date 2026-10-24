@@ -1015,6 +1015,55 @@ dialog p {
 #toast.show {
   opacity: 1;
 }
+/* Phrase après une réponse : félicitation, ou « ce n'est pas juste » avec encouragement */
+.answer-banner {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translate(-50%, -16px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(92vw, 560px);
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 2px solid var(--gold);
+  background: #254b49;
+  color: var(--ink);
+  box-shadow: 0 12px 44px #0006;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+  z-index: 120;
+}
+.answer-banner.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.answer-banner.right {
+  border-color: #8fd9a8;
+  background: #1f5a48;
+}
+.answer-banner.wrong {
+  border-color: #f2c779;
+  background: #4a3d2c;
+}
+.answer-banner-icon {
+  font-size: 1.5rem;
+  color: var(--gold);
+  flex: none;
+}
+.answer-banner.right .answer-banner-icon {
+  color: #b9f0c9;
+}
+.high-contrast .answer-banner {
+  background: #000;
+  border-color: #fff;
+}
 .no-motion * {
   animation: none !important;
   transition: none !important;

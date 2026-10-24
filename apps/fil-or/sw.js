@@ -1,4 +1,4 @@
-const CACHE='fil-or-shell-e9dfafb5d1071cc0';
+const CACHE='fil-or-shell-b88e605cb73201cb';
 const ASSETS = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const ASSETS = [
   './engine.mjs',
   './potion-data.mjs',
   './messages.mjs',
+  './feedback.mjs',
   './learning.mjs',
   './learning-data.mjs',
   './catalog.mjs',
