@@ -589,8 +589,11 @@ CU.render = function (html) {
 const SB_URL = 'https://hwyckgbmguxhufnlenif.supabase.co',
   SB_KEY = 'sb_publishable_ockdQA7mMQP4fSz02r3nHQ_BOzgZpxM';
 CU.save = {
-  async keyOf(name, pin) {
-    const norm = String(name).normalize('NFKC').trim().toLocaleLowerCase('fr').replace(/\s+/g, ' ');
+  // « Stéphane » et « Stephane » désignent le même compte : on retire les accents.
+  // legacy = ancienne empreinte (accents conservés), relue à la connexion pour ne rien perdre.
+  async keyOf(name, pin, legacy = false) {
+    let norm = String(name).normalize('NFKC').trim().toLocaleLowerCase('fr').replace(/\s+/g, ' ');
+    if (!legacy) norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('codex-umbra-v1:' + norm + ':' + pin));
     return [...new Uint8Array(h)].map((x) => x.toString(16).padStart(2, '0')).join('');
   },
@@ -630,6 +633,17 @@ CU.save = {
   },
   async cloudPut(key, st) {
     await this.rpc('codex_put', { k: key, p: st });
+  },
+  // envoi qui survit à la fermeture de la page
+  beacon(key, st) {
+    try {
+      fetch(SB_URL + '/rest/v1/rpc/codex_put', {
+        method: 'POST',
+        keepalive: true,
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ k: key, p: st }),
+      }).catch(() => {});
+    } catch {}
   },
   // fusion : on garde toujours le meilleur des deux
   merge(a, b) {

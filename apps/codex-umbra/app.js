@@ -17,9 +17,16 @@
     CU.settings = { sound: true, musicOn: true, musicVol: 0.5 };
   }
   // la musique ne peut démarrer qu'après un geste de l'utilisateur
-  const startMusic = () => CU.music && CU.music.start();
-  addEventListener('pointerdown', startMusic, { once: true });
-  addEventListener('keydown', startMusic, { once: true });
+  // iPhone/iPad : le son ne se débloque que sur un vrai « toucher relâché » ou un clic,
+  // pas sur pointerdown ; on réessaie donc à chaque geste tant que ce n'est pas joué.
+  try {
+    if (navigator.audioSession) navigator.audioSession.type = 'playback';
+  } catch {}
+  const startMusic = () => {
+    CU.sfx.unlock();
+    CU.music && CU.music.start();
+  };
+  for (const ev of ['click', 'touchend', 'keydown']) addEventListener(ev, startMusic, { passive: true });
   const mood = (m) => CU.music && CU.music.mode(m);
   const saveSettings = () => {
     try {
@@ -89,7 +96,15 @@
     if (el) el.textContent = syncState === 'ok' ? '● sauvegardé en ligne' : syncState === 'offline' ? '○ hors ligne — sauvegardé sur l’appareil' : '';
   }
   addEventListener('online', () => st && pushCloud());
-  addEventListener('pagehide', () => st && CU.save.storeLocal(KEY, st));
+  // quand on quitte ou met l'appli en arrière-plan : sauvegarde immédiate, y compris en ligne
+  function flushNow() {
+    if (!st) return;
+    clearTimeout(cloudTimer);
+    CU.save.storeLocal(KEY, st);
+    CU.save.beacon(KEY, st);
+  }
+  addEventListener('pagehide', flushNow);
+  document.addEventListener('visibilitychange', () => document.hidden && flushNow());
 
   /* ================= effets ================= */
   const fx = $('#fx');
@@ -230,7 +245,9 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
       if (!/^[\p{L}\p{N} '’-]{2,24}$/u.test(name)) return ($('#err').textContent = 'Choisis un nom de 2 à 24 lettres.');
       if (!/^\d{4,6}$/.test(pin)) return ($('#err').textContent = 'Le code doit faire 4 à 6 chiffres.');
       $('#err').textContent = 'Le Codex te cherche…';
-      await enter(await CU.save.keyOf(name, pin), name);
+      const key = await CU.save.keyOf(name, pin),
+        old = await CU.save.keyOf(name, pin, true);
+      await enter(key, name, old !== key ? old : null);
     };
     const r = $('#resume');
     if (r)
@@ -239,17 +256,17 @@ ${last && CU.save.local(last.key) ? `<button class="btn primary" id="resume" sty
         await enter(last.key, last.name);
       };
   }
-  async function enter(key, name) {
+  async function enter(key, name, oldKey) {
     KEY = key;
-    const local = CU.save.local(key);
-    let cloud = null;
+    let all = CU.save.merge(CU.save.local(key), oldKey ? CU.save.local(oldKey) : null);
     try {
-      cloud = await CU.save.cloudGet(key);
+      all = CU.save.merge(all, await CU.save.cloudGet(key));
+      if (oldKey) all = CU.save.merge(all, await CU.save.cloudGet(oldKey));
       syncState = 'ok';
     } catch {
       syncState = 'offline';
     }
-    st = CU.save.merge(local, cloud) || blank(name);
+    st = all || blank(name);
     st.name = st.name || name;
     st.frags = st.frags || [];
     st.bosses = st.bosses || {};

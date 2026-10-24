@@ -20,10 +20,10 @@
     sus: [0, 5, 7, 12],
   };
   const MODES = {
-    explore: { prog: ['i', 'VI', 'iv', 'i', 'III', 'VI', 'v', 'i'], len: 13, cut: 900, vol: 1, bells: [7, 14], pulse: 0, tick: 0 },
-    focus: { prog: ['i', 'VI', 'i', 'iv', 'sus', 'i', 'VI', 'v'], len: 17, cut: 560, vol: 0.8, bells: [16, 30], pulse: 0, tick: 0 },
-    boss: { prog: ['i', 'bII', 'i', 'v', 'i', 'bII', 'iv', 'v'], len: 6.5, cut: 1100, vol: 1, bells: [9, 16], pulse: 0.8, tick: 0 },
-    arena: { prog: ['i', 'iv', 'VI', 'v'], len: 8, cut: 800, vol: 0.85, bells: [12, 20], pulse: 0, tick: 0.6 },
+    explore: { prog: ['i', 'VI', 'iv', 'i', 'III', 'VI', 'v', 'i'], len: 13, cut: 2200, vol: 1, bells: [7, 14], pulse: 0, tick: 0 },
+    focus: { prog: ['i', 'VI', 'i', 'iv', 'sus', 'i', 'VI', 'v'], len: 17, cut: 1500, vol: 0.85, bells: [12, 22], pulse: 0, tick: 0 },
+    boss: { prog: ['i', 'bII', 'i', 'v', 'i', 'bII', 'iv', 'v'], len: 6.5, cut: 2400, vol: 1, bells: [9, 16], pulse: 0.8, tick: 0 },
+    arena: { prog: ['i', 'iv', 'VI', 'v'], len: 8, cut: 1900, vol: 0.85, bells: [12, 20], pulse: 0, tick: 0.6 },
   };
   const PENTA = [0, 3, 5, 7, 10, 12, 15, 17];
   let A = null,
@@ -40,7 +40,7 @@
 
   function level() {
     const v = CU.settings.musicVol ?? 0.5;
-    return 0.06 + 0.22 * v;
+    return 0.12 + 0.5 * v;
   }
   function init() {
     if (A) return true;
@@ -77,6 +77,8 @@
       if (document.hidden) A.suspend && A.suspend();
       else A.resume && A.resume();
     });
+    // iOS peut suspendre le contexte audio sans prévenir : on le relance au besoin
+    setInterval(() => on && A.state !== 'running' && !document.hidden && A.resume && A.resume().catch(() => {}), 2000);
     return true;
   }
   // une voix de nappe : deux oscillateurs légèrement désaccordés, enveloppe très lente
@@ -109,14 +111,16 @@
     step++;
     const notes = CH[name];
     const dur = M.len + 2;
-    voice(hz(notes[0] % 12 < 0 ? notes[0] + 12 : notes[0] % 12), t0, dur, 0.09 * M.vol); // basse
-    notes.forEach((s, i) => voice(hz(s + 12), t0 + i * 0.25, dur, (i === 3 ? 0.025 : 0.04) * M.vol));
+    const root = notes[0] < 0 ? notes[0] + 12 : notes[0];
+    voice(hz(root + 12), t0, dur, 0.08 * M.vol); // basse (ré 3 : audible sur un téléphone)
+    notes.forEach((s, i) => voice(hz(s + 24), t0 + i * 0.25, dur, (i === 3 ? 0.035 : 0.055) * M.vol));
   }
   function bell(t0) {
     const s = PENTA[Math.floor(Math.random() * PENTA.length)] + 36;
+    // cloche : ré 5 et au-dessus
     const f = hz(s);
     const g = A.createGain();
-    const v = 0.035 * MODES[mode].vol;
+    const v = 0.06 * MODES[mode].vol;
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(v, t0 + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + 5);
@@ -194,6 +198,7 @@
     // démarre (si la musique est activée) ; à appeler après un geste de l'utilisateur
     start() {
       if (CU.settings.musicOn === false || on) return;
+      CU.sfx.unlock();
       if (!init()) return;
       on = true;
       const t = A.currentTime;
