@@ -1664,3 +1664,244 @@ svg.board .x {
   width: 100%;
   accent-color: var(--gold);
 }
+
+/* ---------- carte de région : nœuds plus lisibles, liste repliée ---------- */
+.node .core {
+  transition: transform 0.15s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.node:hover .core,
+.node:focus-visible .core {
+  transform: scale(1.07);
+}
+.node:active .core {
+  transform: scale(0.94);
+}
+.node:focus {
+  outline: none;
+}
+.maphint {
+  max-width: 640px;
+  margin: 10px auto 0;
+  text-align: center;
+  color: var(--mute);
+  font-size: 0.88rem;
+}
+.listwrap {
+  max-width: 640px;
+  margin: 14px auto 0;
+}
+.listwrap > summary {
+  cursor: pointer;
+  color: var(--mute);
+  font-size: 0.9rem;
+  text-align: center;
+  list-style: none;
+  padding: 6px;
+}
+.listwrap > summary::-webkit-details-marker {
+  display: none;
+}
+.listwrap > summary::after {
+  content: ' ▾';
+}
+.listwrap[open] > summary::after {
+  content: ' ▴';
+}
+.listwrap .list {
+  margin-top: 8px;
+}
+
+/* ---------- grimoire enrichi ---------- */
+.sheet.wide {
+  width: min(760px, 100%);
+}
+.gtabs {
+  display: flex;
+  gap: 6px;
+  margin: 16px 0 4px;
+  border-bottom: 1px solid var(--line2);
+}
+.gtabs button {
+  flex: 1;
+  padding: 9px 6px;
+  font-family: var(--font-t);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.gtabs button.on {
+  color: var(--hue);
+  border-bottom-color: var(--hue);
+}
+.grim ol.meth {
+  margin: 6px 0;
+  padding-left: 1.4em;
+}
+.grim ol.meth li {
+  margin: 5px 0;
+  padding-left: 4px;
+}
+.grim ol.meth li::marker {
+  color: var(--hue);
+  font-weight: 700;
+}
+.grim .pit {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(224, 71, 91, 0.08);
+  border: 1px solid rgba(224, 71, 91, 0.25);
+  font-size: 0.95rem;
+}
+.grim .pit b {
+  color: #ff8494;
+}
+.grim .tip b {
+  color: var(--ink);
+}
+.wex {
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line2);
+  background: rgba(255, 255, 255, 0.025);
+}
+.wex .wq {
+  margin-bottom: 6px;
+}
+.wex .wq pre,
+.wex .wsol pre {
+  overflow-x: auto;
+}
+.wex details > summary {
+  cursor: pointer;
+  color: var(--hue);
+  font-size: 0.92rem;
+  margin-top: 6px;
+}
+.wex .wsol {
+  margin-top: 6px;
+  color: var(--ink);
+}
+.wex .wch {
+  margin: 6px 0;
+  padding-left: 1.2em;
+  color: var(--mute);
+}
+.wsteps {
+  padding-left: 1.4em;
+  margin: 6px 0;
+}
+.wsteps li {
+  margin: 4px 0;
+}
+.wsteps.codey li {
+  font-family: var(--font-c);
+  font-size: 0.88em;
+  white-space: pre-wrap;
+}
+.gridwrap.mini {
+  max-width: 340px;
+  margin: 8px auto;
+}
+.page.openable {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.page.openable:hover {
+  border-color: color-mix(in srgb, var(--hue) 55%, transparent);
+}
+.page .more {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--hue);
+}
+
+/* ---------- mémoire : autels du souvenir ---------- */
+.memory-card {
+  --hue: #c8b6ff;
+}
+.memdot {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: rgba(200, 182, 255, 0.16);
+  color: #d9ccff;
+  font-weight: 600;
+}
+.clock.mem i {
+  background: linear-gradient(90deg, #8a7bb8, #c8b6ff);
+}
+.memlist {
+  margin-top: 12px;
+  text-align: left;
+}
+.memlist > summary {
+  cursor: pointer;
+  color: var(--mute);
+  font-size: 0.9rem;
+}
+.memlist ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 4px;
+  max-height: 260px;
+  overflow: auto;
+}
+.memlist li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.9rem;
+}
+.memlist li small {
+  color: var(--mute);
+}
+.memlist li span:last-child {
+  color: var(--mute);
+  flex: none;
+}
+.memlist li.due span:last-child,
+.memlist li.ko span:first-child {
+  color: #ff8494;
+}
+.memlist li.ok span:first-child {
+  color: #7ee2a8;
+}
+.clock.mem {
+  height: 8px;
+}
+.clock.mem i {
+  box-shadow: 0 0 10px #8a7bb8;
+  transition: width 0.4s;
+}
+.gtabs button {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--font-t);
+}
+.gtabs button.on {
+  border-bottom-color: var(--hue);
+}
+.page.openable {
+  appearance: none;
+  color: inherit;
+  font: inherit;
+  background: var(--panel);
+  border: 1px solid var(--line2);
+}

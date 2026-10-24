@@ -104,12 +104,62 @@
     return ids.reduce((s, id) => s + tierOf(id), 0) / (3 * ids.length);
   };
   const regionOpen = (rid) => regionSkills(rid).some(available);
-  const bossOpen = (rid) => regionSkills(rid).every((id) => tierOf(id) >= 2);
-  const finalOpen = () => CU.FINAL.needs.every((r) => st.bosses[r]);
+  const allAdept = (rid) => regionSkills(rid).every((id) => tierOf(id) >= 2);
+  const recallWins = (sc) => ((st.recall || {})[sc] || {}).wins || 0;
+  // le gardien s'éveille quand toutes les Lois sont au rang Adepte ET qu'un souvenir a été gravé à l'Autel
+  const bossOpen = (rid) => allAdept(rid) && recallWins(rid) >= 1;
+  const finalOpen = () => CU.FINAL.needs.every((r) => st.bosses[r]) && recallWins('all') >= 1;
   const totalTiers = () => CU.ORDER.reduce((s, id) => s + tierOf(id), 0);
   const NEED = { v7: 3, f6: 3, q6: 3, p3: 3, l2: 4 };
   const need = (id) => NEED[id] || 5;
-  const ember = (id) => tierOf(id) >= 1 && sk(id).last && Date.now() - sk(id).last > 5 * DAY;
+  /* ---------- mémoire : répétition espacée (boîtes de Leitner) ----------
+     Chaque palier acquis (Loi × rang) a une boîte b et une date de révision due.
+     Réussi du premier coup à l'échéance : boîte suivante, révision repoussée (1, 3, 7, 15, 30, 60 jours).
+     Manqué : on recule de deux boîtes et l'on revoit dès le lendemain. */
+  const IV = [1, 3, 7, 15, 30, 60];
+  const mk = (id, ti) => id + ':' + ti;
+  function memOf(id, ti) {
+    st.mem = st.mem || {};
+    // progression antérieure à la mémoire : à revoir tout de suite
+    return st.mem[mk(id, ti)] || (st.mem[mk(id, ti)] = { b: 0, due: (st.skills[id] && st.skills[id].last) || Date.now(), t: 0 });
+  }
+  function memSet(id, ti, ok) {
+    const m = memOf(id, ti),
+      now = Date.now();
+    if (ok) {
+      if (m.due > now) return; // pas encore à l'échéance : rien ne change
+      m.b = Math.min(IV.length - 1, m.b + 1);
+    } else m.b = Math.max(0, m.b - 2);
+    m.due = now + IV[m.b] * DAY;
+    m.t = now;
+  }
+  function memFresh(id, ti) {
+    st.mem = st.mem || {};
+    st.mem[mk(id, ti)] = { b: 0, due: Date.now() + DAY, t: Date.now() };
+  }
+  const scopeIds = (sc) => (sc === 'all' ? CU.ORDER : regionSkills(sc));
+  function memItems(sc) {
+    const out = [];
+    for (const id of scopeIds(sc)) for (let ti = 0; ti < Math.min(3, tierOf(id)); ti++) out.push({ id, ti, m: memOf(id, ti) });
+    return out;
+  }
+  const dueN = (sc) => memItems(sc).filter((x) => x.m.due <= Date.now()).length;
+  const RECALL_MIN = (sc) => (sc === 'all' ? 6 : 3);
+  const recallOpen = (sc) => memItems(sc).length >= RECALL_MIN(sc);
+  // braise : un palier dont la révision est en retard de plus de deux jours
+  const emberTier = (id) => {
+    let best = -1,
+      d = Infinity;
+    for (let ti = 0; ti < Math.min(3, tierOf(id)); ti++) {
+      const m = memOf(id, ti);
+      if (m.due < Date.now() - 2 * DAY && m.due < d) {
+        d = m.due;
+        best = ti;
+      }
+    }
+    return best;
+  };
+  const ember = (id) => tierOf(id) >= 1 && emberTier(id) >= 0;
   const rankIdx = (xp) => {
     let i = 0;
     CU.RANKS.forEach((r, k) => xp >= r[0] && (i = k));
@@ -262,7 +312,8 @@
     if (h.startsWith('/t/') && view && view.kind === 'trial') return; // déjà affiché
     if (h.startsWith('/b/') && view && view.kind === 'boss') return;
     if (h === '/a' && view && view.kind === 'arena') return;
-    if (h.startsWith('/t/') || h.startsWith('/b/') || h === '/a') {
+    if (h.startsWith('/m/') && view && view.kind === 'recall') return;
+    if (h.startsWith('/t/') || h.startsWith('/b/') || h.startsWith('/m/') || h === '/a') {
       const rid = view && view.rid;
       return rid ? go('#/r/' + rid) : renderWorld();
     }
@@ -416,11 +467,17 @@ ${
           const ids = regionSkills(g.id);
           const done = ids.filter((id) => tierOf(id) >= 3).length;
           const lockedWhy = !g.open ? 'Requiert : ' + [...new Set(ids.flatMap((id) => S(id).req.filter((r) => S(r).region !== g.id)))].map((r) => S(r).name).join(', ') : '';
-          return `<button class="rcard ${g.open ? '' : 'locked'}" data-region="${g.id}" style="--hue:${g.hue}"><span class="ic">${esc(g.icon)}</span><h3>${esc(g.name)}</h3><div class="sub">${esc(g.open ? g.sub : lockedWhy)}</div><div class="prog"><i style="width:${(100 * g.p).toFixed(0)}%"></i></div><div class="meta"><span>${g.short} · ${done}/${ids.length} Lois maîtrisées</span><span>${g.boss ? '👑 Gardien vaincu' : bossOpen(g.id) ? '⚔ Gardien éveillé' : ''}</span></div></button>`;
+          const dn = recallOpen(g.id) ? dueN(g.id) : 0;
+          return `<button class="rcard ${g.open ? '' : 'locked'}" data-region="${g.id}" style="--hue:${g.hue}"><span class="ic">${esc(g.icon)}</span><h3>${esc(g.name)}</h3><div class="sub">${esc(g.open ? g.sub : lockedWhy)}</div><div class="prog"><i style="width:${(100 * g.p).toFixed(0)}%"></i></div><div class="meta"><span>${g.short} · ${done}/${ids.length} Lois maîtrisées</span><span>${dn ? `<span class="memdot">◈ ${dn}</span> ` : ''}${g.boss ? '👑 Gardien vaincu' : bossOpen(g.id) ? '⚔ Gardien éveillé' : ''}</span></div></button>`;
         })
         .join('')}
+${(() => {
+  const op = recallOpen('all'),
+    dn = op ? dueN('all') : 0;
+  return `<button class="rcard final-card memory-card ${op ? '' : 'locked'}" id="cloister"><span class="ic">◈</span><h3>Le Cloître de la Mémoire</h3><div class="sub">${op ? (dn ? `${dn} souvenir${dn > 1 ? 's' : ''} s’estompe${dn > 1 ? 'nt' : ''}, toutes régions mêlées.` : 'Tous tes souvenirs tiennent. Reviens quand l’Oubli rôdera.') : 'S’ouvre au 6e sceau brisé : on y revoit, mélangé, tout ce que tu as appris.'}</div><div class="meta"><span>${recallWins('all') ? 'Souvenirs gravés : ' + recallWins('all') : ''}</span><span>${dn ? '<span class="memdot">◈ ' + dn + '</span>' : ''}</span></div></button>`;
+})()}
 <button class="rcard final-card arena-card ${arenaPool().length ? '' : 'locked'}" id="arena"><span class="ic">⏳</span><h3>L’Arène des Automatismes</h3><div class="sub">${arenaPool().length ? 'Calcul mental, développements, discriminants… contre la montre.' : 'S’ouvre dès ton premier sceau de calcul.'}</div><div class="meta"><span>${st.arena && st.arena.best ? 'Record : ' + st.arena.best : arenaPool().length ? arenaPool().length + ' types de calculs' : ''}</span></div></button>
-<button class="rcard final-card ${fo ? '' : 'locked'}" id="fin"><span class="ic">${CU.FINAL.glyph}</span><h3>Le Sanctuaire du Codex</h3><div class="sub">${fd ? 'Le Roi Sans Loi est vaincu. Le Codex t’appartient.' : fo ? 'Le Roi Sans Loi t’attend.' : 'Vaincs les gardiens des Remparts, des Cryptes et de la Tour pour ouvrir le Sanctuaire.'}</div><div class="meta"><span>${CU.FINAL.needs.map((r) => (st.bosses[r] ? '👑' : '◇')).join(' ')}</span></div></button>
+<button class="rcard final-card ${fo ? '' : 'locked'}" id="fin"><span class="ic">${CU.FINAL.glyph}</span><h3>Le Sanctuaire du Codex</h3><div class="sub">${fd ? 'Le Roi Sans Loi est vaincu. Le Codex t’appartient.' : fo ? 'Le Roi Sans Loi t’attend.' : 'Vaincs les gardiens des Remparts, des Cryptes et de la Tour, et grave un souvenir au Cloître, pour ouvrir le Sanctuaire.'}</div><div class="meta"><span>${CU.FINAL.needs.map((r) => (st.bosses[r] ? '👑' : '◇')).join(' ')} ${recallWins('all') ? '◈' : '◇'}</span></div></button>
 </div>
 <div class="foot"><span class="syncdot"></span></div>
 </div>`;
@@ -437,8 +494,9 @@ ${
         go('#/r/' + id);
       };
     });
-    const fin = () => (fo ? startBoss('final') : (CU.sfx.wrong(), toast('Le Sanctuaire est scellé par trois gardiens.')));
+    const fin = () => (fo ? startBoss('final') : (CU.sfx.wrong(), toast(CU.FINAL.needs.every((r) => st.bosses[r]) ? 'Le Sanctuaire attend un souvenir gravé au Cloître de la Mémoire.' : 'Le Sanctuaire est scellé par trois gardiens.')));
     $('#fin').onclick = fin;
+    $('#cloister').onclick = () => (CU.sfx.click(), openRecallSheet('all'));
     $('#arena').onclick = () => (CU.sfx.click(), openArenaSheet());
     const fs = $('[data-final]');
     if (fs) fs.onclick = fin;
@@ -446,28 +504,42 @@ ${
   }
 
   /* ================= région ================= */
+  // emplacement de l'Autel du Souvenir sur chaque scène (repère 1000 × 1000)
+  const ALTAR = { vec: [270, 300], fac: [260, 300], quad: [260, 290], py: [250, 470], log: [250, 470] };
   function renderRegion(rid, flashId) {
     view = { kind: 'region', rid }; mood('explore');
     const g = CU.region(rid);
     setHue(g.hue, g.deep);
     const ids = regionSkills(rid);
-    const nodes = ids.map((id) => ({ id, x: S(id).x, y: S(id).y, name: S(id).name, glyph: S(id).glyph, tier: tierOf(id), state: available(id) ? 'open' : 'locked', isNew: available(id) && tierOf(id) === 0 && !sk(id).prog, ember: ember(id) }));
+    const status = (id) => {
+      const t = tierOf(id);
+      if (!available(id)) return '⛓ scellée';
+      if (t === 3) return '✦ Maîtrisée';
+      return TN[t] + (sk(id).prog ? ' · ' + sk(id).prog + '/' + need(id) : '');
+    };
+    const nodes = ids.map((id) => ({ id, x: S(id).x, y: S(id).y, name: S(id).name, glyph: S(id).glyph, tier: tierOf(id), state: available(id) ? 'open' : 'locked', isNew: available(id) && tierOf(id) === 0 && !sk(id).prog, ember: ember(id), sub: status(id) }));
     const edges = [];
     for (const id of ids) for (const r of S(id).req) if (S(r).region === rid) edges.push({ a: r, b: id, state: tierOf(r) >= 1 ? (tierOf(id) >= 1 ? 'lit' : 'open') : 'locked' });
+    const aOpen = recallOpen(rid),
+      aDue = aOpen ? dueN(rid) : 0;
+    const altar = { x: ALTAR[rid][0], y: ALTAR[rid][1], open: aOpen, due: aDue, wins: recallWins(rid), sub: aOpen ? (aDue ? aDue + ' à raviver' : recallWins(rid) ? '✦ ' + recallWins(rid) + ' gravé' + (recallWins(rid) > 1 ? 's' : '') : 'S’entraîner') : '⛓ ' + RECALL_MIN(rid) + ' sceaux' };
+    const bossWhy = st.bosses[rid] ? '👑 Vaincu — tu peux le défier à nouveau' : bossOpen(rid) ? '⚔ Il t’attend' : !allAdept(rid) ? 'S’éveille quand toutes les Lois de la région sont au rang Adepte et qu’un souvenir est gravé à l’Autel' : 'Toutes les Lois sont Adepte : grave un souvenir à l’Autel pour l’éveiller';
     app.innerHTML =
       hud({ label: 'Carte', hash: '#/world' }) +
       `<div class="wrap">
 <div class="region-title"><h1>${esc(g.name)}</h1><div class="ital">${esc(st.bosses[rid] ? g.healed : g.intro)}</div></div>
-<div class="scene">${CU.ART.scene({ region: g, p: regionP(rid), bossDone: !!st.bosses[rid], bossOpen: bossOpen(rid), nodes, edges })}</div>
-<div class="list">${ids
+<div class="scene">${CU.ART.scene({ region: g, p: regionP(rid), bossDone: !!st.bosses[rid], bossOpen: bossOpen(rid), nodes, edges, altar })}</div>
+<div class="maphint">Touche une Loi sur la carte, l’Autel du Souvenir ◈ pour réviser, ou le gardien.</div>
+<details class="listwrap"><summary>Liste des Lois</summary><div class="list">${ids
         .map((id) => {
           const t = tierOf(id),
             av = available(id);
           return `<button class="lrow ${av ? '' : 'locked'}" data-id="${id}"><span class="g">${esc(S(id).glyph)}</span><span class="t"><b>${esc(S(id).name)}</b><small>${av ? (t === 3 ? 'Loi maîtrisée' : TN[t] + (sk(id).prog ? ' · ' + sk(id).prog + '/' + need(id) + ' éclats' : '')) : '⛓ scellée'}${ember(id) ? ' · 🔥 à raviver' : ''}</small></span><span class="seals">${[0, 1, 2].map((i) => `<i class="${t > i ? (t === 3 ? 'gold' : 'on') : ''}"></i>`).join('')}</span></button>`;
         })
         .join('')}
-<button class="lrow" data-boss="1" style="--hue:#e0475b"><span class="g">${esc(g.boss.glyph)}</span><span class="t"><b>${esc(g.boss.name)}</b><small>${st.bosses[rid] ? '👑 Vaincu — tu peux le défier à nouveau' : bossOpen(rid) ? '⚔ Il t’attend' : 'S’éveille quand toutes les Lois de la région sont au rang Adepte'}</small></span></button>
-</div>
+<button class="lrow ${aOpen ? '' : 'locked'}" data-recall="1" style="--hue:#c8b6ff"><span class="g">◈</span><span class="t"><b>L’Autel du Souvenir</b><small>${aOpen ? (aDue ? aDue + ' souvenir' + (aDue > 1 ? 's' : '') + ' à raviver' : 'Aucun souvenir ne s’estompe') + ' · gravés : ' + recallWins(rid) : 's’allume au ' + RECALL_MIN(rid) + 'e sceau brisé de la région'}</small></span></button>
+<button class="lrow" data-boss="1" style="--hue:#e0475b"><span class="g">${esc(g.boss.glyph)}</span><span class="t"><b>${esc(g.boss.name)}</b><small>${bossWhy}</small></span></button>
+</div></details>
 <div class="foot"><span class="syncdot"></span></div></div>`;
     wireHud({ label: 'Carte', hash: '#/world' });
     paintSync();
@@ -475,7 +547,14 @@ ${
       el.onclick = () => (CU.sfx.click(), openSheet(el.dataset.id));
       el.onkeydown = (e) => e.key === 'Enter' && openSheet(el.dataset.id);
     });
-    $$('[data-boss]').forEach((el) => (el.onclick = () => (CU.sfx.click(), openBossSheet(rid))));
+    $$('[data-boss]').forEach((el) => {
+      el.onclick = () => (CU.sfx.click(), openBossSheet(rid));
+      el.onkeydown = (e) => e.key === 'Enter' && openBossSheet(rid);
+    });
+    $$('[data-recall]').forEach((el) => {
+      el.onclick = () => (CU.sfx.click(), openRecallSheet(rid));
+      el.onkeydown = (e) => e.key === 'Enter' && openRecallSheet(rid);
+    });
     if (flashId) {
       const n = $(`.node[data-id="${flashId}"]`);
       if (n) {
@@ -540,26 +619,119 @@ ${t >= 1 ? `<div class="law">${H(s.law)}</div>` : ''}
           const a = b.dataset.a;
           if (a === 'go') launch(id, t);
           if (a === 'replay') launch(id, Math.min(t, 3) - 1, 'replay');
-          if (a === 'revive') launch(id, Math.min(t, 3) - 1, 'revive');
+          if (a === 'revive') launch(id, Math.max(0, emberTier(id)), 'revive');
           if (a === 'lesson') openLesson(id, Math.max(0, Math.min(av ? Math.max(t, 0) : 0, 2)));
         }),
     );
   }
-  function openLesson(id, ti, then) {
+  /* ---------- le Grimoire : cours, méthode, exemples résolus ---------- */
+  // exemples tirés en direct des générateurs : un par variante d'exercice (au plus trois)
+  function examplesFor(id, ti) {
+    const gfun = S(id).gen[ti],
+      vs = gfun.variants || [gfun, gfun, gfun],
+      out = [],
+      seen = new Set();
+    for (const v of vs) {
+      for (let k = 0; k < 5; k++) {
+        let ex;
+        try {
+          ex = v();
+        } catch {
+          continue;
+        }
+        const key = ex.q + (ex.type || '');
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(ex);
+        break;
+      }
+      if (out.length >= (gfun.variants ? 3 : 2)) break;
+    }
+    return out;
+  }
+  const answerPtSvg = (ex) => (px, py) => `<circle cx="${px(ex.answerPt[0])}" cy="${py(ex.answerPt[1])}" r="13" fill="none" stroke="#7ee2a8" stroke-width="3"/><circle cx="${px(ex.answerPt[0])}" cy="${py(ex.answerPt[1])}" r="5" fill="#7ee2a8"/>`;
+  function jumpSvg(ex) {
+    return gridSvg(
+      ex.grid,
+      (px, py) => {
+        let s = '';
+        for (const p of ex.pits) s += `<rect x="${px(p[0]) - 15}" y="${py(p[1]) - 15}" width="30" height="30" rx="7" fill="#2a0a10" stroke="#e0475b" stroke-width="1.5"/><text x="${px(p[0])}" y="${py(p[1]) + 6}" font-size="16" text-anchor="middle">☠</text>`;
+        s += `<circle cx="${px(ex.Tg[0])}" cy="${py(ex.Tg[1])}" r="15" fill="none" stroke="#f5d79a" stroke-width="3"/><text x="${px(ex.Tg[0])}" y="${py(ex.Tg[1]) + 6}" font-size="16" text-anchor="middle" fill="#f5d79a" font-family="Cinzel,serif">R</text>`;
+        s += `<circle cx="${px(ex.S[0])}" cy="${py(ex.S[1])}" r="9" fill="var(--hue)"/><text x="${px(ex.S[0])}" y="${py(ex.S[1]) - 14}" font-size="16" fill="#ece6da" text-anchor="middle" font-family="Cinzel,serif">S</text>`;
+        return s;
+      },
+      { labels: false },
+    );
+  }
+  // ce que l'élève voit de l'énoncé (figure, choix, étapes…)
+  function exFigure(ex) {
+    if (ex.type === 'grid') return `<div class="gridwrap mini">${gridSvg(ex.grid)}</div>`;
+    if (ex.type === 'jump') return `<div class="gridwrap mini">${jumpSvg(ex)}</div><p class="note">Sauts : $\\vec u${CU.N.col(...ex.u)}$ et $\\vec v${CU.N.col(...ex.v)}$ (et leurs opposés), ${ex.limit} au plus.</p>`;
+    if (ex.grid && ex.showGrid) return `<div class="gridwrap mini">${gridSvg(ex.grid)}</div>`;
+    if (ex.type === 'choice') return `<ul class="wch">${ex.choices.map((c) => `<li>${c}</li>`).join('')}</ul>`;
+    if (ex.type === 'toggle') return `<ul class="wch">${ex.people.map((p) => `<li><b>${esc(p.name)}</b> : « ${esc(p.says)} »</li>`).join('')}</ul>`;
+    if (ex.type === 'order') return `<p class="note">${ex.items.length} étapes proposées, ${ex.n} à garder et à ordonner.</p>`;
+    return '';
+  }
+  // la réponse attendue, avant l'explication
+  function exAnswer(ex) {
+    if (ex.type === 'grid') return `<div class="gridwrap mini">${gridSvg(ex.grid, answerPtSvg(ex))}</div>`;
+    if (ex.type === 'choice') return `<p><b>Réponse :</b> ${ex.choices[ex.correct]}</p>`;
+    if (ex.type === 'toggle') return `<p><b>Réponse :</b> ${ex.people.map((p, i) => esc(p.name) + ' est ' + (ex.answer[i] ? 'chevalier' : 'fripon')).join(', ')}.</p>`;
+    if (ex.type === 'order') {
+      const right = ex.items.filter((it) => typeof it.k === 'number').sort((a, b) => a.k - b.k);
+      const bad = ex.items.filter((it) => typeof it.k !== 'number');
+      return `<ol class="wsteps ${ex.code ? 'codey' : ''}">${right.map((it) => `<li>${it.h}</li>`).join('')}</ol>${bad.length ? `<p class="note"><b>Intrus :</b> ${bad.map((it) => it.h).join(' — ')}</p>` : ''}`;
+    }
+    return '';
+  }
+  function exampleHtml(ex, i) {
+    return `<div class="wex"><div class="wq"><b>Exemple ${i + 1}.</b> ${ex.q}</div>${exFigure(ex)}<details><summary>Voir la solution</summary>${exAnswer(ex)}<div class="wsol">${ex.sol}</div></details></div>`;
+  }
+  function openLesson(id, ti, then, opts = {}) {
     const s = S(id),
       g = CU.region(s.region);
-    const bg = sheet(
-      `<div class="top"><div class="bigg">${esc(s.glyph)}</div><div><div class="place">Le Grimoire · ${esc(s.name)}</div><h2>${TN[ti]}</h2></div></div>
-<div class="grim"><h3>${TN[ti].toUpperCase()}</h3>${H(s.lessons[ti])}
-${ti > 0 ? `<details class="past"><summary>Revoir les paliers précédents</summary>${s.lessons.slice(0, ti).map((l, i) => `<h3>${TN[i].toUpperCase()}</h3>${H(l)}`).join('')}</details>` : ''}</div>
-<div class="actions">${then ? `<button class="btn primary" id="lgo">J’ai compris — à l’épreuve</button>` : `<button class="btn" id="lgo">Fermer</button>`}</div>`,
-      g.hue,
-    );
-    $('#lgo', bg).onclick = () => {
-      CU.sfx.click();
-      closeSheet();
-      then && then();
-    };
+    let cur = Math.max(0, Math.min(2, ti));
+    const bg = sheet('<div id="grim-root"></div>', g.hue);
+    bg.querySelector('.sheet').classList.add('wide');
+    const root = $('#grim-root', bg);
+    function paintExamples() {
+      const box = $('#exs', root);
+      try {
+        box.innerHTML = H(examplesFor(id, cur).map(exampleHtml).join(''));
+      } catch (e) {
+        box.innerHTML = '<p class="note">Les exemples n’ont pas pu être tirés.</p>';
+      }
+    }
+    function paint() {
+      root.innerHTML = `<div class="top"><div class="bigg">${esc(s.glyph)}</div><div><div class="place">Le Grimoire · ${esc(g.short)}</div><h2>${esc(s.name)}</h2></div></div>
+<div class="gtabs" role="tablist">${TN.map((n, i) => `<button role="tab" class="${i === cur ? 'on' : ''}" data-gt="${i}">${n}${tierOf(id) > i ? ' ✓' : ''}</button>`).join('')}</div>
+<div class="grim">
+<h3>L’essentiel</h3>${H(s.lessons[cur])}
+${s.methods ? `<h3>Méthode</h3>${H(s.methods[cur])}` : ''}
+<h3>Exemples résolus</h3><p class="note">Tirés au hasard, comme dans l’épreuve. Cherche d’abord, puis ouvre la solution.</p><div id="exs"></div>
+<div class="row"><button class="btn ghost small" id="moreex">↻ D’autres exemples</button></div>
+<h3>La Loi à retenir</h3><div class="law">${H(s.law)}</div>
+</div>
+<div class="actions">${then ? `<button class="btn primary" id="lgo">J’ai compris — à l’épreuve</button>` : `<button class="btn" id="lgo">${esc(opts.back || 'Fermer')}</button>`}</div>`;
+      $$('[data-gt]', root).forEach(
+        (b) =>
+          (b.onclick = () => {
+            CU.sfx.click();
+            cur = +b.dataset.gt;
+            paint();
+            bg.querySelector('.sheet').scrollTop = 0;
+          }),
+      );
+      $('#moreex', root).onclick = () => (CU.sfx.click(), paintExamples());
+      $('#lgo', root).onclick = () => {
+        CU.sfx.click();
+        closeSheet();
+        then && then();
+      };
+      paintExamples();
+    }
+    paint();
   }
   function openBossSheet(rid) {
     const g = CU.region(rid),
@@ -568,7 +740,7 @@ ${ti > 0 ? `<details class="past"><summary>Revoir les paliers précédents</summ
     const bg = sheet(
       `<div class="top">${CU.ART.boss(b.glyph, '#e0475b', 72)}<div><div class="place" style="color:#ff8494">${esc(b.title)}</div><h2>${esc(b.name)}</h2><div class="taunt">« ${esc(b.taunt)} »</div></div></div>
 <p style="color:var(--mute);margin-top:16px">Un combat sans indice : chaque bonne réponse le blesse, chaque erreur te coûte une lueur. Trois bonnes réponses d’affilée portent un <b>coup critique</b>. Les questions viennent de toutes les Lois de la région, aux rangs Adepte et Maître.</p>
-${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand toutes les Lois de la région auront atteint le rang <b>Adepte</b>.<ul>${regionSkills(rid).map((id) => `<li class="${tierOf(id) >= 2 ? 'met' : ''}">${tierOf(id) >= 2 ? '✓' : '◇'} ${esc(S(id).name)}</li>`).join('')}</ul></div>`}
+${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand toutes les Lois de la région auront atteint le rang <b>Adepte</b> et qu’un souvenir aura été gravé à l’Autel.<ul>${regionSkills(rid).map((id) => `<li class="${tierOf(id) >= 2 ? 'met' : ''}">${tierOf(id) >= 2 ? '✓' : '◇'} ${esc(S(id).name)}</li>`).join('')}<li class="${recallWins(rid) ? 'met' : ''}">${recallWins(rid) ? '✓' : '◇'} Un souvenir gravé à l’Autel du Souvenir</li></ul></div>`}
 <div class="actions">${open ? `<button class="btn primary blood" id="fight">${st.bosses[rid] ? 'Le défier à nouveau' : 'Affronter le gardien'}</button>` : ''}<button class="btn ghost" id="cl">Fermer</button></div>`,
       '#e0475b',
     );
@@ -681,6 +853,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
     const v = view;
     if (v.kind === 'boss') return paintBoss();
     if (v.kind === 'arena') return paintArena();
+    if (v.kind === 'recall') return paintRecall();
     $('#shards').innerHTML = [...Array(v.need)].map((_, i) => `<i class="shard ${i < v.got ? 'on' : ''}"></i>`).join('');
     const c = $('#combo');
     c.textContent = v.combo >= 2 ? '×' + v.combo : '';
@@ -694,6 +867,7 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
       ex = S(id).gen[R.pick([1, 2, 2])]();
       ex._sid = id;
     } else if (v.kind === 'arena') ex = arenaQuestion();
+    else if (v.kind === 'recall') ex = recallQuestion();
     else ex = S(v.id).gen[v.ti]();
     v.ex = ex;
     v.tries = 0;
@@ -706,16 +880,18 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
   function renderQuestion() {
     const v = view,
       ex = v.ex,
-      boss = v.kind === 'boss' || v.kind === 'arena';
+      boss = v.kind === 'boss' || v.kind === 'arena' || v.kind === 'recall',
+      cours = v.kind === 'trial' || v.kind === 'recall';
     const stage = $('#stage');
     stage.innerHTML = `<div class="card" id="card">
-${boss ? `<div class="place" style="color:var(--hue);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">${esc(S(ex._sid).name)}</div>` : ''}
+${boss && v.kind !== 'recall' ? `<div class="place" style="color:var(--hue);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">${esc(S(ex._sid).name)}</div>` : ''}
 <div class="q">${H(ex.q)}</div>
 <div class="zone" id="zone"></div>
 <div class="feedback" id="fb" role="status" aria-live="polite"></div>
 <div id="extra"></div>
 <div class="row" id="btns">
 ${boss ? '' : `<button class="btn ghost small" id="hint">💡 Indice</button>`}
+${cours ? `<button class="btn ghost small" id="cours">📖 Cours</button>` : ''}
 <div class="grow"></div>
 ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button class="btn primary" id="ok">${ex.type === 'baliste' ? '🎯 Tirer' : 'Valider'}</button>` : ''}
 </div></div>`;
@@ -725,6 +901,18 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     if (ok) ok.onclick = () => submit(v.ui.get());
     const hb = $('#hint');
     if (hb) hb.onclick = () => hint();
+    const cb = $('#cours');
+    if (cb)
+      cb.onclick = () => {
+        CU.sfx.click();
+        const sid = v.kind === 'recall' ? v.item.id : v.id,
+          ti = v.kind === 'recall' ? v.item.ti : v.ti;
+        if (v.kind === 'recall' && !v.answered && !v.peek) {
+          v.peek = true;
+          toast('Grimoire ouvert : ce souvenir comptera comme à revoir.');
+        }
+        openLesson(sid, ti, null, { back: 'Retour à l’épreuve' });
+      };
     // focus sur le premier champ
     const first = $('.inp', zone);
     if (first && matchMedia('(pointer:fine)').matches) first.focus();
@@ -762,7 +950,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     setTimeout(() => n.focus({ preventScroll: true }), 50);
   }
   addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' || !view || (view.kind !== 'trial' && view.kind !== 'boss' && view.kind !== 'arena')) return;
+    if (e.key !== 'Enter' || !view || (view.kind !== 'trial' && view.kind !== 'boss' && view.kind !== 'arena' && view.kind !== 'recall')) return;
     if ($('.sheet-bg') || $('.cu-ov')) return;
     if (view.answered) {
       const n = $('#nxt');
@@ -813,12 +1001,13 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     paintShards();
     if (v.kind === 'boss') return bossHurt();
     if (v.kind === 'arena') return arenaMiss(false);
+    if (v.kind === 'recall') return recallMiss();
     if (v.tries >= 2) reveal(false);
   }
 
   function success() {
     const v = view,
-      first = v.tries === 0 && !v.hinted;
+      first = v.tries === 0 && !v.hinted && !v.peek;
     v.answered = true;
     const card = $('#card');
     card.classList.add('good');
@@ -831,6 +1020,8 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     } else v.combo = 0;
     if (v.kind === 'boss') {
       gain = first ? 15 : 5;
+    } else if (v.kind === 'recall') {
+      gain = first ? 8 + 4 * v.item.ti : 3;
     } else if (v.kind === 'arena') {
       gain = 5 + v.cur.t * 2;
       v.score++;
@@ -853,18 +1044,20 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     floatText(x, y, '+' + gain + ' XP');
     const fb = $('#fb');
     fb.className = 'feedback good';
-    fb.textContent = (COMBO[v.combo] || (first ? R.pick(GOOD) : 'Juste — mais cette fois, sans éclat de sceau (il faut réussir du premier coup, sans indice).')) + '';
+    fb.textContent = (COMBO[v.combo] || (first ? R.pick(GOOD) : v.kind === 'recall' ? 'Juste — mais avec le Grimoire ouvert : ce souvenir reviendra plus tôt.' : 'Juste — mais cette fois, sans éclat de sceau (il faut réussir du premier coup, sans indice).')) + '';
     paintShards();
     if (rankIdx(st.xp) > before) setTimeout(() => toast('✦ Nouveau rang : <b>' + rankName(st.xp) + '</b>'), 700);
     save();
     if (v.kind === 'boss') return bossHit(first);
     if (v.kind === 'arena') return arenaHit();
+    if (v.kind === 'recall') return recallHit(first);
     $('#extra').insertAdjacentHTML('beforeend', `<details class="sol" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mute)">Voir l’explication</summary>${H(v.ex.sol)}</details>`);
     nextButton(v.got >= v.need ? 'Briser le sceau ✦' : 'Suivant →');
   }
   function afterAnswer() {
     const v = view;
     if (v.kind === 'arena') return v.over ? arenaEnd() : nextQuestion();
+    if (v.kind === 'recall') return v.over || v.pos >= v.queue.length ? recallEnd() : nextQuestion();
     if (v.kind === 'boss') {
       if (v.over) return;
       return nextQuestion();
@@ -884,21 +1077,27 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     const beforeAvail = new Set(CU.ORDER.filter(available));
     const beforeRank = rankIdx(st.xp);
     if (v.mode === 'normal') {
+      const fresh = s.tier <= v.ti;
       s.tier = Math.max(s.tier, v.ti + 1);
       s.prog = 0;
+      if (fresh) memFresh(v.id, v.ti);
       const bonus = 50 * (v.ti + 1);
       st.xp += bonus;
       gains.push(`<b>+${bonus} XP</b> — sceau ${TN[v.ti]} brisé`);
       title = v.ti === 2 ? 'La Loi est maîtrisée' : `Sceau ${TN[v.ti]} brisé`;
       sub = v.ti === 0 ? 'La Loi se réécrit dans le Codex. Autour de toi, quelque chose se rallume.' : v.ti === 1 ? 'La Loi s’affermit. Les Informes de ce lieu reculent.' : 'Plus rien ne peut défaire cette Loi. Elle brille d’or dans le Codex.';
       for (const id of CU.ORDER) if (!beforeAvail.has(id) && available(id)) gains.push(`Nouvelle Loi accessible : <b>${esc(S(id).name)}</b> <small>(${esc(CU.region(S(id).region).name)})</small>`);
-      if (bossOpen(sd.region) && !st.bosses[sd.region] && regionSkills(sd.region).filter((id) => tierOf(id) >= 2).length === regionSkills(sd.region).length && v.ti === 1) gains.push(`⚔ <b>${esc(g.boss.name)}</b> s’éveille !`);
+      if (v.ti === 1 && allAdept(sd.region) && !st.bosses[sd.region]) gains.push(bossOpen(sd.region) ? `⚔ <b>${esc(g.boss.name)}</b> s’éveille !` : `◈ Toutes les Lois de la région sont Adepte : grave un souvenir à l’<b>Autel du Souvenir</b> pour éveiller ${esc(g.boss.name)}.`);
+      if (memItems(sd.region).length === RECALL_MIN(sd.region)) gains.push('◈ L’<b>Autel du Souvenir</b> s’allume dans cette région.');
+      if (memItems('all').length === RECALL_MIN('all')) gains.push('◈ Le <b>Cloître de la Mémoire</b> s’ouvre sur la carte du monde.');
     } else if (v.mode === 'revive') {
+      memSet(v.id, v.ti, true);
       st.xp += 30;
       gains.push('<b>+30 XP</b> — braise ravivée');
       title = 'La braise est ravivée';
       sub = 'Une Loi qu’on entretient ne s’éteint pas.';
     } else {
+      memSet(v.id, v.ti, true);
       st.xp += 20;
       gains.push('<b>+20 XP</b> — révision accomplie');
       title = 'Épreuve accomplie';
@@ -1247,6 +1446,193 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     setTimeout(() => $('#ov-again', ov).focus(), 300);
   }
 
+  /* ================= autels du souvenir (révision espacée et entrelacée) ================= */
+  const days = (ms) => (ms < DAY ? 'demain' : 'dans ' + Math.ceil(ms / DAY) + ' j');
+  function openRecallSheet(sc) {
+    const all = memItems(sc),
+      now = Date.now(),
+      open = recallOpen(sc),
+      due = all.filter((x) => x.m.due <= now);
+    const reg = sc === 'all' ? null : CU.region(sc);
+    const title = sc === 'all' ? 'Le Cloître de la Mémoire' : 'L’Autel du Souvenir';
+    const rows = all
+      .slice()
+      .sort((a, b) => a.m.due - b.m.due)
+      .map((x) => `<li class="${x.m.due <= now ? 'due' : ''}"><span>${esc(S(x.id).name)} <small>· ${TN[x.ti]}</small></span><span>${x.m.due <= now ? 'à raviver' : days(x.m.due - now)}</span></li>`)
+      .join('');
+    const bg = sheet(
+      `<div class="top"><div class="bigg" style="color:#c8b6ff">◈</div><div><div class="place">${reg ? esc(reg.name) : 'Toutes les régions'}</div><h2>${title}</h2><div class="ital" style="font-size:1.05rem;margin-top:4px">L’Oubli ronge en silence ce que tu as compris. Ici, on ne découvre rien : on se souvient.</div></div></div>
+<p style="color:var(--mute);margin-top:14px">Des épreuves tirées des Lois que tu as déjà brisées${sc === 'all' ? ', toutes régions mêlées' : ''}, dans le désordre, <b>sans indice et sans le nom de la Loi</b> : reconnaître la bonne méthode fait partie de l’épreuve. Un souvenir retrouvé du premier coup reviendra de plus en plus tard (1, 3, 7, 15, 30, puis 60 jours) ; un souvenir manqué revient en fin de séance, puis dès le lendemain. Trois lueurs : à la troisième erreur, la séance s’arrête. Le Grimoire reste accessible, mais une Loi consultée compte comme à revoir.</p>
+${reg && !st.bosses[sc] ? `<p class="note">Graver un premier souvenir ici est l’une des conditions pour éveiller <b>${esc(reg.boss.name)}</b>.</p>` : ''}
+${sc === 'all' && !st.bosses.final ? `<p class="note">Graver un premier souvenir au Cloître est l’une des conditions pour ouvrir le Sanctuaire du Codex.</p>` : ''}
+${
+  open
+    ? `<div class="law" style="text-align:center">${due.length ? `<b>${due.length}</b> souvenir${due.length > 1 ? 's' : ''} s’estompe${due.length > 1 ? 'nt' : ''}` : 'Aucun souvenir ne s’estompe : tu peux t’entraîner quand même.'} · gravés : <b>${recallWins(sc)}</b></div>
+<details class="memlist"><summary>L’état de tes souvenirs (${all.length})</summary><ul>${rows}</ul></details>`
+    : `<div class="req">${sc === 'all' ? 'Le Cloître' : 'L’Autel'} s’allume dès que tu as brisé ${RECALL_MIN(sc)} sceaux ${sc === 'all' ? 'au total' : 'dans cette région'} (${all.length} pour l’instant).</div>`
+}
+<div class="actions">${open ? `<button class="btn primary" id="rc-go" style="--hue:#c8b6ff">${due.length ? 'Raviver les souvenirs' : 'S’entraîner'}</button>` : ''}<button class="btn ghost" id="rc-cl">Fermer</button></div>`,
+      '#c8b6ff',
+    );
+    $('#rc-cl', bg).onclick = closeSheet;
+    if (open) $('#rc-go', bg).onclick = () => (closeSheet(), startRecall(sc));
+  }
+  // évite deux questions d'affilée sur la même Loi (entrelacement)
+  function spread(q) {
+    for (let i = 1; i < q.length; i++)
+      if (q[i].id === q[i - 1].id) {
+        const j = q.findIndex((x, k) => k > i && x.id !== q[i - 1].id && (k + 1 >= q.length || q[k + 1].id !== q[i].id));
+        if (j > 0) [q[i], q[j]] = [q[j], q[i]];
+      }
+    return q;
+  }
+  function startRecall(sc) {
+    closeSheet();
+    const all = memItems(sc);
+    if (all.length < RECALL_MIN(sc)) return;
+    const N = sc === 'all' ? 12 : 8,
+      now = Date.now();
+    const due = all.filter((x) => x.m.due <= now).sort((a, b) => a.m.due - b.m.due);
+    const rest = all.filter((x) => x.m.due > now).sort((a, b) => a.m.due - b.m.due);
+    const pick = due.slice(0, N).concat(rest.slice(0, Math.max(0, N - due.length)));
+    // peu de Lois acquises : on en revoit certaines deux fois, sous une autre forme
+    while (pick.length < Math.min(N, 2 * all.length)) pick.push(R.pick(all));
+    const queue = spread(R.shuffle(pick).map((x) => ({ id: x.id, ti: x.ti })));
+    const hue = sc === 'all' ? '#c8b6ff' : CU.region(sc).hue;
+    setHue(hue, sc === 'all' ? '#1c1430' : CU.region(sc).deep);
+    view = { kind: 'recall', sc, rid: sc === 'all' ? null : sc, queue, pos: 0, lives: 3, score: 0, combo: 0, over: false, requeued: 0, res: [], xp0: st.xp, due0: due.length };
+    mood('focus');
+    history.pushState(null, '', '#/m/' + sc);
+    app.innerHTML = `<div class="trial">
+<div class="trial-head"><button class="back" id="quit" aria-label="Quitter">‹</button><div class="ttl"><small>${sc === 'all' ? 'Toutes les régions' : esc(CU.region(sc).short)} · sans indice</small><b>${sc === 'all' ? 'Le Cloître de la Mémoire' : 'L’Autel du Souvenir'}</b></div><div class="combo" id="combo"></div><div class="arscore" id="rcount"></div><div class="lives" id="lives"></div></div>
+<div class="clock mem"><i id="rbar"></i></div>
+<div id="stage"></div></div>`;
+    $('#quit').onclick = () => {
+      CU.sfx.click();
+      view = null;
+      save(true);
+      go(sc === 'all' ? '#/world' : '#/r/' + sc);
+    };
+    paintRecall();
+    nextQuestion();
+  }
+  function recallQuestion() {
+    const v = view,
+      it = v.queue[v.pos];
+    v.item = it;
+    v.peek = false;
+    const ex = S(it.id).gen[it.ti]();
+    ex._sid = it.id;
+    return ex;
+  }
+  function paintRecall() {
+    const v = view;
+    $('#lives').innerHTML = [0, 1, 2].map((i) => `<span class="${i >= v.lives ? 'lost' : ''}">🕯</span>`).join('');
+    $('#rcount').textContent = Math.min(v.pos + (v.answered ? 0 : 1), v.queue.length) + '/' + v.queue.length;
+    $('#rbar').style.width = ((100 * v.pos) / v.queue.length).toFixed(1) + '%';
+    const c = $('#combo');
+    c.textContent = v.combo >= 2 ? '×' + v.combo : '';
+    c.classList.toggle('on', v.combo >= 2);
+  }
+  function recallHit(first) {
+    const v = view,
+      it = v.item;
+    memSet(it.id, it.ti, first);
+    if (first) v.score++;
+    v.res.push({ id: it.id, ti: it.ti, ok: first });
+    v.pos++;
+    save();
+    paintRecall();
+    $('#extra').insertAdjacentHTML('beforeend', `<p class="note" style="margin-top:8px">C’était : <b>${esc(S(it.id).name)}</b> · ${TN[it.ti]}</p><details class="sol" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mute)">Voir l’explication</summary>${H(v.ex.sol)}</details>`);
+    nextButton(v.pos >= v.queue.length ? 'Graver les souvenirs ✦' : 'Suivant →');
+  }
+  function recallMiss() {
+    const v = view,
+      it = v.item;
+    v.answered = true;
+    v.lives--;
+    memSet(it.id, it.ti, false);
+    v.res.push({ id: it.id, ti: it.ti, ok: false });
+    let again = false;
+    if (v.requeued < 4 && v.lives > 0) {
+      v.queue.push({ id: it.id, ti: it.ti, again: true });
+      v.requeued++;
+      again = true;
+    }
+    v.pos++;
+    flash('#8a7bb8');
+    if (v.ui.reveal) v.ui.reveal();
+    $('#extra').insertAdjacentHTML('beforeend', `<div class="sol">${H(v.ex.sol)}</div><p class="note" style="margin-top:8px">C’était : <b>${esc(S(it.id).name)}</b> · ${TN[it.ti]}.${again ? ' Cette Loi reviendra en fin de séance, sous une autre forme.' : ''}</p>`);
+    if (v.lives <= 0) v.over = true;
+    save();
+    paintRecall();
+    nextButton(v.over ? 'Fin de la séance' : 'Suivant →');
+  }
+  function recallEnd() {
+    const v = view,
+      win = !v.over;
+    st.recall = st.recall || {};
+    const r = (st.recall[v.sc] = st.recall[v.sc] || { wins: 0, runs: 0 });
+    r.runs++;
+    const firstWin = win && !r.wins;
+    const gains = [];
+    if (win) {
+      r.wins++;
+      const bonus = v.sc === 'all' ? 80 : 40;
+      st.xp += bonus;
+      gains.push(`<b>+${bonus} XP</b> — séance menée à son terme`);
+      if (firstWin && v.sc !== 'all' && allAdept(v.sc) && !st.bosses[v.sc]) gains.push(`⚔ <b>${esc(CU.region(v.sc).boss.name)}</b> s’éveille !`);
+      if (firstWin && v.sc === 'all' && CU.FINAL.needs.every((x) => st.bosses[x]) && !st.bosses.final) gains.push('⚔ <b>Le Sanctuaire du Codex</b> s’ouvre !');
+    }
+    gains.unshift(`<b>+${st.xp - v.xp0} XP</b> en tout · ${v.score} souvenir${v.score > 1 ? 's' : ''} retrouvé${v.score > 1 ? 's' : ''} du premier coup`);
+    save(true);
+    if (win) {
+      CU.sfx.tier();
+      CU.music && CU.music.swell();
+      flash('#c8b6ff');
+    } else CU.sfx.hurt();
+    // état de chaque souvenir revu
+    const seen = [],
+      keys = new Set();
+    for (const x of v.res)
+      if (!keys.has(mk(x.id, x.ti))) {
+        keys.add(mk(x.id, x.ti));
+        seen.push(x);
+      }
+    const now = Date.now();
+    const rows = seen
+      .map((x) => {
+        const m = memOf(x.id, x.ti),
+          ok = v.res.filter((y) => y.id === x.id && y.ti === x.ti).every((y) => y.ok);
+        return `<li class="${ok ? 'ok' : 'ko'}"><span>${ok ? '✓' : '✗'} ${esc(S(x.id).name)} <small>· ${TN[x.ti]}</small></span><span>${m.due <= now ? 'à raviver' : 'revoir ' + days(m.due - now)}</span></li>`;
+      })
+      .join('');
+    const ov = document.createElement('div');
+    ov.className = 'ov cu-ov';
+    ov.style.setProperty('--hue', '#c8b6ff');
+    ov.innerHTML = `<div class="ov-inner">${win ? CU.ART.seal('#c8b6ff', '◈') : '<div class="arena-big" style="color:#c8b6ff">◈</div>'}
+<h2>${win ? 'Les souvenirs sont gravés' : 'L’Oubli l’emporte — pour cette fois'}</h2>
+<div class="ital">${win ? 'Ce que l’on retrouve sans aide, on le garde. Chaque séance repousse l’Oubli un peu plus loin.' : 'Les Lois manquées reviendront dès demain. C’est en se trompant ici, et non le jour du combat, qu’on apprend le mieux.'}</div>
+<div class="gains">${gains.map((x, i) => `<div class="gain" style="animation-delay:${0.5 + i * 0.15}s">${x}</div>`).join('')}</div>
+<details class="memlist" open><summary>Tes souvenirs</summary><ul>${rows}</ul></details>
+<div class="actions">${!win ? '<button class="btn primary" id="ov-again">Recommencer</button>' : ''}<button class="btn ${win ? 'primary' : ''}" id="ov-back">${v.sc === 'all' ? 'Retour à la carte' : 'Retour : ' + esc(CU.region(v.sc).short)}</button></div></div>`;
+    document.body.appendChild(ov);
+    const again = $('#ov-again', ov);
+    if (again) again.onclick = () => (ov.remove(), startRecall(v.sc));
+    $('#ov-back', ov).onclick = () => {
+      ov.remove();
+      view = null;
+      if (v.sc === 'all') {
+        history.replaceState(null, '', '#/world');
+        renderWorld();
+      } else {
+        history.replaceState(null, '', '#/r/' + v.sc);
+        renderRegion(v.sc);
+      }
+    };
+    setTimeout(() => ($('#ov-again', ov) || $('#ov-back', ov)).focus(), 400);
+  }
+
   /* ================= codex ================= */
   function renderCodex(tab = 'lois') {
     view = { kind: 'codex' }; mood('explore');
@@ -1260,7 +1646,7 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
             .map((id) => {
               const t = tierOf(id);
               return t >= 1
-                ? `<div class="page" style="--hue:${t === 3 ? '#f5d79a' : g.hue}"><h3>${esc(S(id).glyph)} ${esc(S(id).name)} <span class="seals" style="display:inline-flex;margin-left:8px">${[0, 1, 2].map((i) => `<i class="${t > i ? (t === 3 ? 'gold' : 'on') : ''}"></i>`).join('')}</span></h3><div class="law">${H(S(id).law)}</div></div>`
+                ? `<button class="page openable" data-lesson="${id}" style="--hue:${t === 3 ? '#f5d79a' : g.hue}"><h3>${esc(S(id).glyph)} ${esc(S(id).name)} <span class="seals" style="display:inline-flex;margin-left:8px">${[0, 1, 2].map((i) => `<i class="${t > i ? (t === 3 ? 'gold' : 'on') : ''}"></i>`).join('')}</span></h3><div class="law">${H(S(id).law)}</div><span class="more">📖 Cours, méthode et exemples →</span></button>`
                 : `<div class="page torn">Page arrachée — ${esc(S(id).place)}</div>`;
             })
             .join('')}</div>`,
@@ -1277,9 +1663,10 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     app.innerHTML =
       hud({ label: 'Carte', hash: '#/world' }) +
       `<div class="wrap"><div class="world-head"><h1>Le Codex</h1><div class="ital">${tt} sceaux brisés sur ${3 * CU.ORDER.length}. Chaque Loi comprise s’y réécrit.</div></div>
-<div class="tabs"><button class="${tab === 'lois' ? 'on' : ''}" data-tab="lois">Les Lois</button><button class="${tab === 'frag' ? 'on' : ''}" data-tab="frag">L’histoire</button></div>${body}</div>`;
+${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pour ouvrir son Grimoire : cours, méthode pas à pas et exemples résolus, pour chaque rang.</p>' : ''}<div class="tabs"><button class="${tab === 'lois' ? 'on' : ''}" data-tab="lois">Les Lois</button><button class="${tab === 'frag' ? 'on' : ''}" data-tab="frag">L’histoire</button></div>${body}</div>`;
     wireHud({ label: 'Carte', hash: '#/world' });
     $$('[data-tab]').forEach((b) => (b.onclick = () => (CU.sfx.click(), renderCodex(b.dataset.tab))));
+    $$('[data-lesson]').forEach((b) => (b.onclick = () => (CU.sfx.click(), openLesson(b.dataset.lesson, Math.min(2, Math.max(0, tierOf(b.dataset.lesson) - 1))))));
   }
 
   /* ================= composants d'exercice ================= */
@@ -1398,7 +1785,7 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
   };
   // ----- grille -----
   const U = 40;
-  function gridSvg(g, extra = '', opts = {}) {
+  function gridSvg(g, extra = () => '', opts = {}) {
     const W = (g.x1 - g.x0 + 1) * U,
       Hh = (g.y1 - g.y0 + 1) * U;
     const px = (x) => (x - g.x0 + 0.5) * U,
@@ -1722,5 +2109,5 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     setTimeout(wait, 50);
   })();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('./sw.js').catch(() => {});
-  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena };
+  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena, openLesson, startRecall, openRecallSheet };
 })();

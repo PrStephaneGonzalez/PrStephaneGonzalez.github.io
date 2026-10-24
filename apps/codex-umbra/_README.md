@@ -53,3 +53,14 @@ Nom d'Arpenteur + code de 4 à 6 chiffres. Progression dans le navigateur et dan
 - Pas de vraie rédaction de démonstration libre : les preuves passent par l'ordre des étapes, la détection d'erreurs et les contre-exemples.
 - Le Python est lu, complété et réordonné, pas exécuté (pas d'interpréteur embarqué).
 - Les seuils (5 éclats, rang Adepte pour les gardiens) sont à ajuster en regardant jouer.
+
+## Ajouts d’octobre 2026
+
+- **Carte cliquable** : chaque Loi se touche directement sur la scène de la région (la brume décorative ne capte plus les touchers) ; son rang et ses éclats s’affichent sous son nom. La liste reste disponible, repliée.
+- **Grimoire enrichi** : pour chaque Loi et chaque rang, trois onglets (Novice, Adepte, Maître) avec l’essentiel, une **méthode pas à pas** (`methods.js`, avec pièges et format de saisie) et des **exemples résolus tirés en direct des générateurs** (un par variante d’exercice, solution repliée). Les pages du Codex ouvrent ce Grimoire.
+- **Bouton « 📖 Cours »** pendant les épreuves : ouvre le Grimoire du rang en cours sans quitter l’exercice (sans pénalité en épreuve normale).
+- **Autels du Souvenir** (un par région) et **Cloître de la Mémoire** (toutes régions) : révision **espacée** (boîtes de Leitner, intervalles 1, 3, 7, 15, 30, 60 jours), **entrelacée** (Lois mélangées, sans leur nom) et **sans indice**. Une Loi manquée revient en fin de séance et le lendemain ; consulter le Grimoire la compte comme à revoir. Trois lueurs par séance.
+- Graver un premier souvenir à l’Autel est désormais une condition pour éveiller le gardien de la région ; graver un souvenir au Cloître, une condition pour ouvrir le Sanctuaire final.
+- Les braises 🔥 signalent un palier dont la révision a plus de deux jours de retard.
+- Sauvegarde : `mem` (état de chaque palier) et `recall` (séances) sont fusionnés entre appareils.
+- Son : musique adaptative générée (`music.js`), Arène chronométrée réservée aux automatismes, moteur allégé sur Android, contournement du commutateur silencieux de l’iPhone.

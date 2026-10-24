@@ -1,6 +1,6 @@
 // Codex Umbra — fonctionnement hors connexion. Changer VERSION à chaque publication.
-const VERSION = 'codex-umbra-v8';
-const SHELL = ['./', './index.html', './style.css', './core.js', './kit.js', './c-vec.js', './c-alg.js', './c-misc.js', './story.js', './art.js', './music.js', './app.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const VERSION = 'codex-umbra-v9';
+const SHELL = ['./', './index.html', './style.css', './core.js', './kit.js', './c-vec.js', './c-alg.js', './c-misc.js', './methods.js', './story.js', './art.js', './music.js', './app.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });

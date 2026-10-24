@@ -113,33 +113,33 @@ ${words.map((w, i) => `<text y="${120 + i * 34}" text-anchor="middle" font-famil
     if (kind === 'ramparts') {
       d = 'M0 760 ';
       for (let x = 0; x <= 1000; x += 40) d += `L${x} 740 L${x} 712 L${x + 20} 712 L${x + 20} 740 `;
-      d += 'L1000 760 L1000 1000 L0 1000Z';
+      d += 'L1000 760 L1000 1050 L0 1050Z';
       for (const tx of [90, 470, 880]) {
-        d += `M${tx - 50} 1000 L${tx - 50} 600 L${tx - 60} 600 L${tx - 60} 560 L${tx + 60} 560 L${tx + 60} 600 L${tx + 50} 600 L${tx + 50} 1000Z`;
+        d += `M${tx - 50} 1050 L${tx - 50} 600 L${tx - 60} 600 L${tx - 60} 560 L${tx + 60} 560 L${tx + 60} 600 L${tx + 50} 600 L${tx + 50} 1050Z`;
         win.push([tx - 10, 640, 20, 34], [tx - 10, 720, 20, 34]);
       }
       for (let x = 160; x < 860; x += 120) win.push([x, 800, 14, 24]);
     } else if (kind === 'crypt') {
-      d = 'M0 820 C200 790 400 840 600 800 C800 770 900 810 1000 790 L1000 1000 L0 1000Z';
+      d = 'M0 820 C200 790 400 840 600 800 C800 770 900 810 1000 790 L1000 1050 L0 1050Z';
       for (const [cx, w, h] of [[150, 90, 150], [380, 70, 110], [620, 110, 200], [850, 80, 130]]) {
-        d += `M${cx - w / 2} 1000 L${cx - w / 2} ${820 - h + w / 2} A${w / 2} ${w / 2} 0 0 1 ${cx + w / 2} ${820 - h + w / 2} L${cx + w / 2} 1000Z`;
+        d += `M${cx - w / 2} 1050 L${cx - w / 2} ${820 - h + w / 2} A${w / 2} ${w / 2} 0 0 1 ${cx + w / 2} ${820 - h + w / 2} L${cx + w / 2} 1050Z`;
         win.push([cx - 8, 840 - h + w / 2, 16, 40]);
       }
-      for (let x = 60; x < 1000; x += 90) d += `M${x} 1000 L${x} 880 L${x + 8} 860 L${x + 16} 880 L${x + 16} 1000Z`;
+      for (let x = 60; x < 1000; x += 90) d += `M${x} 1050 L${x} 880 L${x + 8} 860 L${x + 16} 880 L${x + 16} 1050Z`;
     } else if (kind === 'tower') {
-      d = 'M0 860 C250 830 750 830 1000 860 L1000 1000 L0 1000Z';
-      d += 'M430 1000 L445 380 L425 380 L425 340 L500 250 L575 340 L575 380 L555 380 L570 1000Z';
+      d = 'M0 860 C250 830 750 830 1000 860 L1000 1050 L0 1050Z';
+      d += 'M430 1050 L445 380 L425 380 L425 340 L500 250 L575 340 L575 380 L555 380 L570 1050Z';
       for (let y = 420; y < 900; y += 80) win.push([488, y, 24, 40]);
-      d += 'M140 1000 L150 700 L130 700 L170 640 L210 700 L190 700 L200 1000Z M800 1000 L810 660 L790 660 L830 590 L870 660 L850 660 L860 1000Z';
+      d += 'M140 1050 L150 700 L130 700 L170 640 L210 700 L190 700 L200 1050Z M800 1050 L810 660 L790 660 L830 590 L870 660 L850 660 L860 1050Z';
       win.push([162, 740, 16, 26], [822, 700, 16, 26]);
     } else if (kind === 'library') {
-      d = 'M0 880 L1000 880 L1000 1000 L0 1000Z M180 880 L180 640 L820 640 L820 880Z M220 640 A280 200 0 0 1 780 640Z M470 440 L530 440 L530 400 L470 400Z';
+      d = 'M0 880 L1000 880 L1000 1050 L0 1050Z M180 880 L180 640 L820 640 L820 880Z M220 640 A280 200 0 0 1 780 640Z M470 440 L530 440 L530 400 L470 400Z';
       for (let x = 230; x < 800; x += 80) win.push([x, 690, 30, 150]);
     } else {
-      d = 'M0 840 L1000 840 L1000 1000 L0 1000Z';
+      d = 'M0 840 L1000 840 L1000 1050 L0 1050Z';
       for (let i = 0; i < 4; i++) {
         const m = 60 + i * 70;
-        d += `M${m} 1000 L${m} ${700 + i * 40} L${1000 - m} ${700 + i * 40} L${1000 - m} 1000 L${1000 - m - 24} 1000 L${1000 - m - 24} ${724 + i * 40} L${m + 24} ${724 + i * 40} L${m + 24} 1000Z`;
+        d += `M${m} 1050 L${m} ${700 + i * 40} L${1000 - m} ${700 + i * 40} L${1000 - m} 1050 L${1000 - m - 24} 1050 L${1000 - m - 24} ${724 + i * 40} L${m + 24} ${724 + i * 40} L${m + 24} 1050Z`;
       }
       for (let x = 100; x < 1000; x += 160) win.push([x, 900, 20, 20]);
     }
@@ -155,7 +155,7 @@ ${words.map((w, i) => `<text y="${120 + i * 34}" text-anchor="middle" font-famil
       bot = mix('#08060b', mix(g.deep, '#000000', 0.3), p);
     const sil = silhouette(g.scene, r, p, hue);
     const nWin = Math.round(sil.win.length * p);
-    let s = `<svg viewBox="0 0 1000 1000" role="img" aria-label="${esc(g.name)}">
+    let s = `<svg viewBox="0 0 1000 1050" role="img" aria-label="${esc(g.name)}">
 <defs>
 <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${bot}"/></linearGradient>
 <radialGradient id="hz" cx="50%" cy="100%" r="80%"><stop offset="0" stop-color="${hue}" stop-opacity="${(0.08 + 0.3 * p).toFixed(2)}"/><stop offset="1" stop-color="${hue}" stop-opacity="0"/></radialGradient>
@@ -164,13 +164,13 @@ ${words.map((w, i) => `<text y="${120 + i * 34}" text-anchor="middle" font-famil
 <radialGradient id="haloG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f5d79a" stop-opacity=".6"/><stop offset="1" stop-color="#f5d79a" stop-opacity="0"/></radialGradient>
 <filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<rect width="1000" height="1000" fill="url(#sky)"/>
-<rect width="1000" height="1000" fill="url(#hz)"/>
+<rect width="1000" height="1050" fill="url(#sky)"/>
+<rect width="1000" height="1050" fill="url(#hz)"/>
 ${stars(r, Math.round(8 + 90 * p), 1000, 1000, 650)}
 <circle cx="830" cy="140" r="54" fill="${mix('#8a1f2b', '#efe9dc', p)}" opacity="${(0.4 + 0.5 * p).toFixed(2)}" filter="url(#gl)"/>`;
     if (v.bossDone)
       s += `<path d="M-50 260 C200 160 400 320 620 200 C800 110 920 220 1050 150" stroke="${hue}" stroke-width="60" fill="none" opacity=".18" filter="url(#gl)"/><path d="M-50 300 C220 220 420 360 640 250 C820 160 930 260 1050 200" stroke="${hue}" stroke-width="24" fill="none" opacity=".22" filter="url(#gl)"/>`;
-    s += `<path d="M0 640 C120 580 220 620 330 570 C450 520 560 600 690 560 C820 520 900 580 1000 550 L1000 1000 L0 1000Z" fill="${mix('#0b0910', g.deep, 0.25 * p)}" opacity=".9"/>
+    s += `<path d="M0 640 C120 580 220 620 330 570 C450 520 560 600 690 560 C820 520 900 580 1000 550 L1000 1050 L0 1050Z" fill="${mix('#0b0910', g.deep, 0.25 * p)}" opacity=".9"/>
 <path d="${sil.d}" fill="#0a080e" stroke="${p > 0 ? hue : '#211c29'}" stroke-opacity="${(0.15 + 0.35 * p).toFixed(2)}" stroke-width="2"/>
 ${sil.win
   .map((w, i) => `<rect x="${w[0]}" y="${w[1]}" width="${w[2]}" height="${w[3]}" rx="3" fill="${i < nWin ? hue : '#16121c'}" ${i < nWin ? 'filter="url(#gl)" opacity=".85"' : ''}/>`)
@@ -205,7 +205,7 @@ ${!bo ? '<text y="44" text-anchor="middle" font-size="24">⛓</text>' : ''}
     for (const n of lurk) {
       const ox = n.x + (r() < 0.5 ? -1 : 1) * (92 + r() * 20),
         oy = n.y - 58 - r() * 20;
-      s += `<g class="drift" style="animation-duration:${(9 + r() * 8).toFixed(1)}s"><path d="M${ox - 26} ${oy + 40} C${ox - 30} ${oy - 10} ${ox - 10} ${oy - 34} ${ox} ${oy - 34} C${ox + 12} ${oy - 34} ${ox + 30} ${oy - 10} ${ox + 26} ${oy + 40} C${ox + 14} ${oy + 30} ${ox + 6} ${oy + 44} ${ox} ${oy + 34} C${ox - 8} ${oy + 44} ${ox - 14} ${oy + 30} ${ox - 26} ${oy + 40}Z" fill="#000" opacity=".75"/><circle cx="${ox - 8}" cy="${oy - 12}" r="3.2" fill="#ff3348" filter="url(#gl)"/><circle cx="${ox + 8}" cy="${oy - 12}" r="3.2" fill="#ff3348" filter="url(#gl)"/></g>`;
+      s += `<g class="drift" pointer-events="none" style="animation-duration:${(9 + r() * 8).toFixed(1)}s"><path d="M${ox - 26} ${oy + 40} C${ox - 30} ${oy - 10} ${ox - 10} ${oy - 34} ${ox} ${oy - 34} C${ox + 12} ${oy - 34} ${ox + 30} ${oy - 10} ${ox + 26} ${oy + 40} C${ox + 14} ${oy + 30} ${ox + 6} ${oy + 44} ${ox} ${oy + 34} C${ox - 8} ${oy + 44} ${ox - 14} ${oy + 30} ${ox - 26} ${oy + 40}Z" fill="#000" opacity=".75"/><circle cx="${ox - 8}" cy="${oy - 12}" r="3.2" fill="#ff3348" filter="url(#gl)"/><circle cx="${ox + 8}" cy="${oy - 12}" r="3.2" fill="#ff3348" filter="url(#gl)"/></g>`;
     }
     // nœuds
     for (const n of v.nodes) {
@@ -237,11 +237,28 @@ ${arcs}
 ${locked ? '<text x="38" y="-34" font-size="28">⛓</text>' : ''}
 ${n.ember ? '<text x="30" y="-26" font-size="26">🔥</text>' : ''}
 ${lines.map((l, i) => `<text y="${100 + i * 31}" text-anchor="middle" font-family="Cinzel,serif" font-size="29" font-weight="700" fill="${locked ? '#6f6878' : '#ece6da'}" stroke="#07060a" stroke-width="6" paint-order="stroke">${esc(l)}</text>`).join('')}
+${n.sub ? `<text y="${100 + lines.length * 31 + 2}" text-anchor="middle" font-family="Inter,sans-serif" font-size="23" font-weight="600" fill="${locked ? '#6f6878' : n.tier === 3 ? '#f5d79a' : hue}" stroke="#07060a" stroke-width="5" paint-order="stroke">${esc(n.sub)}</text>` : ''}
 </g>`;
     }
-    // brume
+    // l'Autel du Souvenir : on y révise ce qui a été appris (répétition espacée)
+    if (v.altar) {
+      const a = v.altar,
+        ac = a.open ? '#c8b6ff' : '#4a4352';
+      s += `<g class="node altar ${a.open ? 'open' : 'locked'} ${a.open && a.due ? 'new' : ''}" data-recall="1" transform="translate(${a.x} ${a.y})" tabindex="0" role="button" aria-label="Autel du Souvenir">
+<circle r="105" fill="url(#halo)" opacity="${a.open ? (a.due ? 0.55 : 0.25) : 0.05}"/>
+${a.open && a.due ? `<circle class="pulse" r="70" fill="none" stroke="#c8b6ff" stroke-width="3"/>` : ''}
+<g class="core"><path d="M-46 40 L46 40 L38 22 L-38 22 Z M-30 22 L-30 -12 L30 -12 L30 22 Z" fill="#100d15" stroke="${ac}" stroke-width="3"/>
+<path d="M-38 -12 L0 -50 L38 -12 Z" fill="#100d15" stroke="${ac}" stroke-width="3"/>
+<text y="14" text-anchor="middle" font-size="30" font-family="serif" fill="${ac}" ${a.open ? 'filter="url(#gl)"' : ''}>◈</text>
+${a.open && a.due ? `<circle cx="44" cy="-40" r="21" fill="#c8b6ff"/><text x="44" y="-31" text-anchor="middle" font-family="Inter,sans-serif" font-size="25" font-weight="700" fill="#100d15">${a.due > 99 ? '99' : a.due}</text>` : ''}</g>
+<text y="84" text-anchor="middle" font-family="Cinzel,serif" font-size="27" font-weight="700" fill="${a.open ? '#e6dcff' : '#6f6878'}" stroke="#07060a" stroke-width="6" paint-order="stroke">Autel du</text>
+<text y="114" text-anchor="middle" font-family="Cinzel,serif" font-size="27" font-weight="700" fill="${a.open ? '#e6dcff' : '#6f6878'}" stroke="#07060a" stroke-width="6" paint-order="stroke">Souvenir</text>
+<text y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="23" font-weight="600" fill="${ac}" stroke="#07060a" stroke-width="5" paint-order="stroke">${esc(a.sub)}</text>
+</g>`;
+    }
+    // brume (décor : ne doit jamais capter les touchers)
     const fogO = (0.75 * (1 - p)).toFixed(2);
-    s += `<ellipse class="drift" cx="200" cy="860" rx="420" ry="130" fill="url(#fog)" opacity="${fogO}"/><ellipse class="drift" style="animation-duration:34s" cx="760" cy="620" rx="380" ry="110" fill="url(#fog)" opacity="${(fogO * 0.8).toFixed(2)}"/><ellipse class="drift" style="animation-duration:40s" cx="400" cy="380" rx="360" ry="100" fill="url(#fog)" opacity="${(fogO * 0.6).toFixed(2)}"/>`;
+    s += `<g pointer-events="none"><ellipse class="drift" cx="200" cy="860" rx="420" ry="130" fill="url(#fog)" opacity="${fogO}"/><ellipse class="drift" style="animation-duration:34s" cx="760" cy="620" rx="380" ry="110" fill="url(#fog)" opacity="${(fogO * 0.8).toFixed(2)}"/><ellipse class="drift" style="animation-duration:40s" cx="400" cy="380" rx="360" ry="100" fill="url(#fog)" opacity="${(fogO * 0.6).toFixed(2)}"/></g>`;
     return s + '</svg>';
   };
 

@@ -665,6 +665,21 @@ CU.save = {
     o.stats = { solved: Math.max(a.stats?.solved || 0, b.stats?.solved || 0), bestCombo: Math.max(a.stats?.bestCombo || 0, b.stats?.bestCombo || 0) };
     o.prologue = a.prologue || b.prologue;
     o.arena = { best: Math.max(a.arena?.best || 0, b.arena?.best || 0), runs: Math.max(a.arena?.runs || 0, b.arena?.runs || 0) };
+    // mémoire (répétition espacée) : pour chaque Loi, l'état le plus récemment mis à jour
+    const ma = a.mem || {},
+      mb = b.mem || {};
+    o.mem = {};
+    for (const k of new Set([...Object.keys(ma), ...Object.keys(mb)])) {
+      const x = ma[k],
+        y = mb[k];
+      o.mem[k] = !x ? y : !y ? x : (y.t || 0) > (x.t || 0) ? y : x;
+    }
+    o.recall = {};
+    for (const k of new Set([...Object.keys(a.recall || {}), ...Object.keys(b.recall || {})])) {
+      const x = (a.recall || {})[k] || {},
+        y = (b.recall || {})[k] || {};
+      o.recall[k] = { wins: Math.max(x.wins || 0, y.wins || 0), runs: Math.max(x.runs || 0, y.runs || 0) };
+    }
     o.updated = Math.max(a.updated || 0, b.updated || 0);
     return o;
   },

@@ -85,7 +85,8 @@
     },
   });
   // petit utilitaire : choix parmi des générateurs
-  CU.oneOf = (...gens) => () => R.pick(gens)();
+  // les variantes restent accessibles (exemples résolus du Grimoire)
+  CU.oneOf = (...gens) => Object.assign(() => R.pick(gens)(), { variants: gens });
   CU.sqTex = (n) => {
     const [k, m] = CU.sqrtSimp(n);
     return m === 1 ? String(k) : (k === 1 ? '' : k) + '\\sqrt{' + m + '}';
