@@ -1,0 +1,55 @@
+# Codex Umbra — prototype
+
+Jeu de dark fantasy (15–25 ans) où comprendre les mathématiques reconstruit un monde brisé. Prérequis : le programme de 3e. Site statique, sans compilation.
+
+## Le principe
+
+Le Codex, qui tenait le monde par ses Lois, a été déchiré. Chaque compétence est une **Loi** à restaurer, en trois **sceaux** : Novice, Adepte, Maître. Un sceau se brise avec 5 **éclats** (3 pour les démonstrations et le dernier atelier Python, 4 pour l'île des Masques) ; un éclat = un défi réussi **du premier coup, sans indice**. Les autres réussites rapportent un peu d'XP mais pas d'éclat.
+
+- **Graphe de prérequis** : une Loi s'ouvre quand ses prérequis sont au rang Novice ; son sceau Maître demande que ses prérequis soient au rang Adepte. Les dépendances traversent les régions (le second degré demande les identités remarquables et le produit nul ; les invariants demandent les combinaisons de vecteurs).
+- **Le monde se transforme** : brume, ciel, lune, fenêtres éclairées, ombres aux yeux rouges (les Informes) qui disparaissent quand une Loi est comprise, aurore et bannières quand le gardien est vaincu.
+- **Leçon avant l'épreuve** : le Grimoire de chaque palier s'ouvre automatiquement la première fois.
+- **Gardiens** : un par région, éveillé quand toutes les Lois de la région sont Adepte. Combat sans indice, 3 vies, coups critiques sur série de 3. Le Roi Sans Loi (Sanctuaire) demande les gardiens des Remparts, des Cryptes et de la Tour.
+- **Histoire** : prologue, 8 fragments débloqués par le nombre de sceaux brisés, un texte par gardien, épilogue.
+- **Braises** : une Loi non pratiquée depuis 5 jours affiche 🔥 et peut être « ravivée » (3 défis, bonus d'XP).
+
+## Les 25 Lois
+
+| Région | Lois |
+|---|---|
+| Les Remparts de Vectre (vecteurs) | v1 coordonnées et translations · v2 somme, Chasles · v3 produit par un réel, combinaisons, « Saut du Spectre » · v4 norme · v5 colinéarité, déterminant · v6 milieu, parallélogramme · v7 démonstrations (Varignon, centre de gravité, trouver l'erreur) |
+| Les Cryptes des Sceaux (calcul littéral) | f1 développer · f2 identités remarquables · f3 facteur commun · f4 factoriser par identités · f5 produit nul · f6 preuves arithmétiques, contre-exemples, erreurs |
+| La Tour des Arcs (second degré) | q1 forme canonique · q2 sommet, optimisation, « baliste » (on écrit l'équation de la trajectoire, le tir suit la parabole tapée) · q3 discriminant, équations bicarrées · q4 signe et inéquations · q5 somme et produit, paramètres · q6 démonstrations |
+| La Bibliothèque des Automates (Python) | p1 prévoir l'affichage · p2 compléter une ligne · p3 reconstituer un programme (dichotomie…) |
+| Le Labyrinthe des Sophistes (logique) | l1 implication, réciproque, contraposée, quantificateurs · l2 chevaliers et fripons (énigmes générées, solution unique vérifiée) · l3 invariants (parité, Bézout, échiquier de Gomory, réseaux) |
+
+Presque tous les exercices sont **générés** (nombres tirés au hasard). Les démonstrations sont des banques écrites à la main : remettre une preuve dans l'ordre avec des intrus, trouver l'étape fausse, donner un contre-exemple.
+
+## Correction automatique
+
+`core.js` contient un petit analyseur d'expressions (implicite `3x(2x-1)`, `x²`, `√`, fractions). Une réponse algébrique est comparée au résultat attendu **comme polynôme** (égalité exacte des coefficients), puis sa **forme** est vérifiée : développée et réduite, factorisée complètement (facteurs de degré 1, sans facteur numérique commun oublié), ou canonique `a(x − α)² + β`. Quand la réponse est fausse, le jeu donne la valeur en un point (« en x = 1 ta réponse vaut 2, il faudrait 3 »). Les nombres doivent être exacts (`√50`, `5√2`, `(1+√5)/2`, `3/2`).
+
+## Fichiers
+
+| Fichier | Rôle |
+|---|---|
+| `index.html`, `style.css` | page et style |
+| `core.js` | hasard, nombres exacts, analyseur, correcteurs, sauvegarde, sons synthétisés |
+| `kit.js` | constructeurs d'exercices |
+| `c-vec.js`, `c-alg.js`, `c-misc.js` | les 25 Lois : leçons, générateurs, solutions, indices |
+| `story.js` | régions, gardiens, rangs, histoire |
+| `art.js` | dessins SVG (carte, scènes qui se transforment, gardiens) |
+| `app.js` | écrans, progression, épreuves, combats |
+| `sw.js`, `manifest.webmanifest`, `icon*` | installation et hors connexion (changer `VERSION` dans `sw.js` à chaque publication) |
+
+Ajouter une Loi : un appel `CU.addSkill({...})` avec `id`, `region`, `req`, position `x`/`y` sur la scène (0–1000), trois leçons et trois générateurs.
+
+## Sauvegarde
+
+Nom d'Arpenteur + code de 4 à 6 chiffres. Progression dans le navigateur et dans le projet Supabase partagé avec les autres applications (table `codex_saves`, accessible seulement via les fonctions `codex_get` / `codex_put`, qui exigent l'empreinte SHA-256 de « nom + code »). Fusion « le meilleur des deux » entre appareils.
+
+## Limites du prototype
+
+- Pas de vraie rédaction de démonstration libre : les preuves passent par l'ordre des étapes, la détection d'erreurs et les contre-exemples.
+- Le Python est lu, complété et réordonné, pas exécuté (pas d'interpréteur embarqué).
+- Les seuils (5 éclats, rang Adepte pour les gardiens) sont à ajuster en regardant jouer.
