@@ -1905,3 +1905,207 @@ svg.board .x {
   background: var(--panel);
   border: 1px solid var(--line2);
 }
+
+/* ---------- barre d'expérience centrale (toujours visible) ---------- */
+#xpdock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, rgba(7, 6, 10, 0.97) 55%, rgba(7, 6, 10, 0));
+  pointer-events: none;
+  transform: translateY(120%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+#xpdock.on {
+  transform: none;
+}
+body.hasdock {
+  padding-bottom: 76px;
+}
+.xd-in {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.xd-rank {
+  flex: none;
+  min-width: 74px;
+  line-height: 1.1;
+}
+.xd-rank small {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: var(--mute);
+}
+.xd-rank b {
+  font-family: var(--font-t);
+  font-size: 0.82rem;
+  color: var(--gold2);
+  letter-spacing: 0.04em;
+}
+.xd-next {
+  flex: none;
+  min-width: 74px;
+  text-align: right;
+  font-size: 0.72rem;
+  color: var(--mute);
+}
+.xd-track {
+  position: relative;
+  flex: 1;
+  height: 22px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(245, 215, 154, 0.22);
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.xd-track.big {
+  height: 18px;
+}
+.xd-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #8a6123, #d9ab5b 60%, #f5d79a);
+  box-shadow: 0 0 14px rgba(217, 171, 91, 0.7);
+  transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.xd-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  background-size: 220% 100%;
+  animation: xdshine 3.2s linear infinite;
+}
+@keyframes xdshine {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -70% 0;
+  }
+}
+.xd-txt {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 700 0.74rem var(--font-u);
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+#xpdock.gain .xd-track {
+  animation: xdpulse 1.1s ease-out;
+}
+@keyframes xdpulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 215, 154, 0.9), inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    transform: scaleY(1.35);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(245, 215, 154, 0), inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    transform: scaleY(1);
+  }
+}
+#xpdock.rankup .xd-track {
+  animation: xdrank 1.6s ease-out;
+}
+@keyframes xdrank {
+  0%,
+  40% {
+    filter: brightness(2.2) drop-shadow(0 0 16px #f5d79a);
+  }
+  100% {
+    filter: none;
+  }
+}
+.flyxp {
+  position: fixed;
+  font: 800 1.3rem var(--font-u);
+  color: var(--gold2);
+  text-shadow: 0 0 14px var(--gold);
+  transition:
+    transform 0.8s cubic-bezier(0.5, 0, 0.8, 0.4),
+    opacity 0.8s ease-in;
+  z-index: 45;
+}
+.rankbanner {
+  position: fixed;
+  left: 50%;
+  top: 28%;
+  transform: translateX(-50%);
+  z-index: 70;
+  text-align: center;
+  padding: 16px 34px;
+  border-radius: 18px;
+  background: rgba(10, 8, 14, 0.88);
+  border: 1px solid rgba(245, 215, 154, 0.55);
+  box-shadow: 0 0 60px rgba(245, 215, 154, 0.35);
+  animation: bannerin 3.2s ease both;
+  pointer-events: none;
+}
+.rankbanner small {
+  display: block;
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  color: var(--gold);
+}
+.rankbanner b {
+  display: block;
+  font-family: var(--font-t);
+  font-size: 1.6rem;
+  color: var(--gold2);
+  margin-top: 4px;
+}
+@keyframes bannerin {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.85);
+  }
+  12%,
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -14px) scale(1);
+  }
+}
+.xpin {
+  margin: 16px 0 6px;
+  text-align: left;
+}
+.xpin-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.xpin-h b {
+  font-family: var(--font-t);
+  color: var(--gold2);
+}
+.xpin-h span {
+  font-size: 0.8rem;
+  color: var(--mute);
+}
+.xpin-g {
+  margin-top: 6px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--gold2);
+}
+.xpin .xd-fill {
+  transition-duration: 1.6s;
+}
