@@ -95,9 +95,37 @@
   const sk = (id) => st.skills[id] || (st.skills[id] = { tier: 0, prog: 0, seen: [], last: 0, done: 0 });
   const tierOf = (id) => (st.skills[id] || {}).tier || 0;
   const S = (id) => CU.SKILLS[id];
-  const available = (id) => S(id).req.every((r) => tierOf(r) >= 1);
+  /* ---------- prérequis fins : chaque variante d'exercice déclare les notions d'autres Lois
+     qu'elle mobilise (needs : 'q3' = sceau Novice de q3 brisé, 'q3:2' = sceau Adepte brisé).
+     Une variante n'est proposée que si ses notions sont acquises ; un rang n'est ouvert que si
+     au moins une de ses variantes l'est. Comme les sceaux ne se perdent jamais, tout ce qui
+     s'ouvre reste ouvert, et tout s'ouvre dès que le prérequis est brisé. */
+  const needMet = (n) => {
+    const [id, k] = n.split(':');
+    return tierOf(id) >= (+k || 1);
+  };
+  const allVariants = (id, ti) => S(id).gen[ti].variants || [S(id).gen[ti]];
+  const openVariants = (id, ti) => allVariants(id, ti).filter((v) => !v.needs || v.needs.every(needMet));
+  const tierContent = (id, ti) => openVariants(id, ti).length > 0;
+  // un exercice tiré uniquement parmi les variantes accessibles
+  const genFor = (id, ti) => {
+    const vs = openVariants(id, ti);
+    return (vs.length ? R.pick(vs) : S(id).gen[ti])();
+  };
+  const needLabel = (n) => {
+    const [id, k] = n.split(':');
+    return `${S(id).name} — sceau ${TN[(+k || 1) - 1]} (${CU.region(S(id).region).short})`;
+  };
+  // ce qu'il manque pour ouvrir un rang : une liste d'alternatives (une par variante)
+  const missingFor = (id, ti) => ti > 2 ? [] : [...new Set(allVariants(id, ti).map((v) => (v.needs || []).filter((n) => !needMet(n)).map(needLabel).join(' et ')).filter(Boolean))];
+  const available = (id) => S(id).req.every((r) => tierOf(r) >= 1) && tierContent(id, 0);
   // indice (0..2) du palier le plus haut que l'on peut tenter
-  const maxAllowed = (id) => (!available(id) ? -1 : S(id).req.every((r) => tierOf(r) >= 2) ? 2 : 1);
+  const maxAllowed = (id) => {
+    if (!available(id)) return -1;
+    const m = S(id).req.every((r) => tierOf(r) >= 2) ? 2 : 1;
+    for (let ti = 0; ti <= m; ti++) if (!tierContent(id, ti)) return ti - 1;
+    return m;
+  };
   const regionSkills = (rid) => CU.ORDER.filter((id) => S(id).region === rid);
   const regionP = (rid) => {
     const ids = regionSkills(rid);
@@ -713,6 +741,26 @@ ${(() => {
     if (e.key === 'Escape') closeSheet();
   });
 
+  // pourquoi un rang est fermé, et ce qui l'ouvrira
+  function lockHtml(id) {
+    const s = S(id),
+      t = tierOf(id);
+    const reqList = (lvl) =>
+      `<ul>${s.req
+        .map((r) => {
+          const met = tierOf(r) >= lvl;
+          return `<li class="${met ? 'met' : ''}">${met ? '✓' : '◇'} ${esc(S(r).name)} — rang ${TN[lvl - 1]} (${esc(CU.region(S(r).region).short)})</li>`;
+        })
+        .join('')}</ul>`;
+    if (!s.req.every((r) => tierOf(r) >= 1)) return `<div class="req"><b>Cette Loi est scellée.</b> Il faut d’abord :${reqList(1)}</div>`;
+    if (t >= 3) return '';
+    if (t >= 2 && !s.req.every((r) => tierOf(r) >= 2)) return `<div class="req"><b>Le sceau Maître est encore scellé.</b> Il faut d’abord :${reqList(2)}</div>`;
+    if (!tierContent(id, t)) {
+      const alts = missingFor(id, t);
+      return `<div class="req"><b>${t === 0 ? 'Cette Loi' : 'Le sceau ' + TN[t]} utilise des notions vues dans d’autres régions.</b> ${alts.length > 1 ? 'Il s’ouvrira dès que tu auras brisé l’un de ces sceaux :' : 'Il s’ouvrira dès que tu auras brisé :'}<ul>${alts.map((a) => `<li>◇ ${esc(a)}</li>`).join('')}</ul></div>`;
+    }
+    return '';
+  }
   function openSheet(id) {
     const s = S(id),
       g = CU.region(s.region),
@@ -730,12 +778,8 @@ ${(() => {
     }
     const bg = sheet(
       `<div class="top"><div class="bigg">${esc(s.glyph)}</div><div><div class="place">${esc(s.place)} · ${esc(g.short)}</div><h2>${esc(s.name)}</h2><div class="ital" style="font-size:1.05rem;margin-top:4px">${esc(s.flavor)}</div></div></div>
-<div class="ladder">${TN.map((n, i) => `<div class="rung ${t > i ? 'done' : t === i && av ? 'cur' : ''} ${i > ma ? 'lock' : ''}"><div class="dia"></div><b>${n}</b>${t > i ? 'sceau brisé' : t === i && av ? (sk(id).prog || 0) + '/' + need(id) + ' éclats' : i > ma ? '⛓' : ''}</div>`).join('')}</div>
-${
-  !av || (t < 3 && t > ma)
-    ? `<div class="req"><b>${!av ? 'Cette Loi est scellée.' : 'Le sceau Maître est encore scellé.'}</b> Il faut d’abord :<ul>${reqs.map((q) => `<li class="${(!av ? q.met : q.met2) ? 'met' : ''}">${(!av ? q.met : q.met2) ? '✓' : '◇'} ${esc(S(q.r).name)} — rang ${!av ? 'Novice' : 'Adepte'} (${esc(CU.region(S(q.r).region).short)})</li>`).join('')}</ul></div>`
-    : ''
-}
+<div class="ladder">${TN.map((n, i) => `<div class="rung ${t > i ? 'done' : t === i && av && i <= ma ? 'cur' : ''} ${i > ma && t <= i ? 'lock' : ''}"><div class="dia"></div><b>${n}</b>${t > i ? 'sceau brisé' : i > ma ? '⛓' : t === i && av ? (sk(id).prog || 0) + '/' + need(id) + ' éclats' : ''}</div>`).join('')}</div>
+${lockHtml(id)}
 ${t >= 1 ? `<div class="law">${H(s.law)}</div>` : ''}
 <div class="actions">${actions}</div>`,
       g.hue,
@@ -756,7 +800,8 @@ ${t >= 1 ? `<div class="law">${H(s.law)}</div>` : ''}
   // exemples tirés en direct des générateurs : un par variante d'exercice (au plus trois)
   function examplesFor(id, ti) {
     const gfun = S(id).gen[ti],
-      vs = gfun.variants || [gfun, gfun, gfun],
+      ov = openVariants(id, ti),
+      vs = gfun.variants ? (ov.length ? ov : gfun.variants) : [gfun, gfun, gfun],
       out = [],
       seen = new Set();
     for (const v of vs) {
@@ -1003,11 +1048,12 @@ ${open ? '' : `<div class="req">Le gardien dort encore. Il s’éveillera quand 
     let ex;
     if (v.kind === 'boss') {
       const id = R.pick(v.pool);
-      ex = S(id).gen[R.pick([1, 2, 2])]();
+      const ti = R.pick([1, 2, 2].filter((t) => tierContent(id, t))) ?? 0;
+      ex = genFor(id, ti);
       ex._sid = id;
     } else if (v.kind === 'arena') ex = arenaQuestion();
     else if (v.kind === 'recall') ex = recallQuestion();
-    else ex = S(v.id).gen[v.ti]();
+    else ex = genFor(v.id, v.ti);
     v.ex = ex;
     v.tries = 0;
     v.hinted = false;
@@ -1240,6 +1286,7 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
     const gains = [];
     let title, sub;
     const beforeAvail = new Set(CU.ORDER.filter(available));
+    const beforeMax = Object.fromEntries(CU.ORDER.map((id) => [id, maxAllowed(id)]));
     const beforeRank = rankIdx(st.xp);
     if (v.mode === 'normal') {
       const fresh = s.tier <= v.ti;
@@ -1252,6 +1299,11 @@ ${['fields', 'order', 'grid', 'toggle', 'baliste'].includes(ex.type) ? `<button 
       title = v.ti === 2 ? 'La Loi est maîtrisée' : `Sceau ${TN[v.ti]} brisé`;
       sub = v.ti === 0 ? 'La Loi se réécrit dans le Codex. Autour de toi, quelque chose se rallume.' : v.ti === 1 ? 'La Loi s’affermit. Les Informes de ce lieu reculent.' : 'Plus rien ne peut défaire cette Loi. Elle brille d’or dans le Codex.';
       for (const id of CU.ORDER) if (!beforeAvail.has(id) && available(id)) gains.push(`Nouvelle Loi accessible : <b>${esc(S(id).name)}</b> <small>(${esc(CU.region(S(id).region).name)})</small>`);
+      // un sceau d'une autre Loi qui attendait une notion de celle-ci
+      for (const id of CU.ORDER) {
+        const tt = tierOf(id);
+        if (id !== v.id && beforeAvail.has(id) && tt < 3 && tt > beforeMax[id] && tt <= maxAllowed(id)) gains.push(`Nouveau sceau accessible : <b>${esc(S(id).name)}</b> — ${TN[tt]} <small>(${esc(CU.region(S(id).region).name)})</small>`);
+      }
       if (v.ti === 1 && allAdept(sd.region) && !st.bosses[sd.region]) gains.push(bossOpen(sd.region) ? `⚔ <b>${esc(g.boss.name)}</b> s’éveille !` : `◈ Toutes les Lois de la région sont Adepte : grave un souvenir à l’<b>Autel du Souvenir</b> pour éveiller ${esc(g.boss.name)}.`);
       if (memItems(sd.region).length === RECALL_MIN(sd.region)) gains.push('◈ L’<b>Autel du Souvenir</b> s’allume dans cette région.');
       if (memItems('all').length === RECALL_MIN('all')) gains.push('◈ Le <b>Cloître de la Mémoire</b> s’ouvre sur la carte du monde.');
@@ -1514,7 +1566,7 @@ ${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : $
     while (v.pool.length > 1 && a === v.last);
     v.last = a;
     v.cur = a;
-    const ex = S(a.id).gen[a.t]();
+    const ex = genFor(a.id, a.t);
     ex._sid = a.id;
     // le temps se resserre avec le score, sans descendre sous 60 %
     v.limit = a.s * Math.max(0.6, 1 - 0.015 * v.score);
@@ -1990,7 +2042,7 @@ ${
       it = v.queue[v.pos];
     v.item = it;
     v.peek = false;
-    const ex = S(it.id).gen[it.ti]();
+    const ex = genFor(it.id, it.ti);
     ex._sid = it.id;
     return ex;
   }
@@ -2605,5 +2657,5 @@ ${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pou
     setTimeout(wait, 50);
   })();
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('./sw.js').catch(() => {});
-  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena, openLesson, startRecall, openRecallSheet, q: { dk, dshift, streakCur, quest, dailyRoll, repairable, ACH, checkAch } };
+  CU.debug = { get st() { return st; }, set st(x) { st = x; }, get view() { return view; }, save, go, route, available, tierOf, sk, win: () => success(), submit: (a) => submit(a), startTrial, startBoss, renderRegion, startArena, openLesson, startRecall, openRecallSheet, dep: { available, maxAllowed, tierContent, openVariants, missingFor, genFor }, q: { dk, dshift, streakCur, quest, dailyRoll, repairable, ACH, checkAch } };
 })();

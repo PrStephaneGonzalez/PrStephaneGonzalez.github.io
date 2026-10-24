@@ -45,22 +45,22 @@
       const f = (x) => x * x + p * x + q;
       return K.text(T`Qu’affiche ce programme ?` + code(`def f(x):\n    return x**2${sgn(p)}*x${sgn(q)}\n\nprint(f(${v}))`).replace('+ 0*x', '+ 0*x'), String(f(v)), T`$f(${v}) = ${N.p(v)}^2 ${N.s(p)}\times${N.p(v)} ${N.s(q)} = ${f(v)}$.`, 'Remplace x par la valeur entre parenthèses.');
     },
-    () => {
+    CU.needs(['q3:2'], () => {
       const a = R.nz(-3, 3),
         b = R.int(-6, 6),
         c = R.int(-6, 6);
       const d = b * b - 4 * a * c;
       const out = d > 0 ? 'deux' : d === 0 ? 'une' : 'aucune';
       return K.text(T`Qu’affiche ce programme ?` + code(`def nb_racines(a, b, c):\n    d = b**2 - 4*a*c\n    if d > 0:\n        return "deux"\n    elif d == 0:\n        return "une"\n    else:\n        return "aucune"\n\nprint(nb_racines(${a}, ${b}, ${c}))`), out, T`$d = ${N.p(b)}^2-4\times${N.p(a)}\times${N.p(c)} = ${d}$, donc le programme renvoie <code>"${out}"</code> et affiche <code>${out}</code>.`, 'Calcule d, puis suis le premier test qui est vrai.');
-    },
-    () => {
+    }),
+    CU.needs(['v5'], () => {
       const x1 = R.int(-9, 9),
         y1 = R.int(-9, 9),
         x2 = R.int(-9, 9),
         y2 = R.int(-9, 9);
       const d = x1 * y2 - y1 * x2;
       return K.text(T`Qu’affiche ce programme ?` + code(`def colineaires(x1, y1, x2, y2):\n    return x1*y2 - y1*x2 == 0\n\nprint(colineaires(${x1}, ${y1}, ${x2}, ${y2}))`), d === 0 ? 'True' : 'False', T`$${x1}\times${N.p(y2)} - ${N.p(y1)}\times${N.p(x2)} = ${d}$. Le test <code>== 0</code> est ${d === 0 ? 'vrai' : 'faux'} : affichage <code>${d === 0 ? 'True' : 'False'}</code>.`, 'Le programme calcule un déterminant et affiche le résultat d’un test : True ou False.');
-    },
+    }),
     () => {
       const n = R.int(-10, 15);
       const out = n % 2 === 0 ? (n > 0 ? 'A' : 'B') : n > 5 ? 'C' : 'D';
@@ -92,14 +92,14 @@
       for (let i = 1; i <= N0; i++) if (i % k === 0) c++;
       return K.text(T`Qu’affiche ce programme ?` + code(`compte = 0\nfor i in range(1, ${N0 + 1}):\n    if i % ${k} == 0:\n        compte = compte + 1\nprint(compte)`), String(c), T`On compte les multiples de ${k} entre 1 et ${N0} : il y en a $\lfloor ${N0}/${k} \rfloor = ${c}$.`, 'i % k == 0 signifie « i est un multiple de k ».');
     },
-    () => {
+    CU.needs(['q3:2'], () => {
       const a = R.int(1, 3),
         b = R.int(-9, -1),
         c = R.int(-12, 12);
       const out = [];
       for (let x = -10; x <= 10; x++) if (a * x * x + b * x + c === 0) out.push(x);
       return K.text(T`Qu’affiche ce programme ? (écris les nombres affichés séparés par un espace, ou « rien »)` + code(`for x in range(-10, 11):\n    if ${a}*x**2 ${b < 0 ? '-' : '+'} ${Math.abs(b)}*x ${c < 0 ? '-' : '+'} ${Math.abs(c)} == 0:\n        print(x)`), out.length ? out.join(' ') : 'rien', T`Le programme affiche les racines <b>entières</b> de $${P.tex([c, b, a])}$ comprises entre $-10$ et $10$ : ${out.length ? out.join(' et ') : 'il n’y en a aucune'}. ${(() => { const Q = CU.quadRoots(a, b, c); return T`(Racines réelles : $\Delta = ${Q.delta}$${Q.vals.length ? ', $' + Q.tex.join('$, $') + '$' : ''}.)`; })()}`, 'Cherche les racines entières de ce trinôme (par Δ, ou en essayant).');
-    },
+    }),
   ];
   CU.addSkill({
     id: 'p1',
@@ -120,20 +120,20 @@
 <p>Un <b>test</b> <code>if … elif … else</code> exécute le premier bloc dont la condition est vraie. Le bloc est défini par l’<b>indentation</b> (le décalage vers la droite). <code>==</code> teste l’égalité, et un test vaut <code>True</code> ou <code>False</code>.</p>`,
       T`<p>Une <b>boucle</b> <code>for i in range(a, b):</code> répète son bloc pour <code>i</code> allant de <code>a</code> à <code>b - 1</code> (attention : <code>b</code> est exclu). Une boucle <code>while condition:</code> répète tant que la condition est vraie.</p>${code('s = 0\nfor i in range(1, 4):\n    s = s + i\nprint(s)   # 1 + 2 + 3 = 6')}`,
     ],
-    gen: [() => R.pick(PY1)(), () => R.pick(PY2)(), () => R.pick(PY3)()],
+    gen: [CU.oneOf(...PY1), CU.oneOf(...PY2), CU.oneOf(...PY3)],
   });
 
   const fill = (q, body, right, wrong, sol, hint) => K.choice(T`${q}` + code(body), [right, ...wrong].map((x) => '<code>' + CU.hlPy(x) + '</code>'), sol, hint);
   const PC1 = [
-    () => fill('Quelle ligne complète cette fonction qui calcule le discriminant ?', 'def delta(a, b, c):\n    return ___', 'b**2 - 4*a*c', ['b*2 - 4*a*c', 'b**2 - 4*a*b', '(b**2 - 4*a*c) / 2*a'], 'Δ = b² − 4ac, et le carré s’écrit <code>b**2</code> en Python (<code>b*2</code> est le double).', 'Le carré, en Python, c’est **2.'),
-    () => fill('Quelle ligne complète cette fonction qui calcule la norme d’un vecteur ?', 'from math import sqrt\n\ndef norme(x, y):\n    return ___', 'sqrt(x**2 + y**2)', ['sqrt(x + y)**2', 'x**2 + y**2', 'sqrt(x**2) + sqrt(y**2)'], '‖u‖ = √(x² + y²). Attention : √(x²) + √(y²) = |x| + |y|, ce n’est pas la longueur.', 'Pythagore.'),
-    () => fill('Quelle ligne renvoie l’abscisse du milieu de [AB] ?', 'def milieu_x(xA, xB):\n    return ___', '(xA + xB) / 2', ['xA + xB / 2', '(xB - xA) / 2', 'xA / 2 + xB'], 'La moyenne des abscisses. Sans parenthèses, <code>xA + xB / 2</code> ne divise que xB (priorité des opérations).', 'Attention aux priorités : la division passe avant l’addition.'),
+    CU.needs(['q3:2'], () => fill('Quelle ligne complète cette fonction qui calcule le discriminant ?', 'def delta(a, b, c):\n    return ___', 'b**2 - 4*a*c', ['b*2 - 4*a*c', 'b**2 - 4*a*b', '(b**2 - 4*a*c) / 2*a'], 'Δ = b² − 4ac, et le carré s’écrit <code>b**2</code> en Python (<code>b*2</code> est le double).', 'Le carré, en Python, c’est **2.')),
+    CU.needs(['v4'], () => fill('Quelle ligne complète cette fonction qui calcule la norme d’un vecteur ?', 'from math import sqrt\n\ndef norme(x, y):\n    return ___', 'sqrt(x**2 + y**2)', ['sqrt(x + y)**2', 'x**2 + y**2', 'sqrt(x**2) + sqrt(y**2)'], '‖u‖ = √(x² + y²). Attention : √(x²) + √(y²) = |x| + |y|, ce n’est pas la longueur.', 'Pythagore.')),
+    CU.needs(['v6'], () => fill('Quelle ligne renvoie l’abscisse du milieu de [AB] ?', 'def milieu_x(xA, xB):\n    return ___', '(xA + xB) / 2', ['xA + xB / 2', '(xB - xA) / 2', 'xA / 2 + xB'], 'La moyenne des abscisses. Sans parenthèses, <code>xA + xB / 2</code> ne divise que xB (priorité des opérations).', 'Attention aux priorités : la division passe avant l’addition.')),
     () => fill('Quelle ligne complète cette fonction qui teste si x est solution de ax² + bx + c = 0 ?', 'def est_solution(a, b, c, x):\n    return ___', 'a*x**2 + b*x + c == 0', ['a*x**2 + b*x + c = 0', 'a*x**2 + b*x + c', 'a*x*2 + b*x + c == 0'], '<code>==</code> teste une égalité et renvoie True ou False ; un seul <code>=</code> est une affectation (erreur ici).', '= range une valeur, == compare.'),
   ];
   const PC2 = [
-    () => fill('Quelle ligne manque pour que la fonction renvoie le nombre de solutions de ax² + bx + c = 0 ?', 'def nb_solutions(a, b, c):\n    d = b**2 - 4*a*c\n    if d > 0:\n        return 2\n    ___\n        return 1\n    else:\n        return 0', 'elif d == 0:', ['if d < 0:', 'elif d = 0:', 'else d == 0:'], '<code>elif</code> (« sinon, si ») avec le test d’égalité <code>==</code>.', 'Il faut un « sinon, si » et un test d’égalité.'),
-    () => fill('Quelle ligne complète cette fonction qui renvoie le sommet (α ; β) de f(x) = ax² + bx + c ?', 'def sommet(a, b, c):\n    alpha = ___\n    beta = a*alpha**2 + b*alpha + c\n    return alpha, beta', '-b / (2*a)', ['-b / 2*a', 'b / (2*a)', '-b / (2*c)'], 'α = −b/(2a). Sans parenthèses, <code>-b / 2*a</code> calcule (−b/2)×a.', 'Attention aux parenthèses autour de 2a.'),
-    () => fill('Quelle ligne complète cette fonction qui teste si A, B, C sont alignés ?', 'def alignes(xA, yA, xB, yB, xC, yC):\n    ux, uy = xB - xA, yB - yA\n    vx, vy = xC - xA, yC - yA\n    return ___', 'ux*vy - uy*vx == 0', ['ux*vx - uy*vy == 0', 'ux*vy + uy*vx == 0', 'ux == vx and uy == vy'], 'A, B, C alignés ⇔ det(AB, AC) = 0, et det = x·y′ − y·x′.', 'Déterminant des vecteurs AB et AC.'),
+    CU.needs(['q3:2'], () => fill('Quelle ligne manque pour que la fonction renvoie le nombre de solutions de ax² + bx + c = 0 ?', 'def nb_solutions(a, b, c):\n    d = b**2 - 4*a*c\n    if d > 0:\n        return 2\n    ___\n        return 1\n    else:\n        return 0', 'elif d == 0:', ['if d < 0:', 'elif d = 0:', 'else d == 0:'], '<code>elif</code> (« sinon, si ») avec le test d’égalité <code>==</code>.', 'Il faut un « sinon, si » et un test d’égalité.')),
+    CU.needs(['q2:2'], () => fill('Quelle ligne complète cette fonction qui renvoie le sommet (α ; β) de f(x) = ax² + bx + c ?', 'def sommet(a, b, c):\n    alpha = ___\n    beta = a*alpha**2 + b*alpha + c\n    return alpha, beta', '-b / (2*a)', ['-b / 2*a', 'b / (2*a)', '-b / (2*c)'], 'α = −b/(2a). Sans parenthèses, <code>-b / 2*a</code> calcule (−b/2)×a.', 'Attention aux parenthèses autour de 2a.')),
+    CU.needs(['v5:2'], () => fill('Quelle ligne complète cette fonction qui teste si A, B, C sont alignés ?', 'def alignes(xA, yA, xB, yB, xC, yC):\n    ux, uy = xB - xA, yB - yA\n    vx, vy = xC - xA, yC - yA\n    return ___', 'ux*vy - uy*vx == 0', ['ux*vx - uy*vy == 0', 'ux*vy + uy*vx == 0', 'ux == vx and uy == vy'], 'A, B, C alignés ⇔ det(AB, AC) = 0, et det = x·y′ − y·x′.', 'Déterminant des vecteurs AB et AC.')),
   ];
   const PC3 = [
     () => fill('Ce programme cherche le plus petit entier n tel que 2ⁿ dépasse 1000. Quelle condition manque ?', 'n = 0\nwhile ___:\n    n = n + 1\nprint(n)', '2**n <= 1000', ['2**n > 1000', 'n < 1000', '2*n <= 1000'], 'On continue <b>tant que</b> 2ⁿ ne dépasse pas 1000 ; la boucle s’arrête au premier n tel que 2ⁿ > 1000 (n = 10).', 'La condition d’un while est celle pour continuer, pas pour s’arrêter.'),
@@ -156,7 +156,7 @@
       T`<p>Priorités : comme en maths, <code>*</code> et <code>/</code> passent avant <code>+</code> et <code>-</code>, et sont calculés de gauche à droite : <code>-b / 2*a</code> vaut $\frac{-b}{2}\times a$. Mets des parenthèses : <code>-b / (2*a)</code>.</p>`,
       T`<p>Une boucle <code>while</code> continue <b>tant que</b> sa condition est vraie. Pour « le premier $n$ tel que… », on écrit la condition contraire. Pour une somme, on <b>accumule</b> : <code>s = s + terme</code>.</p>`,
     ],
-    gen: [() => R.pick(PC1)(), () => R.pick(PC2)(), () => R.pick(PC3)()],
+    gen: [CU.oneOf(...PC1), CU.oneOf(...PC2), CU.oneOf(...PC3)],
   });
 
   const pars = (q, lines, decoys, sol, hint, alts) => {
@@ -168,8 +168,8 @@
     () => pars('Reconstitue le programme qui affiche le plus petit n tel que n² > 500.', ['n = 0', 'while n**2 <= 500:', '    n = n + 1', 'print(n)'], ['while n**2 > 500:'], 'On initialise, on avance tant que n² ≤ 500, puis on affiche : 23 (car 22² = 484 et 23² = 529).', 'Initialisation, boucle, affichage.'),
   ];
   const PP2 = [
-    () => pars('Reconstitue la fonction qui renvoie les solutions de ax² + bx + c = 0 (a ≠ 0).', ['from math import sqrt', 'def solutions(a, b, c):', '    d = b**2 - 4*a*c', '    if d < 0:', '        return []', '    x1 = (-b - sqrt(d)) / (2*a)', '    x2 = (-b + sqrt(d)) / (2*a)', '    return [x1, x2]'], ['    x1 = -b - sqrt(d) / 2*a'], 'On calcule Δ, on traite le cas Δ < 0 (aucune solution), puis la formule. (Si Δ = 0, la fonction renvoie deux fois la même racine.)', 'Calcule d’abord d ; le cas sans solution doit être traité avant de prendre sqrt(d).', [[0, 1, 2, 3, 4, 6, 5, 7]]),
-    () => pars('Reconstitue la fonction qui calcule les coordonnées de D pour que ABCD soit un parallélogramme.', ['def quatrieme_sommet(xA, yA, xB, yB, xC, yC):', '    xD = xA + xC - xB', '    yD = yA + yC - yB', '    return xD, yD'], ['    xD = xA + xB - xC'], '$\\overrightarrow{AB}=\\overrightarrow{DC}$ donne $x_D = x_A + x_C - x_B$.', 'AB = DC.', [[0, 2, 1, 3]]),
+    CU.needs(['q3:2'], () => pars('Reconstitue la fonction qui renvoie les solutions de ax² + bx + c = 0 (a ≠ 0).', ['from math import sqrt', 'def solutions(a, b, c):', '    d = b**2 - 4*a*c', '    if d < 0:', '        return []', '    x1 = (-b - sqrt(d)) / (2*a)', '    x2 = (-b + sqrt(d)) / (2*a)', '    return [x1, x2]'], ['    x1 = -b - sqrt(d) / 2*a'], 'On calcule Δ, on traite le cas Δ < 0 (aucune solution), puis la formule. (Si Δ = 0, la fonction renvoie deux fois la même racine.)', 'Calcule d’abord d ; le cas sans solution doit être traité avant de prendre sqrt(d).', [[0, 1, 2, 3, 4, 6, 5, 7]])),
+    CU.needs(['v6:2'], () => pars('Reconstitue la fonction qui calcule les coordonnées de D pour que ABCD soit un parallélogramme.', ['def quatrieme_sommet(xA, yA, xB, yB, xC, yC):', '    xD = xA + xC - xB', '    yD = yA + yC - yB', '    return xD, yD'], ['    xD = xA + xB - xC'], '$\\overrightarrow{AB}=\\overrightarrow{DC}$ donne $x_D = x_A + x_C - x_B$.', 'AB = DC.', [[0, 2, 1, 3]])),
   ];
   const PP3 = [
     () => pars('Reconstitue l’algorithme de <b>dichotomie</b> qui encadre la racine positive de x² − 2 (c’est-à-dire √2) entre a et b, à 0,001 près.', ['a, b = 1, 2', 'while b - a > 0.001:', '    m = (a + b) / 2', '    if m**2 - 2 > 0:', '        b = m', '    else:', '        a = m', 'print(a, b)'], ['    if m**2 - 2 < 0:', 'while b - a < 0.001:'], 'On coupe l’intervalle en deux à chaque tour : si $m^2>2$, la racine est à gauche de $m$ (on remplace $b$), sinon à droite (on remplace $a$). Après $k$ tours, la largeur est $2^{-k}$ : 10 tours suffisent pour 0,001.', 'L’intervalle [a ; b] contient toujours √2. Si m² > 2, √2 est entre a et m.'),
@@ -191,7 +191,7 @@
       T`<p>Dans une fonction, on traite les cas particuliers <b>avant</b> l’opération qui pourrait échouer : on ne calcule pas <code>sqrt(d)</code> si <code>d &lt; 0</code>.</p>`,
       T`<p>La <b>dichotomie</b> : si une fonction continue change de signe entre $a$ et $b$, elle s’annule entre les deux. On coupe en deux, on garde la moitié où le changement de signe a lieu, et on recommence. Après $k$ étapes, l’intervalle a été divisé par $2^k$.</p>`,
     ],
-    gen: [() => R.pick(PP1)(), () => R.pick(PP2)(), () => R.pick(PP3)()],
+    gen: [CU.oneOf(...PP1), CU.oneOf(...PP2), CU.oneOf(...PP3)],
   });
 
   /* ================= LE LABYRINTHE DES SOPHISTES ================= */
@@ -253,7 +253,7 @@
       T`<p>Les <b>quantificateurs</b> : $\forall$ (pour tout), $\exists$ (il existe). Leur ordre compte : « $\forall x\,\exists y$ » laisse $y$ dépendre de $x$, pas « $\exists y\,\forall x$ ».</p>
 <p>Trois grandes méthodes : la preuve directe, la <b>contraposée</b>, le <b>raisonnement par l’absurde</b>.</p>`,
     ],
-    gen: [() => R.pick(LOG1)(), () => R.pick(LOG2)(), () => R.pick(LOG3)()],
+    gen: [CU.oneOf(...LOG1), CU.oneOf(...LOG2), CU.oneOf(...LOG3)],
   });
 
   /* ---------- L2 Chevaliers et fripons ---------- */
@@ -420,7 +420,7 @@
             'Chaque domino couvre exactement une case claire et une case sombre.',
           );
         },
-        () => {
+        CU.needs(['v3:3'], () => {
           for (;;) {
             const u = [R.int(-3, 3), R.int(-3, 3)],
               v = [R.int(-3, 3), R.int(-3, 3)];
@@ -439,7 +439,7 @@
               { keep: true },
             );
           }
-        },
+        }),
       ),
     ],
   });

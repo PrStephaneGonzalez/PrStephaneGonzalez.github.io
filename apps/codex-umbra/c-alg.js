@@ -482,13 +482,13 @@
         'Factorise d’abord n³ − n complètement.',
         { alts: [[0, 1, 3, 2, 4]] },
       ),
-    () =>
+    CU.needs(['f5'], () =>
       K.choice(
         T`<b>Trouve l’erreur.</b> « Résolvons $x^2=3x$. (1) On divise par $x$ : $x=3$. (2) Vérification : $3^2=9=3\times3$. (3) Donc l’unique solution est $3$. » Qu’est-ce qui ne va pas ?`,
         ['(1) : diviser par $x$ suppose $x\\neq0$ ; on perd la solution $0$', '(2) : le calcul est faux', 'Rien : $3$ est bien l’unique solution', '(3) : il y a une infinité de solutions'],
         T`$x^2=3x \iff x(x-3)=0 \iff x=0$ ou $x=3$. La vérification (2) montre que $3$ est solution, pas qu’elle est la seule.`,
         'Teste x = 0.',
-      ),
+      )),
   ];
   CU.addSkill({
     id: 'f6',
@@ -508,7 +508,7 @@
 <p>La <b>disjonction des cas</b> : si l’on ne sait pas conclure en général, on traite séparément des cas qui couvrent toutes les possibilités (pair / impair, par exemple).</p>`,
       T`<p>Démontrer, c’est aussi savoir <b>débusquer une erreur</b>. Les plus fréquentes : diviser par une quantité qui peut être nulle, confondre « divisible par $4$ » et « divisible par $8$ », prendre deux fois la même lettre pour deux objets différents, ou croire qu’une vérification prouve l’unicité.</p>`,
     ],
-    gen: [() => R.pick(FPROOF1)(), () => R.pick(FPROOF2)(), () => R.pick(FPROOF3)()],
+    gen: [CU.oneOf(...FPROOF1), CU.oneOf(...FPROOF2), CU.oneOf(...FPROOF3)],
   });
 
   /* ================= LA TOUR DES ARCS ================= */
@@ -1013,6 +1013,6 @@
       T`<p>La formule des racines n’est que : forme canonique, puis différence de deux carrés $A^2-B^2=(A-B)(A+B)$ (possible car $\Delta\geqslant0$ a une racine carrée), puis produit nul.</p>`,
       T`<p>Raisonnements de haut niveau : <b>par l’absurde</b> (on suppose le contraire et on aboutit à une contradiction), <b>par la parité</b> (un nombre ne peut être à la fois pair et impair). Ils permettent de démontrer qu’une équation n’a pas de solution entière sans la résoudre.</p>`,
     ],
-    gen: [() => R.pick(QPROOF1)(), () => R.pick(QPROOF2)(), () => R.pick(QPROOF3)()],
+    gen: [CU.oneOf(...QPROOF1), CU.oneOf(...QPROOF2), CU.oneOf(...QPROOF3)],
   });
 })();
