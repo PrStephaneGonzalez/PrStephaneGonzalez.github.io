@@ -40,12 +40,10 @@
 ${[...Array(12)].map((_, i) => `<text x="100" y="27" fill="#d9ab5b" stroke="none" font-size="11" text-anchor="middle" font-family="serif" transform="rotate(${i * 30} 100 100)">${'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃ'[i]}</text>`).join('')}
 </g>
 <g class="spin2" fill="none" stroke="#d9ab5b" stroke-width="1.4">
-<polygon points="100,38 154,131 46,131" opacity=".8"/>
-<polygon points="100,162 46,69 154,69" opacity=".8"/>
 <circle cx="100" cy="100" r="56" stroke-dasharray="8 4"/>
 </g>
-<path d="M78 82 h44 v40 h-44z M100 82 v40" fill="#110e17" stroke="#f5d79a" stroke-width="2"/>
-<path d="M84 92h10M84 100h10M84 108h10M106 92h10M106 100h10M106 108h10" stroke="#d9ab5b" stroke-width="1.2"/>
+<path d="M100 114 C117 84 156 84 156 114 C156 144 117 144 100 114 C83 84 44 84 44 114 C44 144 83 144 100 114Z" fill="none" stroke="#d9ab5b" stroke-width="3.2" stroke-linejoin="round" opacity=".95"/>
+<g transform="translate(100 66) scale(.62) translate(-100 -102)"><path d="M78 82 h44 v40 h-44z M100 82 v40" fill="#110e17" stroke="#f5d79a" stroke-width="3"/><path d="M84 92h10M84 100h10M84 108h10M106 92h10M106 100h10M106 108h10" stroke="#d9ab5b" stroke-width="1.8"/></g>
 </svg>`;
 
   A.raven = (size = 36) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><path d="M10 40 C14 24 30 14 44 18 L58 14 L50 24 C54 34 46 48 30 50 L18 58 L20 48 C14 48 10 45 10 40Z" fill="#0d0b12" stroke="#d9ab5b" stroke-width="1.5"/><circle cx="42" cy="24" r="2.6" fill="#e9eef5"/><path d="M22 40 C28 36 36 36 42 40" stroke="#d9ab5b" stroke-width="1" fill="none" opacity=".6"/></svg>`;
