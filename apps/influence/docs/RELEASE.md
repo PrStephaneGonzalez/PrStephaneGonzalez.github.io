@@ -76,3 +76,16 @@ et la durée des parties doivent être affinées après ces premiers essais.
 Le cas du cycle alterné de quatre sommets reste celui documenté dans
 PHASE_A.md : (4, −4). Aucune modification des règles n'a été introduite pour
 forcer une valeur différente.
+
+## Fin automatique à une seule couleur — 25 octobre 2026
+
+À la demande de l'utilisateur, l'interface attribue immédiatement un reliquat
+monochrome au camp correspondant, avec cascade et explication FR/EN. Le moteur
+original et le solveur gardent leurs règles ; `finishMonochrome` est un raccourci
+équivalent appliqué par l'interface après les coups et lors d'une reprise.
+L'historique conserve l'état précédent pour permettre l'annulation.
+
+Validation : 41 tests ; le contrôle indépendant sur 67 267 graphes vérifie
+également que ce raccourci conserve le score final sur les positions visitées.
+Parcours navigateur du plateau 2 : Rouge A, Bleu F, puis attribution automatique
+des deux rouges restants et égalité 4–4, sans troisième clic sur un pion.

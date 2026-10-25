@@ -1,7 +1,7 @@
 import {createGraph,definition,legalMoves,popcount,ids,displayedArcs} from '../engine/graph.mjs';
-import {createGame,previewMove,playMove,serializeGame,deserializeGame} from '../engine/game.mjs';
+import {createGame,previewMove,playMove,serializeGame,deserializeGame,finishMonochrome} from '../engine/game.mjs?v=ending1';
 import {chooseMove} from '../ai/choose.mjs';
-import {translate} from '../i18n/strings.mjs';
+import {translate} from '../i18n/strings.mjs?v=ending1';
 import {icon,nodeIcon,nodeIcons} from './icons.mjs';
 import {captureWaves,cascadeSchedule} from './cascade.mjs';
 import {createAudio} from './audio.mjs?v=4';
@@ -91,7 +91,7 @@ function game(){
  const canUndo=history.some(s=>config.mode==='duo'||s.turn===config.side);
  return `<main class="game-main"><div class="game-heading"><div><span class="eyebrow">${label}</span><h1>${esc(name(level()))}</h1></div><div class="game-tools">${soundButton()}${button('levels','', 'icon-button','grid',`aria-label="${t('levels')}" title="${t('levels')}"`)}${button('help','', 'icon-button','help',`aria-label="${t('how')}" title="${t('how')}"`)}${button('home','', 'icon-button','home',`aria-label="${t('home')}" title="${t('home')}"`)}</div></div><div class="game-layout"><section class="board-card"><div class="turn-banner ${done?'ended':state.turn==='L'?'red':'blue'}" role="status"><div class="turn-symbol">${icon(done?'trophy':ai?'robot':'flag')}</div><div><strong>${done?t(result()==='draw'?'draw':`win${result()}`):t(`turn${state.turn}`)}</strong><span id="banner-sub">${done?t('allCaptured'):busy?t('capturing'):ai?t('thinking'):t(settings.confirm?'instruction':'instructionDirect')}</span></div>${!done?'<span class="turn-dots" aria-hidden="true"><i></i><i></i><i></i></span>':''}</div><div class="board-landscape"><span class="cloud cloud-a" aria-hidden="true"></span><span class="cloud cloud-b" aria-hidden="true"></span><div id="board">${done?'':boardSVG()}</div>${done?resultPanel():''}<div class="board-controls" ${done?'hidden':''}>${button('zoom-out','', 'board-control','minus',`aria-label="${t('zoomOut')}"`)}${button('center','', 'board-control','center',`aria-label="${t('resetView')}"`)}${button('zoom-in','', 'board-control','plus',`aria-label="${t('zoomIn')}"`)}</div></div><div class="move-bar ${settings.confirm?'':'direct'}" ${done?'hidden':''}><div><span class="move-dot"></span><span id="preview-text">${ai?t('thinking'):t(settings.confirm?'select':'selectDirect')}</span></div>${settings.confirm?button('confirm',t('capture',{n:0,s:'s'}),'button primary capture-button','check','disabled'):''}</div></section><aside class="game-sidebar"><div class="scores">${scoreCard('L')}${scoreCard('R')}</div>${notice&&!done?`<p class="last-warning">${icon('info')}${notice}</p>`:''}<div class="aside-card"><span class="mini-kicker">${t('configuration')}</span><div class="config-line">${icon(config.mode==='solo'?'robot':'people')}<span>${t(config.mode==='solo'?'solo':'duo')}</span></div>${config.mode==='solo'?`<div class="difficulty-tag">${t(config.difficulty)}<span>${'●'.repeat(['easy','normal','expert'].indexOf(config.difficulty)+1)}</span></div>`:''}${button('options',t('startOptions'),'text-button','gear')}<hr><p class="arrow-note">${icon('arrow')}${t(settings.fixed&&config.mode==='solo'?'fixedNotice':'autoNotice')}</p></div><div class="aside-actions">${button('undo',t('undo'),'button secondary','back',canUndo?'':'disabled')}${button('restart',t('restart'),'text-button','refresh')}</div><div class="progress-compact"><div>${icon('star')}<span>${t('progressText',{n:wonCount()})}</span></div><div class="progress-track"><i style="width:${wonCount()/12*100}%"></i></div><small class="progress-sides">${sidesText()}</small></div></aside></div><div class="game-bottom"><span>${t('local')}</span>${button('about',t('about'),'text-button','info')}</div></main>`;
 }
-function resultPanel(){const r=result(),won=r===config.side;return `<section class="result-panel" aria-labelledby="result-title"><div class="result-trophy" aria-hidden="true">${icon(r==='draw'?'spark':'trophy')}</div><span class="eyebrow">${t('resultLabel')}</span><h2 id="result-title">${t(r==='draw'?'draw':`win${r}`)}</h2><p>${config.mode==='solo'?t(won?'victory':'loss'):t('resultNext')}</p><div class="final-score"><span class="red">${mark('L')}${state.scores.L}</span><span class="score-separator">–</span><span class="blue">${mark('R')}${state.scores.R}</span></div><small>${t('final',{a:state.scores.L,b:state.scores.R,n:graph.vertices.length})}</small><p class="settlement">${state.settlement?t('terminal',{camp:camp(state.settlement.player),n:state.settlement.count,winner:camp(state.settlement.recipient)}):t('allCaptured')}</p>${keepPrompt()}<div class="result-buttons">${button('next',t('next'),'button primary','arrow')}${button('replay',t('replay'),'button secondary','refresh')}</div><div class="result-links">${button('switch',t('switch'),'text-button')}${button('share',toast||t('share'),'text-button')}</div></section>`;}
+function resultPanel(){const r=result(),won=r===config.side;return `<section class="result-panel" aria-labelledby="result-title"><div class="result-trophy" aria-hidden="true">${icon(r==='draw'?'spark':'trophy')}</div><span class="eyebrow">${t('resultLabel')}</span><h2 id="result-title">${t(r==='draw'?'draw':`win${r}`)}</h2><p>${config.mode==='solo'?t(won?'victory':'loss'):t('resultNext')}</p><div class="final-score"><span class="red">${mark('L')}${state.scores.L}</span><span class="score-separator">–</span><span class="blue">${mark('R')}${state.scores.R}</span></div><small>${t('final',{a:state.scores.L,b:state.scores.R,n:graph.vertices.length})}</small><p class="settlement">${state.settlement?t(state.settlement.reason==='one-color'?'terminalMonochrome':'terminal',{camp:camp(state.settlement.player),n:state.settlement.count,winner:camp(state.settlement.recipient)}):t('allCaptured')}</p>${keepPrompt()}<div class="result-buttons">${button('next',t('next'),'button primary','arrow')}${button('replay',t('replay'),'button secondary','refresh')}</div><div class="result-links">${button('switch',t('switch'),'text-button')}${button('share',toast||t('share'),'text-button')}</div></section>`;}
 function render(){setSettings();app.innerHTML=header()+(screen==='home'?home():game())+footer();if(screen==='game'&&!state.finished)updatePreview();}
 function updatePreview(){if(screen!=='game'||!state||state.finished)return;
  const id=aiShow??selected??hovered;let mask=0n;if(id&&(aiShow||!busy&&!(config.mode==='solo'&&state.turn!==config.side))){try{mask=previewMove(graph,state,id);}catch{}}
@@ -151,7 +151,7 @@ async function runSettlement(settlement,base,token){
 }
 function finishJingle(){const r=result();if(r==='draw')audio.draw();else if(config.mode==='solo'&&r!==config.side)audio.lose();else audio.win();}
 async function commit(id,{ai=false}={}){
- if(busy||state.finished)return;const token=revision;let next;try{next=playMove(graph,state,id);}catch{return;}
+ if(busy||state.finished)return;const token=revision;let next;try{next=playMove(graph,state,id);next={...next,state:finishMonochrome(graph,next.state)};}catch{return;}
  busy=true;animating=true;skipAnim=false;hovered=null;if(!ai)selected=id;
  const before=state,opponent=ai&&config.mode==='solo';
  updatePreview();
@@ -160,7 +160,7 @@ async function commit(id,{ai=false}={}){
   setSub(t('capturing'));
   await runCascade(before,next,id,{opponent,token});
   const settlement=next.state.settlement;
-  if(token===revision&&settlement){setSub(t('terminal',{camp:camp(settlement.player),n:settlement.count,winner:camp(settlement.recipient)}));await runSettlement(settlement,next.state.scores[settlement.recipient]-settlement.count,token);}
+  if(token===revision&&settlement){setSub(t(settlement.reason==='one-color'?'terminalMonochrome':'terminal',{camp:camp(settlement.player),n:settlement.count,winner:camp(settlement.recipient)}));await runSettlement(settlement,next.state.scores[settlement.recipient]-settlement.count,token);}
  }catch(error){console.error(error);}
  if(token!==revision)return;
  history.push(before);state=next.state;busy=false;animating=false;aiShow=null;selected=null;
@@ -169,6 +169,15 @@ async function commit(id,{ai=false}={}){
  if(state.finished)finishJingle();
  if(keyboardInput&&!modal.open)$('#board .playable')?.focus({preventScroll:true});
  announce(state.finished?t(result()==='draw'?'draw':`win${result()}`):t(`turn${state.turn}`));scheduleAI();
+}
+async function finishResumedTail(){
+ const final=finishMonochrome(graph,state);if(final===state){scheduleAI();return;}
+ const token=revision;busy=true;animating=true;
+ setSub(t('terminalMonochrome',{winner:camp(final.settlement.recipient),n:final.settlement.count}));
+ await runSettlement(final.settlement,state.scores[final.settlement.recipient],token);
+ if(token!==revision)return;
+ history.push(state);state=final;busy=false;animating=false;endProgress();save();render();finishJingle();
+ announce(t(result()==='draw'?'draw':`win${result()}`));
 }
 function scheduleAI(){if(modal.open||aiTimer||worker||busy)return;if(screen!=='game'||!state||state.finished||config.mode!=='solo'||state.turn===config.side)return;
  const token=revision;aiTimer=setTimeout(()=>{aiTimer=null;if(token!==revision)return;let finished=false;
@@ -197,7 +206,7 @@ async function act(action,el){switch(action){
  case'language':settings.lang=settings.lang==='fr'?'en':'fr';render();if(dialogType)renderModal();break;
  case'mode-solo':case'mode-duo':settings.mode=action.slice(5);setSettings();render();break;
  case'play':start(index,settings);if(!read('seen-help',false)){write('seen-help',true);openModal('help');}break;
- case'resume':screen='game';config={...config,lang:settings.lang};render();scheduleAI();break;
+ case'resume':screen='game';config={...config,lang:settings.lang};render();finishResumedTail();break;
  case'levels':case'help':case'about':case'settings':case'options':openModal(action);break;
  case'close':closeModal();break;
  case'got-it':closeModal();if(screen==='home')start(index,settings);break;
