@@ -3,14 +3,17 @@
 const PENTATONIC = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.51, 1567.98, 1760];
 
 export function createAudio(isEnabled) {
-  let ctx = null, master = null;
+  let ctx = null, master = null, resuming = null;
 
   function ensure() {
-    if (ctx) return ctx;
+    if (ctx && ctx.state !== 'closed') return ctx;
+    ctx = null; resuming = null;
     const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
     if (!AC) return null;
     try {
-      ctx = new AC();
+      // Safari exposes this to route game audio as playback (including silent mode).
+      try { if (globalThis.navigator?.audioSession) globalThis.navigator.audioSession.type = 'playback'; } catch {}
+      ctx = new AC({ latencyHint: 'interactive' });
       master = ctx.createGain();
       master.gain.value = .55;
       master.connect(ctx.destination);
@@ -20,13 +23,34 @@ export function createAudio(isEnabled) {
 
   /** Call from a user gesture; browsers keep audio suspended until then. */
   function unlock() {
+    if (!isEnabled()) return Promise.resolve(false);
     const c = ensure();
-    if (c && c.state === 'suspended') c.resume().catch(() => {});
+    if (!c) return Promise.resolve(false);
+    // Start a silent source INSIDE the click/touchend gesture, before awaiting.
+    // This also primes the output on mobile WebKit.
+    try {
+      const buffer = c.createBuffer(1, 1, c.sampleRate);
+      const source = c.createBufferSource();
+      source.buffer = buffer;
+      source.connect(master);
+      source.onended = () => source.disconnect();
+      source.start(0);
+    } catch {}
+    if (c.state === 'running') return Promise.resolve(true);
+    if (!resuming) {
+      try {
+        resuming = Promise.resolve(c.resume()).then(() => c.state === 'running', () => false)
+          .finally(() => { resuming = null; });
+      } catch { return Promise.resolve(false); }
+    }
+    return resuming;
   }
 
-  function tone(freq, delay, { peak = .15, length = .5, type = 'sine', partials = [1, 2.01], glide = 0 } = {}) {
+  function tone(freq, delay, { peak = .15, length = .5, type = 'sine', partials = [1, 2], glide = 0 } = {}) {
     const c = ensure();
     if (!c || !isEnabled()) return;
+    const play = () => {
+    if (!isEnabled() || c.state !== 'running') return;
     try {
       const start = c.currentTime + Math.max(0, delay) / 1000 + .01;
       partials.forEach((ratio, i) => {
@@ -43,6 +67,9 @@ export function createAudio(isEnabled) {
         osc.stop(start + length + .05);
       });
     } catch { /* Audio is a bonus; never break the game for it. */ }
+    };
+    if (c.state === 'running') play();
+    else unlock().then(ready => { if (ready) play(); });
   }
 
   return {
@@ -51,7 +78,10 @@ export function createAudio(isEnabled) {
     drop(order, delay = 0, { opponent = false } = {}) {
       const f = PENTATONIC[Math.min(order, PENTATONIC.length - 1)];
       if (opponent) tone(f / 2, delay, { type: 'triangle', peak: .2, length: .55, partials: [1, 2.0] });
-      else tone(f, delay, { peak: .15, length: .5 });
+      else {
+        tone(f, delay, { peak: .18, length: .38, partials: [1, 2, 3] });
+        tone(f / 2, delay, { peak: .09, length: .09, partials: [1], glide: .7 });
+      }
     },
     /** Soft tap when a piece is chosen (player or opponent). */
     tap({ opponent = false } = {}) {
