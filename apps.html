@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Educational apps designed by Stéphane Gonzalez.">
+<meta name="description" content="Games and apps designed by Stéphane Gonzalez: INFLUENCE, a strategy game on graphs playable in the browser, and educational apps for children and teenagers.">
 
 <title>Apps – Stéphane Gonzalez</title>
 <style>
@@ -78,9 +78,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/apps.css">
 <meta property="og:title" content="Apps – Stéphane Gonzalez">
 <meta property="og:description" content="Stéphane Gonzalez is Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne. Research in economic theory, game theory, social choice and axiomatic economics.">
+<meta property="og:image" content="https://stephanegonzalez.eu/assets/img/apps/influence-game.webp">
 <meta property="og:site_name" content="Stéphane Gonzalez">
+<meta property="og:image:alt" content="Aperçu du jeu INFLUENCE : un plateau de huit pions rouges et bleus reliés par des flèches">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -166,28 +169,108 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Small educational apps I design, mostly for young learners. They run in any web browser and can be installed on a tablet’s home screen.</p>
-<section id="les-gardiens-de-la-forêt-enchantée" class="level2">
-<h2 class="anchored" data-anchor-id="les-gardiens-de-la-forêt-enchantée">Les Gardiens de la Forêt Enchantée</h2>
-<p><em>Grande section de maternelle → début du CP · en français</em></p>
-<p>Un jeu pour apprendre en s’amusant : une sorcière a plongé la forêt dans l’ombre, et l’enfant libère les animaux en relevant des défis. Lettres sous toutes leurs formes (capitales, minuscules, attachées), sons et syllabes, premiers mots et phrases, dénombrement jusqu’à 20, formes, repérage dans l’espace, longueurs et masses, petits problèmes, et énigmes de logique (fioles à trier, chemins qui passent une seule fois par chaque fleur, suites, sudokus en images). Une fée lit toutes les consignes à voix haute ; un espace parents montre ce qui est acquis.</p>
-<p><a href="apps/foret-enchantee/index.html" class="btn btn-primary">Jouer</a></p>
-<p>Sur iPad : ouvrir le jeu dans Safari, puis Partager → « Sur l’écran d’accueil ».</p>
+<div class="apps-intro">
+<p>Des jeux et des applications que je conçois : un jeu de stratégie né de mes recherches, et des applications éducatives pour les enfants et les adolescents. Tout s’ouvre dans un navigateur, sans installation.</p>
+</div>
+<div class="apps-wrap">
+<section class="apps-hero" id="influence" aria-labelledby="influence-title">
+  <div class="apps-hero-text">
+    <p class="apps-kicker">Nouveau · jeu de stratégie · FR / EN</p>
+    <h2 id="influence-title" class="anchored"><span class="apps-dots" aria-hidden="true"><i></i><i></i></span>INFLUENCE <small>le jeu des connexions</small></h2>
+    <p>Un petit graphe, deux couleurs. À ton tour, touche un pion de ta couleur : il tombe avec tous ceux qu'il atteint en suivant les flèches, et chaque pion capturé vaut un point. Les flèches s'inversent quand l'autre camp joue. Les coups gourmands ne sont pas toujours les meilleurs : il faut penser à ce que l'on laisse à l'adversaire.</p>
+    <p>Douze plateaux, seul contre l'ordinateur (trois niveaux) ou à deux sur le même écran. Ta progression est gardée sous ton prénom, sur l'appareil ou en ligne avec un code secret.</p>
+    <p class="apps-en" lang="en">INFLUENCE is a two-player strategy game on directed graphs, adapted from our paper in <em>Theoretical Computer Science</em>. Play it right here, in English or in French.</p>
+    <ul class="apps-facts" aria-label="En bref">
+      <li>12 plateaux</li><li>Solo ou à deux</li><li>Français · English</li><li>Mobile et ordinateur</li>
+    </ul>
+    <p class="apps-actions">
+      <button type="button" class="apps-btn apps-btn-primary" data-influence-play="">▶ Jouer ici</button>
+      <a class="apps-btn" href="apps/influence/index.html" target="_blank" rel="noopener">Plein écran ↗</a>
+      <a class="apps-link" href="https://doi.org/10.1016/j.tcs.2021.05.028">L'article de recherche (TCS 2021)</a>
+    </p>
+  </div>
+  <div class="apps-stage">
+    <div class="apps-phone" id="influence-player">
+      <button type="button" class="apps-poster" data-influence-play="" aria-label="Jouer à INFLUENCE ici, dans la page">
+        <img src="assets/img/apps/influence-game.webp" width="420" height="760" alt="Aperçu du jeu INFLUENCE : un plateau de huit pions rouges et bleus reliés par des flèches" loading="lazy">
+        <span class="apps-play">▶ Jouer</span>
+      </button>
+    </div>
+  </div>
 </section>
-<section id="lécole-de-magie-du-fil-dor" class="level2">
-<h2 class="anchored" data-anchor-id="lécole-de-magie-du-fil-dor">L’École de magie du Fil d’Or</h2>
-<p><em>CM2 · en français</em></p>
-<p>Une apprentie magicienne parcourt une carte du monde : le Château des Récits (lecture, vocabulaire, grammaire, écriture), les Forges des Nombres (numération, calcul, problèmes), l’Observatoire céleste (fractions, mesures, géométrie) et le Jardin des énigmes (jeux de logique). Chaque lieu s’illumine quand un apprentissage est confirmé sur plusieurs jours, des défis plus difficiles attendent ceux qui reviennent, et une histoire en douze chapitres se dévoile au fil des progrès. Progression enregistrée en ligne avec un nom de magicienne et un petit code ; espace parents avec suivi détaillé.</p>
-<p><a href="apps/fil-or/index.html" class="btn btn-primary">Jouer</a></p>
-</section>
-<section id="codex-umbra-prototype" class="level2">
-<h2 class="anchored" data-anchor-id="codex-umbra-prototype">Codex Umbra <em>(prototype)</em></h2>
-<p><em>Seconde → prépa · 15–25 ans · en français</em></p>
-<p>Un jeu de dark fantasy : le Codex qui tenait le monde par ses Lois a été déchiré, et chaque notion comprise se réécrit dans le Codex et rallume une partie du monde. Cinq régions reliées par un graphe de prérequis : les vecteurs, le calcul littéral et la factorisation, le second degré, Python et la logique (chevaliers et fripons, invariants). Trois rangs par Loi, des exercices générés et corrigés exactement (y compris la forme factorisée ou canonique), des démonstrations à reconstituer ou à corriger, une baliste qui suit la parabole qu’on lui donne, et un gardien à vaincre par région. Prérequis : le programme de troisième.</p>
-<p><a href="apps/codex-umbra/index.html" class="btn btn-primary">Jouer</a></p>
+</div>
+
+<h2 class="apps-section-title anchored" id="pedagogiques">Applications pédagogiques</h2>
+<p class="apps-section-sub">Pensées pour les jeunes élèves, de la grande section de maternelle à la prépa.</p>
+
+<div class="apps-grid">
+  <article class="apps-card" style="--a1:#d4eef4;--a2:#f6c8de">
+    <div class="apps-card-art" aria-hidden="true">🧚</div>
+    <div class="apps-card-body">
+      <h3 class="anchored">Les Gardiens de la Forêt Enchantée</h3>
+      <p class="apps-meta">Grande section de maternelle → début du CP · en français</p>
+      <p>Une sorcière a plongé la forêt dans l'ombre : l'enfant libère les animaux en relevant des défis de lecture, de nombres et de logique. Une fée lit toutes les consignes à voix haute.</p>
+      <details>
+        <summary>En savoir plus</summary>
+        <p>Lettres sous toutes leurs formes (capitales, minuscules, attachées), sons et syllabes, premiers mots et phrases, dénombrement jusqu'à 20, formes, repérage dans l'espace, longueurs et masses, petits problèmes, et énigmes de logique (fioles à trier, chemins qui passent une seule fois par chaque fleur, suites, sudokus en images). Un espace parents montre ce qui est acquis.</p>
+      </details>
+      <p class="apps-actions"><a class="apps-btn apps-btn-primary" href="apps/foret-enchantee/index.html">Jouer</a></p>
+    </div>
+  </article>
+
+  <article class="apps-card" style="--a1:#191c34;--a2:#35396b;--ink:#f1cf8a">
+    <div class="apps-card-art" aria-hidden="true">✦</div>
+    <div class="apps-card-body">
+      <h3 class="anchored">L'École de magie du Fil d'Or</h3>
+      <p class="apps-meta">CM2 · en français</p>
+      <p>Une apprentie magicienne parcourt une carte du monde : lecture et écriture, calcul et problèmes, fractions et géométrie, jeux de logique. Une histoire en douze chapitres se dévoile au fil des progrès.</p>
+      <details>
+        <summary>En savoir plus</summary>
+        <p>Le Château des Récits (lecture, vocabulaire, grammaire, écriture), les Forges des Nombres (numération, calcul, problèmes), l'Observatoire céleste (fractions, mesures, géométrie) et le Jardin des énigmes (jeux de logique). Chaque lieu s'illumine quand un apprentissage est confirmé sur plusieurs jours, et des défis plus difficiles attendent ceux qui reviennent. Progression enregistrée en ligne avec un nom de magicienne et un petit code ; espace parents avec suivi détaillé.</p>
+      </details>
+      <p class="apps-actions"><a class="apps-btn apps-btn-primary" href="apps/fil-or/index.html">Jouer</a></p>
+    </div>
+  </article>
+
+  <article class="apps-card" style="--a1:#07060a;--a2:#4a1424;--ink:#d9b26a">
+    <div class="apps-card-art" aria-hidden="true">☾</div>
+    <div class="apps-card-body">
+      <h3 class="anchored">Codex Umbra <em>prototype</em></h3>
+      <p class="apps-meta">Seconde → prépa · 15–25 ans · en français</p>
+      <p>Un jeu de dark fantasy : le Codex qui tenait le monde par ses Lois a été déchiré, et chaque notion comprise se réécrit dans le Codex et rallume une partie du monde. Prérequis : le programme de troisième.</p>
+      <details>
+        <summary>En savoir plus</summary>
+        <p>Cinq régions reliées par un graphe de prérequis : les vecteurs, le calcul littéral et la factorisation, le second degré, Python et la logique (chevaliers et fripons, invariants). Trois rangs par Loi, des exercices générés et corrigés exactement (y compris la forme factorisée ou canonique), des démonstrations à reconstituer ou à corriger, une baliste qui suit la parabole qu'on lui donne, et un gardien à vaincre par région.</p>
+      </details>
+      <p class="apps-actions"><a class="apps-btn apps-btn-primary" href="apps/codex-umbra/index.html">Jouer</a></p>
+    </div>
+  </article>
+</div>
+
+<p class="apps-note">Sur iPad ou tablette : ouvrir l'application dans Safari, puis Partager → « Sur l'écran d'accueil » pour l'installer comme une application.</p>
+
+<script>
+(function () {
+  var box = document.getElementById('influence-player');
+  if (!box) return;
+  function start() {
+    var frame = box.querySelector('iframe');
+    if (!frame) {
+      frame = document.createElement('iframe');
+      frame.src = 'apps/influence/index.html';
+      frame.title = 'INFLUENCE, le jeu des connexions';
+      frame.setAttribute('allow', 'fullscreen');
+      box.replaceChildren(frame);
+    }
+    box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    frame.focus();
+  }
+  document.querySelectorAll('[data-influence-play]').forEach(function (b) { b.addEventListener('click', start); });
+  if (/[?&]jouer(=|&|$)/.test(location.search) || location.hash === '#jouer') start();
+})();
+</script>
 
 
-</section>
 
 </main> <!-- /main -->
 <script src="assets/js/portrait-rotator.js"></script>
