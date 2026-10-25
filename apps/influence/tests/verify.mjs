@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { fileURLToPath } from 'node:url';
 import { createGraph, opposite, disjointUnion, captureMask, ids, legalMoves, popcount } from '../engine/graph.mjs';
-import { createGame, playMove, previewMove } from '../engine/game.mjs';
+import { createGame, playMove, previewMove, finishMonochrome } from '../engine/game.mjs';
 import { createExactSolver, relativeScores } from '../ai/exact.mjs';
 import { chooseMove } from '../ai/choose.mjs';
 
@@ -42,6 +42,8 @@ try {
       seen.add(key);
       assert.equal(state.scores.L + state.scores.R + popcount(state.remaining), n);
       if (state.finished) { assert.equal(state.scores.L + state.scores.R, n); return; }
+      const short = finishMonochrome(graph, state);
+      if(short!==state){const future=solver.solve(state.remaining,state.turn);assert(future.exact);assert.equal(short.scores.L-short.scores.R,state.scores.L-state.scores.R+future.value);assert.equal(short.scores.L+short.scores.R,n);}
       const a = solver.solve(state.remaining, 'L'), b = solver.solve(state.remaining, 'R');
       assert(a.exact && b.exact && a.value >= b.value); reachable++;
       for (const id of legalMoves(graph, state.remaining, state.turn)) {

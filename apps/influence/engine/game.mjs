@@ -52,3 +52,17 @@ export function deserializeGame(text) {
   // Settlement is a display event, not trusted persisted rule state.
   return { graph, state: freezeState({ remaining, turn: s.turn, scores: s.scores, ply: s.ply, finished: s.finished, settlement: null }) };
 }
+
+/** Presentation shortcut: a one-colour remainder has a unique final allocation.
+ * Keep createGame/playMove unchanged for the original mathematical rule set.
+ */
+export function finishMonochrome(graph, state) {
+  if (state.finished || !state.remaining) return state;
+  const red = state.remaining & graph.colors.L, blue = state.remaining & graph.colors.R;
+  if (red && blue) return state;
+  const recipient = red ? 'L' : 'R', count = popcount(state.remaining);
+  return freezeState({ ...state, remaining: 0n, finished: true,
+    scores: { ...state.scores, [recipient]: state.scores[recipient] + count },
+    settlement: { reason: 'one-color', player: other(recipient), recipient,
+      count, vertices: ids(graph, state.remaining) } });
+}
