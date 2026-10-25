@@ -192,5 +192,14 @@
     if (!Number.isInteger(p) || !Number.isInteger(d) || d <= 0 || gcd(p, d) !== 1) throw new Error('K.frac : ' + p + '/' + d + ' n’est pas une fraction irréductible (dénominateur > 0)');
     return { type: 'fields', q, fields: [{ label, kind: 'frac' }], check: (a) => V.frac(a[0], p, d), sol, hint, _ans: [p + '/' + d], ...extra };
   };
-  CU.IV = { parse, norm, complement, intersect, subset, same };
+  // écriture (saisissable) d'une réunion d'intervalles normalisée : sert de cible aux exercices générés
+  const fmt = (v) => {
+    if (v === Infinity) return '+∞';
+    if (v === -Infinity) return '-∞';
+    const f = CU.toFrac(v);
+    if (!f) throw new Error('IV.str : borne non rationnelle ' + v);
+    return f[1] === 1 ? String(f[0]) : f[0] + '/' + f[1];
+  };
+  const str = (ivs) => (ivs.length ? norm(ivs).map((i) => (eq(i.lo, i.hi) ? '{' + fmt(i.lo) + '}' : (i.lc ? '[' : ']') + fmt(i.lo) + ' ; ' + fmt(i.hi) + (i.hc ? ']' : '['))).join(' ∪ ') : '∅');
+  CU.IV = { parse, norm, complement, intersect, subset, same, str, tex: (s) => parse(s).tex };
 })();

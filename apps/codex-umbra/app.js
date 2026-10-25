@@ -571,13 +571,16 @@ ${back ? `<button class="back" id="bk" aria-label="Retour">‹ <span>${esc(back.
   }
 
   /* ================= monde ================= */
+  // nombre de Lois (écrites ou prévues) qui dépendent de chaque Loi : Corvin suggère d'abord les fondations
+  const DEPS = {};
+  for (const g of Object.values(CU.GRAPH.laws)) for (const r of g.req) DEPS[r] = (DEPS[r] || 0) + 1;
   function suggestion() {
     let best = null,
       bs = -1;
     for (const id of CU.ORDER) {
       const t = tierOf(id);
       if (!available(id) || t >= 3 || t > maxAllowed(id)) continue;
-      const score = (sk(id).prog || 0) * 10 + (3 - t) * 2 + (S(id).region === 'vec' || S(id).region === 'fac' ? 1 : 0) - CU.ORDER.indexOf(id) * 0.01;
+      const score = (sk(id).prog || 0) * 10 + (3 - t) * 2 + (['num', 'vec', 'fac'].includes(S(id).region) ? 1 : 0) + 0.05 * (DEPS[id] || 0) - CU.ORDER.indexOf(id) * 0.01;
       if (score > bs) {
         bs = score;
         best = id;
@@ -621,7 +624,7 @@ ${(() => {
     dn = op ? dueN('all') : 0;
   return `<button class="rcard final-card memory-card ${op ? '' : 'locked'}" id="cloister"><span class="ic">◈</span><h3>Le Cloître de la Mémoire</h3><div class="sub">${op ? (dn ? `${dn} souvenir${dn > 1 ? 's' : ''} s’estompe${dn > 1 ? 'nt' : ''}, toutes régions mêlées.` : 'Tous tes souvenirs tiennent. Reviens quand l’Oubli rôdera.') : 'S’ouvre au 6e sceau brisé : on y revoit, mélangé, tout ce que tu as appris.'}</div><div class="meta"><span>${recallWins('all') ? 'Souvenirs gravés : ' + recallWins('all') : ''}</span><span>${dn ? '<span class="memdot">◈ ' + dn + '</span>' : ''}</span></div></button>`;
 })()}
-<button class="rcard final-card arena-card ${arenaPool().length ? '' : 'locked'}" id="arena"><span class="ic">⏳</span><h3>L’Arène des Automatismes</h3><div class="sub">${arenaPool().length ? 'Calcul mental, développements, discriminants… contre la montre.' : 'S’ouvre dès ton premier sceau de calcul.'}</div><div class="meta"><span>${st.arena && st.arena.best ? 'Record : ' + st.arena.best : arenaPool().length ? arenaPool().length + ' types de calculs' : ''}</span></div></button>
+<button class="rcard final-card arena-card ${arenaPool().length ? '' : 'locked'}" id="arena"><span class="ic">⏳</span><h3>L’Arène des Automatismes</h3><div class="sub">${arenaPool().length ? 'Fractions, puissances, développements, discriminants… contre la montre.' : 'S’ouvre dès ton premier sceau de calcul.'}</div><div class="meta"><span>${st.arena && st.arena.best ? 'Record : ' + st.arena.best : arenaPool().length ? arenaPool().length + ' types de calculs' : ''}</span></div></button>
 <button class="rcard final-card ${fo ? '' : 'locked'}" id="fin"><span class="ic">${CU.FINAL.glyph}</span><h3>Le Sanctuaire du Codex</h3><div class="sub">${fd ? 'Le Roi Sans Loi est vaincu. Le Codex t’appartient.' : fo ? 'Le Roi Sans Loi t’attend.' : 'Vaincs les gardiens des Remparts, des Cryptes et de la Tour, et grave un souvenir au Cloître, pour ouvrir le Sanctuaire.'}</div><div class="meta"><span>${CU.FINAL.needs.map((r) => (st.bosses[r] ? '👑' : '◇')).join(' ')} ${recallWins('all') ? '◈' : '◇'}</span></div></button>
 </div>
 <div class="foot"><span class="syncdot"></span></div>
@@ -650,7 +653,7 @@ ${(() => {
 
   /* ================= région ================= */
   // emplacement de l'Autel du Souvenir sur chaque scène (repère 1000 × 1000)
-  const ALTAR = { vec: [270, 300], fac: [260, 300], quad: [260, 290], py: [250, 470], log: [250, 470] };
+  const ALTAR = { num: [500, 370], vec: [270, 300], fac: [260, 300], quad: [260, 290], py: [250, 470], log: [250, 470] };
   function renderRegion(rid, flashId) {
     view = { kind: 'region', rid }; mood('explore');
     const g = CU.region(rid);
@@ -1511,6 +1514,13 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
     { id: 'q2', t: 0, s: 25 },
     { id: 'q2', t: 1, s: 45 },
     { id: 'q3', t: 0, s: 30 },
+    { id: 'n1', t: 0, s: 25 },
+    { id: 'n3', t: 0, s: 40 },
+    { id: 'n4', t: 0, s: 25 },
+    { id: 'n5', t: 0, s: 30 },
+    { id: 'n7', t: 0, s: 35 },
+    { id: 'n8', t: 0, s: 25 },
+    { id: 'n11', t: 0, s: 30 },
   ];
   const arenaPool = () => AUTO.filter((a) => tierOf(a.id) > a.t);
   function openArenaSheet() {
@@ -1521,7 +1531,7 @@ ${firstWin ? `<div class="frag"><h4>${v.final ? 'ÉPILOGUE' : 'FRAGMENT DU CODEX
       `<div class="top"><div class="bigg">⏳</div><div><div class="place">Contre la montre</div><h2>L’Arène des Automatismes</h2><div class="ital" style="font-size:1.05rem;margin-top:4px">Ici, on ne démontre pas : on dégaine. Ce qu’on sait vraiment, on doit le savoir vite.</div></div></div>
 <p style="color:var(--mute);margin-top:14px">Des calculs tirés des Lois que tu as déjà brisées, l’un après l’autre. Chacun a son temps, plus long pour les calculs plus lourds, et le temps se resserre à mesure que ton score monte. Un temps écoulé ou une erreur te coûtent une lueur ; à la troisième, la partie s’arrête. Pas d’indice.</p>
 ${best ? `<p class="law" style="text-align:center">Ton record : <b>${best}</b></p>` : ''}
-${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : ${names.map(esc).join(', ')}.</p>` : `<div class="req">L’Arène s’ouvre dès que tu as brisé un premier sceau de calcul (vecteurs, calcul littéral ou second degré).</div>`}
+${pool.length ? `<p class="note">${pool.length} types de calculs disponibles : ${names.map(esc).join(', ')}.</p>` : `<div class="req">L’Arène s’ouvre dès que tu as brisé un premier sceau de calcul (nombres, vecteurs, calcul littéral ou second degré).</div>`}
 <div class="actions">${pool.length ? '<button class="btn primary gold" id="ar-go">Entrer dans l’Arène</button>' : ''}<button class="btn ghost" id="ar-cl">Fermer</button></div>`,
       '#d9ab5b',
     );
