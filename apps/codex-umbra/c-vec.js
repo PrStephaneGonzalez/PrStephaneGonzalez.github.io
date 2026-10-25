@@ -26,7 +26,6 @@
     glyph: '➶',
     x: 180,
     y: 860,
-    req: [],
     flavor: 'Ici, le vent ne souffle plus. Il attend qu’on lui dise où aller.',
     law: T`Un vecteur est un déplacement. $\vec u\begin{pmatrix}x\\y\end{pmatrix}$ : $x$ carreaux à droite (à gauche si $x<0$), $y$ vers le haut (vers le bas si $y<0$). Pour $A(x_A;y_A)$ et $B(x_B;y_B)$ : $\overrightarrow{AB}\begin{pmatrix}x_B-x_A\\y_B-y_A\end{pmatrix}$.`,
     lessons: [
@@ -155,7 +154,6 @@
     glyph: '✣',
     x: 380,
     y: 700,
-    req: ['v1'],
     flavor: 'Deux vents se croisent. Lequel l’emporte ? Les deux, si l’on sait les additionner.',
     law: T`$\vec u+\vec v$ : on met les flèches bout à bout ; en coordonnées, on additionne. Relation de Chasles : $\overrightarrow{AB}+\overrightarrow{BC}=\overrightarrow{AC}$, et $-\overrightarrow{AB}=\overrightarrow{BA}$.`,
     lessons: [
@@ -279,7 +277,6 @@
     glyph: '⟿',
     x: 640,
     y: 800,
-    req: ['v2'],
     flavor: 'Le forgeron d’autrefois savait doubler un vent, l’inverser, le mêler à un autre.',
     law: T`$k\vec u\begin{pmatrix}kx\\ky\end{pmatrix}$ : même direction, longueur multipliée par $|k|$, sens inversé si $k<0$. Si $\vec u$ et $\vec v$ ne sont pas colinéaires, tout vecteur s’écrit de façon unique $a\vec u+b\vec v$.`,
     lessons: [
@@ -376,7 +373,6 @@
     glyph: '◎',
     x: 170,
     y: 530,
-    req: ['v1'],
     flavor: 'Le puits répond à qui lui demande une longueur exacte. Il se tait devant les à-peu-près.',
     law: T`$\|\vec u\| = \sqrt{x^2+y^2}$ et $AB = \sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$ : c’est le théorème de Pythagore.`,
     lessons: [
@@ -421,7 +417,6 @@
     glyph: '⫽',
     x: 520,
     y: 480,
-    req: ['v3'],
     flavor: 'Trois pierres alignées ouvrent un passage. Deux suffisent pour tromper l’œil.',
     law: T`$\vec u$ et $\vec v$ sont colinéaires $\iff \det(\vec u,\vec v)=xy'-yx'=0$. Trois points $A,B,C$ sont alignés $\iff \overrightarrow{AB}$ et $\overrightarrow{AC}$ sont colinéaires.`,
     lessons: [
@@ -519,7 +514,6 @@
     glyph: '⏥',
     x: 830,
     y: 600,
-    req: ['v2'],
     flavor: 'Ses deux battants ne s’ouvrent que s’ils sont parfaitement parallèles.',
     law: T`$ABCD$ est un parallélogramme $\iff \overrightarrow{AB}=\overrightarrow{DC}$ $\iff$ $[AC]$ et $[BD]$ ont le même milieu. Milieu de $[AB]$ : $\left(\frac{x_A+x_B}2;\frac{y_A+y_B}2\right)$.`,
     lessons: [
@@ -658,7 +652,6 @@
     glyph: '✒',
     x: 760,
     y: 310,
-    req: ['v5', 'v6'],
     flavor: 'Les moines-cartographes n’écrivaient rien qui ne fût démontré. Leurs pages brûlent encore.',
     law: T`Démontrer avec des vecteurs : traduire l’hypothèse en égalité de vecteurs, insérer des points par Chasles, conclure par colinéarité ou égalité de vecteurs.`,
     lessons: [

@@ -109,7 +109,6 @@
     glyph: '⚙',
     x: 230,
     y: 820,
-    req: [],
     flavor: 'Les automates exécutent sans comprendre. Toi, tu dois comprendre sans exécuter.',
     law: T`Un programme s’exécute ligne par ligne. <code>a = expr</code> calcule <code>expr</code> avec les valeurs actuelles, puis range le résultat dans <code>a</code>.`,
     lessons: [
@@ -148,7 +147,6 @@
     glyph: '⌬',
     x: 520,
     y: 580,
-    req: ['p1'],
     flavor: 'Il manque une pièce à chaque automate. Une seule convient — les autres le feraient exploser.',
     law: T`<code>==</code> compare, <code>=</code> affecte. <code>**</code> est la puissance. Les parenthèses fixent les priorités : <code>-b / (2*a)</code>.`,
     lessons: [
@@ -183,7 +181,6 @@
     glyph: '⛭',
     x: 760,
     y: 330,
-    req: ['p2'],
     flavor: 'Ses pièces ont été dispersées. Remonte-le, et il calculera pour toi ce qu’aucun mage n’oserait.',
     law: T`Un algorithme : initialiser, répéter (boucle), décider (test), produire (renvoyer ou afficher). L’indentation dit ce qui appartient à quoi.`,
     lessons: [
@@ -243,7 +240,6 @@
     glyph: '⇔',
     x: 230,
     y: 820,
-    req: [],
     flavor: 'Chaque miroir renvoie une phrase inversée. Certaines disent encore vrai. D’autres mentent.',
     law: T`« $P\Rightarrow Q$ » est faux seulement quand $P$ est vrai et $Q$ faux. Sa contraposée « non $Q\Rightarrow$ non $P$ » lui est équivalente ; sa réciproque « $Q\Rightarrow P$ » ne l’est pas.`,
     lessons: [
@@ -315,7 +311,6 @@
     glyph: '☍',
     x: 520,
     y: 580,
-    req: ['l1'],
     flavor: 'Chevaliers ou fripons : tous portent le même masque. Seule la logique les distingue.',
     law: T`Un chevalier dit toujours vrai, un fripon toujours faux. Une répartition est cohérente si chaque phrase est vraie exactement quand celui qui la prononce est chevalier.`,
     lessons: [
@@ -347,7 +342,6 @@
     glyph: '⌘',
     x: 760,
     y: 330,
-    req: ['l1', 'v3'],
     flavor: 'Le Dédale se moque de ceux qui essaient tous les chemins. Il cède à ceux qui trouvent ce qui ne change jamais.',
     law: T`Un <b>invariant</b> est une quantité que les mouvements autorisés ne changent pas. Si elle diffère entre le départ et l’arrivée, l’arrivée est inaccessible — sans avoir à essayer un seul chemin.`,
     lessons: [
