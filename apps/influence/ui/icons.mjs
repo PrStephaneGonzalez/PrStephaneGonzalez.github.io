@@ -20,6 +20,8 @@ const paths={
  trophy:'<path d="M7 3h10v7a5 5 0 0 1-10 0Zm0 2H2v3a5 5 0 0 0 5 5m10-8h5v3a5 5 0 0 1-5 5M12 15v5m-5 2h10"/>',
  robot:'<rect x="3" y="6" width="18" height="15" rx="5"/><path d="M12 2v4M8 11v2m8-2v2m-8 4h8M1 11v5m22-5v5"/>',
  volume:'<path d="M3 9h4l5-5v16l-5-5H3ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>',
+ mute:'<path d="M3 9h4l5-5v16l-5-5H3ZM16 9l6 6m0-6-6 6"/>',
  help:'<circle cx="12" cy="12" r="10"/><path d="M9 8a3 3 0 1 1 5 2c-2 1-2 2-2 3m0 3v1"/>',
  plus:'<path d="M12 4v16M4 12h16"/>',minus:'<path d="M4 12h16"/>',center:'<path d="M3 8V3h5m8 0h5v5m0 8v5h-5m-8 0H3v-5"/><circle cx="12" cy="12" r="3"/>',
 };
