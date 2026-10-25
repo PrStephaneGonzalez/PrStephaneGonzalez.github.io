@@ -14,6 +14,8 @@ const write=(key,value)=>{try{localStorage.setItem(`influence.v1.${key}`,JSON.st
 const defaults={lang:navigator.language?.startsWith('fr')?'fr':'en',mode:'solo',side:'L',first:'L',difficulty:'normal',confirm:false,motion:matchMedia('(prefers-reduced-motion: reduce)').matches,sound:true,fixed:false,speed:'normal',ver:2};
 const stored=read('settings',{});if(!(stored.ver>=2)){stored.confirm=false;stored.sound=true;stored.ver=2;}
 let settings={...defaults,...stored};
+// A link can force the language (?lang=en or ?lang=fr), e.g. from the publication list.
+{const asked=new URLSearchParams(location.search).get('lang');if(asked==='en'||asked==='fr')settings.lang=asked;}
 for(const[key,allowed]of Object.entries({lang:['fr','en'],mode:['solo','duo'],side:['L','R'],first:['L','R','random'],difficulty:['easy','normal','expert'],speed:['calm','normal','fast']}))if(!allowed.includes(settings[key]))settings[key]=defaults[key];
 for(const k of ['confirm','motion','sound','fixed'])settings[k]=typeof settings[k]==='boolean'?settings[k]:defaults[k];
 let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},drag=null,daily=null,toast='',lastOpener=null;
