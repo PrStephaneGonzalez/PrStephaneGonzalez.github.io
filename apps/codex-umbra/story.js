@@ -3,6 +3,20 @@
 (function () {
   CU.REGIONS = [
     {
+      id: 'num',
+      healed: 'Les enclumes sonnent de nouveau juste. Chaque nombre forgé ici a retrouvé son poids exact, et la fausse monnaie a fondu.',
+      name: 'Les Forges des Nombres',
+      short: 'Nombres',
+      sub: 'Divisibilité, fractions, puissances, racines, réels, encadrements',
+      hue: '#7fb2ff',
+      deep: '#13234a',
+      icon: '⚒',
+      map: [500, 175],
+      scene: 'forge',
+      intro: 'Dans les Forges, les Archivistes frappaient les nombres comme on frappe la monnaie : chacun avait son poids exact. Depuis la Déchirure, les balances mentent et la fausse monnaie circule.',
+      boss: { name: 'Le Faussaire', title: 'Gardien des Forges', hp: 6, glyph: '¤', taunt: 'Mes pièces sonnent toutes juste. Sauras-tu dire lesquelles sont fausses ?' },
+    },
+    {
       id: 'vec',
     healed: 'Les vents de Vectre soufflent de nouveau dans des directions certaines. Sur les remparts, les bannières claquent.',
       name: 'Les Remparts de Vectre',
@@ -107,6 +121,7 @@
     { id: 'f8', at: 44, title: 'Ce que tu es', text: '« Tu ne retrouves pas des pages, dit enfin Corvin. Les pages ont brûlé, toutes. Ce qui se réécrit dans le Codex, ce sont les Lois que <i>tu</i> as comprises. Ysembre avait raison. Il lui manquait seulement quelqu’un comme toi. »' },
   ];
   CU.BOSS_TEXT = {
+    num: 'Le Faussaire laisse tomber sa dernière pièce : elle sonne creux. Autour de toi, les balances se redressent ; dans les Forges, chaque nombre a retrouvé son poids exact.',
     vec: 'Le Colosse des Vents s’effondre en une pluie de flèches lumineuses. Sur les Remparts de Vectre, les vents se lèvent à nouveau — et, pour la première fois depuis la Déchirure, ils savent où aller.',
     fac: 'La Liche aux Sceaux se brise comme ses propres runes, en facteurs de poussière. Les Cryptes s’ouvrent une à une ; ce qui était scellé respire.',
     quad: 'La dernière flèche de l’Archère Spectrale décrit une parabole parfaite… et retombe exactement où tu l’avais prédit. Elle sourit, puis se dissipe. La Tour des Arcs se rallume, étage par étage.',

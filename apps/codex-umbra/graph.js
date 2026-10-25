@@ -120,7 +120,7 @@
       quad: { name: 'La Tour des Arcs', beyond: true },
       py: { name: 'Python' },
       log: { name: 'Logique' },
-      num: { name: 'Forges des Nombres', planned: true },
+      num: { name: 'Les Forges des Nombres' },
       equ: { name: 'Équations et inégalités', planned: true },
       fon: { name: 'Observatoire des Fonctions I : lire et relier', planned: true },
       ref: { name: 'Observatoire des Fonctions II : les fonctions de référence', planned: true },

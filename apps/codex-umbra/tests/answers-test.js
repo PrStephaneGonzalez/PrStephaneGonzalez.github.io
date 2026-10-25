@@ -98,6 +98,10 @@ ok(CU.IV.same(CU.IV.intersect(P('[1;5]'), P('[5;9]')), P('{5}')), 'intersection 
 ok(CU.IV.same(CU.IV.intersect(P('[1;5[') , P(']5;9]')), []), 'intersection vide');
 ok(CU.IV.subset(P('[2;3]'), P('[1;5]')) && !CU.IV.subset(P('[0;3]'), P('[1;5]')), 'inclusion');
 
+/* --- écriture d'un ensemble (cible générée) --- */
+for (const t of [']-∞ ; 2] ∪ [5 ; +∞[', 'ℝ\\{3}', '{2 ; 5}', '[1/2 ; 7/3[', '∅', 'ℝ', ']-3 ; -1] ∪ {4}'])
+  ok(CU.IV.same(P(CU.IV.str(P(t))), P(t)), 'IV.str aller-retour : ' + t + ' → ' + CU.IV.str(P(t)));
+
 /* --- fractions --- */
 const fr = (a, p, d) => V.frac(a, p, d);
 ok(fr('3/4', 3, 4).ok, '3/4');

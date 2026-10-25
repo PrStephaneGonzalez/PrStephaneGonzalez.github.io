@@ -511,7 +511,8 @@ const V = (CU.V = {
     const v = evalAst(ast, 0);
     if (!isFinite(v)) return { ok: false, msg: 'Ce nombre n’existe pas (division par zéro ?).' };
     if (near(v, val, 1e-9)) return { ok: true };
-    if (near(v, val, 1.5e-2)) return { ok: false, msg: 'Valeur approchée : on veut la valeur exacte (fraction, racine…).', close: true };
+    // « valeur approchée » seulement si l'élève a tapé un décimal proche (écart relatif) de la valeur exacte
+    if (/[.,]/.test(src) && val !== 0 && Math.abs(v - val) <= 1.5e-2 * Math.abs(val)) return { ok: false, msg: 'Valeur approchée : on veut la valeur exacte (fraction, racine…).', close: true };
     return { ok: false, msg: 'Ce n’est pas la bonne valeur.' };
   },
   // ensemble de nombres séparés par ;
