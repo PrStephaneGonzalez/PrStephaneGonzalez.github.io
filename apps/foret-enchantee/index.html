@@ -543,8 +543,10 @@ function norm(s){if(!s||!s.games)return null;GAMES.forEach(x=>{if(!s.games[x.id]
 function parse(raw){try{return norm(JSON.parse(raw))}catch(e){return null}}
 /* fusion de deux sauvegardes : on ne perd jamais de progrès */
 function mergeSt(a,b){const o=fresh();
-  GAMES.forEach(g=>{const x=a.games[g.id],y=b.games[g.id];const w=(x.level>y.level||(x.level===y.level&&x.stars>=y.stars))?x:y;
-    o.games[g.id]=Object.assign({},w,{freed:!!(x.freed||y.freed),mastered:!!(x.mastered||y.mastered)})});
+  GAMES.forEach(g=>{const x=a.games[g.id],y=b.games[g.id];
+    /* les étoiles reviennent à 0 à chaque récompense ou refus : le compteur rc (qui ne fait que croître) dit quelle copie est la plus récente */
+    const w=(x.level!==y.level?x.level>y.level:(x.rc||0)!==(y.rc||0)?(x.rc||0)>(y.rc||0):x.stars>=y.stars)?x:y;
+    o.games[g.id]=Object.assign({},w,{freed:!!(x.freed||y.freed),mastered:!!(x.mastered||y.mastered),bonus:Math.max(x.bonus||0,y.bonus||0),rc:Math.max(x.rc||0,y.rc||0)})});
   new Set([...Object.keys(a.items),...Object.keys(b.items)]).forEach(k=>{const x=a.items[k]||{n:0,ok:0,days:[]},y=b.items[k]||{n:0,ok:0,days:[]};
     o.items[k]={n:Math.max(x.n,y.n),ok:Math.max(x.ok,y.ok),days:[...new Set([...(x.days||[]),...(y.days||[])])].sort()}});
   new Set([...Object.keys(a.days),...Object.keys(b.days)]).forEach(k=>{const x=a.days[k]||{rounds:0,ok:0},y=b.days[k]||{rounds:0,ok:0};o.days[k]={rounds:Math.max(x.rounds,y.rounds),ok:Math.max(x.ok,y.ok)}});
@@ -809,12 +811,12 @@ function notYet(G,miss){
 }
 function levelComplete(){
   const G=GBY[cur.id],g=st.games[cur.id];let kind;
-  {const miss=gateMissing(G,g);if(miss){g.stars=0;save();notYet(G,miss);return}}
+  {const miss=gateMissing(G,g);if(miss){g.stars=0;g.rc=(g.rc||0)+1;save();notYet(G,miss);return}}
   if(!g.freed){g.freed=true;kind='free';if(g.level<G.max)g.level++}
   else if(g.level<G.max){g.level++;kind='level'}
   else if(!g.mastered){g.mastered=true;kind='master'}
   else{g.bonus=(g.bonus||0)+1;kind='bonus'}
-  g.stars=0;save();
+  g.stars=0;g.rc=(g.rc||0)+1;save();
   const C=$('#celebrate');C.innerHTML='';sfx('free');
   const name=cap1(G.name),fem=isFem(G),il=fem?'elle':'il',fi=curForm(G),nf=nextForm(G);const final=kind==='free'&&G.id==='siren';
   const unlocked=kind==='free'?GAMES.filter(x=>x.id!==G.id&&!st.games[x.id].freed&&reqOf(x).includes(G.id)&&available(x)):[];
