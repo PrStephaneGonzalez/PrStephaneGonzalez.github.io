@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>phase_a – Stéphane Gonzalez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-55617497126496852ff9f5a59253c640.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<meta property="og:title" content="Stéphane Gonzalez">
+<meta property="og:site_name" content="Stéphane Gonzalez">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Stéphane Gonzalez</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../books.html"> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../scientific-organization.html"> 
+<span class="menu-text">Scientific organization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../apps.html"> 
+<span class="menu-text">Apps</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../assets/cv/Stephane_Gonzalez_Academic_CV_August_2026_v4.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="rapport-de-phase-a-25-octobre-2026" class="level1">
+<h1>Rapport de phase A — 25 octobre 2026</h1>
+<section id="résultat-et-point-à-valider" class="level2">
+<h2 class="anchored" data-anchor-id="résultat-et-point-à-valider">Résultat et point à valider</h2>
+<p>Le moteur, le solveur exact et les vérifications indépendantes sont réalisés. Ils appliquent les règles originales : captures transitives dans le graphe induit courant, sommets forcés jouables, alternance et attribution immédiate des restants si le joueur au trait ne peut plus jouer.</p>
+<p><strong>Une exigence littérale du cahier doit être corrigée avant validation : le corollaire 24 imprimé dans l’article a une exception à quatre sommets.</strong> Les tests conservent les règles et enregistrent explicitement cette exception. La phase B n’a pas été commencée. Aucune publication ni aucun push.</p>
+</section>
+<section id="exception-du-cycle-à-quatre-sommets" class="level2">
+<h2 class="anchored" data-anchor-id="exception-du-cycle-à-quatre-sommets">Exception du cycle à quatre sommets</h2>
+<p>Sommets <code>1,2,3,4</code>, Rouge = <code>2,4</code>, Bleu = <code>1,3</code>. Arcs : <code>2→1</code>, <code>2→3</code>, <code>4→3</code>, <code>4→1</code>.</p>
+<ul>
+<li>Rouge commence en <code>2</code> : il capture <code>1,2,3</code>. Bleu n’a plus de sommet ; Rouge reçoit <code>4</code>. Score 4–0, donc <strong>Ls = 4</strong>.</li>
+<li>Bleu commence en <code>1</code> : il capture <code>1,2,4</code>. Rouge n’a plus de sommet ; Bleu reçoit <code>3</code>. Score 0–4, donc <strong>Rs = −4</strong>.</li>
+</ul>
+<p>L’ensemble <code>{0,2}</code> du corollaire 24 exclut cette valeur. Ce graphe entre pourtant dans la définition de la classe, p.36. L’observation reste vraie en retirant immédiatement le sommet forcé : cette exception ne vient pas de notre choix des règles originales. L’oracle Python sans mémoïsation confirme le résultat dans l’énumération exhaustive.</p>
+<p>La preuve imprimée invoque le théorème 20 sur le segment restant ; pour ce cycle, il ne reste qu’un sommet, hors du domaine de ce théorème. <strong>Correction proposée pour le cahier :</strong> tester <code>(4,−4)</code> pour le cycle de quatre sommets, puis l’ensemble annoncé sur les cycles alternés d’au moins six sommets. Cette dernière propriété a été vérifiée pour 6,8,…,20 ; le test ne constitue pas à lui seul une preuve pour toutes les tailles. Le cas dégénéré à deux sommets est un segment et n’est pas créé comme un cycle.</p>
+</section>
+<section id="autres-précisions-au-cahier" class="level2">
+<h2 class="anchored" data-anchor-id="autres-précisions-au-cahier">Autres précisions au cahier</h2>
+<p>Le théorème 20 concerne les segments d’au moins deux sommets. La ligne <code>n=1</code> du tableau a bien <code>Ls=Rs=−1</code>, et fait l’objet d’un test distinct.</p>
+<p>La classification des niveaux du §5 doit aussi prévoir une égalité pour un seul ordre de départ. Exemple : <code>0</code> Rouge, <code>1,2,3</code> Bleus, arcs <code>0→2</code>, <code>1→2</code>, <code>3→0</code> ; les valeurs exactes sont <code>(Ls,Rs)=(0,−4)</code>. Rouge commence : égalité ; Bleu commence : Bleu gagne. L’énumération Python et un test de régression confirment ce cas. Pour la phase C, distinguer les six cas suivants lorsque <code>Ls≥Rs</code> :</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Résultat optimal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Ls&gt;0</code>, <code>Rs&gt;0</code></td>
+<td>Rouge gagne dans les deux ordres</td>
+</tr>
+<tr class="even">
+<td><code>Ls&lt;0</code>, <code>Rs&lt;0</code></td>
+<td>Bleu gagne dans les deux ordres</td>
+</tr>
+<tr class="odd">
+<td><code>Ls&gt;0&gt;Rs</code></td>
+<td>Le premier gagne</td>
+</tr>
+<tr class="even">
+<td><code>Ls=Rs=0</code></td>
+<td>Égalité dans les deux ordres</td>
+</tr>
+<tr class="odd">
+<td><code>Ls&gt;0</code>, <code>Rs=0</code></td>
+<td>Rouge gagne s’il commence, sinon égalité</td>
+</tr>
+<tr class="even">
+<td><code>Ls=0</code>, <code>Rs&lt;0</code></td>
+<td>Bleu gagne s’il commence, sinon égalité</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vérification-des-sources" class="level2">
+<h2 class="anchored" data-anchor-id="vérification-des-sources">Vérification des sources</h2>
+<p>Le dépôt a été cloné et inspecté à partir de <code>2c9e9daa66ab10af4c7d544c94255fbabf3368cf</code>, branche de travail locale <code>influence-phase-a</code>. Aucun fichier AGENTS.md n’était présent dans l’arbre du dépôt inspecté. Le site utilise Quarto et copie <code>apps/**</code> comme ressources. Les autres applications sont statiques. Il n’existait pas d’application INFLUENCE dans cet arbre.</p>
+<p>Le PDF publié fourni a été extrait et sa figure 1 a été rendue et inspectée visuellement. Transcription : Rouge <code>u,w</code> ; Bleu <code>v,x,y,z</code> ; arcs <code>u→w</code>, <code>v→w</code>, <code>x→v</code>, <code>w→y</code>, <code>w→z</code>, <code>x→z</code>. Les scores absolus sont bien 4,2,6,0. Les nombres du tableau 1 sont transcrits littéralement jusqu’à 38 et sont séparés des calculs utilisés pour les contrôler.</p>
+</section>
+<section id="architecture-livrée" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-livrée">Architecture livrée</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fichier</th>
+<th>Responsabilité</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>engine/graph.mjs</code></td>
+<td>Validation, graphe immuable, BigInt, parcours, graphes induits, projection visuelle, opposé et union disjointe</td>
+</tr>
+<tr class="even">
+<td><code>engine/game.mjs</code></td>
+<td>États immuables, aperçu/capture par une même fonction, scores, règlement final expliqué, sauvegarde JSON</td>
+</tr>
+<tr class="odd">
+<td><code>ai/exact.mjs</code></td>
+<td>Minimax exact, cache par graphe, valeurs futures Rouge − Bleu, budgets explicites</td>
+</tr>
+<tr class="even">
+<td><code>ai/choose.mjs</code></td>
+<td>Adaptateurs Facile/Normal/Expert, graine contrôlée, repli légal si budget dépassé</td>
+</tr>
+<tr class="odd">
+<td><code>levels/reference.mjs</code></td>
+<td>Figure 1, segments, cycles alternés et transcription du tableau 1</td>
+</tr>
+<tr class="even">
+<td><code>tests/oracle.py</code></td>
+<td>Oracle indépendant : matrice de fermeture, scores absolus, aucune mémoïsation ni aucun élagage</td>
+</tr>
+<tr class="odd">
+<td><code>tests/verify.mjs</code></td>
+<td>Comparaison systématique, symétrie, parité, sommes opposées, transitions et légalité IA</td>
+</tr>
+<tr class="even">
+<td><code>tests/path_oracle.py</code></td>
+<td>Second contrôle Python, spécialisé dans les chemins, mémoïsation par isomorphismes de positions entières</td>
+</tr>
+<tr class="odd">
+<td><code>tests/engine.test.mjs</code></td>
+<td>Règles, sauvegardes, budgets et limites 31/32/33 sommets</td>
+</tr>
+<tr class="even">
+<td><code>tests/article.test.mjs</code></td>
+<td>Valeurs de l’article, théorème 20 et exception au corollaire 24</td>
+</tr>
+<tr class="odd">
+<td><code>tests/path-oracle.test.mjs</code></td>
+<td>Confrontation Python/tableau jusqu’à 38 et Python/JS jusqu’à 24</td>
+</tr>
+<tr class="even">
+<td><code>tests/segments.mjs</code></td>
+<td>Mesure reproductible du solveur général sur les segments</td>
+</tr>
+<tr class="odd">
+<td><code>package.json</code></td>
+<td>Commandes de test, sans dépendances</td>
+</tr>
+<tr class="even">
+<td><code>README.md</code></td>
+<td>API, commandes et intégration future</td>
+</tr>
+<tr class="odd">
+<td><code>AGENTS.md</code></td>
+<td>Consignes locales et arrêt entre phases</td>
+</tr>
+<tr class="even">
+<td><code>CAHIER_DES_CHARGES.md</code></td>
+<td>Copie intacte du document transmis</td>
+</tr>
+<tr class="odd">
+<td><code>docs/PHASE_A.md</code></td>
+<td>Présent rapport</td>
+</tr>
+<tr class="even">
+<td><code>docs/validation.json</code></td>
+<td>Résultats mesurés, graine et portée de vérification</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="commandes-exécutées-et-résultats" class="level2">
+<h2 class="anchored" data-anchor-id="commandes-exécutées-et-résultats">Commandes exécutées et résultats</h2>
+<p>Environnement : Node 24.22.1, Python 3.12.14, aucune installation nécessaire.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> <span class="at">--test</span> tests/engine.test.mjs tests/article.test.mjs tests/path-oracle.test.mjs</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> tests/verify.mjs</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">node</span> tests/segments.mjs <span class="at">--max</span><span class="op">=</span>30</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La suite de règles et de références comporte <strong>19 tests réussis sur 19</strong>, sans test ignoré. Le test du cycle à quatre sommets vérifie explicitement l’exception documentée, plutôt que d’affirmer le corollaire imprimé pour ce cas.</p>
+<p>La comparaison indépendante est terminée sans divergence sur <strong>67 267 graphes</strong>, pour les deux premiers joueurs :</p>
+<ul>
+<li><strong>66 067 graphes exhaustifs</strong> : 0 à 4 sommets étiquetés, tous les arcs possibles entre sommets distincts et toutes les colorations, y compris les graphes non pertinents et les circuits orientés ; répartition 1,2,16,512,65536.</li>
+<li><strong>1 200 graphes aléatoires</strong>, 200 par taille de 5 à 10, graine 20261025, densités variées, boucles comprises.</li>
+<li><strong>591 unions opposées</strong>, toutes nulles, sans addition de valeurs de composantes.</li>
+<li><strong>220 963 positions au trait</strong> et <strong>410 904 transitions</strong> vérifiées pour l’absence de zugzwang, la conservation et l’identité aperçu/capture.</li>
+</ul>
+<p>Les boucles ne sont pas réénumérées dans le corpus exhaustif : l’accessibilité inclut déjà le sommet de départ, donc ajouter une boucle ne peut changer une capture. Des tests unitaires et le corpus aléatoire vérifient leur traitement. À cinq sommets, le contrôle est échantillonné, pas exhaustif.</p>
+<p>Le corpus Python des petits graphes n’utilise ni le parcours BFS du moteur, ni ses masques BigInt, ni son calcul de score relatif. Il reconstruit la fermeture par matrice à chaque état et retourne les scores absolus.</p>
+<p>Le solveur général JS reproduit <strong>le tableau 1 jusqu’à n=30</strong> (environ 12 s pour toute la série ; 567 284 états en cache à n=30). La commande rapide de test ne dépasse pas 24 pour ce solveur. Le vérificateur structurel Python reproduit <strong>les 38 lignes</strong> en environ 0,9 s, avec 38 705 états. Ce second vérificateur mémoïse ; il ne remplace pas l’oracle exhaustif sans mémoïsation. Il regroupe les positions isomorphes, mais cherche les coups dans l’ensemble de la position, sans additionner les scores des composantes.</p>
+<p>Les durées dépendent de la machine ; elles ne garantissent pas les performances sur téléphone. Le résultat exact de chaque recherche est distingué de son repli heuristique. La limite de 24 n’empêche pas le moteur de représenter plus de sommets : les bornes 31,32,33 sont vérifiées avec BigInt.</p>
+</section>
+<section id="limites-et-prochaine-étape" class="level2">
+<h2 class="anchored" data-anchor-id="limites-et-prochaine-étape">Limites et prochaine étape</h2>
+<p>La phase A prépare la projection des flèches et vérifie qu’en les suivant on retrouve exactement la capture du moteur. Elle ne teste pas encore le rendu, les animations, le tactile, les traductions ni le chargement d’un Worker. Il n’y a donc aucune capture d’écran d’interface à fournir à ce stade.</p>
+<p>Les adaptateurs de difficulté sont testés pour leur légalité et leur reproductibilité ; leur agrément de jeu sera évalué aux phases B/C. Les 12 niveaux publics, leurs métadonnées et les maquettes relèvent également des phases suivantes. Les images de référence ne sont pas présentes dans la pièce jointe de ce tour ; il faudra les retrouver avant la phase C.</p>
+<p>Le cahier, §11, demande : « S’arrêter à la fin de chaque phase et attendre la validation explicite de l’utilisateur avant d’entamer la suivante ». <strong>Arrêt à la phase A : validation attendue avant toute interface.</strong> Aucun fichier extérieur à <code>apps/influence/</code> n’a été modifié.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script src="assets/js/portrait-rotator.js"></script>
+<script src="assets/js/site-layout.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stephanegonzalez\.eu");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

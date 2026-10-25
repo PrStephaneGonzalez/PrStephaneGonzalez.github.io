@@ -1,0 +1,54 @@
+export const strings = {
+ fr: {
+  twoTeams:'2 camps · 1 graphe',subtitle:'Un petit graphe. De grandes idées.', home:'Accueil', settings:'Paramètres', language:'Changer de langue',
+  eyebrow:'LE JEU DES CONNEXIONS', hero:'Un coup peut<br>tout changer.', intro:'Choisis un pion, suis les flèches et prends ton adversaire de vitesse. À toi de faire les bons liens !',
+  play:'Jouer maintenant', resume:'Reprendre ma partie', solo:'Contre l’ordinateur', duo:'À deux sur cet écran', levels:'Les 12 plateaux', how:'Comment jouer ?', about:'Derrière le jeu',
+  quick:'Simple à apprendre, malin à maîtriser.', quickText:'Deux camps. Des flèches qui changent de sens. Et toujours un nouveau coup à imaginer.',
+  feature1:'Sans inscription',feature2:'Parties express',feature3:'12 plateaux à explorer',
+  level:'Plateau', red:'Rouge',blue:'Bleu',you:'vous',computer:'ordinateur',turnL:'TOUR DU ROUGE',turnR:'TOUR DU BLEU',
+  instruction:'Choisis un pion de ta couleur. Suis les flèches pour voir ce que tu captures.', thinking:'L’ordinateur réfléchit…',capturing:'Les connexions font leur effet…',
+  playable:'jouables', undoConsent:'Les deux joueurs sont-ils d’accord pour annuler le dernier coup ?',lastBoth:'Dernier pion pour chaque camp : chaque coup compte !',lastL:'Dernier pion rouge : attention à la fin de partie !',lastR:'Dernier pion bleu : attention à la fin de partie !',
+  capture:'Capturer {n} pion{s}',select:'Touche un pion pour préparer ton coup.', preview:'Ton coup capture {n} pion{s}.', cancel:'Annuler la sélection',
+  undo:'Revenir à mon tour',restart:'Recommencer',back:'Retour',resetView:'Recentrer', zoomIn:'Agrandir le plateau',zoomOut:'Réduire le plateau',
+  progress:'Votre parcours',progressText:'{n} / 12 plateaux remportés', next:'Plateau suivant', replay:'Rejouer',switch:'Rejouer dans l’autre camp',
+  winL:'Victoire du rouge !',winR:'Victoire du bleu !',draw:'Égalité parfaite !', victory:'Bien joué !', loss:'La revanche vous attend.', resultLabel:'RÉSULTAT DE LA PARTIE',
+  final:'{a} à {b} · {n} pions au total',terminal:'Plus de pion {camp} à jouer : {winner} reçoit les pions restants ({n}).',allCaptured:'Tous les pions ont trouvé leur camp.',
+  helpTitle:'Trois gestes, plein de possibilités.',step1:'Choisis un pion de ta couleur.',step1Text:'Rouge : un rond. Bleu : un carré arrondi. Tu peux capturer les deux couleurs.',
+  step2:'Suis les flèches.',step2Text:'Tu prends ton pion et tous ceux qu’on peut atteindre en suivant les flèches, même à plusieurs étapes.',
+  step3:'Marque plus de points !',step3Text:'Chaque pion capturé vaut un point. Les flèches s’inversent quand l’autre camp joue.',
+  endRule:'La règle à connaître',endRuleText:'À ton tour, si tu n’as plus de pion de ta couleur, ton adversaire reçoit tous les pions restants. Il n’y a pas de tour passé.',
+  gotIt:'C’est parti !', close:'Fermer', configuration:'Votre partie', side:'Votre camp',first:'Qui commence ?', random:'Au hasard', difficulty:'Ordinateur',easy:'Facile',normal:'Normal',expert:'Expert',
+  easyText:'Pour découvrir et expérimenter.',normalText:'Anticipe les prochains coups.',expertText:'Cherche le meilleur score final.',
+  mode:'Mode de jeu',newGame:'Nouvelle partie', apply:'Appliquer et jouer',startOptions:'Options de la partie',
+  preferences:'À votre rythme',confirm:'Confirmer chaque coup',confirmText:'Un toucher pour voir, un autre pour capturer.',motion:'Réduire les animations',sound:'Petits sons de jeu',fixed:'Vue figée en solo',fixedText:'Les flèches gardent le point de vue de votre camp. Le coup de l’ordinateur suit le sens inverse.',
+  fixedNotice:'Vue figée : l’ordinateur suit les flèches à l’envers.',autoNotice:'Les flèches suivent le camp qui joue.',
+  finished:'Terminé',ready:'À explorer',levelHelp:'Tous les plateaux sont accessibles. Une étoile marque une victoire en solo.',
+  balance:'Sous jeu optimal',firstWins:'Le premier camp gagne',redWins:'Avantage rouge',blueWins:'Avantage bleu',tie:'Égalité',redDraw:'Rouge ou égalité',blueDraw:'Bleu ou égalité',
+  scienceTitle:'Un vrai jeu de théorie des jeux.',science:'INFLUENCE adapte le jeu mathématique étudié par Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila et Philippe Solal dans Theoretical Computer Science (2021).',
+  science2:'Les captures et les propriétés stratégiques viennent de l’article. Les plateaux, les graphismes et l’ordinateur ont été créés pour cette application. Les couleurs désignent les équipes, sans étiquette politique.',
+  science3:'Rouge suit les arcs du graphe original ; Bleu les suit en sens inverse. Cela correspond au passage de P ⇒ Q à ¬Q ⇒ ¬P. Le réseau affiché est abstrait.',
+  paper:'Lire l’article scientifique',credits:'Duchêne · Gonzalez · Parreau · Rémila · Solal',local:'Votre progression reste sur cet appareil.',
+  node:'Pion {id}, camp {camp}',nodeCapture:'Pion {id}, camp {camp} : capture {n} pion{s}',aiFallback:'Recherche limitée : l’ordinateur a choisi son meilleur coup estimé.',
+  tutorial:'Première partie ? Les règles en 20 secondes',resultNext:'Une autre connexion à explorer ?', daily:'Défi du jour',dailyText:'Le même plateau pour tout le monde · date UTC',dailyTitle:'Le défi du {date}',share:'Copier le résultat',copied:'Résultat copié !',copyFailed:'Copie indisponible sur cet appareil.', loading:'Le plateau arrive…',error:'Le jeu n’a pas pu démarrer. Recharge la page pour réessayer.',
+ },
+ en: {
+  twoTeams:'2 teams · 1 graph',subtitle:'A little graph. Big ideas.',home:'Home',settings:'Settings',language:'Change language',
+  eyebrow:'THE GAME OF CONNECTIONS',hero:'One move can<br>change everything.',intro:'Pick a piece, follow the arrows and stay one step ahead. Make the right connections!',
+  play:'Play now',resume:'Resume my game',solo:'Play the computer',duo:'Two players, one screen',levels:'The 12 boards',how:'How to play',about:'Behind the game',
+  quick:'Easy to learn. Clever to master.',quickText:'Two teams. Arrows that turn around. Always another move to discover.',feature1:'No sign-up',feature2:'Quick games',feature3:'12 boards to explore',
+  level:'Board',red:'Red',blue:'Blue',you:'you',computer:'computer',turnL:'RED’S TURN',turnR:'BLUE’S TURN',instruction:'Pick a piece of your colour. Follow the arrows to see what you will capture.',thinking:'The computer is thinking…',capturing:'Making connections…',
+  playable:'playable',undoConsent:'Do both players agree to undo the last move?',lastBoth:'One piece left for each team: every move counts!',lastL:'Last red piece: watch out for the endgame!',lastR:'Last blue piece: watch out for the endgame!',capture:'Capture {n} piece{s}',select:'Tap a piece to prepare your move.',preview:'Your move captures {n} piece{s}.',cancel:'Clear selection',
+  undo:'Back to my turn',restart:'Restart',back:'Back',resetView:'Recenter',zoomIn:'Zoom in',zoomOut:'Zoom out',progress:'Your journey',progressText:'{n} / 12 boards won',next:'Next board',replay:'Play again',switch:'Play again as the other team',
+  winL:'Red wins!',winR:'Blue wins!',draw:'A perfect tie!',victory:'Nicely played!',loss:'Ready for a rematch?',resultLabel:'GAME RESULT',final:'{a} to {b} · {n} pieces in total',terminal:'No {camp} piece to play: {winner} receives the remaining pieces ({n}).',allCaptured:'Every piece has found its team.',
+  helpTitle:'Three steps. So many possibilities.',step1:'Pick a piece of your colour.',step1Text:'Red has circles. Blue has rounded squares. You can capture either colour.',step2:'Follow the arrows.',step2Text:'Take your piece and every piece reachable along the arrows, even through several steps.',step3:'Score more points!',step3Text:'Each captured piece is worth one point. The arrows reverse when the other team plays.',endRule:'The rule to remember',endRuleText:'If you have no piece of your colour at the start of your turn, your opponent receives every remaining piece. You never pass.',
+  gotIt:'Let’s play!',close:'Close',configuration:'Your game',side:'Your team',first:'Who starts?',random:'Random',difficulty:'Computer',easy:'Easy',normal:'Normal',expert:'Expert',easyText:'Discover and experiment.',normalText:'Looks a few moves ahead.',expertText:'Searches for the best final score.',mode:'Game mode',newGame:'New game',apply:'Apply and play',startOptions:'Game options',
+  preferences:'At your own pace',confirm:'Confirm each move',confirmText:'Tap once to preview, again to capture.',motion:'Reduce animations',sound:'Gentle game sounds',fixed:'Fixed view in solo',fixedText:'Arrows keep your team’s perspective. The computer plays in the opposite direction.',fixedNotice:'Fixed view: the computer follows arrows backwards.',autoNotice:'Arrows follow the team whose turn it is.',
+  finished:'Completed',ready:'Explore',levelHelp:'Every board is available. A star marks a solo victory.',balance:'With optimal play',firstWins:'The starting team wins',redWins:'Red advantage',blueWins:'Blue advantage',tie:'Draw',redDraw:'Red win or draw',blueDraw:'Blue win or draw',
+  scienceTitle:'A real game from game theory.',science:'INFLUENCE adapts the mathematical game studied by Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila and Philippe Solal in Theoretical Computer Science (2021).',science2:'The capture rules and strategic properties come from the paper. The boards, graphics and computer player were created for this app. Colours identify teams, without political labels.',science3:'Red follows the original arcs; Blue follows them backwards. This corresponds to moving from P ⇒ Q to ¬Q ⇒ ¬P. The displayed network is abstract.',paper:'Read the scientific paper',credits:'Duchêne · Gonzalez · Parreau · Rémila · Solal',local:'Your progress stays on this device.',node:'Piece {id}, {camp} team',nodeCapture:'Piece {id}, {camp} team: captures {n} piece{s}',aiFallback:'Search limit reached: the computer chose its best estimated move.',tutorial:'First game? Learn the rules in 20 seconds',resultNext:'Another connection to discover?',daily:'Daily challenge',dailyText:'The same board for everyone · UTC date',dailyTitle:'Challenge for {date}',share:'Copy result',copied:'Result copied!',copyFailed:'Copying is unavailable on this device.',loading:'Preparing the board…',error:'The game could not start. Reload the page to try again.',
+ }
+};
+export function translate(lang,key,values={}) {
+ let s=strings[lang]?.[key]??strings.fr[key]??key;
+ for(const[k,v]of Object.entries(values))s=s.replaceAll(`{${k}}`,String(v));
+ return s;
+}

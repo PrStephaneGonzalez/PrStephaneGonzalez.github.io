@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-25",
+  "runtime": { "node": "24.22.1", "python": "3.12.14" },
+  "unitAndReferenceTests": { "passed": 19, "failed": 0, "skipped": 0, "elapsedMs": 1596 },
+  "independentComparison": {
+    "ok": true,
+    "checked": 67267,
+    "exhaustiveBySize": { "0": 1, "1": 2, "2": 16, "3": 512, "4": 65536 },
+    "random": 1200,
+    "randomSizes": [5, 6, 7, 8, 9, 10],
+    "seed": 20261025,
+    "oppositeSums": 591,
+    "reachablePositions": 220963,
+    "transitions": 410904,
+    "elapsedMs": 22785
+  },
+  "table1": {
+    "generalJavaScriptSolver": { "verifiedThrough": 30, "elapsedMs": 11922 },
+    "structuralPythonChecker": { "verifiedThrough": 38, "memoizedStates": 38705, "elapsedMs": 881 }
+  },
+  "originalRules": true,
+  "forcedRemoval": false,
+  "dominancePruning": false,
+  "knownSpecificationException": {
+    "reference": "Corollary 24, alternating four-vertex cycle",
+    "Ls": 4,
+    "Rs": -4
+  }
+}

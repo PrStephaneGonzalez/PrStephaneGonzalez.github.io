@@ -1,0 +1,16 @@
+{
+  "name": "influence",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/engine.test.mjs tests/article.test.mjs tests/path-oracle.test.mjs tests/product.test.mjs",
+    "test:exhaustive": "node tests/verify.mjs",
+    "test:segments": "node tests/segments.mjs",
+    "test:slow": "node tests/segments.mjs --max=38",
+    "levels:rebuild": "node scripts/build-levels.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

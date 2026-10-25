@@ -1,0 +1,1914 @@
+[
+  {
+    "id": "first-links",
+    "name": {
+      "fr": "Les premiers liens",
+      "en": "First connections"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "E",
+        "D"
+      ],
+      [
+        "E",
+        "F"
+      ],
+      [
+        "G",
+        "F"
+      ],
+      [
+        "G",
+        "H"
+      ],
+      [
+        "A",
+        "H"
+      ]
+    ],
+    "positions": {
+      "A": [
+        150,
+        70
+      ],
+      "B": [
+        300,
+        70
+      ],
+      "C": [
+        450,
+        70
+      ],
+      "D": [
+        450,
+        260
+      ],
+      "E": [
+        450,
+        450
+      ],
+      "F": [
+        300,
+        450
+      ],
+      "G": [
+        150,
+        450
+      ],
+      "H": [
+        150,
+        260
+      ]
+    },
+    "meta": {
+      "Ls": 2,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 8,
+      "red": 4,
+      "blue": 4,
+      "arcs": 8,
+      "selfOpposed": true,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "network-2",
+    "name": {
+      "fr": "Le petit détour",
+      "en": "The little detour"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "L"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "D",
+        "A"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "E",
+        "B"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "E",
+        "D"
+      ],
+      [
+        "D",
+        "G"
+      ],
+      [
+        "E",
+        "F"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "H",
+        "G"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        260
+      ],
+      "E": [
+        300,
+        260
+      ],
+      "F": [
+        500,
+        260
+      ],
+      "G": [
+        100,
+        455
+      ],
+      "H": [
+        300,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 6,
+      "Rs": -6,
+      "type": "first",
+      "vertices": 8,
+      "red": 5,
+      "blue": 3,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "network-3",
+    "name": {
+      "fr": "À contre-courant",
+      "en": "Against the current"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "L"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "L"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "F",
+        "C"
+      ],
+      [
+        "D",
+        "E"
+      ],
+      [
+        "G",
+        "D"
+      ],
+      [
+        "F",
+        "E"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "G",
+        "H"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        260
+      ],
+      "E": [
+        300,
+        260
+      ],
+      "F": [
+        500,
+        260
+      ],
+      "G": [
+        100,
+        455
+      ],
+      "H": [
+        300,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 6,
+      "Rs": 2,
+      "type": "red",
+      "vertices": 8,
+      "red": 6,
+      "blue": 2,
+      "arcs": 8,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "two-gardens",
+    "name": {
+      "fr": "Les deux jardins",
+      "en": "Two gardens"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "R"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "R"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "F",
+        "E"
+      ],
+      [
+        "F",
+        "G"
+      ],
+      [
+        "H",
+        "G"
+      ]
+    ],
+    "positions": {
+      "A": [
+        80,
+        80
+      ],
+      "B": [
+        240,
+        80
+      ],
+      "C": [
+        240,
+        245
+      ],
+      "D": [
+        80,
+        245
+      ],
+      "E": [
+        360,
+        280
+      ],
+      "F": [
+        520,
+        280
+      ],
+      "G": [
+        520,
+        445
+      ],
+      "H": [
+        360,
+        445
+      ]
+    },
+    "meta": {
+      "Ls": 0,
+      "Rs": 0,
+      "type": "draw",
+      "vertices": 8,
+      "red": 4,
+      "blue": 4,
+      "arcs": 6,
+      "selfOpposed": true,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "network-5",
+    "name": {
+      "fr": "Le bon carrefour",
+      "en": "The right crossroads"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "R"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "R"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "R"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      },
+      {
+        "id": "I",
+        "color": "R"
+      },
+      {
+        "id": "J",
+        "color": "L"
+      }
+    ],
+    "arcs": [
+      [
+        "B",
+        "A"
+      ],
+      [
+        "D",
+        "A"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "E",
+        "B"
+      ],
+      [
+        "F",
+        "C"
+      ],
+      [
+        "D",
+        "E"
+      ],
+      [
+        "D",
+        "G"
+      ],
+      [
+        "E",
+        "F"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "I",
+        "F"
+      ],
+      [
+        "G",
+        "H"
+      ],
+      [
+        "G",
+        "J"
+      ],
+      [
+        "I",
+        "H"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": -4,
+      "Rs": -8,
+      "type": "blue",
+      "vertices": 10,
+      "red": 2,
+      "blue": 8,
+      "arcs": 13,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "network-6",
+    "name": {
+      "fr": "Petit mais malin",
+      "en": "Small but clever"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "L"
+      },
+      {
+        "id": "C",
+        "color": "R"
+      },
+      {
+        "id": "D",
+        "color": "L"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      },
+      {
+        "id": "I",
+        "color": "L"
+      },
+      {
+        "id": "J",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "D",
+        "A"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "E",
+        "B"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "G",
+        "D"
+      ],
+      [
+        "I",
+        "F"
+      ],
+      [
+        "H",
+        "G"
+      ],
+      [
+        "G",
+        "J"
+      ],
+      [
+        "H",
+        "I"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 8,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 10,
+      "red": 7,
+      "blue": 3,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "network-7",
+    "name": {
+      "fr": "Le vent tourne",
+      "en": "A change of wind"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      },
+      {
+        "id": "I",
+        "color": "R"
+      },
+      {
+        "id": "J",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "B",
+        "A"
+      ],
+      [
+        "D",
+        "A"
+      ],
+      [
+        "E",
+        "B"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "D",
+        "G"
+      ],
+      [
+        "E",
+        "F"
+      ],
+      [
+        "E",
+        "H"
+      ],
+      [
+        "G",
+        "H"
+      ],
+      [
+        "G",
+        "J"
+      ],
+      [
+        "I",
+        "H"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 2,
+      "Rs": 0,
+      "type": "red-draw",
+      "vertices": 10,
+      "red": 5,
+      "blue": 5,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "network-8",
+    "name": {
+      "fr": "La passerelle",
+      "en": "The footbridge"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "L"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "R"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      },
+      {
+        "id": "I",
+        "color": "R"
+      },
+      {
+        "id": "J",
+        "color": "L"
+      }
+    ],
+    "arcs": [
+      [
+        "B",
+        "A"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "F",
+        "C"
+      ],
+      [
+        "D",
+        "E"
+      ],
+      [
+        "G",
+        "D"
+      ],
+      [
+        "F",
+        "E"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "F",
+        "I"
+      ],
+      [
+        "G",
+        "H"
+      ],
+      [
+        "J",
+        "G"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 0,
+      "Rs": -2,
+      "type": "blue-draw",
+      "vertices": 10,
+      "red": 4,
+      "blue": 6,
+      "arcs": 11,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 2,
+          "choices": 2,
+          "nonDominated": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "network-9",
+    "name": {
+      "fr": "Le grand détour",
+      "en": "The scenic route"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "R"
+      },
+      {
+        "id": "D",
+        "color": "L"
+      },
+      {
+        "id": "E",
+        "color": "R"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "R"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      },
+      {
+        "id": "I",
+        "color": "L"
+      },
+      {
+        "id": "J",
+        "color": "L"
+      },
+      {
+        "id": "K",
+        "color": "L"
+      },
+      {
+        "id": "L",
+        "color": "L"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "D",
+        "A"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "F",
+        "C"
+      ],
+      [
+        "D",
+        "E"
+      ],
+      [
+        "F",
+        "E"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "I",
+        "F"
+      ],
+      [
+        "G",
+        "J"
+      ],
+      [
+        "I",
+        "H"
+      ],
+      [
+        "H",
+        "K"
+      ],
+      [
+        "I",
+        "L"
+      ],
+      [
+        "K",
+        "J"
+      ],
+      [
+        "K",
+        "L"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ],
+      "K": [
+        300,
+        455
+      ],
+      "L": [
+        500,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 6,
+      "Rs": -6,
+      "type": "first",
+      "vertices": 12,
+      "red": 6,
+      "blue": 6,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 4,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 4,
+          "choices": 4,
+          "nonDominated": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "network-10",
+    "name": {
+      "fr": "La force du lien",
+      "en": "Strength in connections"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "R"
+      },
+      {
+        "id": "B",
+        "color": "R"
+      },
+      {
+        "id": "C",
+        "color": "R"
+      },
+      {
+        "id": "D",
+        "color": "L"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      },
+      {
+        "id": "I",
+        "color": "L"
+      },
+      {
+        "id": "J",
+        "color": "L"
+      },
+      {
+        "id": "K",
+        "color": "L"
+      },
+      {
+        "id": "L",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "D",
+        "G"
+      ],
+      [
+        "E",
+        "F"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "F",
+        "I"
+      ],
+      [
+        "H",
+        "G"
+      ],
+      [
+        "J",
+        "G"
+      ],
+      [
+        "H",
+        "I"
+      ],
+      [
+        "K",
+        "H"
+      ],
+      [
+        "L",
+        "I"
+      ],
+      [
+        "K",
+        "J"
+      ],
+      [
+        "K",
+        "L"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ],
+      "K": [
+        300,
+        455
+      ],
+      "L": [
+        500,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 6,
+      "Rs": 2,
+      "type": "red",
+      "vertices": 12,
+      "red": 8,
+      "blue": 4,
+      "arcs": 15,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 4,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "network-11",
+    "name": {
+      "fr": "L’effet domino",
+      "en": "The domino effect"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "L"
+      },
+      {
+        "id": "C",
+        "color": "R"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "R"
+      },
+      {
+        "id": "F",
+        "color": "R"
+      },
+      {
+        "id": "G",
+        "color": "L"
+      },
+      {
+        "id": "H",
+        "color": "R"
+      },
+      {
+        "id": "I",
+        "color": "R"
+      },
+      {
+        "id": "J",
+        "color": "R"
+      },
+      {
+        "id": "K",
+        "color": "L"
+      },
+      {
+        "id": "L",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "B",
+        "A"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "E",
+        "D"
+      ],
+      [
+        "G",
+        "D"
+      ],
+      [
+        "F",
+        "E"
+      ],
+      [
+        "H",
+        "E"
+      ],
+      [
+        "F",
+        "I"
+      ],
+      [
+        "H",
+        "G"
+      ],
+      [
+        "G",
+        "J"
+      ],
+      [
+        "L",
+        "I"
+      ],
+      [
+        "K",
+        "J"
+      ],
+      [
+        "L",
+        "K"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ],
+      "K": [
+        300,
+        455
+      ],
+      "L": [
+        500,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": -2,
+      "Rs": -8,
+      "type": "blue",
+      "vertices": 12,
+      "red": 4,
+      "blue": 8,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 2,
+          "choices": 3,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "network-12",
+    "name": {
+      "fr": "Tout peut basculer",
+      "en": "Turn the tables"
+    },
+    "vertices": [
+      {
+        "id": "A",
+        "color": "L"
+      },
+      {
+        "id": "B",
+        "color": "L"
+      },
+      {
+        "id": "C",
+        "color": "L"
+      },
+      {
+        "id": "D",
+        "color": "R"
+      },
+      {
+        "id": "E",
+        "color": "L"
+      },
+      {
+        "id": "F",
+        "color": "L"
+      },
+      {
+        "id": "G",
+        "color": "R"
+      },
+      {
+        "id": "H",
+        "color": "L"
+      },
+      {
+        "id": "I",
+        "color": "R"
+      },
+      {
+        "id": "J",
+        "color": "L"
+      },
+      {
+        "id": "K",
+        "color": "R"
+      },
+      {
+        "id": "L",
+        "color": "R"
+      }
+    ],
+    "arcs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "C",
+        "B"
+      ],
+      [
+        "E",
+        "B"
+      ],
+      [
+        "F",
+        "C"
+      ],
+      [
+        "E",
+        "D"
+      ],
+      [
+        "D",
+        "G"
+      ],
+      [
+        "E",
+        "H"
+      ],
+      [
+        "I",
+        "F"
+      ],
+      [
+        "J",
+        "G"
+      ],
+      [
+        "I",
+        "H"
+      ],
+      [
+        "H",
+        "K"
+      ],
+      [
+        "J",
+        "K"
+      ],
+      [
+        "L",
+        "K"
+      ]
+    ],
+    "positions": {
+      "A": [
+        100,
+        65
+      ],
+      "B": [
+        300,
+        65
+      ],
+      "C": [
+        500,
+        65
+      ],
+      "D": [
+        100,
+        195
+      ],
+      "E": [
+        300,
+        195
+      ],
+      "F": [
+        500,
+        195
+      ],
+      "G": [
+        100,
+        325
+      ],
+      "H": [
+        300,
+        325
+      ],
+      "I": [
+        500,
+        325
+      ],
+      "J": [
+        100,
+        455
+      ],
+      "K": [
+        300,
+        455
+      ],
+      "L": [
+        500,
+        455
+      ]
+    },
+    "meta": {
+      "Ls": 8,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 12,
+      "red": 7,
+      "blue": 5,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 4,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 2,
+          "choices": 4,
+          "nonDominated": 2
+        }
+      }
+    }
+  }
+]

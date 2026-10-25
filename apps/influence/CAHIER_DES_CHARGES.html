@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>cahier_des_charges – Stéphane Gonzalez</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-55617497126496852ff9f5a59253c640.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../../assets/css/site.css">
+<meta property="og:title" content="Stéphane Gonzalez">
+<meta property="og:description" content="Stéphane Gonzalez is Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne. Research in economic theory, game theory, social choice and axiomatic economics.">
+<meta property="og:site_name" content="Stéphane Gonzalez">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Stéphane Gonzalez</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../books.html"> 
+<span class="menu-text">Books</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../scientific-organization.html"> 
+<span class="menu-text">Scientific organization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../apps.html"> 
+<span class="menu-text">Apps</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/cv/Stephane_Gonzalez_Academic_CV_August_2026_v4.pdf"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="influence-cahier-des-charges-de-développement" class="level1">
+<h1>INFLUENCE — Cahier des charges de développement</h1>
+<p><strong>Version :</strong> 1.1 — 25 octobre 2026<br>
+<strong>Destination :</strong> agent de développement (Codex ou Claude Code), dans <code>PrStephaneGonzalez.github.io/apps/influence/</code><br>
+<strong>Statut :</strong> spécification produit ; toute divergence mathématique doit être arbitrée à partir de l’article joint, et non de la maquette.</p>
+<section id="changements-par-rapport-à-la-v1.0" class="level3">
+<h3 class="anchored" data-anchor-id="changements-par-rapport-à-la-v1.0">Changements par rapport à la v1.0</h3>
+<ul>
+<li>§2 : incohérences connues de la maquette retenue listées explicitement.</li>
+<li>§3.4 : la popularité n’est plus un paramètre libre ; l’habillage « propositions » est restreint aux graphes acycliques.</li>
+<li>§5 : métadonnées d’équité (Ls, Rs) obligatoires par niveau ; critères d’intérêt stratégique précisés ; niveaux « position &gt; nombre ».</li>
+<li>§7 : indicateurs de lisibilité supplémentaires (sommets jouables restants, appartenance non colorée, vue figée en solo à tester).</li>
+<li>§8 : contraintes techniques (entiers 32 bits, plafond de l’Expert exact, Vite sur GitHub Pages).</li>
+<li>§9 : test de symétrie énoncé exactement ; valeurs de référence tirées de l’article ; énumération indépendante en deux implémentations.</li>
+<li>§11 : arrêt obligatoire et validation humaine à la fin de chaque phase ; l’agent n’est plus nommé (Codex ou Claude Code).</li>
+</ul>
+</section>
+<section id="mission-et-priorité" class="level2">
+<h2 class="anchored" data-anchor-id="mission-et-priorité">1. Mission et priorité</h2>
+<p>Créer un <strong>jeu de stratégie web grand public</strong>, accessible sans inscription, jouable immédiatement, en français et en anglais, sur mobile et ordinateur. Il est inspiré directement du jeu combinatoire <em>influence</em> défini dans l’article scientifique joint. Le jeu doit être <strong>amusant avant d’être pédagogique</strong> : pas de scénario politique imposé, pas de longues introductions, pas de discours idéologique.</p>
+<p><strong>Priorités, dans l’ordre :</strong> (1) fidélité des règles ; (2) lisibilité du tour et des captures ; (3) plaisir et fluidité ; (4) qualité de l’IA ; (5) variété des niveaux ; (6) habillage scientifique discret.</p>
+<p><strong>Livrables attendus :</strong> code source autonome, tests automatisés, documentation, niveaux validés, version déployable sur GitHub Pages. Ne pas modifier d’autres applications du dépôt.</p>
+</section>
+<section id="références-jointes-et-direction-artistique" class="level2">
+<h2 class="anchored" data-anchor-id="références-jointes-et-direction-artistique">2. Références jointes et direction artistique</h2>
+<ul>
+<li><code>reference_design_retenu.png</code> : <strong>référence visuelle prioritaire</strong>. Palette claire, ciel bleu, fonds crème, couleurs franches, formes arrondies, pictogrammes sympathiques, boutons généreux, ambiance de jeu familial. Réinterpréter et améliorer ; <strong>ne pas reproduire les erreurs de l’image générée</strong>, notamment :
+<ul>
+<li>des scores qui ne correspondent pas au nombre de sommets représentés (par exemple un écran de victoire 6–4 pour un plateau de 8 sommets) ;</li>
+<li>des arcs à double pointe, incompatibles avec le modèle (un arc est orienté) ;</li>
+<li>un sommet de couleur verte qui peut se lire comme un troisième camp (voir règle de palette ci-dessous) ;</li>
+<li>toute flèche dont le sens ne correspond pas à la règle de capture du camp qui joue.</li>
+</ul></li>
+<li><code>reference_design_initial.png</code> : <strong>référence secondaire</strong>, utile pour la hiérarchie des écrans et le bandeau de tour ; <strong>ne pas reprendre</strong> son fond noir ou son ambiance sombre.</li>
+<li><code>article_influence_2021.pdf</code> : <strong>source normative des règles</strong>.</li>
+</ul>
+<p>Style recherché : convivial, mixte et intergénérationnel, expressif, accessible, proche de l’énergie de jeux de plateforme familiaux colorés, sans reprendre de personnages, marques ou éléments protégés. Fond clair sur le plateau, contraste élevé, animations courtes et satisfaisantes. Pas de dominante noire, de néons agressifs ou d’esthétique guerrière. Rouge corail et bleu azur pour les deux camps ; jaune doux pour les actions ; <strong>sur le plateau, un sommet n’est jamais vert ni d’une troisième couleur d’équipe</strong> : le vert et les autres teintes sont réservés aux décors et aux pictogrammes <strong>posés à l’intérieur de sommets rouges ou bleus</strong>.</p>
+<p><strong>Clarté du tour (critère bloquant)</strong> : bandeau large « TOUR DU ROUGE » / « TOUR DU BLEU » (EN : “RED’S TURN” / “BLUE’S TURN”), avec couleur, pictogramme et animation de transition. Surbrillance des sommets jouables de ce camp ; les autres sont visiblement inactifs. Ne jamais signaler le tour uniquement par la couleur : ajouter texte et symbole. Scores rouge et bleu constamment visibles.</p>
+</section>
+<section id="modèle-mathématique-source-de-vérité" class="level2">
+<h2 class="anchored" data-anchor-id="modèle-mathématique-source-de-vérité">3. Modèle mathématique — source de vérité</h2>
+<p><strong>Article :</strong> Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal (2021), “influence: A partizan scoring game on graphs”, <em>Theoretical Computer Science</em> 878–879, 26–46, DOI : https://doi.org/10.1016/j.tcs.2021.05.028.</p>
+<p>Graphe orienté fini <code>G=(V,A)</code> dont chaque sommet porte une couleur parmi deux camps. Dans l’article, le premier camp est Black/Left (noté L) et le second White/Right (noté R) ; <strong>dans l’interface seulement</strong>, les nommer Rouge et Bleu. Mapping canonique : Rouge = Left/Black ; Bleu = Right/White. Ce mapping est interne et indépendant des associations politiques gauche/droite. L’interface n’affiche pas « gauche » ou « droite » comme étiquette fixe.</p>
+<section id="coup-légal-et-capture" class="level3">
+<h3 class="anchored" data-anchor-id="coup-légal-et-capture">3.1 Coup légal et capture</h3>
+<ul>
+<li><strong>Rouge/Left</strong> : choisit un sommet rouge <code>x</code> encore présent ; capture <code>Succ(G,x)</code>, l’ensemble de tous les sommets accessibles depuis <code>x</code> par un chemin orienté, <strong>y compris <code>x</code></strong>.</li>
+<li><strong>Bleu/Right</strong> : choisit un sommet bleu <code>y</code> encore présent ; capture <code>Pred(G,y)</code>, l’ensemble de tous les sommets depuis lesquels <code>y</code> est accessible, <strong>y compris <code>y</code></strong>.</li>
+<li>Tous les sommets capturés sont supprimés ; le joueur gagne autant de points que de sommets effectivement capturés ; le jeu continue sur le <strong>sous-graphe induit par les sommets restants</strong>. Les sommets de la couleur adverse peuvent être capturés. La couleur d’un sommet détermine qui peut le <strong>choisir</strong>, pas qui peut le <strong>capturer</strong>.</li>
+<li>Les joueurs alternent. Si le joueur dont c’est le tour n’a <strong>aucun sommet de sa couleur</strong>, la partie s’achève <strong>immédiatement</strong> et <strong>tous les sommets encore présents sont attribués à son adversaire</strong> (règle importante, pas de passage de tour).</li>
+<li>Victoire au plus grand nombre de points ; égalité si les scores sont égaux. Conservation : à la fin, <code>scoreRouge + scoreBleu = nombreInitialDeSommets</code>. Si ce nombre est impair, l’égalité est impossible.</li>
+</ul>
+</section>
+<section id="sommets-forcés-et-variantes" class="level3">
+<h3 class="anchored" data-anchor-id="sommets-forcés-et-variantes">3.2 Sommets forcés et variantes</h3>
+<p>L’article définit des sommets <em>forced</em> et des graphes <em>relevant</em> pour simplifier l’analyse. Un sommet <code>x</code> rouge est forcé si <code>Succ(G,x)</code> ne contient que des sommets rouges (symétriquement pour Bleu avec <code>Pred</code>). <strong>Le mode public joue aux règles originales, sans retrait anticipé des sommets forcés</strong> : jouer un sommet forcé est un coup légal. Leur traitement anticipé est une <strong>optimisation interne facultative</strong> du solveur, autorisée uniquement si l’équivalence des scores est vérifiée par le test d’énumération indépendante (§9, test 9) sur tous les petits graphes, y compris non pertinents. Ne pas afficher de suppressions « magiques » qui troubleraient le joueur.</p>
+</section>
+<section id="graphe-et-sens-des-flèches-point-crucial" class="level3">
+<h3 class="anchored" data-anchor-id="graphe-et-sens-des-flèches-point-crucial">3.3 Graphe et sens des flèches : point crucial</h3>
+<p>Stocker <strong>un seul graphe canonique orienté</strong> ; ne jamais retourner ses arcs dans l’état logique du moteur.</p>
+<ul>
+<li>Tour Rouge : afficher les flèches dans leur sens canonique ; le coup capture les sommets accessibles <strong>en suivant</strong> les flèches.</li>
+<li>Tour Bleu : afficher les flèches <strong>dans le sens inverse</strong> ; le coup capture les sommets accessibles <strong>en suivant les flèches affichées</strong>, ce qui correspond exactement aux prédécesseurs dans le graphe canonique.</li>
+<li>Cette inversion visuelle est interprétable comme le passage des implications <code>P ⇒ Q</code> aux implications contrapositives <code>¬Q ⇒ ¬P</code>, <strong>si</strong> les propositions opposées sont bien associées à chaque variable. Il faut simultanément changer le point de vue des propositions si leurs libellés sont affichés. Les arcs et le moteur ne changent jamais.</li>
+<li>Transition animée rapide (~250–400 ms), avec flèches clairement orientées. Une option « réduire les animations » doit exister.</li>
+<li>Prévisualisation d’un coup : au survol sur ordinateur ou au premier toucher sur mobile, éclairer <strong>exactement</strong> les sommets qui seront capturés ; deuxième toucher ou bouton de confirmation pour valider, selon réglage. L’aperçu doit coïncider exactement avec la capture réelle (même fonction de calcul, sans réimplémentation côté UI).</li>
+<li><strong>À évaluer en test utilisateur (phase C)</strong> : en mode solo, une option « vue figée » où le graphe reste affiché dans le sens canonique pendant tout le jeu, le coup de l’ordinateur (Bleu) étant animé le long des arcs inversés. Elle réduit la fatigue visuelle due au basculement à chaque tour, mais s’écarte de la règle « les deux joueurs suivent les flèches visibles » (§4.5) : ne l’adopter par défaut que si les tests montrent qu’elle ne crée pas de confusion.</li>
+</ul>
+</section>
+<section id="propositions-politiques-et-popularité-habillage-facultatif" class="level3">
+<h3 class="anchored" data-anchor-id="propositions-politiques-et-popularité-habillage-facultatif">3.4 Propositions politiques et popularité : habillage facultatif</h3>
+<p>Un sommet peut afficher un pictogramme abstrait (école, transports, logement, santé, environnement, fiscalité…). Les propositions <strong>ne doivent pas compliquer la partie</strong>. Les noms détaillés sont facultatifs, dans une infobulle ou un panneau secondaire ; les graphes et la mécanique restent prioritaires.</p>
+<p>Dans le modèle de la section 6 de l’article, <strong>la couleur d’un sommet <em>est</em> la popularité</strong> : un sommet Left correspond à la décision populaire de Left (valeur 1 de la variable dans sa politique), un sommet Right à la décision populaire de Right, et c’est ce qui détermine qui peut l’initier. <strong>L’application n’introduit donc aucune popularité numérique ni paramètre de popularité indépendant de la couleur.</strong> Aucune probabilité de réussite, aucune jauge qui altérerait les règles.</p>
+<p>L’interprétation politique de l’article repose sur des décisions binaires, des implications fermées par transitivité et par contraposition, sans équivalence entre variables (ni <code>x ⇔ y</code>, ni <code>x ⇔ ¬y</code>). Conséquence pratique : <strong>les niveaux à habillage « propositions » doivent être des graphes acycliques</strong> (un circuit orienté impliquerait des équivalences). Le moteur gère les cycles, et les niveaux « réseau abstrait » peuvent en contenir, mais ils ne doivent pas être présentés comme des systèmes de propositions. <strong>Ne pas prétendre qu’un graphe quelconque de pictogrammes représente nécessairement un système cohérent de propositions politiques.</strong> Prévoir un mode « réseau abstrait » par défaut. Des niveaux à interprétation politique pourront être ajoutés ensuite, avec vérification explicite de la cohérence des implications. Aucun message de soutien à un parti ou candidat réel.</p>
+</section>
+</section>
+<section id="écrans-et-parcours" class="level2">
+<h2 class="anchored" data-anchor-id="écrans-et-parcours">4. Écrans et parcours</h2>
+<section id="accueil" class="level3">
+<h3 class="anchored" data-anchor-id="accueil">4.1 Accueil</h3>
+<p>Logo <code>INFLUENCE</code>, sous-titre discret « Le jeu du pouvoir » / “The game of influence”. Bouton principal <strong>Jouer</strong>. Choix <strong>Contre l’ordinateur</strong> / <strong>Deux joueurs</strong> ; accès <strong>Niveaux</strong>, <strong>Paramètres</strong>, <strong>À propos</strong> ; bascule <code>FR / EN</code>. Ne pas obliger à lire le tutoriel. Lancer la première partie en <strong>moins de 10 secondes</strong> pour un utilisateur pressé.</p>
+</section>
+<section id="prépartie" class="level3">
+<h3 class="anchored" data-anchor-id="prépartie">4.2 Prépartie</h3>
+<p>Choix du camp <strong>Rouge / Bleu</strong>, du niveau, de la difficulté de l’ordinateur (Facile, Normal, Expert) et du premier joueur. Choix par défaut raisonnables ; bouton <strong>Jouer maintenant</strong>. Le choix du premier joueur est la principale variable d’équité (voir §5) : prévoir « Rouge commence », « Bleu commence » et « Au hasard ». En mode deux joueurs, les joueurs jouent sur le même écran (pas de multijoueur distant en V1).</p>
+</section>
+<section id="plateau" class="level3">
+<h3 class="anchored" data-anchor-id="plateau">4.3 Plateau</h3>
+<ul>
+<li>Bandeau de tour extrêmement visible ; score permanent ; menu pause, son, aide.</li>
+<li><strong>Compteur « sommets jouables restants »</strong> pour chaque camp, avec alerte visuelle et textuelle quand un camp n’en a plus qu’un (voir fin anticipée ci-dessous).</li>
+<li>Graphe au centre, <strong>nœuds suffisamment espacés</strong> et grandes zones tactiles (au moins 44 × 44 px), flèches nettes sans ambiguïté ; pas d’animations qui masquent les arcs.</li>
+<li><strong>L’appartenance d’un sommet à un camp ne repose pas sur la seule couleur</strong> : forme, liseré ou symbole distinct pour Rouge et Bleu, en plus de la couleur.</li>
+<li>Au premier contact avec un sommet légal : prévisualisation de la capture ; validation explicite ou second contact ; possibilité de désactiver la confirmation dans les paramètres.</li>
+<li>Après le coup : animation courte de capture, incrément du score, retrait des nœuds, inversion des flèches, changement de bandeau.</li>
+<li>Si l’adversaire n’a plus de coup, attribution automatique des sommets restants, <strong>avec explication visuelle et comptable</strong> (« Plus aucun sommet bleu : les N sommets restants vont au Rouge »). C’est la règle la plus contre-intuitive du jeu ; le score affiché en cours de partie peut être trompeur à cause d’elle, d’où le compteur ci-dessus.</li>
+<li>Boutons : recommencer, retour accueil, son ; « annuler » uniquement si la politique de mode le permet (en solo : retour au dernier tour humain, sans tricher sur les scores ; en deux joueurs : accord local ou option activée).</li>
+</ul>
+</section>
+<section id="fin-de-partie" class="level3">
+<h3 class="anchored" data-anchor-id="fin-de-partie">4.4 Fin de partie</h3>
+<p>Victoire Rouge / Victoire Bleu / Égalité, scores finaux, petite animation joyeuse, <strong>Rejouer</strong>, <strong>Niveau suivant</strong>, <strong>Accueil</strong>. Proposer de rejouer avec le camp opposé. Partage de résultat facultatif, sans données personnelles.</p>
+</section>
+<section id="tutoriel-ultra-court" class="level3">
+<h3 class="anchored" data-anchor-id="tutoriel-ultra-court">4.5 Tutoriel ultra-court</h3>
+<p>Trois indications, superposées à un petit plateau jouable, fermables à tout moment : 1. « Choisis un sommet de ta couleur. » 2. « Tu captures ce sommet et tous ceux qu’indiquent les flèches. » 3. « Capture plus de sommets que ton adversaire ! »</p>
+<p>Pour le Bleu, les flèches sont déjà retournées : <strong>les deux joueurs suivent toujours les flèches visibles</strong>. Montrer, ne pas raconter. Aide accessible à tout moment, sans bloquer la partie. L’aide (pas le tutoriel de trois indications) explique la règle de fin : « Si tu n’as plus de sommet de ta couleur à ton tour, l’adversaire prend tout ce qui reste. »</p>
+</section>
+</section>
+<section id="ordinateur-et-niveaux" class="level2">
+<h2 class="anchored" data-anchor-id="ordinateur-et-niveaux">5. Ordinateur et niveaux</h2>
+<p><strong>Moteur de règles indépendant de l’UI</strong> ; positions immuables ou sérialisables ; coups légaux et transitions purs ; tests unitaires.</p>
+<ul>
+<li><strong>Facile</strong> : stratégie compréhensible, avec erreurs contrôlées, sans coups illégaux.</li>
+<li><strong>Normal</strong> : heuristique raisonnable, recherche limitée et temps de réponse court.</li>
+<li><strong>Expert</strong> : recherche exacte minimax / négamax sur les petits graphes, mémoïsation/transpositions (clé = ensemble des sommets restants + joueur au trait), alpha-bêta si adapté ; recherche bornée avec heuristique pour les grands graphes. Toujours optimiser le <strong>score final</strong>, et non seulement le nombre capturé immédiatement. Plafond de taille de l’exact à déterminer par mesure (voir §8, entiers 32 bits).</li>
+<li>Afficher un bref indicateur « L’ordinateur réfléchit… » si nécessaire. Pas de blocage perceptible de l’interface ; Web Worker recommandé.</li>
+<li>Prévoir des budgets de calcul explicites selon appareils et une solution de repli valide en cas de dépassement.</li>
+</ul>
+<p><strong>Optimisation de coups dominés (facultative, solveur uniquement).</strong> D’après l’article (Corollaire 13, établi pour les graphes pertinents), un coup dont l’ensemble capturé est contenu dans celui d’un autre coup du même joueur n’est pas meilleur que ce dernier. Le solveur peut s’en servir pour élaguer, <strong>seulement si</strong> le test d’énumération indépendante (§9, test 9) passe avec l’élagage activé sur des graphes quelconques, non pertinents compris. Ne pas s’en servir pour le niveau Facile ni pour masquer des coups au joueur.</p>
+<p><strong>Ne pas décomposer le calcul par composantes</strong> en s’appuyant sur le Corollaire 14 de l’article : il ne donne que des <strong>bornes</strong> sur le score d’une somme de jeux, pas une égalité.</p>
+<section id="niveaux" class="level3">
+<h3 class="anchored" data-anchor-id="niveaux">Niveaux</h3>
+<p>Première livraison de <strong>12 plateaux soigneusement validés</strong> (petits chemins, arbres, réseaux), puis extension visée à <strong>30</strong> après tests utilisateurs. Aucun niveau publié sans contrôle automatique : graphe valide, jouabilité, durée, répartition des coups, scores finaux, intérêt stratégique.</p>
+<p><strong>Métadonnées obligatoires par niveau, calculées par le solveur exact et stockées avec le niveau :</strong> - <code>Ls</code> et <code>Rs</code>, les scores relatifs de l’article (différence de scores Rouge − Bleu quand Rouge commence, respectivement quand Bleu commence, avec jeu optimal) ; on en déduit le score absolu de chaque camp pour chaque premier joueur : <code>scoreRouge = (|V| + Ls)/2</code> si Rouge commence, <code>(|V| + Rs)/2</code> si Bleu commence ; - <code>|V|</code>, nombre de sommets de chaque couleur, nombre d’arcs ; - indicateur « auto-opposé » (le graphe est isomorphe à son opposé : couleurs échangées et arcs inversés) ; - écart entre le meilleur coup glouton (celui qui capture le plus) et le coup optimal au premier tour ; - nombre de coups non dominés au premier tour.</p>
+<p><strong>Règles d’équité.</strong> L’article démontre que le jeu est sans zugzwang sur les graphes pertinents (<code>Ls ≥ Rs</code>), et le test empirique de la §9 le confirme sur les règles originales pour les petits graphes. Conséquence : il est impossible que le <strong>second</strong> joueur gagne dans les deux ordres de jeu. Un niveau relève donc de l’un de ces types : « celui qui commence gagne » (<code>Ls &gt; 0 &gt; Rs</code>), « un camp gagne quel que soit le premier joueur », ou « nul ». Les types doivent être <strong>équilibrés dans la collection</strong> : ne pas publier 12 niveaux « Rouge qui commence gagne ». Les niveaux auto-opposés (<code>Rs = −Ls</code>) donnent une manche aller-retour équitable. Pour <code>|V|</code> impair, l’égalité est impossible.</p>
+<p><strong>Intérêt stratégique.</strong> Écarter les niveaux dont le coup glouton est toujours optimal et ceux où presque tous les coups mènent au même score. Garder au moins quelques niveaux où le coup optimal n’est pas le coup glouton.</p>
+<p><strong>Niveaux « la position compte plus que le nombre ».</strong> L’article (Théorème 28) montre des familles où le camp minoritaire en nombre capture presque tout grâce à sa position (arbres ternaires <code>T_n^c</code>, jeu sur deux copies). Le théorème est asymptotique : utiliser le solveur pour chercher les <strong>plus petites instances</strong> présentant le phénomène (camp minoritaire en nombre mais gagnant), et en retenir une ou deux comme niveaux « surprise ».</p>
+<p>Les positions peuvent être asymétriques. Prévoir des positions opposées (couleurs échangées et arcs inversés) pour vérifier la symétrie.</p>
+<p><strong>Défi quotidien</strong> : option V1.1, déterministe par date et fuseau clairement défini, sans serveur ; ne pas retarder la V1.</p>
+</section>
+</section>
+<section id="internationalisation-et-conventions-politiques" class="level2">
+<h2 class="anchored" data-anchor-id="internationalisation-et-conventions-politiques">6. Internationalisation et conventions politiques</h2>
+<p>Internationalisation <strong>FR/EN</strong> dès le départ, via dictionnaires de chaînes ; aucune phrase codée en dur dans les composants. Changement de langue sans perdre la partie ; persistance locale de la préférence.</p>
+<p><strong>Rouge et Bleu désignent uniquement les équipes</strong>. Ne jamais afficher automatiquement « Rouge = gauche / Bleu = droite » : la convention électorale américaine est différente de la convention française. Les éventuelles propositions sont fictives, sans référence à des partis réels. Les deux couleurs doivent fonctionner dans les deux langues sans explication culturelle.</p>
+</section>
+<section id="accessibilité-mobile-et-performance" class="level2">
+<h2 class="anchored" data-anchor-id="accessibilité-mobile-et-performance">7. Accessibilité, mobile et performance</h2>
+<p>Interface responsive : smartphone portrait, tablette, desktop. Pour les grands graphes, zoom et déplacement du plateau, recentrage, disposition automatique évitant les chevauchements. Interactions souris, tactile et clavier ; focus visible ; étiquettes accessibles ; contrastes vérifiés ; indication du tour et appartenance des sommets non exclusivement colorées ; mode animation réduite (<code>prefers-reduced-motion</code>). Audio discret et désactivable, <strong>jamais nécessaire</strong> pour comprendre l’état.</p>
+<p>Éviter les dépendances lourdes ; déploiement statique GitHub Pages, sans compte ni collecte de données. Sauvegarde de la progression et des réglages en <code>localStorage</code>. Ne pas demander d’autorisations inutiles.</p>
+</section>
+<section id="architecture-proposée" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-proposée">8. Architecture proposée</h2>
+<p>Répertoire <code>apps/influence/</code> avec fichiers statiques et ressources locales ; TypeScript + Vite (ou JavaScript modulaire sans build si cela facilite l’intégration au site), SVG pour le graphe et les flèches, CSS pour l’interface, Web Worker pour le solveur si nécessaire. Privilégier la simplicité et la maintenabilité.</p>
+<p>Modules distincts : - <code>engine/</code> : graphe canonique, accessibilité, coups, scores, fin de partie ; - <code>ai/</code> : solveur, heuristiques, cache, limites de temps ; - <code>levels/</code> : données validées et métadonnées ; - <code>ui/</code> : écrans, animations, SVG et interactions ; - <code>i18n/</code> : FR/EN ; - <code>tests/</code> : unitaires, propriétés, intégration, parcours.</p>
+<p>Le code doit permettre ultérieurement l’ajout de plateaux, d’un éditeur et du partage de défis, sans les imposer dans la V1.</p>
+<p><strong>Contraintes techniques :</strong> - <strong>Ensembles de sommets en masque de bits</strong> : les opérateurs binaires de JavaScript travaillent sur 32 bits. Au-delà de 31 sommets, utiliser des tableaux de <code>Uint32</code> ou des <code>BigInt</code>, ou fixer un plafond explicite (par exemple 30 sommets) pour le solveur exact et la mémoïsation, avec repli heuristique au-delà. Tester le comportement aux bornes (31, 32, 33 sommets). - <strong>Vite et GitHub Pages</strong> : le site est un site utilisateur (dépôt <code>PrStephaneGonzalez.github.io</code>) et l’application vit dans un sous-dossier ; fixer <code>base: './'</code> (ou le chemin adéquat) pour que les ressources se résolvent. Décider et documenter si le dossier <code>dist/</code> est <strong>commité</strong> ou produit par une <strong>Action GitHub</strong> ; vérifier que le déploiement du reste du site n’est pas affecté. Le mode « JavaScript modulaire sans build » évite entièrement ce point. - <strong>Web Worker</strong> : vérifier le chargement du worker depuis le sous-dossier, en local et en production.</p>
+</section>
+<section id="tests-et-critères-dacceptation" class="level2">
+<h2 class="anchored" data-anchor-id="tests-et-critères-dacceptation">9. Tests et critères d’acceptation</h2>
+<p><strong>Tests moteur obligatoires :</strong> 1. <code>Succ</code> et <code>Pred</code> incluent le sommet de départ et suivent les chemins transitifs, pas seulement les voisins directs. 2. La suppression produit bien le sous-graphe induit. 3. Capture de sommets adverses et cycles éventuels correctement gérés. 4. Si le joueur actif n’a plus de sommet, fin immédiate et attribution de <strong>tous</strong> les restants à l’autre camp. 5. Conservation du nombre de sommets dans le score final, y compris fin anticipée. 6. Inversion <strong>visuelle</strong> des flèches au tour Bleu, sans mutation du graphe logique. 7. Pour chaque sommet jouable, prévisualisation = capture réelle (même ensemble de sommets). 8. <strong>Symétrie.</strong> Soit <code>−H</code> le graphe obtenu à partir de <code>H</code> en échangeant les couleurs Rouge/Bleu et en inversant tous les arcs. Alors <code>Ls(−H) = −Rs(H)</code> et <code>Rs(−H) = −Ls(H)</code>. Équivalent en scores absolus : le score de Rouge dans <code>−H</code> quand Rouge commence égale le score de Bleu dans <code>H</code> quand Bleu commence. 9. <strong>Énumération indépendante.</strong> Une seconde implémentation, sans mémoïsation ni élagage, écrite séparément du solveur (idéalement dans un autre langage ou au moins un autre module sans code partagé), fournit les scores de référence. Le solveur exact est comparé à elle sur <strong>tous les graphes orientés étiquetés à au plus 4 sommets avec toutes les colorations</strong> (à 5 sommets : exhaustif si le temps de calcul le permet, sinon par échantillonnage), et sur un grand échantillon aléatoire de graphes jusqu’à 9 ou 10 sommets, graphes cycliques inclus. Si l’élagage par coups dominés ou le retrait anticipé des sommets forcés est activé dans le solveur, ce test est refait avec ces options. 10. IA toujours légale ; niveaux de difficulté reproductibles avec graine contrôlée pour les tests.</p>
+<p><strong>Tests de référence tirés de l’article</strong> (à implémenter en phase A) : 11. <strong>Exemple 3 / Fig. 1</strong> : reconstituer le graphe à six sommets <code>u, v, w, x, y, z</code> à partir de la Figure 1 de l’article (le texte extrait du PDF ne rend pas les arcs : lire la figure) et vérifier <code>sL1 = 4</code>, <code>sR2 = 2</code>, <code>sR1 = 6</code>, <code>sL2 = 0</code>, d’où <code>Ls = 2</code>, <code>Rs = −6</code>. Vérifier aussi les deux scénarios de l’introduction (Black commence en <code>u</code> : 4 contre 2 ; White commence en <code>y</code> : 6 contre 0 par fin anticipée). 12. <strong>Segments</strong> (Définition 16) : sommets <code>1..n</code>, sommets pairs = Rouge, impairs = Bleu, arcs de chaque pair vers ses voisins impairs (pour <code>n</code> impair, le segment est dans <code>C−</code> : les deux extrémités sont bleues). Valeurs <code>Ls(S_n)</code> et <code>Rs(S_n)</code>, <strong>recalculées de façon indépendante et conformes au Tableau 1 de l’article pour n = 1 à 24</strong> :</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ls</td>
+<td>−1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Rs</td>
+<td>−1</td>
+<td>−2</td>
+<td>−3</td>
+<td>−4</td>
+<td>−5</td>
+<td>−2</td>
+<td>−1</td>
+<td>−2</td>
+<td>−3</td>
+<td>−2</td>
+<td>−1</td>
+<td>−2</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>n</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+<th>16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+<th>22</th>
+<th>23</th>
+<th>24</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ls</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Rs</td>
+<td>−3</td>
+<td>−4</td>
+<td>−3</td>
+<td>−2</td>
+<td>−3</td>
+<td>−2</td>
+<td>−3</td>
+<td>−2</td>
+<td>−5</td>
+<td>−4</td>
+<td>−3</td>
+<td>−2</td>
+</tr>
+</tbody>
+</table>
+<p>Le Tableau 1 de l’article donne les valeurs jusqu’à <code>n = 38</code> ; les ajouter si le solveur le permet en temps raisonnable (test lent, hors intégration continue rapide). 13. <strong>Théorème 20</strong> : pour tout segment, <code>Ls &gt; 0</code> ; si <code>n</code> est pair, <code>Ls ∈ {2, 4}</code> et <code>Rs ∈ {−2, −4}</code> ; si <code>|L|</code> est impair dans <code>C−</code>, <code>Ls = 3</code>. 14. <strong>Cycles</strong> (Corollaire 24) : pour un segment de nombre pair de sommets auquel on ajoute l’arc reliant l’extrémité rouge à l’extrémité bleue, <code>Ls ∈ {0, 2}</code>, et <code>Ls = 0</code> si <code>|L|</code> est impair. 15. <strong>Sommes opposées</strong> (Corollaire 15) : pour tout graphe <code>H</code>, <code>Ls(H + (−H)) = Rs(H + (−H)) = 0</code>, où <code>+</code> désigne l’union disjointe. 16. <strong>Absence de zugzwang</strong> : sur les petits graphes, y compris non pertinents (règles originales), <code>Ls ≥ Rs</code> pour toute position atteignable. Une violation signalerait soit une erreur du moteur, soit une divergence entre règles originales et règles « pertinentes » à analyser avant d’activer toute optimisation. 17. <strong>Parité</strong> (Lemme 5) : <code>Ls</code>, <code>Rs</code> et <code>|V|</code> ont la même parité.</p>
+<p><strong>Tests d’interface :</strong> parcours complet FR et EN, souris et tactile, changement de camp, fin par absence de coup, reprise de progression, contraste et tailles tactiles, mise en page mobile, animations réduites, retour accueil, modes 2 joueurs et ordinateur. Vérifier qu’il n’existe aucune confusion sur <strong>qui doit jouer</strong> ni sur <strong>ce qui est capturé</strong>.</p>
+<p><strong>Critères de livraison :</strong> application accessible sur GitHub Pages ; tests automatiques verts ; aucune erreur console bloquante ; au moins 12 niveaux jouables avec leurs métadonnées d’équité et une répartition équilibrée des types (§5) ; tutoriel évitable ; écran final correct ; source et crédits accessibles ; guide de lancement local et de déploiement.</p>
+</section>
+<section id="crédit-scientifique-et-lien-vers-larticle" class="level2">
+<h2 class="anchored" data-anchor-id="crédit-scientifique-et-lien-vers-larticle">10. Crédit scientifique et lien vers l’article</h2>
+<p>Rubrique discrète <strong>« Derrière le jeu » / “Behind the game”</strong> dans l’accueil et l’aide :</p>
+<blockquote class="blockquote">
+<p>INFLUENCE est adapté d’un jeu mathématique étudié par Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila et Philippe Solal dans <em>Theoretical Computer Science</em> (2021). Les règles de capture sur graphe et leurs propriétés stratégiques sont étudiées dans cet article. Les niveaux, graphismes et modes de jeu sont des adaptations de l’application.</p>
+</blockquote>
+<p>Lien : <code>https://doi.org/10.1016/j.tcs.2021.05.028</code> (nouvel onglet, <code>rel="noopener noreferrer"</code>). Citation complète visible. Ne pas laisser croire que l’article décrit les graphismes, les niveaux ou l’IA du site.</p>
+</section>
+<section id="phases-de-réalisation-et-méthode-de-travail" class="level2">
+<h2 class="anchored" data-anchor-id="phases-de-réalisation-et-méthode-de-travail">11. Phases de réalisation et méthode de travail</h2>
+<p><strong>Phase A — Fondations vérifiables</strong> : inspecter la structure du dépôt ; écrire le moteur, le solveur exact de référence et les tests (§9, tests 1 à 17) ; implémenter les graphes d’exemple de l’article ; prouver par tests la symétrie des deux camps. <strong>Ne pas commencer par l’habillage.</strong></p>
+<p><strong>Phase B — Prototype complet</strong> : accueil clair, plateau SVG, sens des flèches par joueur, sélection/aperçu/confirmation, scores et compteurs de sommets jouables, fin de partie, 2 joueurs, IA simple, FR/EN, 4 plateaux.</p>
+<p><strong>Phase C — Version grand public</strong> : appliquer la direction artistique retenue, animations, 12 niveaux validés (avec métadonnées d’équité), trois difficultés, tutoriel très court, mobile/accessibilité, rubrique scientifique, évaluation de la « vue figée » en solo.</p>
+<p><strong>Phase D — Audit et publication</strong> : tests exhaustifs sur petits graphes, tests de parcours utilisateur, captures d’écran mobile/desktop, correction des anomalies, intégration propre au site, documentation et déploiement.</p>
+<p><strong>À chaque phase :</strong> fournir un résumé des changements, commandes de test et résultats, captures d’écran de l’interface, limites connues et liste des fichiers modifiés. <strong>Ne pas déclarer un test réussi sans l’avoir exécuté.</strong> <strong>S’arrêter à la fin de chaque phase et attendre la validation explicite de l’utilisateur avant d’entamer la suivante</strong> (en particulier : pas de phase B avant validation du moteur). Ne pas pousser ni publier sans instruction explicite.</p>
+<p>Il est utile de placer à la racine de <code>apps/influence/</code> un court fichier de consignes (nom selon l’outil utilisé) qui renvoie à ce cahier, rappelle les commandes de test et la règle d’arrêt entre phases.</p>
+</section>
+<section id="hors-périmètre-initial" class="level2">
+<h2 class="anchored" data-anchor-id="hors-périmètre-initial">12. Hors périmètre initial</h2>
+<p>Pas de compte utilisateur, publicité intégrée, monétisation, classement mondial, sondages réels, candidats réels, multijoueur réseau, probabilités de convaincre, simulation électorale complexe, narration longue ou éditeur de graphes. Ces extensions seront discutées après les premiers tests utilisateurs.</p>
+</section>
+<section id="instruction-de-démarrage" class="level2">
+<h2 class="anchored" data-anchor-id="instruction-de-démarrage">13. Instruction de démarrage</h2>
+<p>« Lis <code>CAHIER_DES_CHARGES.md</code> (v1.1), les deux images de référence et l’article scientifique joints. Examine le dépôt existant avant toute modification. Commence par la Phase A : propose brièvement une architecture, implémente le moteur fidèle aux règles de l’article, un solveur exact et une énumération de référence indépendante, puis la batterie de tests du §9 (règle de fin de partie, capture transitive, symétrie <code>Ls(−H) = −Rs(H)</code>, valeurs de référence de l’article). Exécute les tests et rends compte des résultats. <strong>Arrête-toi à la fin de la phase A et attends ma validation</strong> avant d’entamer la phase B. La direction visuelle définitive est <code>reference_design_retenu.png</code>, en corrigeant ses incohérences listées au §2 ; <code>reference_design_initial.png</code> n’est qu’une référence secondaire. »</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script src="assets/js/portrait-rotator.js"></script>
+<script src="assets/js/site-layout.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/stephanegonzalez\.eu");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
