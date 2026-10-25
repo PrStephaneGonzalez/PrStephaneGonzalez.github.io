@@ -757,7 +757,15 @@ function mergeSkill(m, s) {
   const sa = m.seen || [],
     sb = s.seen || [];
   const seen = Array.from({ length: Math.max(sa.length, sb.length) }, (_, i) => !!(sa[i] || sb[i]));
-  return { ...m, ...s, tier: hi.tier || 0, prog: hi.prog || 0, last: Math.max(m.last || 0, s.last || 0), seen, done: Math.max(m.done || 0, s.done || 0) };
+  const out = { ...m, ...s, tier: hi.tier || 0, prog: hi.prog || 0, last: Math.max(m.last || 0, s.last || 0), seen, done: Math.max(m.done || 0, s.done || 0) };
+  // rang Légende : gravé si l'un des deux appareils l'a gravé ; sinon on garde la meilleure progression
+  const legend = m.legend || s.legend ? 1 : 0,
+    lg = legend ? 0 : Math.max(m.lg || 0, s.lg || 0);
+  if (legend) out.legend = 1;
+  else delete out.legend;
+  if (lg) out.lg = lg;
+  else delete out.lg;
+  return out;
 }
 function assignInPlace(t, s) {
   for (const k of Object.keys(t)) if (!(k in s)) delete t[k];

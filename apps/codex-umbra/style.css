@@ -750,6 +750,17 @@ h3 {
 .rung.lock {
   opacity: 0.45;
 }
+/* rang Légende (facultatif) : quatrième barreau, doré */
+.ladder:has(.legend) {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.rung.legend {
+  --hue: #f5d79a;
+}
+.rung.legend b {
+  color: #f5d79a;
+}
 .req {
   margin: 10px 0;
   padding: 12px 14px;

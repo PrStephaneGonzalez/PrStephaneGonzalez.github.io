@@ -99,17 +99,24 @@ for (const id of written) {
 }
 /* chaque rang a au moins une variante sans condition fine ou une condition satisfiable */
 for (const id of written)
-  for (let ti = 0; ti < 3; ti++) ok(rules.tierContent(id, ti), `${id} rang ${ti + 1} : aucune variante jouable à la fin`);
+  for (let ti = 0; ti < CU.SKILLS[id].gen.length; ti++) ok(rules.tierContent(id, ti), `${id} rang ${ti + 1} : aucune variante jouable à la fin`);
 
 /* 8. les besoins fins (needs) visent des Lois écrites */
 for (const id of written)
-  for (let ti = 0; ti < 3; ti++)
+  for (let ti = 0; ti < CU.SKILLS[id].gen.length; ti++)
     for (const v of rules.allVariants(id, ti))
       for (const n of v.needs || []) {
         const [t, k] = n.split(':');
         ok(CU.SKILLS[t], `${id} rang ${ti + 1} : besoin « ${n} » vers une Loi non écrite`);
         ok(!k || ['1', '2', '3'].includes(k), `${id} : besoin « ${n} » mal formé`);
       }
+
+/* 9. rang Légende : facultatif, au plus un quatrième rang, avec cours et méthode */
+for (const id of written) {
+  const s = CU.SKILLS[id];
+  ok(s.gen.length === 3 || s.gen.length === 4, `${id} : ${s.gen.length} rangs`);
+  if (s.gen.length === 4) ok(s.lessons[3] && (!s.methods || s.methods[3]), `${id} : rang Légende sans cours ou sans méthode`);
+}
 
 /* bilan */
 console.log(`Graphe : ${ids.length} Lois (${written.length} écrites, ${ids.length - written.length} prévues), ${Object.keys(G.regions).length} régions, ${entries.length} entrées (${entries.join(', ')}), profondeur max ${Math.max(...Object.values(depth))}`);

@@ -102,6 +102,7 @@
     [7000, 'Héritier d’Ysembre'],
   ];
   CU.TIER_NAMES = ['Novice', 'Adepte', 'Maître'];
+  CU.LEGEND_NAME = 'Légende'; // rang facultatif au-delà de Maître (gen[3])
 
   CU.PROLOGUE = [
     'Il fut un temps où le monde d’Aldmor tenait debout parce qu’il était écrit. Dans le <b>Codex</b>, les Archivistes avaient consigné ses Lois : celles qui guident les vents, scellent les portes, courbent la course des flèches. Tant que le Codex était entier, le monde l’était aussi.',

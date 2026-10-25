@@ -172,5 +172,19 @@ for (const [i, s0] of saves.entries()) {
   ok(cloud.skills.v4.tier === 2 && cloud.skills.l1.tier === 3 && cloud.skills.p2.prog === 1 && cloud.xp === synth[1].xp + 50, 'deux appareils : une progression a été écrasée');
 }
 
+/* ---------- rang Légende : fusion entre appareils ---------- */
+{
+  const ms = CU.save._t.mergeSkill;
+  const A = { tier: 3, prog: 0, seen: [1, 1, 1, 1], done: 40, lg: 2 },
+    B = { tier: 3, prog: 0, seen: [1, 1, 1], done: 38, legend: 1 },
+    C = { tier: 3, prog: 0, seen: [1, 1, 1], done: 30, lg: 4 };
+  const ab = ms(A, B),
+    ba = ms(B, A),
+    ac = ms(A, C);
+  ok(ab.legend === 1 && !ab.lg && ba.legend === 1 && !ba.lg, 'Légende gravée sur un appareil perdue à la fusion');
+  ok(ac.lg === 4 && !ac.legend, 'progression Légende : on garde la meilleure');
+  ok(!('lg' in ms({ tier: 2 }, { tier: 1 })) && !('legend' in ms({ tier: 2 }, { tier: 1 })), 'champs Légende créés à tort');
+}
+
 console.log(`${n - fails}/${n} vérifications réussies` + (extra.length ? ` (dont ${extra.length} sauvegardes réelles)` : ''));
 process.exit(fails ? 1 : 0);
