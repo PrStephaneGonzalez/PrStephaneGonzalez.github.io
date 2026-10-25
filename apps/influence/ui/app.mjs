@@ -4,7 +4,7 @@ import {chooseMove} from '../ai/choose.mjs';
 import {translate} from '../i18n/strings.mjs';
 import {icon,nodeIcon,nodeIcons} from './icons.mjs';
 import {captureWaves,cascadeSchedule} from './cascade.mjs';
-import {createAudio} from './audio.mjs';
+import {createAudio} from './audio.mjs?v=3';
 import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,applyCloud,unlinkCloud,sameData,MAX_PROFILES} from './profiles.mjs';
 import {createApi,accountKey,validPin,syncProfile} from './cloud.mjs';
 
@@ -224,6 +224,9 @@ async function act(action,el){switch(action){
  case'daily':{const date=new Date().toISOString().slice(0,10),days=Math.floor(Date.parse(date)/86400000);start(days%levels.length,{...settings,mode:'solo',first:days%2?'R':'L'},date);break;}
  case'share':{const text=`INFLUENCE${daily?' · '+daily:''} · ${name(level())}\n${t('red')} ${state.scores.L} – ${state.scores.R} ${t('blue')}\nhttps://stephanegonzalez.eu/apps/influence/`;try{await navigator.clipboard.writeText(text);toast=t('copied');}catch{toast=t('copyFailed');}render();announce(toast);setTimeout(()=>{toast='';if(screen==='game'&&state.finished)render();},2500);break;}
  }}
+// Unlock in activation events accepted by touch browsers, before async animations.
+document.addEventListener('click',unlockAudio,{capture:true});
+document.addEventListener('touchend',unlockAudio,{capture:true,passive:true});
 document.addEventListener('click',event=>{if(animating&&event.target.closest?.('#board'))skip();const el=event.target.closest('[data-action]');if(el&&!el.disabled){act(el.dataset.action,el);return;}const node=event.target.closest('#board [data-node]');if(node)select(node.dataset.node);});
 document.addEventListener('keydown',e=>{keyboardInput=true;unlockAudio();const n=e.target.closest?.('#board [data-node]');if(n&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(n.dataset.node);}if(n&&['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();const nodes=[...document.querySelectorAll('#board [data-node][tabindex="0"]')],i=nodes.indexOf(n),delta=['ArrowRight','ArrowDown'].includes(e.key)?1:-1;nodes[(i+delta+nodes.length)%nodes.length]?.focus();}if(e.key==='Escape'&&!modal.open){selected=null;hovered=null;updatePreview();}});
 document.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||screen!=='game'||state.finished)return;const n=e.target.closest?.('#board [data-node]');if(n?.getAttribute('aria-disabled')==='false'){hovered=n.dataset.node;updatePreview();}});
