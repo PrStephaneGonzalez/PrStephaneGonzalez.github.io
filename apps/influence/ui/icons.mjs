@@ -1,0 +1,28 @@
+const paths={
+ home:'<path d="m3 11 9-8 9 8M5 10v10h14V10M10 20v-7h4v7"/>',
+ star:'<path d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z"/>',
+ leaf:'<path d="M20 3C8 2 1 9 6 17c7 6 15-1 14-14ZM4 21 16 8"/>',
+ book:'<path d="M12 6Q7 2 2 5v15q5-3 10 0 5-3 10 0V5q-5-3-10 1Zm0 0v14"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/>',
+ people:'<circle cx="9" cy="7" r="3"/><path d="M3 21v-4a6 6 0 0 1 12 0v4M16 4a3 3 0 0 1 0 6m3 11v-4a6 6 0 0 0-3-5"/>',
+ heart:'<path d="M12 21S1 14 2 7c1-6 9-5 10 0 1-5 9-6 10 0 1 7-10 14-10 14Z"/>',
+ spark:'<path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/>',
+ flag:'<path d="M5 22V3q4-3 8 0t7 0v10q-4 3-8 0t-7 0"/>',
+ arrow:'<path d="M4 12h16m-6-6 6 6-6 6"/>',
+ play:'<path d="m8 4 13 8-13 8Z"/>',
+ back:'<path d="m10 5-7 7 7 7M3 12h13a5 5 0 0 1 0 10"/>',
+ refresh:'<path d="M20 7a9 9 0 1 0 1 9M20 2v6h-6"/>',
+ gear:'<path d="m9 3 1-2h4l1 2 3 2 3 1v4l-2 2 2 3-1 4-4 1-2 3h-4l-2-3-4-1-1-4 2-3-2-2V6l3-1Z"/><circle cx="12" cy="12" r="3"/>',
+ info:'<circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-11v1"/>',
+ grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+ check:'<path d="m4 12 5 5L20 5"/>',
+ close:'<path d="m6 6 12 12M18 6 6 18"/>',
+ trophy:'<path d="M7 3h10v7a5 5 0 0 1-10 0Zm0 2H2v3a5 5 0 0 0 5 5m10-8h5v3a5 5 0 0 1-5 5M12 15v5m-5 2h10"/>',
+ robot:'<rect x="3" y="6" width="18" height="15" rx="5"/><path d="M12 2v4M8 11v2m8-2v2m-8 4h8M1 11v5m22-5v5"/>',
+ volume:'<path d="M3 9h4l5-5v16l-5-5H3ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
+ help:'<circle cx="12" cy="12" r="10"/><path d="M9 8a3 3 0 1 1 5 2c-2 1-2 2-2 3m0 3v1"/>',
+ plus:'<path d="M12 4v16M4 12h16"/>',minus:'<path d="M4 12h16"/>',center:'<path d="M3 8V3h5m8 0h5v5m0 8v5h-5m-8 0H3v-5"/><circle cx="12" cy="12" r="3"/>',
+};
+export const nodeIcons=['home','leaf','book','sun','people','heart','spark','flag','star','book','leaf','sun'];
+export const icon=(name,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]??paths.spark}</svg>`;
+export const nodeIcon=name=>paths[name]??paths.spark;

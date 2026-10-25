@@ -1,0 +1,281 @@
+{
+  "tries": 677,
+  "levels": [
+    {
+      "id": "first-links",
+      "Ls": 2,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 8,
+      "red": 4,
+      "blue": 4,
+      "arcs": 8,
+      "selfOpposed": true,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        }
+      }
+    },
+    {
+      "id": "network-2",
+      "Ls": 6,
+      "Rs": -6,
+      "type": "first",
+      "vertices": 8,
+      "red": 5,
+      "blue": 3,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        }
+      }
+    },
+    {
+      "id": "network-3",
+      "Ls": 6,
+      "Rs": 2,
+      "type": "red",
+      "vertices": 8,
+      "red": 6,
+      "blue": 2,
+      "arcs": 8,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    },
+    {
+      "id": "two-gardens",
+      "Ls": 0,
+      "Rs": 0,
+      "type": "draw",
+      "vertices": 8,
+      "red": 4,
+      "blue": 4,
+      "arcs": 6,
+      "selfOpposed": true,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 1,
+          "nonDominated": 4
+        }
+      }
+    },
+    {
+      "id": "network-5",
+      "Ls": -4,
+      "Rs": -8,
+      "type": "blue",
+      "vertices": 10,
+      "red": 2,
+      "blue": 8,
+      "arcs": 13,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    },
+    {
+      "id": "network-6",
+      "Ls": 8,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 10,
+      "red": 7,
+      "blue": 3,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 3
+        }
+      }
+    },
+    {
+      "id": "network-7",
+      "Ls": 2,
+      "Rs": 0,
+      "type": "red-draw",
+      "vertices": 10,
+      "red": 5,
+      "blue": 5,
+      "arcs": 10,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 3
+        }
+      }
+    },
+    {
+      "id": "network-8",
+      "Ls": 0,
+      "Rs": -2,
+      "type": "blue-draw",
+      "vertices": 10,
+      "red": 4,
+      "blue": 6,
+      "arcs": 11,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 2,
+          "choices": 2,
+          "nonDominated": 4
+        }
+      }
+    },
+    {
+      "id": "network-9",
+      "Ls": 6,
+      "Rs": -6,
+      "type": "first",
+      "vertices": 12,
+      "red": 6,
+      "blue": 6,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 4,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 4,
+          "choices": 4,
+          "nonDominated": 3
+        }
+      }
+    },
+    {
+      "id": "network-10",
+      "Ls": 6,
+      "Rs": 2,
+      "type": "red",
+      "vertices": 12,
+      "red": 8,
+      "blue": 4,
+      "arcs": 15,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 2,
+          "nonDominated": 2
+        },
+        "R": {
+          "greedyGap": 4,
+          "choices": 2,
+          "nonDominated": 2
+        }
+      }
+    },
+    {
+      "id": "network-11",
+      "Ls": -2,
+      "Rs": -8,
+      "type": "blue",
+      "vertices": 12,
+      "red": 4,
+      "blue": 8,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 2,
+          "choices": 3,
+          "nonDominated": 3
+        },
+        "R": {
+          "greedyGap": 0,
+          "choices": 3,
+          "nonDominated": 3
+        }
+      }
+    },
+    {
+      "id": "network-12",
+      "Ls": 8,
+      "Rs": -2,
+      "type": "first",
+      "vertices": 12,
+      "red": 7,
+      "blue": 5,
+      "arcs": 14,
+      "selfOpposed": false,
+      "opening": {
+        "L": {
+          "greedyGap": 0,
+          "choices": 4,
+          "nonDominated": 4
+        },
+        "R": {
+          "greedyGap": 2,
+          "choices": 4,
+          "nonDominated": 2
+        }
+      }
+    }
+  ]
+}
