@@ -45,9 +45,18 @@ inverse. L'option ne change jamais le graphe canonique ni les captures.
   Rouge/Bleu par plateau. La progression d'avant (invité) est reprise par le
   premier profil créé. Aucune donnée ne quitte l'appareil ; pour changer
   d'appareil, exporter un code `INF1.…` et l'importer ailleurs (fusion par
-  union des victoires). Une synchronisation en ligne reste une option.
+  union des victoires).
+- **Sauvegarde en ligne facultative** (`ui/cloud.mjs`, `docs/supabase-influence.sql`) :
+  en ajoutant un code secret de 4 à 6 chiffres à son nom, la progression est
+  aussi sauvegardée dans le projet Supabase partagé avec les autres applis, et
+  retrouvée sur tout appareil avec le même nom et le même code (comme fil-or).
+  Seule l'empreinte SHA-256 de « nom + code » est envoyée, avec les victoires et
+  le nombre de parties ; la table n'est lisible que par quatre fonctions
+  `influence_*`. Fusion par union des victoires, révisions contre les écritures
+  concurrentes, jamais bloquant : sans réseau on joue normalement. Le code ne
+  peut pas être récupéré s'il est oublié.
 - Clés `localStorage` : `influence.v1.settings` (`confirm`, `sound`, `speed`,
-  `ver`, …), `influence.v1.profiles` (`version:1`), `influence.v1.progress`
+  `ver`, …), `influence.v1.profiles` (`version:1`, avec `cloud:{key,rev,at}` si la sauvegarde en ligne est activée), `influence.v1.progress`
   (ancien format, migré).
 
 ## Vérifier
@@ -60,8 +69,8 @@ npm run test:exhaustive
 npm run test:segments
 ```
 
-`npm test` : 31 tests dont 216 parties complètes, les métadonnées des 12
-plateaux, les traductions FR/EN, les cascades et profils locaux (`tests/ui-modules.test.mjs`), les règles et valeurs de référence de
+`npm test` : 37 tests dont 216 parties complètes, les métadonnées des 12
+plateaux, les traductions FR/EN, les cascades et profils locaux (`tests/ui-modules.test.mjs`, `tests/cloud.test.mjs`), les règles et valeurs de référence de
 l'article. Le second oracle Python structurel contrôle les 38 segments.
 
 `test:exhaustive` confronte le solveur à un oracle Python indépendant sans

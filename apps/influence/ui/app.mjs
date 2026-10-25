@@ -5,7 +5,8 @@ import {translate} from '../i18n/strings.mjs';
 import {icon,nodeIcon,nodeIcons} from './icons.mjs';
 import {captureWaves,cascadeSchedule} from './cascade.mjs';
 import {createAudio} from './audio.mjs';
-import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,MAX_PROFILES} from './profiles.mjs';
+import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,applyCloud,unlinkCloud,sameData,MAX_PROFILES} from './profiles.mjs';
+import {createApi,accountKey,validPin,syncProfile} from './cloud.mjs';
 
 const $=s=>document.querySelector(s),app=$('#app'),modal=$('#modal');
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(`influence.v1.${key}`))??fallback;}catch{return fallback;}};
@@ -17,7 +18,8 @@ for(const[key,allowed]of Object.entries({lang:['fr','en'],mode:['solo','duo'],si
 for(const k of ['confirm','motion','sound','fixed'])settings[k]=typeof settings[k]==='boolean'?settings[k]:defaults[k];
 let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},drag=null,daily=null,toast='',lastOpener=null;
 const today=()=>new Date().toISOString().slice(0,10);
-let profileStore=loadStore(null,[]),profileNote='',pendingDelete=null;
+let profileStore=loadStore(null,[]),profileNote='',pendingDelete=null,cloudMsg='',cloudDeleteAsk=false,cloudRun=Promise.resolve(),cloudTimer=null;
+const cloudApi=createApi();
 const me=()=>activeProfile(profileStore),levelIds=()=>levels.map(l=>l.id),wonCount=()=>summary(me(),levelIds()).won;
 const saveProfiles=()=>write('profiles',profileStore);
 // Animation state: `animating` blocks board redraws, `aiShow` is the piece the computer is showing.
@@ -47,7 +49,7 @@ function start(i=index,options=config,dailyDate=null){stop();index=(i+levels.len
  const first=config.first==='random'?(Math.random()<.5?'L':'R'):config.first;
  state=createGame(graph,first);screen='game';closeModal();save();render();announce(t(`turn${state.turn}`));scheduleAI();}
 function result(){return state.scores.L===state.scores.R?'draw':state.scores.L>state.scores.R?'L':'R';}
-function endProgress(){if(config.mode!=='solo')return;profileStore=recordGame(profileStore,level().id,config.side,result()===config.side,today());saveProfiles();}
+function endProgress(){if(config.mode!=='solo')return;profileStore=recordGame(profileStore,level().id,config.side,result()===config.side,today());saveProfiles();if(me().cloud)scheduleCloud();}
 const sidesText=()=>{const x=summary(me(),levelIds());return t('progressSides',{r:x.red,b:x.blue});};
 const profileChip=()=>button('profile',`<span class="chip-name">${esc(me().name||t('guest'))}</span>`,'profile-chip','user',`aria-label="${t('profileTitle')}: ${esc(me().name||t('guest'))}" title="${t('profileTitle')}"`);
 const soundButton=()=>button('sound','','icon-button sound-toggle',settings.sound?'volume':'mute',`aria-pressed="${settings.sound}" aria-label="${t(settings.sound?'soundMute':'soundUnmute')}" title="${t(settings.sound?'soundMute':'soundUnmute')}"`);
@@ -174,7 +176,7 @@ function scheduleAI(){if(modal.open||aiTimer||worker||busy)return;if(screen!=='g
  try{worker=new Worker(new URL('../ai/worker.mjs',import.meta.url),{type:'module'});worker.onmessage=({data})=>finish(data.result);worker.onerror=()=>finish(null);worker.postMessage({request:token,graph:definition(graph),state:{...state,remaining:state.remaining.toString()},difficulty:config.difficulty,seed:state.ply*1057+index*37+2026});}catch{finish(null);}
  },pace().think);}
 function undo(){if(!history.length)return;stop();let previous;do{previous=history.pop();}while(history.length&&config.mode==='solo'&&previous.turn!==config.side);state=previous;selected=null;hovered=null;save();render();scheduleAI();}
-function openModal(kind){if(screen==='game'&&!busy)stop();if(kind==='profile'){pendingDelete=null;profileNote='';}lastOpener=document.activeElement;dialogType=kind;if(kind==='options')draft={...settings,...(screen==='game'?config:{})};renderModal();if(!modal.open)modal.showModal();}
+function openModal(kind){if(screen==='game'&&!busy)stop();if(kind==='profile'){pendingDelete=null;profileNote='';cloudMsg='';cloudDeleteAsk=false;}lastOpener=document.activeElement;dialogType=kind;if(kind==='options')draft={...settings,...(screen==='game'?config:{})};renderModal();if(!modal.open)modal.showModal();}
 function closeModal(){if(modal.open)modal.close();dialogType='';lastOpener?.focus?.({preventScroll:true});scheduleAI();}
 function radios(key,options){return `<div class="radio-row">${options.map(([value,label])=>`<label class="radio-choice"><input type="radio" name="${key}" value="${value}" ${draft[key]===value?'checked':''}><span>${label}</span></label>`).join('')}</div>`;}
 function renderModal(){const close=button('close','', 'icon-button','close',`aria-label="${t('close')}"`);let title='',body='';
@@ -202,7 +204,11 @@ async function act(action,el){switch(action){
  case'confirm':if(selected)commit(selected);break;
  case'sound':settings.sound=!settings.sound;setSettings();unlockAudio();syncSoundButton();if(settings.sound)audio.tap();break;
  case'profile':openModal('profile');break;
- case'profile-switch':profileStore=switchProfile(profileStore,el.dataset.id);saveProfiles();pendingDelete=null;afterProfileChange();break;
+ case'profile-switch':profileStore=switchProfile(profileStore,el.dataset.id);saveProfiles();pendingDelete=null;cloudMsg='';cloudDeleteAsk=false;afterProfileChange();if(me().cloud)cloudRunSync(me().id,{quiet:true});break;
+ case'cloud-sync':cloudRunSync(me().id);break;
+ case'cloud-unlink':profileStore=unlinkCloud(profileStore,me().id);saveProfiles();cloudDeleteAsk=false;cloudMsg=t('cloudUnlinked');afterProfileChange();break;
+ case'cloud-delete-ask':cloudDeleteAsk=true;renderModal();break;
+ case'cloud-delete':cloudErase();break;
  case'profile-delete':if(pendingDelete===el.dataset.id){profileStore=deleteProfile(profileStore,el.dataset.id);saveProfiles();pendingDelete=null;afterProfileChange();}else{pendingDelete=el.dataset.id;renderModal();}break;
  case'profile-delete-cancel':pendingDelete=null;renderModal();break;
  case'profile-export':exportCode(el.dataset.id);break;
@@ -238,17 +244,43 @@ function profileBody(){
    :`<div class="profile-tools">${button('profile-export','', 'icon-button','arrow',`data-id="${p.id}" aria-label="${t('profileExport')}: ${esc(label)}" title="${t('profileExport')}"`)}${button('profile-delete','', 'icon-button','close',`data-id="${p.id}" aria-label="${t('profileDelete')}: ${esc(label)}" title="${t('profileDelete')}"`)}</div>`;
   return `<div class="profile-row ${isActive?'active':''}" role="listitem"><button class="profile-pick" data-action="profile-switch" data-id="${p.id}" aria-pressed="${isActive}"><span class="profile-avatar" aria-hidden="true">${initial}</span><span class="profile-info"><b>${esc(label)}</b><small>${t('progressText',{n:x.won})} · ${t('progressSides',{r:x.red,b:x.blue})}</small></span>${isActive?icon('check'):''}</button>${tools}</div>`;}).join('');
  const full=profileStore.profiles.filter(p=>p.id!=='guest').length>=MAX_PROFILES;
- return `<p class="dialog-intro">${t('profileIntro')}</p><div class="profile-list" role="list">${rows}</div>${full?`<p class="option-note">${t('profileErrLimit')}</p>`:`<form class="profile-form" data-form="profile-create" novalidate><label>${t('profileName')}<input name="name" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="${t('profileNamePlaceholder')}"></label><button class="button primary" type="submit">${t('profileCreate')}</button></form>`}<p id="profile-error" class="form-error" role="alert"></p>
+ return `<p class="dialog-intro">${t('profileIntro')}</p><div class="profile-list" role="list">${rows}</div>${full?`<p class="option-note">${t('profileErrLimit')}</p>`:`<form class="profile-form" data-form="profile-create" novalidate><label>${t('profileName')}<input name="name" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="${t('profileNamePlaceholder')}"></label><label>${t('cloudCodeLabel')}<input name="pin" inputmode="numeric" maxlength="6" autocomplete="off" spellcheck="false" placeholder="${t('cloudCodePlaceholder')}"></label><button class="button primary" type="submit">${t('profileCreate')}</button></form><p class="option-note">${t('cloudCodeHelp')}</p>`}<p id="profile-error" class="form-error" role="alert"></p>${cloudSection()}
  <details class="profile-transfer" ${profileNote?'open':''}><summary>${t('profileTransfer')}</summary><p>${t('profileTransferText')}</p><textarea id="profile-code" rows="3" spellcheck="false" placeholder="INF1.…" aria-label="${t('profileCodeLabel')}"></textarea><div>${button('profile-import',t('profileImport'),'button secondary small')}</div><p id="profile-transfer-msg" role="status">${esc(profileNote)}</p></details><p class="option-note">${t('profileLocal')}</p>`;}
+function cloudSection(){const p=me();if(p.id==='guest')return '';
+ const body=p.cloud?`<p class="cloud-state">${icon('check')} ${t('cloudActive')}</p><div class="cloud-actions">${button('cloud-sync',t('cloudSync'),'button secondary small')}${cloudDeleteAsk?button('cloud-delete',t('cloudDeleteConfirm'),'button danger small','close'):button('cloud-delete-ask',t('cloudDelete'),'text-button')}${button('cloud-unlink',t('cloudUnlink'),'text-button')}</div>`
+  :`<form class="profile-form" data-form="cloud-link" novalidate><label>${t('cloudCodeLabel')}<input name="pin" inputmode="numeric" maxlength="6" autocomplete="off" spellcheck="false" placeholder="${t('cloudCodePlaceholder')}"></label><button class="button secondary" type="submit">${t('cloudEnable')}</button></form><p class="option-note">${t('cloudLinkIntro')}</p>`;
+ return `<section class="cloud-section" aria-labelledby="cloud-title"><h3 id="cloud-title">${t('cloudTitle')} · ${esc(p.name)}</h3>${body}<p id="cloud-msg" class="form-error cloud-msg" role="status">${esc(cloudMsg)}</p></section>`;}
+function setCloudMsg(text){cloudMsg=text;const el=$('#cloud-msg');if(el)el.textContent=text;}
+function scheduleCloud(){const id=me().id;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>cloudRunSync(id,{quiet:true}),800);}
+/** Sync one profile with its online copy. Serialized, never throws, never blocks the game. */
+function cloudRunSync(id,{pin=null,quiet=false}={}){
+ cloudRun=cloudRun.then(async()=>{
+  const p=profileStore.profiles.find(x=>x.id===id&&x.id!=='guest');if(!p)return;
+  try{
+   const key=p.cloud?.key??await accountKey(p.name,pin);
+   if(!quiet)setCloudMsg(t('cloudWorking'));
+   const r=await syncProfile(cloudApi,p,key,levelIds()),before=profileStore.profiles.find(x=>x.id===id);
+   const grew=before&&!sameData(r.data,{games:before.games,levels:before.levels})&&r.status!=='created';
+   profileStore=applyCloud(profileStore,id,r.data,{key,rev:r.rev,at:new Date().toISOString()});saveProfiles();
+   if(!quiet)setCloudMsg(t({created:'cloudCreated',same:'cloudSynced',pulled:'cloudFound',merged:'cloudMerged'}[r.status]));
+   if(grew||!quiet)afterProfileChange();
+  }catch(e){if(!quiet)setCloudMsg(t(e.message==='pin'?'cloudErrPin':'cloudOffline'));}
+ });return cloudRun;}
+async function cloudErase(){const p=me();if(!p.cloud)return;
+ try{await cloudApi.remove(p.cloud.key);profileStore=unlinkCloud(profileStore,p.id);saveProfiles();cloudDeleteAsk=false;cloudMsg=t('cloudDeleted');afterProfileChange();}
+ catch{cloudDeleteAsk=false;setCloudMsg(t('cloudOffline'));renderModal();}}
 function afterProfileChange(){if(dialogType==='profile')renderModal();if(busy)refreshChip();else render();}
 async function exportCode(id){const code=exportProfile(profileStore,id),area=$('#profile-code'),msg=$('#profile-transfer-msg');if(!code||!area||!msg)return;area.value=code;$('.profile-transfer').open=true;area.select();let copied=false;try{await navigator.clipboard.writeText(code);copied=true;}catch{/* Clipboard may be blocked; the code stays selectable. */}msg.textContent=t(copied?'profileCopied':'profileCopyManual');}
 function importCode(){const area=$('#profile-code'),msg=$('#profile-transfer-msg');if(!area||!msg)return;const r=importProfile(profileStore,area.value,levelIds());
  if(r.error){msg.textContent=t(r.error==='limit'?'profileErrLimit':'profileCodeInvalid');return;}
  profileStore=r.store;saveProfiles();profileNote=t('profileImported',{name:me().name});afterProfileChange();}
-modal.addEventListener('submit',e=>{const form=e.target.closest?.('[data-form="profile-create"]');if(!form)return;e.preventDefault();
- const result=createProfile(profileStore,new FormData(form).get('name')),error=$('#profile-error');
+modal.addEventListener('submit',e=>{const kind=e.target.closest?.('[data-form]')?.dataset.form;if(kind!=='profile-create'&&kind!=='cloud-link')return;e.preventDefault();
+ const data=new FormData(e.target.closest('[data-form]')),pin=String(data.get('pin')??'').trim(),error=$('#profile-error');
+ if(kind==='cloud-link'){if(!validPin(pin)){setCloudMsg(t('cloudErrPin'));return;}cloudRunSync(me().id,{pin});return;}
+ if(pin&&!validPin(pin)){error.textContent=t('cloudErrPin');return;}
+ const result=createProfile(profileStore,data.get('name'));
  if(result.error){error.textContent=t({invalid:'profileErrInvalid',duplicate:'profileErrDuplicate',limit:'profileErrLimit'}[result.error]);return;}
- profileStore=result.store;saveProfiles();profileNote='';afterProfileChange();});
+ profileStore=result.store;saveProfiles();profileNote='';cloudMsg='';cloudDeleteAsk=false;afterProfileChange();if(pin)cloudRunSync(me().id,{pin});});
 
 modal.addEventListener('cancel',()=>{dialogType='';setTimeout(scheduleAI,0);});
 // Pan the board after zooming. Pointer capture is kept on the persistent board container.
@@ -257,4 +289,4 @@ document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board
 document.addEventListener('pointerup',()=>{drag=null;});
 document.addEventListener('pointercancel',()=>{drag=null;});
 window.addEventListener('pagehide',save);
-(async()=>{try{const response=await fetch(new URL('../levels/catalog.json',import.meta.url));if(!response.ok)throw Error(response.status);levels=await response.json();profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();
+(async()=>{try{const response=await fetch(new URL('../levels/catalog.json',import.meta.url));if(!response.ok)throw Error(response.status);levels=await response.json();profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();if(me().cloud)cloudRunSync(me().id,{quiet:true});}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();

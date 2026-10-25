@@ -16,6 +16,7 @@ export function sanitizeName(raw) {
 }
 
 const sameName = (a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }) === 0;
+const isKey = v => typeof v === 'string' && /^[a-f0-9]{64}$/.test(v);
 const isDay = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v);
 
 function cleanLevels(raw, known) {
@@ -36,7 +37,9 @@ function cleanProfile(raw, known) {
   const name = isGuest ? '' : sanitizeName(raw.name);
   if (!isGuest && !name) return null;
   const games = Number.isSafeInteger(raw.games) && raw.games >= 0 ? Math.min(raw.games, 1e6) : 0;
-  return { id: raw.id, name, levels: cleanLevels(raw.levels, known), games };
+  const c = raw.cloud, cloud = !isGuest && c && typeof c === 'object' && isKey(c.key) && Number.isSafeInteger(c.rev) && c.rev >= 1
+    ? { key: c.key, rev: c.rev, at: typeof c.at === 'string' ? c.at.slice(0, 32) : '' } : null;
+  return { id: raw.id, name, levels: cleanLevels(raw.levels, known), games, ...(cloud ? { cloud } : {}) };
 }
 
 /**
@@ -142,4 +145,43 @@ export function importProfile(store, code, known, { id = newId() } = {}) {
   }
   if (store.profiles.filter(p => p.id !== 'guest').length >= MAX_PROFILES) return { error: 'limit' };
   return { store: { ...store, active: id, profiles: store.profiles.concat({ id, name, levels, games }) } };
+}
+
+// ---- Online backup helpers (the network part lives in cloud.mjs) ----------------------
+
+/** What is stored online: victories and game count only, never the key or the code. */
+export const cloudPayload = p => ({ v: 1, name: p.name, games: p.games, levels: p.levels });
+
+/** Clean data coming from the network (never trusted). */
+export function cleanRemote(raw, known) {
+  const games = Number.isSafeInteger(raw?.games) && raw.games >= 0 ? Math.min(raw.games, 1e6) : 0;
+  return { games, levels: cleanLevels(raw?.levels, known) };
+}
+
+/** Union of victories (earliest date wins per side), larger game count. */
+export function mergeData(a, b) {
+  const levels = {};
+  for (const source of [a.levels ?? {}, b.levels ?? {}]) {
+    for (const [id, wins] of Object.entries(source)) {
+      const into = levels[id] ??= {};
+      for (const side of SIDES) if (wins[side] && (!into[side] || wins[side] < into[side])) into[side] = wins[side];
+    }
+  }
+  return { games: Math.max(a.games ?? 0, b.games ?? 0), levels };
+}
+
+export const sameData = (a, b) => a.games === b.games && JSON.stringify(sortLevels(a.levels)) === JSON.stringify(sortLevels(b.levels));
+const sortLevels = levels => Object.keys(levels ?? {}).sort().map(id => [id, SIDES.map(s => levels[id][s] ?? null)]);
+
+/** Merge synced data into a profile of the CURRENT store and remember the online revision. */
+export function applyCloud(store, id, data, cloud) {
+  if (!store.profiles.some(p => p.id === id && id !== 'guest')) return store;
+  return update(store, id, p => {
+    const merged = mergeData(p, data);
+    return { ...p, ...merged, cloud: { key: cloud.key, rev: cloud.rev, at: cloud.at ?? '' } };
+  });
+}
+
+export function unlinkCloud(store, id) {
+  return update(store, id, p => { const { cloud, ...rest } = p; return rest; });
 }
