@@ -22,7 +22,7 @@ export function createAudio(isEnabled) {
   }
 
   /** Call from a user gesture; browsers keep audio suspended until then. */
-  function unlock() {
+  function unlock(retry = true) {
     if (!isEnabled()) return Promise.resolve(false);
     const c = ensure();
     if (!c) return Promise.resolve(false);
@@ -37,7 +37,7 @@ export function createAudio(isEnabled) {
       source.start(0);
     } catch {}
     if (c.state === 'running') return Promise.resolve(true);
-    if (!resuming) {
+    if (!resuming || retry) {
       try {
         resuming = Promise.resolve(c.resume()).then(() => c.state === 'running', () => false)
           .finally(() => { resuming = null; });
@@ -47,8 +47,9 @@ export function createAudio(isEnabled) {
   }
 
   function tone(freq, delay, { peak = .15, length = .5, type = 'sine', partials = [1, 2], glide = 0 } = {}) {
+    if (!isEnabled()) return;
     const c = ensure();
-    if (!c || !isEnabled()) return;
+    if (!c) return;
     const play = () => {
     if (!isEnabled() || c.state !== 'running') return;
     try {
@@ -69,7 +70,7 @@ export function createAudio(isEnabled) {
     } catch { /* Audio is a bonus; never break the game for it. */ }
     };
     if (c.state === 'running') play();
-    else unlock().then(ready => { if (ready) play(); });
+    else unlock(false).then(ready => { if (ready) play(); });
   }
 
   return {
