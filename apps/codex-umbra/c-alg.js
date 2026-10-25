@@ -28,7 +28,6 @@
     glyph: 'ᚠ',
     x: 200,
     y: 860,
-    req: [],
     flavor: 'Développer, c’est forger : on frappe chaque terme contre chaque autre.',
     law: T`$k(a+b)=ka+kb$ et $(a+b)(c+d)=ac+ad+bc+bd$. On réduit ensuite en regroupant les termes de même degré.`,
     lessons: [
@@ -109,7 +108,6 @@
     glyph: '⧖',
     x: 480,
     y: 800,
-    req: ['f1'],
     flavor: 'Trois inscriptions brillent sur le miroir. Qui les connaît voit à travers les sceaux.',
     law: T`$(a+b)^2=a^2+2ab+b^2$, $(a-b)^2=a^2-2ab+b^2$, $(a+b)(a-b)=a^2-b^2$.`,
     lessons: [
@@ -166,7 +164,6 @@
     glyph: 'ᛗ',
     x: 220,
     y: 560,
-    req: ['f1'],
     flavor: 'Chaque sceau cache un frère dans l’autre. Trouve ce qu’ils ont en commun, et ils se rompent.',
     law: T`$ka+kb=k(a+b)$ : on repère le facteur commun $k$ (nombre, $x$, ou parenthèse entière) et on le met en avant.`,
     lessons: [
@@ -235,7 +232,6 @@
     glyph: '⨂',
     x: 520,
     y: 520,
-    req: ['f2', 'f3'],
     flavor: 'Le Grand Sceau ne cède qu’à qui lit les trois lois à rebours.',
     law: T`$a^2-b^2=(a-b)(a+b)$, $a^2+2ab+b^2=(a+b)^2$, $a^2-2ab+b^2=(a-b)^2$.`,
     lessons: [
@@ -307,7 +303,6 @@
     glyph: '⚿',
     x: 820,
     y: 660,
-    req: ['f4'],
     flavor: 'Deux serrures, deux clés. Il suffit que l’une tourne pour que la porte cède.',
     law: T`Un produit est nul si et seulement si l’un au moins de ses facteurs est nul : $AB=0 \iff A=0$ ou $B=0$.`,
     lessons: [
@@ -498,7 +493,6 @@
     glyph: '⚖',
     x: 760,
     y: 320,
-    req: ['f4'],
     flavor: 'Ici, nul n’est cru sur parole. Les runes exigent des preuves — et démasquent les faux témoins.',
     law: T`Un exemple ne prouve pas un « pour tout » ; un contre-exemple suffit à le réfuter. Une preuve nomme un objet quelconque ($n$, $2k+1$…) et enchaîne des étapes justifiées.`,
     lessons: [
@@ -527,7 +521,6 @@
     glyph: '⌒',
     x: 190,
     y: 860,
-    req: ['f2'],
     flavor: 'Les architectes de la Tour réécrivaient chaque courbe pour en voir le sommet.',
     law: T`$x^2+bx+c=\left(x+\frac b2\right)^2-\frac{b^2}4+c$. Forme canonique : $ax^2+bx+c=a(x-\alpha)^2+\beta$ avec $\alpha=-\frac b{2a}$, $\beta=f(\alpha)$.`,
     lessons: [
@@ -629,7 +622,6 @@
     glyph: '⤒',
     x: 480,
     y: 820,
-    req: ['q1'],
     flavor: 'La vieille baliste ne rate jamais — pourvu qu’on lui donne la bonne parabole.',
     law: T`$f(x)=a(x-\alpha)^2+\beta$ : sommet $S(\alpha;\beta)$, axe $x=\alpha$. Si $a>0$, $\beta$ est le minimum ; si $a<0$, c’est le maximum.`,
     lessons: [
@@ -795,7 +787,6 @@
     glyph: '√',
     x: 240,
     y: 560,
-    req: ['q1', 'f5'],
     flavor: 'Les racines de la Tour plongent dans la terre. On les compte avant de les arracher.',
     law: T`$\Delta=b^2-4ac$. Si $\Delta>0$ : deux racines $\frac{-b\pm\sqrt\Delta}{2a}$ ; si $\Delta=0$ : une racine $-\frac b{2a}$ ; si $\Delta<0$ : aucune racine réelle.`,
     lessons: [
@@ -880,7 +871,6 @@
     glyph: '⋔',
     x: 520,
     y: 500,
-    req: ['q3'],
     flavor: 'Au-delà du seuil, l’ombre ; en deçà, la lumière. Tout dépend du signe.',
     law: T`$ax^2+bx+c$ est du signe de $a$ à l’extérieur des racines, du signe de $-a$ entre les racines. Si $\Delta<0$, il est du signe de $a$ partout.`,
     lessons: [
@@ -953,7 +943,6 @@
     glyph: '∞',
     x: 820,
     y: 660,
-    req: ['q3'],
     flavor: 'Deux racines liées par un pacte : leur somme et leur produit sont gravés d’avance.',
     law: T`Si $x_1,x_2$ sont les racines de $ax^2+bx+c$ : $x_1+x_2=-\frac ba$ et $x_1x_2=\frac ca$. Deux nombres de somme $S$ et de produit $P$ sont les racines de $X^2-SX+P$.`,
     lessons: [
@@ -1076,7 +1065,6 @@
     glyph: 'Δ',
     x: 760,
     y: 300,
-    req: ['q4', 'q5'],
     flavor: 'L’Oracle répond à toutes les questions. Mais il exige qu’on lui prouve pourquoi.',
     law: T`Tout le second degré découle de la forme canonique $a\left[\left(x+\frac b{2a}\right)^2-\frac\Delta{4a^2}\right]$ : nombre de racines, formules, signe, somme et produit.`,
     lessons: [

@@ -93,20 +93,10 @@
     KEY = null;
   const blank = (name) => ({ v: CU.SAVE_V, name, xp: 0, skills: {}, bosses: {}, frags: [], stats: { solved: 0, bestCombo: 0 }, prologue: false, updated: Date.now() });
   const sk = (id) => st.skills[id] || (st.skills[id] = { tier: 0, prog: 0, seen: [], last: 0, done: 0 });
-  const tierOf = (id) => (st.skills[id] || {}).tier || 0;
+  CU.finalizeGraph(); // prérequis des Lois écrites, tirés du graphe (graph.js)
   const S = (id) => CU.SKILLS[id];
-  /* ---------- prérequis fins : chaque variante d'exercice déclare les notions d'autres Lois
-     qu'elle mobilise (needs : 'q3' = sceau Novice de q3 brisé, 'q3:2' = sceau Adepte brisé).
-     Une variante n'est proposée que si ses notions sont acquises ; un rang n'est ouvert que si
-     au moins une de ses variantes l'est. Comme les sceaux ne se perdent jamais, tout ce qui
-     s'ouvre reste ouvert, et tout s'ouvre dès que le prérequis est brisé. */
-  const needMet = (n) => {
-    const [id, k] = n.split(':');
-    return tierOf(id) >= (+k || 1);
-  };
-  const allVariants = (id, ti) => S(id).gen[ti].variants || [S(id).gen[ti]];
-  const openVariants = (id, ti) => allVariants(id, ti).filter((v) => !v.needs || v.needs.every(needMet));
-  const tierContent = (id, ti) => openVariants(id, ti).length > 0;
+  /* Règles d'ouverture des Lois et des rangs : rules.js (partagées avec les tests). */
+  const { tierOf, needMet, allVariants, openVariants, tierContent, started, available, maxAllowed } = CU.makeRules(() => st.skills);
   // un exercice tiré uniquement parmi les variantes accessibles
   const genFor = (id, ti) => {
     const vs = openVariants(id, ti);
@@ -118,28 +108,6 @@
   };
   // ce qu'il manque pour ouvrir un rang : une liste d'alternatives (une par variante)
   const missingFor = (id, ti) => ti > 2 ? [] : [...new Set(allVariants(id, ti).map((v) => (v.needs || []).filter((n) => !needMet(n)).map(needLabel).join(' et ')).filter(Boolean))];
-  /* Droits acquis : quand le graphe change (nouveaux prérequis, nouvelles variantes), une Loi
-     déjà commencée reste ouverte, et un rang déjà entamé (au moins un éclat gagné) aussi.
-     Un rang que l'on vient seulement d'atteindre suit les règles normales : sinon un sceau brisé
-     ouvrirait le rang suivant même quand il utilise une notion pas encore acquise. */
-  const started = (id) => {
-    const s = st.skills[id];
-    return !!s && ((s.tier || 0) > 0 || (s.prog || 0) > 0 || (s.done || 0) > 0);
-  };
-  const available = (id) => started(id) || (S(id).req.every((r) => tierOf(r) >= 1) && tierContent(id, 0));
-  // indice (0..2) du palier le plus haut que l'on peut tenter
-  const maxAllowed = (id) => {
-    if (!available(id)) return -1;
-    const m = S(id).req.every((r) => tierOf(r) >= 2) ? 2 : 1;
-    let r = m;
-    for (let ti = 0; ti <= m; ti++)
-      if (!tierContent(id, ti)) {
-        r = ti - 1;
-        break;
-      }
-    const s = st.skills[id];
-    return s && (s.prog || 0) > 0 && (s.tier || 0) < 3 ? Math.max(r, s.tier || 0) : r;
-  };
   const regionSkills = (rid) => CU.ORDER.filter((id) => S(id).region === rid);
   const regionP = (rid) => {
     const ids = regionSkills(rid);

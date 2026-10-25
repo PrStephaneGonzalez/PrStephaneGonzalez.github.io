@@ -8,6 +8,7 @@
     // les identifiants sont figés (ids.js) : une Loi inconnue du registre est une erreur d'écriture
     if (CU.IDS && !CU.IDS.laws.includes(s.id)) console.error('Codex Umbra : Loi « ' + s.id + ' » absente de ids.js');
     if (CU.SKILLS[s.id]) console.error('Codex Umbra : identifiant de Loi en double « ' + s.id + ' »');
+    s.req = s.req || []; // les prérequis viennent de graph.js (CU.finalizeGraph)
     CU.SKILLS[s.id] = s;
     CU.ORDER.push(s.id);
   };
