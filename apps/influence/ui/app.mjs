@@ -4,7 +4,7 @@ import {chooseMove} from '../ai/choose.mjs';
 import {translate} from '../i18n/strings.mjs';
 import {icon,nodeIcon,nodeIcons} from './icons.mjs';
 import {captureWaves,cascadeSchedule} from './cascade.mjs';
-import {createAudio} from './audio.mjs?v=3';
+import {createAudio} from './audio.mjs?v=4';
 import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,applyCloud,unlinkCloud,sameData,MAX_PROFILES} from './profiles.mjs';
 import {createApi,accountKey,validPin,syncProfile} from './cloud.mjs';
 

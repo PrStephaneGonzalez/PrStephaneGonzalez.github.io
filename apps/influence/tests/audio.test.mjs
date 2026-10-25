@@ -16,7 +16,10 @@ test('audio resumes interrupted contexts before scheduling, can be muted and rec
  try {
   let enabled=true;const a=createAudio(()=>enabled);
   a.drop(0);await new Promise(r=>setImmediate(r));assert.ok(contexts[0].starts.length>=2);
-  const c=contexts[0];c.state='interrupted';a.win();await new Promise(r=>setImmediate(r));assert.equal(c.resumes,2);assert.ok(c.starts.some(t=>t>5.5));
+  const c=contexts[0];c.state='suspended';let attempts=0;const resume=c.resume;
+  c.resume=()=>++attempts===1?new Promise(()=>{}):resume.call(c);
+  a.unlock();assert.equal(await a.unlock(),true,'a new gesture retries even when an earlier resume is pending');c.resume=resume;
+  c.state='interrupted';a.win();await new Promise(r=>setImmediate(r));assert.equal(c.resumes,3);assert.ok(c.starts.some(t=>t>5.5));
   const n=c.starts.length;enabled=false;a.lose();await a.unlock();assert.equal(c.starts.length,n);
   enabled=true;a.lose();assert.ok(c.starts.length>n);
   c.state='closed';await a.unlock();a.draw();assert.equal(contexts.length,2);assert.ok(contexts[1].starts.length>0);
