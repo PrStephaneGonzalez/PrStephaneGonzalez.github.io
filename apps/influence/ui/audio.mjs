@@ -57,8 +57,17 @@ export function createAudio(isEnabled) {
     tap({ opponent = false } = {}) {
       tone(opponent ? 330 : 660, 0, { type: 'triangle', peak: .12, length: .14, partials: [1], glide: .8 });
     },
-    win() { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * 120, { peak: .17, length: .7 })); },
-    lose() { [392, 329.63, 261.63].forEach((f, i) => tone(f, i * 190, { type: 'triangle', peak: .15, length: .7, partials: [1, 2] })); },
-    draw() { [523.25, 523.25].forEach((f, i) => tone(f, i * 200, { peak: .13, length: .5 })); },
+    /** Victory: a quick rising arpeggio, a warm major chord, then a few sparkles. */
+    win() {
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * 110, { peak: .17, length: .45 }));
+      [523.25, 659.25, 783.99, 1046.5].forEach(f => tone(f, 470, { peak: .13, length: 1.3, partials: [1, 2.01, 3.02] }));
+      [1567.98, 2093, 1760, 2349.32].forEach((f, i) => tone(f, 650 + i * 130, { peak: .07, length: .45, partials: [1] }));
+    },
+    /** Defeat: soft and kind, a slow falling phrase that ends on a gentle slide. Never harsh. */
+    lose() {
+      [[392, 0], [349.23, 260], [293.66, 520]].forEach(([f, d]) => tone(f, d, { type: 'triangle', peak: .26, length: .55, partials: [1, 2] }));
+      tone(261.63, 800, { type: 'triangle', peak: .28, length: 1.1, partials: [1, 2], glide: .88 });
+    },
+    draw() { [523.25, 659.25, 523.25].forEach((f, i) => tone(f, i * 190, { peak: .13, length: .5 })); },
   };
 }
