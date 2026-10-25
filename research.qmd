@@ -27,7 +27,7 @@ Economic Theory · Game Theory · Social Choice · Coalition Formation · Axioma
 
 1. **[Approval voting without ballot restrictions](https://doi.org/10.3982/TE4087)**, Federica Ceron, Stéphane Gonzalez, *Theoretical Economics*, July 2021, Volume 16, Issue 3, 759–775.
 
-1. **[INFLUENCE: A partizan scoring game on graphs](https://doi.org/10.1016/j.tcs.2021.05.028)**, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, *Theoretical Computer Science*, July 2021, Volumes 878–879, 26–46.
+1. **[INFLUENCE: A partizan scoring game on graphs](https://doi.org/10.1016/j.tcs.2021.05.028)**, Eric Duchêne, Stéphane Gonzalez, Aline Parreau, Eric Rémila, Philippe Solal, *Theoretical Computer Science*, July 2021, Volumes 878–879, 26–46. <small>[▶ Play the game](apps/influence/index.html?lang=en)</small>
 
 1. **[Dilemma with approval and disapproval votes](https://doi.org/10.1007/s00355-019-01194-6)**, Stéphane Gonzalez, Annick Laruelle, Philippe Solal, *Social Choice and Welfare*, August 2019, Volume 53, Issue 3, 497–517.
 
