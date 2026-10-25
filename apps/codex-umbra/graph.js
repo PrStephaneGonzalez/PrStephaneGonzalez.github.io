@@ -45,7 +45,7 @@
   L('l1', 'log', 'Implication, contraposée, réciproque');
   L('l2', 'log', 'Chevaliers et fripons', ['l1']);
   L('l3', 'log', 'Invariants', ['l1', 'v3']);
-  L('l4', 'log', 'Ensembles : réunion, intersection, cardinal');
+  L('l4', 'log', 'Ensembles : réunion, intersection, cardinal, produit cartésien');
   L('l5', 'log', 'Connecteurs, négation, contre-exemple', ['l4']);
   L('l6', 'log', 'Disjonction de cas, absurde', ['l1', 'l5', 'n1']);
   /* ----- Forges des Nombres ----- */
@@ -53,7 +53,7 @@
   L('n2', 'num', 'Nombres premiers, fractions irréductibles', ['n1']);
   L('n3', 'num', 'Fractions');
   L('n4', 'num', 'Puissances, notation scientifique', ['n3']);
-  L('n5', 'num', 'Racines carrées', ['n3']);
+  L('n5', 'num', 'Racines carrées, équation x² = a', ['n3']);
   L('n6', 'num', 'Rationnels et irrationnels', ['n2', 'n5']);
   L('n7', 'num', 'Droite réelle, intervalles, valeur absolue', ['n3']);
   L('n8', 'num', 'Encadrements, arrondis', ['n7']);
@@ -86,9 +86,9 @@
   L('n9', 'sta', 'Proportions, pourcentages', ['n3']);
   L('n10', 'sta', 'Évolutions, coefficient multiplicateur', ['n9']);
   L('s1', 'sta', 'Lire et représenter des données', ['n9']);
-  L('s2', 'sta', 'Moyenne, médiane, quartiles', ['n3', 's1']);
+  L('s2', 'sta', 'Moyenne (pondérée), médiane, quartiles', ['n3', 's1']);
   L('s3', 'sta', 'Boîtes à moustaches', ['s2']);
-  L('s4', 'sta', 'Classes, histogrammes', ['s2', 'n9']);
+  L('s4', 'sta', 'Classes, histogrammes, fréquences cumulées', ['s2', 'n9']);
   L('s5', 'sta', 'Écart-type', ['s4', 'n5']);
   L('s6', 'sta', 'Tableaux croisés', ['n9']);
   /* ----- Palais des Hasards ----- */
