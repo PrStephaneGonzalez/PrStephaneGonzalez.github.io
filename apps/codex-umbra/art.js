@@ -237,6 +237,7 @@ ${!bo ? '<text y="44" text-anchor="middle" font-size="24">⛓</text>' : ''}
 <circle r="110" fill="${n.tier === 3 ? 'url(#haloG)' : 'url(#halo)'}" class="halo" opacity="${locked ? 0 : (0.15 + n.tier * 0.28).toFixed(2)}"/>
 ${n.isNew ? `<circle class="pulse" r="74" fill="none" stroke="${hue}" stroke-width="3"/>` : ''}
 ${n.tier === 3 ? `<circle class="crown" r="78" fill="none" stroke="#f5d79a" stroke-width="2" stroke-dasharray="3 9" opacity=".9"/>` : ''}
+${n.legend ? `<circle r="90" fill="none" stroke="#f5d79a" stroke-width="3" opacity=".75" filter="url(#gl)"/>` : ''}
 <g class="core"><circle r="52" fill="#100d15" stroke="${col}" stroke-width="2.5"/>
 ${arcs}
 <text y="17" text-anchor="middle" font-size="48" font-family="Cinzel,serif" fill="${col}" ${!locked && n.tier ? 'filter="url(#gl)"' : ''}>${esc(n.glyph)}</text></g>

@@ -554,9 +554,166 @@ run('n11 vitesse moyenne', { gen: V('n11', 2, 1), test: (e, k) => {
   ok(close(expected(e)[0], (2 * dist) / (dist / v1 + dist / v2)), k, v1 + ' ' + v2);
 } });
 
+/* ---------- rang Légende ---------- */
+const L = (id, i) => CU.SKILLS[id].gen[3].variants[i];
+run('L n1 zéros de n!', { gen: L('n1', 0), test: (e, k) => {
+  const n = nums(e.q.split('écriture de')[1])[0];
+  let f = 1n;
+  for (let i = 2n; i <= BigInt(n); i++) f *= i;
+  const z = String(f).match(/0*$/)[0].length;
+  ok(expected(e)[0] === z, k, n + '! → ' + z);
+} });
+run('L n1 puissance modulo', { gen: L('n1', 1), test: (e, k) => {
+  const m = e.q.match(/\$(\d+)\^\{(\d+)\}\$ par \$(\d+)\$/);
+  ok(expected(e)[0] === Number(BigInt(m[1]) ** BigInt(m[2]) % BigInt(m[3])), k, m[0]);
+} });
+run('L n1 restes imposés', { gen: L('n1', 2), test: (e, k) => {
+  const K_ = +e.q.match(/(?:par \$|\\dots,)(\d+)\$/g).pop().match(/\d+/)[0];
+  const one = /vaut \$1\$/.test(e.q);
+  let n = one ? 2 : 1;
+  const okn = (x) => [...Array(K_ - 1).keys()].every((i) => x % (i + 2) === (one ? 1 : i + 1));
+  while (!okn(n)) n++;
+  ok(expected(e)[0] === n, k, K_ + ' ' + one + ' → ' + n);
+} });
+run('L n2 somme des diviseurs', { gen: L('n2', 0), test: (e, k) => {
+  const N = nums(e.q)[0];
+  let s2 = 0;
+  for (let d = 1; d <= N; d++) if (N % d === 0) s2 += d;
+  ok(expected(e)[0] === s2, k, N);
+} });
+run('L n2 phi', { gen: L('n2', 1), test: (e, k) => {
+  const N = +e.q.match(/pour \$n=(\d+)\$/)[1];
+  let c = 0;
+  for (let p = 1; p <= N; p++) if (gcd(p, N) === 1) c++;
+  ok(expected(e)[0] === c, k, N);
+} });
+run('L n2 Euclide', { gen: L('n2', 2), test: (e, k) => {
+  const m = e.q.match(/PGCD\}\((\d+),(\d+)\)\$\./);
+  ok(expected(e)[0] === gcd(+m[1], +m[2]), k, m[0]);
+} });
+run('L n3 égyptienne', { gen: L('n3', 0), test: (e, k) => {
+  const m = e.q.match(/\\dfrac\{(\d+)\}\{(\d+)\}=/);
+  const a = +m[1],
+    b = +m[2];
+  let X = 0,
+    Y = 0;
+  for (let x = 1; x < 1000 && !X; x++) {
+    const num = a * x - b,
+      den = b * x;
+    if (num > 0 && den % num === 0 && den / num > x) (X = x), (Y = den / num);
+  }
+  const [x, y] = expected(e);
+  ok(x === X && y === Y, k, `${a}/${b} → ${X},${Y} ; jeu ${x},${y}`);
+} });
+run('L n3 télescopique 3', { gen: L('n3', 1), test: (e, k) => {
+  const n = +e.q.match(/sum_\{k=1\}\^\{(\d+)\}/)[1];
+  let t = 0;
+  for (let i = 1; i <= n; i++) t += 1 / (i * (i + 1) * (i + 2));
+  const [p, q] = e._ans[0].split('/').map(Number);
+  ok(close(t, p / q), k, n);
+} });
+run('L n3 plus petit dénominateur', { gen: L('n3', 2), test: (e, k) => {
+  const [a, b, c, d] = [...e.q.matchAll(/\\dfrac\{(\d+)\}\{(\d+)\}/g)].flatMap((m) => [+m[1], +m[2]]);
+  let best = null;
+  for (let q = 1; q < 300 && !best; q++) {
+    const cands = [];
+    for (let p = 0; p <= q; p++) if (p * b > a * q && p * d < c * q) cands.push(p);
+    if (cands.length) best = [cands, q];
+  }
+  const [p, q] = e._ans[0].split('/').map(Number);
+  ok(best[0].length === 1 && best[0][0] === p && best[1] === q, k, `${a}/${b} ${c}/${d} → ${best[0]}/${best[1]}`);
+} });
+run('L n4 deux derniers chiffres', { gen: L('n4', 0), test: (e, k) => {
+  const m = e.q.match(/\$(\d+)\^\{(\d+)\}\$/);
+  ok(expected(e)[0] === Number(BigInt(m[1]) ** BigInt(m[2]) % 100n), k, m[0]);
+} });
+run('L n4 comparer', { gen: L('n4', 1), test: (e, k) => {
+  const lg = (c) => {
+    const [b, x] = nums(c);
+    return x * Math.log(b);
+  };
+  const mx = Math.max(...e.choices.map(lg));
+  choiceCheck(e, k, (c) => lg(c) === mx);
+} });
+run('L n4 chiffres de 2^n', { gen: L('n4', 2), test: (e, k) => {
+  const n = +e.q.match(/l’entier \$2\^\{(\d+)\}\$/)[1];
+  ok(expected(e)[0] === String(2n ** BigInt(n)).length, k, n);
+} });
+run('L n5 √(x+c)=x−d', { gen: L('n5', 0), test: (e, k) => {
+  const m = e.q.match(/\\sqrt\{x([+-]\d+)?\}=x(-\d+)?\$/);
+  const c = m[1] ? +m[1] : 0,
+    d = m[2] ? -+m[2] : 0;
+  const f = (x) => x + c >= 0 && Math.abs(Math.sqrt(x + c) - (x - d)) < 1e-9;
+  const sols = [];
+  for (let x = -50; x <= 80; x++) if (f(x)) sols.push(x);
+  ok(sols.length === e._vals.length && sols.every((x) => e._vals.includes(x)), k, m[0] + ' → ' + sols + ' ; jeu ' + e._vals);
+} });
+run('L n5 radical infini', { gen: L('n5', 1), test: (e, k) => {
+  const a = +e.q.match(/u_1=\\sqrt\{(\d+)\}/)[1];
+  let u = 0;
+  for (let i = 0; i < 200; i++) u = Math.sqrt(a + u);
+  ok(close(u, expected(e)[0], 1e-9), k, a);
+} });
+run('L n5 radical imbriqué −', { gen: L('n5', 2), test: (e, k) => {
+  const [x, y] = expected(e);
+  ok(x > y && close(texVal(disp(e.q).split('=')[0]), Math.sqrt(x) - Math.sqrt(y)), k, disp(e.q));
+} });
+run('L n6 n-ième chiffre', { gen: L('n6', 0), test: (e, k) => {
+  const n = +e.q.match(/Quel est le \$(\d+)\$/)[1];
+  const [p, q] = e.q.match(/\\dfrac\{(\d+)\}\{(\d+)\}/).slice(1).map(BigInt);
+  ok(expected(e)[0] === Number(((p * 10n ** BigInt(n)) / q) % 10n), k, `${p}/${q} #${n}`);
+} });
+run('L n6 rationnel', { gen: L('n6', 1), test: (e, k) => choiceCheck(e, k, (c) => {
+  const v = texVal(c.replace(/\$/g, '').replace(/\\pi/g, String(Math.PI)));
+  return !/pi/.test(c) && !!CU.toFrac(v);
+}) });
+run('L n7 somme de distances ≤', { gen: L('n7', 0), test: (e, k) => {
+  const s2 = e.q.match(/tels que \$([^$]+)\$/)[1];
+  const [l, r] = s2.split(/\\leqslant|</);
+  const [A, Bf] = l.split('|+|').map((t) => absArg('|' + t.replace(/\|/g, '') + '|'));
+  const op = ineq(s2);
+  sameOnGrid(e, k, (x) => op(A(x) + Bf(x), +r), grid.map((x) => x + 0.5));
+} });
+run('L n7 valeurs absolues imbriquées', { gen: L('n7', 1), test: (e, k) => {
+  const m = e.q.match(/\|x\|-(\d+)\\big\|\\leqslant(\d+)/);
+  const a = +m[1],
+    r = +m[2];
+  sameOnGrid(e, k, (x) => Math.abs(Math.abs(x) - a) <= r + 1e-12);
+} });
+run('L n7 epsilon', { gen: L('n7', 2), test: (e, k) => {
+  const eps = +e.q.match(/varepsilon=([\d{},]+)\$/)[1].replace('{,}', '.');
+  let n = 1;
+  while (!(1 / n < eps - 1e-15)) n++;
+  ok(expected(e)[0] === n, k, eps + ' → ' + n);
+} });
+run('L n8 Héron', { gen: L('n8', 0), test: (e, k) => {
+  const N = +e.q.match(/approcher \$\\sqrt\{(\d+)\}/)[1],
+    x0 = +e.q.match(/x_0=(\d+)/)[1];
+  const x1 = (x0 + N / x0) / 2,
+    x2 = (x1 + N / x1) / 2;
+  const [p, q] = e._ans[0].split('/').map(Number);
+  ok(close(x2, p / q) && gcd(p, q) === 1, k, N);
+} });
+run('L n8 incertitude produit', { gen: L('n8', 1), test: (e, k) => {
+  const [a, , b] = nums(e.q);
+  let mx = 0;
+  for (const u of [-0.1, 0.1]) for (const v of [-0.1, 0.1]) mx = Math.max(mx, Math.abs((a + u) * (b + v) - a * b));
+  ok(close(expected(e)[0], mx), k, a + ' ' + b);
+} });
+run('L n8 étapes de dichotomie', { gen: L('n8', 2), test: (e, k) => {
+  const kk = +e.q.match(/10\^\{-(\d+)\}/)[1];
+  let n = 0;
+  while (!(2n ** BigInt(n) > 10n ** BigInt(kk))) n++;
+  ok(expected(e)[0] === n, k, kk);
+} });
+run('L n11 rencontre', { gen: L('n11', 1), test: (e, k) => {
+  const [d, v1, v2] = nums(e.q);
+  ok(close(expected(e)[0], (60 * d) / (v1 + v2)), k, [d, v1, v2]);
+} });
+
 /* ---------- toutes les Lois : la bonne réponse est acceptée, une mauvaise refusée ---------- */
 for (const id of ['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n11'])
-  for (let t = 0; t < 3; t++)
+  for (let t = 0; t < CU.SKILLS[id].gen.length; t++)
     for (const [i, v] of CU.SKILLS[id].gen[t].variants.entries())
       for (let r = 0; r < REP; r++) {
         const e = v(),

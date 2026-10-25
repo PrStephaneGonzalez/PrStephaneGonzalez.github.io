@@ -1583,4 +1583,315 @@
     ],
     gen: [CU.oneOf(...N11A), CU.oneOf(...N11B), CU.oneOf(...N11C)],
   });
+
+  /* ================= Rang Légende (facultatif, au-delà de la seconde) ================= */
+  const powmod = (a, n, m) => {
+    let r = 1n,
+      b = BigInt(a) % BigInt(m),
+      e = BigInt(n);
+    const M = BigInt(m);
+    while (e > 0n) {
+      if (e & 1n) r = (r * b) % M;
+      b = (b * b) % M;
+      e >>= 1n;
+    }
+    return Number(r);
+  };
+  const cycleMod = (a, m) => {
+    const c = [];
+    let x = a % m;
+    while (!c.includes(x)) c.push(x), (x = (x * a) % m);
+    return c;
+  };
+  const lcmRange = (k) => [...Array(k - 1).keys()].map((i) => i + 2).reduce(lcm, 1);
+  const LEG = {
+    n1: [
+      () => {
+        const n = R.int(30, 500);
+        let z = 0,
+          p = 5;
+        const parts = [];
+        while (p <= n) z += Math.floor(n / p), parts.push(T`\left\lfloor\frac{${n}}{${p}}\right\rfloor=${Math.floor(n / p)}`), (p *= 5);
+        return K.num(T`On note $n!=1\times2\times3\times\cdots\times n$ (« factorielle $n$ »). Par combien de zéros se termine l’écriture de $${n}!$ ?`, z, T`Chaque zéro final vient d’un facteur $10=2\times5$. Les facteurs $2$ sont bien plus nombreux que les facteurs $5$ : il suffit de compter les $5$. Les multiples de $5$ en apportent un, ceux de $25$ un de plus, ceux de $125$ encore un… : $${parts.join('+')}$, soit $${z}$ zéros. (Formule de Legendre.)`, 'Un zéro final = un facteur 10 = un 2 et un 5. Compte les facteurs 5, sans oublier que 25 en contient deux.', 'Nombre de zéros');
+      },
+      () => {
+        let a, m;
+        do {
+          a = R.pick([2, 3, 5, 7, 10]);
+          m = R.pick([3, 7, 9, 11, 13]);
+        } while (gcd(a, m) !== 1);
+        const n = R.int(50, 2026);
+        const c = cycleMod(a, m),
+          L = c.length,
+          r = ((n - 1) % L) + 1;
+        return K.num(T`Quel est le reste de la division de $${a}^{${n}}$ par $${m}$ ?`, powmod(a, n, m), T`On ne calcule pas $${a}^{${n}}$ : on suit seulement les restes. Ceux de $${a}^1,${a}^2,\dots$ par $${m}$ sont $${c.join(',\\,')}$, puis cela recommence car $${a}^{${L}}$ a pour reste $1$ (période $${L}$). Comme $${n}=${L}\times${Math.floor((n - 1) / L)}+${r}$, le reste est celui de $${a}^{${r}}$ : $${c[r - 1]}$. On écrit $${a}^{${n}}\equiv${c[r - 1]}\pmod{${m}}$.`, 'Calcule les restes de a, a², a³… jusqu’à retomber sur 1.', 'Reste');
+      },
+      () => {
+        const k = R.int(4, 10),
+          L = lcmRange(k),
+          t = R.int(0, 1);
+        return K.num(
+          t ? T`Quel est le plus petit entier $n>1$ dont le reste vaut $1$ dans la division par $2$, par $3$, … et par $${k}$ ?` : T`Quel est le plus petit entier $n>0$ dont le reste vaut $d-1$ dans la division par chaque $d\in\{2,3,\dots,${k}\}$ (reste $1$ par $2$, $2$ par $3$, …, $${k - 1}$ par $${k}$) ?`,
+          t ? L + 1 : L - 1,
+          t ? T`$n-1$ doit être un multiple commun de $2,3,\dots,${k}$ : le plus petit non nul est leur PPCM, $${L}$. Donc $n=${L + 1}$.` : T`Reste $d-1$ dans la division par $d$ signifie que $n+1$ est un multiple de $d$. $n+1$ est donc un multiple commun de $2,\dots,${k}$ : le plus petit est le PPCM, $${L}$, d’où $n=${L - 1}$.`,
+          t ? 'Que dire de n − 1 ?' : 'Que dire de n + 1 ?',
+        );
+      },
+    ],
+    n2: [
+      () => {
+        let a, b, c, n;
+        do {
+          a = R.int(0, 6);
+          b = R.int(0, 3);
+          c = R.int(0, 2);
+          n = 2 ** a * 3 ** b * 5 ** c;
+        } while (n > 2000 || n < 30 || [a, b, c].filter(Boolean).length < 2);
+        const f = [[2, a], [3, b], [5, c]].filter((x) => x[1]);
+        const sig = f.reduce((x, [p, e]) => (x * (p ** (e + 1) - 1)) / (p - 1), 1);
+        return K.num(T`$${n}=${factorTex(n)}$. Quelle est la ${B('somme')} de tous ses diviseurs positifs ?`, sig, T`En développant le produit $${f.map(([p, e]) => '(1+' + [...Array(e).keys()].map((i) => (i ? p + '^{' + (i + 1) + '}' : p)).join('+') + ')').join('')}$, on obtient chaque diviseur exactement une fois. Donc la somme vaut $${f.map(([p, e]) => (p ** (e + 1) - 1) / (p - 1)).join('\\times')}=${sig}$.`, 'Chaque diviseur est un produit 2^i 3^j 5^k : pense à développer (1 + 2 + 4 + …)(1 + 3 + …)…', 'Somme');
+      },
+      () => {
+        const n = R.int(12, 150);
+        let phi = 0;
+        for (let k = 1; k <= n; k++) if (gcd(k, n) === 1) phi++;
+        const ps = PRIMES.filter((p) => n % p === 0);
+        return K.num(T`Combien y a-t-il de fractions ${B('irréductibles')} $\frac pn$ avec $1\leqslant p\leqslant n$, pour $n=${n}$ ? (C’est l’${B('indicatrice d’Euler')} $\varphi(${n})$.)`, phi, T`$\frac p{${n}}$ est irréductible quand $p$ n’a aucun facteur premier commun avec $${n}=${factorTex(n)}$. On retire les multiples de ${ps.map((p) => '$' + p + '$').join(', ')} (sans les compter deux fois) : $\varphi(${n})=${n}${ps.map((p) => T`\left(1-\frac1{${p}}\right)`).join('')}=${phi}$.`, 'Compte les p qui ne partagent aucun facteur premier avec n.', '$\\varphi(n)$');
+      },
+      () => {
+        let g, x, y;
+        do {
+          g = R.int(2, 60);
+          x = R.int(20, 300);
+          y = R.int(20, 300);
+        } while (gcd(x, y) !== 1 || x === y || g * Math.max(x, y) > 9999);
+        let a = g * Math.max(x, y),
+          b = g * Math.min(x, y);
+        const steps = [];
+        while (b) steps.push(T`$${a}=${b}\times${Math.floor(a / b)}+${a % b}$`), ([a, b] = [b, a % b]);
+        return K.num(T`${B('Algorithme d’Euclide')} : $\text{PGCD}(a,b)=\text{PGCD}(b,r)$ où $r$ est le reste de la division de $a$ par $b$. Calcule $\text{PGCD}(${g * Math.max(x, y)},${g * Math.min(x, y)})$.`, g, steps.join(' ; ') + T`. Le dernier reste non nul est $${g}$ : c’est le PGCD. (Tout diviseur commun à $a$ et $b$ divise $r=a-bq$, et réciproquement.)`, 'Remplace (a, b) par (b, r) jusqu’à obtenir un reste nul.', 'PGCD');
+      },
+    ],
+    n3: [
+      () => {
+        let x, y, a, b, X, Y;
+        do {
+          x = R.int(2, 7);
+          y = R.int(x + 1, 30);
+          [a, b] = red(x + y, x * y);
+          X = 0;
+          for (let t = Math.ceil(b / a); t <= x; t++) {
+            const [u, v] = red(a * t - b, b * t);
+            if (u === 1 && v > t) {
+              X = t;
+              Y = v;
+              break;
+            }
+          }
+        } while (!X || a === 1);
+        return K.nums(T`Les Égyptiens écrivaient les fractions comme sommes de fractions « unitaires » $\frac1n$. Écris $\dfrac{${a}}{${b}}=\dfrac1x+\dfrac1y$ avec $x<y$ entiers, ${B('$x$ le plus petit possible')}.`, ['$x$', '$y$'], [X, Y], T`$\frac1x<\frac{${a}}{${b}}$ impose $x>\frac{${b}}{${a}}$, donc $x\geqslant${Math.ceil(b / a + 1e-9)}$. On essaie les valeurs dans l’ordre : la première pour laquelle $\frac{${a}}{${b}}-\frac1x$ est une fraction unitaire est $x=${X}$, et $\frac{${a}}{${b}}-\frac1{${X}}=\frac1{${Y}}$.`, 'Essaie x = ⌈b/a⌉, puis x + 1… et regarde si le reste est de la forme 1/y.', { inline: true });
+      },
+      () => {
+        const n = R.int(4, 30);
+        return kfrac(T`Calcule et donne le résultat sous forme irréductible : $$\sum_{k=1}^{${n}}\frac1{k(k+1)(k+2)}=\frac1{1\times2\times3}+\frac1{2\times3\times4}+\cdots+\frac1{${n}\times${n + 1}\times${n + 2}}$$ (Le symbole $\sum$ se lit « somme ».)`, n * (n + 3), 4 * (n + 1) * (n + 2), T`$\frac1{k(k+1)(k+2)}=\frac12\left(\frac1{k(k+1)}-\frac1{(k+1)(k+2)}\right)$ (vérifie-le en réduisant au même dénominateur). La somme est télescopique : $\frac12\left(\frac1{1\times2}-\frac1{${n + 1}\times${n + 2}}\right)=${ft(n * (n + 3), 4 * (n + 1) * (n + 2))}$.`, 'Écris chaque terme comme une différence de deux termes consécutifs d’une même suite.');
+      },
+      () => {
+        let a, b, c, d;
+        do {
+          b = R.int(3, 15);
+          a = R.int(1, b - 1);
+          d = R.int(3, 15);
+          c = R.int(1, d - 1);
+        } while (gcd(a, b) !== 1 || gcd(c, d) !== 1 || a * d >= c * b || c * b - a * d < 2);
+        let q = 1,
+          p;
+        for (;; q++) {
+          p = Math.floor((q * a) / b) + 1;
+          if (p * d < c * q) break;
+        }
+        return K.frac(T`Quelle est la fraction de ${B('plus petit dénominateur')} strictement comprise entre $\dfrac{${a}}{${b}}$ et $\dfrac{${c}}{${d}}$ ?`, p, q, T`On essaie les dénominateurs $q=1,2,3,\dots$ : pour chacun, le plus petit numérateur $p$ avec $\frac pq>\frac{${a}}{${b}}$ est $\left\lfloor\frac{${a}q}{${b}}\right\rfloor+1$, et on regarde s’il reste sous $\frac{${c}}{${d}}$. Le premier qui convient est $q=${q}$ : $\frac{${a}}{${b}}<\frac{${p}}{${q}}<\frac{${c}}{${d}}$. (Cette fraction est unique : c’est un résultat de l’arbre de Stern-Brocot.)`, 'Teste les dénominateurs un par un, en partant de 1.');
+      },
+    ],
+    n4: [
+      () => {
+        const a = R.pick([3, 7, 9, 11, 13, 17, 19]),
+          n = R.int(100, 2026);
+        const c = cycleMod(a, 100),
+          L = c.length,
+          r = ((n - 1) % L) + 1;
+        return K.num(T`Quel nombre forment les ${B('deux derniers chiffres')} de $${a}^{${n}}$ ? (Réponds par un entier de $0$ à $99$.)`, powmod(a, n, 100), T`On travaille modulo $100$. Les deux derniers chiffres des puissances de $${a}$ reviennent avec une période $${L}$ (car $${a}^{${L}}\equiv1\pmod{100}$). Or $${n}=${L}\times${Math.floor((n - 1) / L)}+${r}$, donc $${a}^{${n}}\equiv${a}^{${r}}\equiv${c[r - 1]}\pmod{100}$.`, 'Calcule les deux derniers chiffres de a, a², a³… jusqu’à retomber sur 01.', 'Deux derniers chiffres');
+      },
+      () => {
+        let ps;
+        do {
+          ps = [];
+          while (ps.length < 4) {
+            const b = R.int(2, 9),
+              k = R.int(1, 4);
+            if (!ps.some((p) => p.b === b || p.v === b ** k)) ps.push({ b, k, v: b ** k });
+          }
+          ps.sort((x, y) => y.v - x.v);
+        } while (ps[0].v / ps[1].v < 1.15);
+        const g = R.pick([5, 10, 12]);
+        return K.choice(T`Lequel de ces nombres est le plus grand ?`, ps.map((p) => T`$${p.b}^{${g * p.k}}$`), T`On écrit tout avec le même exposant $${g}$ : ` + ps.map((p) => T`$${p.b}^{${g * p.k}}=\left(${p.b}^{${p.k}}\right)^{${g}}=${p.v}^{${g}}$`).join(', ') + T`. Comme $x\mapsto x^{${g}}$ est croissante sur les positifs, il suffit de comparer $${ps.map((p) => p.v).join(',\\,')}$.`, 'Les exposants ont un diviseur commun : fais-le apparaître.');
+      },
+      () => {
+        let n, f;
+        do {
+          n = R.int(50, 1000);
+          f = n * Math.log10(2) - Math.floor(n * Math.log10(2));
+        } while (f < 0.003 || f > 0.997);
+        const d = Math.floor(n * Math.log10(2)) + 1;
+        return K.num(T`On admet que $10^{0{,}30103}\approx2$ (on dit que $\log_{10}2\approx0{,}30103$). Combien de chiffres l’entier $2^{${n}}$ a-t-il ?`, d, T`$2^{${n}}\approx10^{${n}\times0{,}30103}=10^{${(n * 0.30103).toFixed(3).replace('.', '{,}')}}$. Un entier compris entre $10^{${d - 1}}$ et $10^{${d}}$ a $${d}$ chiffres.`, 'Écris 2ⁿ comme une puissance de 10, puis encadre l’exposant entre deux entiers.', 'Nombre de chiffres');
+      },
+    ],
+    n5: [
+      CU.needs(['q3'], () => {
+        let d, r, c, sols;
+        do {
+          d = R.int(0, 4);
+          r = R.int(d + 1, d + 8);
+          c = (r - d) ** 2 - r;
+          const s = 2 * d + 1 - r;
+          sols = [r];
+          if (s >= d && s !== r) sols.push(s);
+        } while (c === 0 && d === 0);
+        const other = 2 * d + 1 - r;
+        const lhs = c === 0 ? '\\sqrt{x}' : '\\sqrt{x' + (c > 0 ? '+' + c : c) + '}',
+          rhs = d ? 'x-' + d : 'x';
+        return K.set(T`Résous dans $\mathbb R$ l’équation $${lhs}=${rhs}$.`, sols.sort((x, y) => x - y), T`Une racine est positive : il faut $${rhs}\geqslant0$, soit $x\geqslant${d}$. Sous cette condition, on élève au carré : $x${c > 0 ? '+' + c : c < 0 ? c : ''}=(${rhs})^2$, soit $x^2-${2 * d + 1}x+${d * d - c < 0 ? '(' + (d * d - c) + ')' : d * d - c}=0$, de racines $${r}$ et $${other}$. ${other < d ? T`Mais $${other}<${d}$ : cette racine ne vérifie pas la condition (on l’a introduite en élevant au carré, qui n’est pas une équivalence).` : other === r ? '' : T`Les deux vérifient $x\geqslant${d}$.`} Solutions : $${sols.join(' ; ')}$.`, 'Pose la condition x ≥ … (une racine est positive), puis élève au carré et vérifie les solutions.');
+      }),
+      () => {
+        const m = R.int(2, 9),
+          a = m * (m - 1);
+        return K.num(T`On construit $u_1=\sqrt{${a}}$, $u_2=\sqrt{${a}+\sqrt{${a}}}$, $u_3=\sqrt{${a}+\sqrt{${a}+\sqrt{${a}}}}$… Ces nombres se rapprochent d’une ${B('limite')} $\ell$, qu’on note $\sqrt{${a}+\sqrt{${a}+\sqrt{${a}+\cdots}}}$. Que vaut $\ell$ ?`, m, T`Sous le premier radical, on retrouve la même expression : $\ell=\sqrt{${a}+\ell}$, donc $\ell^2=${a}+\ell$ et $\ell\geqslant0$. $\ell^2-\ell-${a}=(\ell-${m})(\ell+${m - 1})=0$ et $\ell\geqslant0$ : $\ell=${m}$. (Que la suite converge vraiment se démontre en terminale.)`, 'L’expression se contient elle-même : ℓ = √(a + ℓ).');
+      },
+      () => {
+        let x, y;
+        do {
+          y = R.int(1, 7);
+          x = R.int(y + 1, 12);
+        } while (Number.isInteger(Math.sqrt(x * y)));
+        return K.nums(T`Trouve deux entiers $x>y>0$ tels que $$\sqrt{${x + y}-2\sqrt{${x * y}}}=\sqrt x-\sqrt y$$`, ['$x$', '$y$'], [x, y], T`$(\sqrt x-\sqrt y)^2=x+y-2\sqrt{xy}$ : il faut $x+y=${x + y}$ et $xy=${x * y}$, d’où $x=${x}$ et $y=${y}$. Et $x>y$ assure $\sqrt x-\sqrt y>0$ : sans cette condition, on aurait trouvé l’opposé d’une racine carrée, qui ne peut pas être négative.`, 'Élève au carré, et fais attention au signe.', { inline: true });
+      },
+    ],
+    n6: [
+      () => {
+        const q = R.pick([7, 13, 17, 19, 21, 27, 37, 41]);
+        let p;
+        do p = R.int(1, q - 1);
+        while (gcd(p, q) !== 1);
+        const n = R.int(100, 3000);
+        const digs = [];
+        let r = p;
+        do {
+          digs.push(Math.floor((10 * r) / q));
+          r = (10 * r) % q;
+        } while (r !== p);
+        const L = digs.length,
+          k = ((n - 1) % L) + 1;
+        return K.num(T`Quel est le $${n}$<sup>e</sup> chiffre après la virgule dans l’écriture décimale de $\dfrac{${p}}{${q}}$ ?`, digs[k - 1], T`La division de $${p}$ par $${q}$ retombe sur le reste $${p}$ après $${L}$ chiffres : $\frac{${p}}{${q}}=0{,}\overline{${digs.join('')}}$ (période $${L}$). Comme $${n}=${L}\times${Math.floor((n - 1) / L)}+${k}$, le chiffre cherché est le $${k}$<sup>e</sup> de la période : $${digs[k - 1]}$.`, 'Pose la division jusqu’à retrouver un reste déjà vu : l’écriture est alors périodique.', 'Chiffre');
+      },
+      CU.needs(['f2'], () => {
+        const RAT = [[T`\left(\sqrt3-1\right)\left(\sqrt3+1\right)`, T`$(\sqrt3)^2-1=2$`], [T`\sqrt8\times\sqrt2`, T`$\sqrt{16}=4$`], [T`\dfrac{\sqrt{12}}{\sqrt3}`, T`$\sqrt4=2$`], [T`\left(\sqrt5+1\right)^2-2\sqrt5`, T`$5+2\sqrt5+1-2\sqrt5=6$`]];
+        const IRR = [[T`\sqrt2+\sqrt8`, T`$3\sqrt2$`], [T`\dfrac{\sqrt{12}}{\sqrt2}`, T`$\sqrt6$`], [T`\left(1+\sqrt2\right)^2`, T`$3+2\sqrt2$`], [T`\sqrt3\times\sqrt6`, T`$3\sqrt2$`], [T`\pi-3`, T`irrationnel`]];
+        const good = R.pick(RAT),
+          bad = R.shuffle(IRR).slice(0, 3);
+        return K.choice(T`Lequel de ces nombres est ${B('rationnel')} ?`, [good, ...bad].map((x) => '$' + x[0] + '$'), T`$${good[0]}=${good[1].slice(1, -1)}$. Les autres : ` + bad.map((x) => T`$${x[0]}$ vaut ${x[1]}`).join(', ') + T`, irrationnels (un rationnel non nul fois $\sqrt2$, ou $\sqrt6$, ne peut pas être rationnel).`, 'Simplifie chaque nombre.');
+      }),
+      () =>
+        K.order(
+          T`On note $\log_{10}2$ le nombre $x$ tel que $10^x=2$. ${B('Théorème.')} $\log_{10}2$ est irrationnel. Remets la démonstration dans l’ordre.`,
+          [T`Supposons $\log_{10}2=\frac pq$ avec $p,q$ entiers strictement positifs.`, T`Alors $10^{p/q}=2$, donc $10^p=2^q$ (en élevant à la puissance $q$).`, T`Donc $2^p\times5^p=2^q$ : le facteur $5$ apparaît à gauche ($p\geqslant1$) mais pas à droite.`, T`C’est impossible (décomposition unique en facteurs premiers) : $\log_{10}2$ est irrationnel.`],
+          [R.pick([T`$\log_{10}2\approx0{,}30103$ n’est pas périodique, donc il est irrationnel.`, T`Donc $10=2$, contradiction.`])],
+          T`On suppose le contraire, on élimine l’exposant fractionnaire en élevant à la puissance $q$, et l’unicité de la décomposition en facteurs premiers conclut. ($p>0$ car $1<2<10$.)`,
+          'Que devient 10^(p/q) = 2 si on élève à la puissance q ?',
+        ),
+    ],
+    n7: [
+      () => {
+        const a = R.int(-8, 4),
+          b = R.int(a + 1, 9),
+          strict = R.int(0, 1) === 1;
+        const c = b - a + R.pick([-1, 0, 2, 4, 6]);
+        const ivs = c > b - a || (c === b - a && !strict) ? ivOf((a + b - c) / 2, (a + b + c) / 2, !strict, !strict) : [];
+        const op = strict ? '<' : '\\leqslant';
+        return K.interval(T`Donne l’ensemble des réels $x$ tels que $|${xm(a)}|+|${xm(b)}|${op}${c}$.`, CU.IV.str(ivs), T`La somme des distances de $x$ à $${a}$ et à $${b}$ vaut $${b - a}$ entre les deux points, et augmente de $2$ par unité d’éloignement à l’extérieur. ${ivs.length ? T`Elle est ${strict ? 'strictement inférieure à' : 'au plus'} $${c}$ quand on ne s’éloigne pas de plus de $${ft(c - (b - a), 2)}$ de chaque côté : $${ivTex(CU.IV.str(ivs))}$.` : T`Elle vaut toujours au moins $${b - a}$, donc ne peut pas être ${strict ? 'strictement inférieure à' : 'inférieure ou égale à'} $${c}$ : $\varnothing$.`}`, 'Somme de deux distances : dessine les deux points.');
+      },
+      () => {
+        const a = R.int(2, 9),
+          r = R.int(1, a + 2);
+        const ivs = [...ivOf(-a - r, -a + r, true, true), ...ivOf(a - r, a + r, true, true)];
+        return K.interval(T`Donne l’ensemble des réels $x$ tels que $\big||x|-${a}\big|\leqslant${r}$.`, CU.IV.str(ivs), T`$\big||x|-${a}\big|\leqslant${r}\iff${a - r}\leqslant|x|\leqslant${a + r}$. ${r < a ? T`Comme $${a - r}>0$, $|x|$ est entre $${a - r}$ et $${a + r}$ : $x$ est dans l’un des deux intervalles symétriques $[${-a - r}\,;\,${-a + r}]$ et $[${a - r}\,;\,${a + r}]$.` : T`Comme $${a - r}\leqslant0$, la condition de gauche est toujours vraie : il reste $|x|\leqslant${a + r}$.`} Réponse : $${ivTex(CU.IV.str(ivs))}$.`, 'Commence par encadrer |x|, puis reviens à x.');
+      },
+      () => {
+        const j = R.int(2, 4),
+          k = R.pick([1, 2, 3, 4, 6, 7, 8, 9]);
+        const n = Math.floor(10 ** j / k) + 1;
+        return K.num(T`Pour $\varepsilon=${dtex(k, j)}$, quel est le plus petit entier $n\geqslant1$ tel que $\frac1n<\varepsilon$ ? (C’est la clé de « $\frac1n$ tend vers $0$ » : $\forall\varepsilon>0,\ \exists N,\ \forall n\geqslant N,\ \frac1n<\varepsilon$.)`, n, T`$\frac1n<${dtex(k, j)}\iff n>\frac1{${dtex(k, j)}}=${decT(10 ** j / k)}$${10 ** j % k ? '' : ' (inégalité stricte : on exclut cette valeur)'}. Le plus petit entier qui convient est $${n}$.`, 'Inverse l’inégalité (tout est positif).', '$n$');
+      },
+    ],
+    n8: [
+      () => {
+        let n;
+        do n = R.int(2, 60);
+        while (Number.isInteger(Math.sqrt(n)));
+        const x0 = Math.floor(Math.sqrt(n));
+        const [p1, q1] = red(x0 * x0 + n, 2 * x0);
+        const [p2, q2] = red(p1 * p1 + n * q1 * q1, 2 * p1 * q1);
+        return K.frac(T`${B('Méthode de Héron')} pour approcher $\sqrt{${n}}$ : on part de $x_0=${x0}$ et on calcule $x_{k+1}=\frac12\left(x_k+\frac{${n}}{x_k}\right)$. Donne $x_2$ sous forme de fraction irréductible.`, p2, q2, T`$x_1=\frac12\left(${x0}+\frac{${n}}{${x0}}\right)=${ft(p1, q1)}$, puis $x_2=\frac12\left(${ft(p1, q1)}+\frac{${n}}{${ft(p1, q1)}}\right)=${ft(p2, q2)}\approx${(p2 / q2).toFixed(6).replace('.', '{,}')}$, alors que $\sqrt{${n}}\approx${Math.sqrt(n).toFixed(6).replace('.', '{,}')}$. Le nombre de décimales justes double à peu près à chaque étape.`, 'Calcule x₁ puis x₂ en fractions, sans arrondir.');
+      },
+      () => {
+        const a = R.int(2, 20),
+          b = R.int(2, 20);
+        return K.num(T`On sait que $|x-${a}|\leqslant0{,}1$ et $|y-${b}|\leqslant0{,}1$. Quel est le plus grand écart possible entre $xy$ et $${a}\times${b}$ ?`, (a + b) / 10 + 1 / 100, T`Écrivons $x=${a}+u$ et $y=${b}+v$ avec $|u|,|v|\leqslant0{,}1$ : $xy-${a * b}=${b}u+${a}v+uv$. L’écart est maximal pour $u=v=0{,}1$ : $${b}\times0{,}1+${a}\times0{,}1+0{,}01=${decT((a + b) / 10 + 0.01)}$. Les erreurs relatives s’ajoutent, à peu près, dans un produit.`, 'Écris x = a + u, y = b + v et développe.', 'Écart maximal');
+      },
+      () => {
+        const k = R.int(1, 6);
+        const n = Math.floor(k * Math.log2(10)) + 1;
+        return K.num(T`On part d’un intervalle de longueur $1$ et on applique la dichotomie (chaque étape divise la longueur par $2$). Combien d’étapes faut-il au minimum pour obtenir une longueur strictement inférieure à $10^{-${k}}$ ?`, n, T`Après $n$ étapes, la longueur vaut $\frac1{2^n}$. Il faut $2^n>10^{${k}}$ : $2^{${n - 1}}=${2 ** (n - 1)}${2 ** (n - 1) > 10 ** k ? '>' : '\\leqslant'}10^{${k}}$ mais $2^{${n}}=${2 ** n}>10^{${k}}$. Il faut donc $${n}$ étapes (environ $3{,}32$ par décimale, car $2^{10}\approx10^3$).`, 'Cherche la plus petite puissance de 2 qui dépasse 10ᵏ.', 'Étapes');
+      },
+    ],
+    n11: [
+      () => {
+        const v = R.pick([
+          { q: T`La période $T$ (en s) d’un pendule ne dépend que de sa longueur $L$ (en m) et de la pesanteur $g$ (en m·s⁻²) : $T=k\,L^a g^b$ avec $k$ sans unité.`, a: 0.5, b: -0.5, s: T`Unités : $\text{m}^a\,(\text{m}\,\text{s}^{-2})^b=\text{m}^{a+b}\,\text{s}^{-2b}$ doit valoir $\text{s}$. Donc $-2b=1$ et $a+b=0$ : $b=-\frac12$, $a=\frac12$, et $T=k\sqrt{L/g}$ (on trouve $k=2\pi$ en terminale).` },
+          { q: T`La vitesse $v$ (en m/s) d’une vague en eau peu profonde ne dépend que de $g$ (en m·s⁻²) et de la profondeur $h$ (en m) : $v=k\,g^a h^b$ avec $k$ sans unité.`, a: 0.5, b: 0.5, s: T`$(\text{m}\,\text{s}^{-2})^a\,\text{m}^b=\text{m}^{a+b}\,\text{s}^{-2a}$ doit valoir $\text{m}\,\text{s}^{-1}$ : $-2a=-1$ et $a+b=1$, donc $a=b=\frac12$ et $v=k\sqrt{gh}$.` },
+          { q: T`La durée $t$ (en s) de la chute d’un objet lâché d’une hauteur $h$ (en m) ne dépend que de $h$ et de $g$ (en m·s⁻²) : $t=k\,h^a g^b$ avec $k$ sans unité.`, a: 0.5, b: -0.5, s: T`$\text{m}^a(\text{m}\,\text{s}^{-2})^b=\text{m}^{a+b}\text{s}^{-2b}=\text{s}$ : $b=-\frac12$, $a=\frac12$, donc $t=k\sqrt{h/g}$ (et $k=\sqrt2$).` },
+          { q: T`L’énergie cinétique $E$ (en kg·m²·s⁻²) d’un objet ne dépend que de sa masse $m$ (en kg) et de sa vitesse $v$ (en m/s) : $E=k\,m^a v^b$ avec $k$ sans unité.`, a: 1, b: 2, s: T`$\text{kg}^a(\text{m}\,\text{s}^{-1})^b=\text{kg}^a\text{m}^b\text{s}^{-b}$ doit valoir $\text{kg}\,\text{m}^2\text{s}^{-2}$ : $a=1$, $b=2$, donc $E=k\,mv^2$ (et $k=\frac12$).` },
+        ]);
+        return K.nums(T`${B('Analyse dimensionnelle.')} ${v.q} Trouve $a$ et $b$ pour que les unités soient cohérentes.`, ['$a$', '$b$'], [v.a, v.b], v.s, 'Écris les unités de chaque côté et identifie les exposants de m, s, kg.', { inline: true });
+      },
+      () => {
+        const v1 = R.pick([4, 5, 6, 8, 10, 12, 15]),
+          v2 = R.pick([3, 5, 6, 9, 10, 12, 20]);
+        let d;
+        do d = R.int(2, 60);
+        while (((60 * d) % (v1 + v2)) !== 0);
+        return K.num(T`Deux messagers partent au même instant de deux tours distantes de $${d}$ km et marchent l’un vers l’autre, à $${v1}$ km/h et $${v2}$ km/h. Au bout de combien de ${B('minutes')} se rencontrent-ils ?`, (60 * d) / (v1 + v2), T`La distance qui les sépare diminue de $${v1}+${v2}=${v1 + v2}$ km chaque heure (vitesse ${B('relative')}). Durée : $\frac{${d}}{${v1 + v2}}$ h $=${(60 * d) / (v1 + v2)}$ min.`, 'De combien la distance diminue-t-elle chaque heure ?', 'Durée (min)');
+      },
+      () => {
+        const k = R.pick([10, 20, 25, 50]),
+          m = R.pick([40, 80, 120, 200, 250, 400]);
+        return K.num(T`Une maquette au $1/${k}$ d’une statue de bronze, faite du même bronze, a une masse de $${m}$ g. Quelle est la masse de la statue, en ${B('kilogrammes')} ?`, (m * k ** 3) / 1000, T`Toutes les longueurs sont multipliées par $${k}$, donc le volume (et la masse, même matériau) par $${k}^3=${k ** 3}$ : $${m}\times${k ** 3}=${m * k ** 3}$ g $=${decT((m * k ** 3) / 1000)}$ kg.`, 'Même matériau : la masse suit le volume.', 'Masse (kg)');
+      },
+    ],
+  };
+  const LEG_TXT = {
+    n1: [T`<p>Au rang ${B('Légende')}, l’arithmétique devient un jeu de restes. On écrit $a\equiv b\pmod n$ quand $a$ et $b$ ont le même reste dans la division par $n$ ; on peut additionner et multiplier ces congruences. Les restes des puissances $a,a^2,a^3,\dots$ sont périodiques.</p><p>La ${B('factorielle')} $n!=1\times2\times\cdots\times n$ se termine par autant de zéros qu’elle contient de facteurs $5$.</p>`, T`<ol class="meth"><li>Puissance modulo $m$ : liste les restes de $a,a^2,\dots$ jusqu’au retour à $1$, puis réduis l’exposant modulo la période.</li><li>Zéros de $n!$ : $\lfloor n/5\rfloor+\lfloor n/25\rfloor+\lfloor n/125\rfloor+\cdots$</li><li>Restes imposés : regarde $n-1$ ou $n+1$, multiple commun de tous les diviseurs.</li></ol>`],
+    n2: [T`<p>Avec la décomposition $n=p^aq^b\cdots$ on calcule tout : le nombre de diviseurs $(a+1)(b+1)\cdots$, leur somme $(1+p+\cdots+p^a)(1+q+\cdots+q^b)\cdots$, et l’${B('indicatrice d’Euler')} $\varphi(n)=n\left(1-\frac1p\right)\left(1-\frac1q\right)\cdots$, nombre d’entiers de $1$ à $n$ premiers avec $n$.</p><p>L’${B('algorithme d’Euclide')} donne le PGCD sans décomposer : $\text{PGCD}(a,b)=\text{PGCD}(b,r)$.</p>`, T`<ol class="meth"><li>Somme des diviseurs : un facteur $1+p+\cdots+p^a=\frac{p^{a+1}-1}{p-1}$ par nombre premier.</li><li>$\varphi(n)$ : retire la proportion $\frac1p$ pour chaque facteur premier $p$.</li><li>Euclide : divisions successives ; le dernier reste non nul est le PGCD.</li></ol>`],
+    n3: [T`<p>Au-delà : les ${B('fractions égyptiennes')} (sommes de $\frac1n$), les sommes télescopiques plus fines ($\frac1{k(k+1)(k+2)}$), et la recherche de la fraction la plus « simple » dans un intervalle, qui mène à l’arbre de Stern-Brocot.</p>`, T`<ol class="meth"><li>Égyptienne : $x>\frac ba$ ; essaie les $x$ dans l’ordre.</li><li>Télescopage : écris le terme comme différence de deux termes consécutifs.</li><li>Plus petit dénominateur : teste $q=1,2,3,\dots$</li></ol>`],
+    n4: [T`<p>Modulo $100$, les deux derniers chiffres des puissances sont périodiques. Le ${B('logarithme décimal')} $\log_{10}x$ est l’exposant $y$ tel que $10^y=x$ : $\log_{10}2\approx0{,}30103$ dit que $2^{n}$ a environ $0{,}3n$ chiffres.</p>`, T`<ol class="meth"><li>Deux derniers chiffres : calcule modulo $100$.</li><li>Comparer $a^{gm}$ et $b^{gn}$ : compare $a^m$ et $b^n$.</li><li>Nombre de chiffres de $2^n$ : $\lfloor0{,}30103\,n\rfloor+1$.</li></ol>`],
+    n5: [T`<p>Élever au carré n’est pas une équivalence : $\sqrt{A}=B$ équivaut à « $B\geqslant0$ et $A=B^2$ ». Les solutions parasites se reconnaissent à la condition.</p><p>Un ${B('radical infini')} $\sqrt{a+\sqrt{a+\cdots}}$ vérifie $\ell=\sqrt{a+\ell}$.</p>`, T`<ol class="meth"><li>$\sqrt A=B$ : pose $B\geqslant0$, élève au carré, résous, vérifie.</li><li>Expression qui se répète : appelle-la $\ell$ et écris l’équation qu’elle vérifie.</li><li>$\sqrt{s-2\sqrt t}=\sqrt x-\sqrt y$ avec $x>y$.</li></ol>`],
+    n6: [T`<p>L’écriture décimale de $\frac pq$ est périodique, de période au plus $q-1$. L’irrationalité de $\log_{10}2$ repose, comme celle de $\sqrt2$, sur l’unicité de la décomposition en facteurs premiers.</p>`, T`<ol class="meth"><li>$n$<sup>e</sup> chiffre : trouve la période, puis le reste de $n$ dans la division par sa longueur.</li><li>Rationnel ou non : simplifie l’expression.</li><li>Irrationalité : par l’absurde, ramène à une égalité entre entiers impossible.</li></ol>`],
+    n7: [T`<p>Les valeurs absolues imbriquées se traitent couche par couche : $\big||x|-a\big|\leqslant r\iff a-r\leqslant|x|\leqslant a+r$.</p><p>« $\frac1n$ tend vers $0$ » s’écrit $\forall\varepsilon>0,\ \exists N,\ \forall n\geqslant N,\ \frac1n<\varepsilon$ : c’est la définition d’une ${B('limite')}.</p>`, T`<ol class="meth"><li>Somme de distances : dessine, la somme est constante entre les deux points.</li><li>Couches : encadre d’abord ce qui est dans la valeur absolue extérieure.</li><li>$\frac1n<\varepsilon\iff n>\frac1\varepsilon$.</li></ol>`],
+    n8: [T`<p>La ${B('méthode de Héron')} approche $\sqrt n$ en remplaçant $x$ par la moyenne de $x$ et $\frac nx$ : le nombre de décimales justes double à chaque étape. La dichotomie, elle, gagne une décimale toutes les $3$ ou $4$ étapes.</p><p>Dans un produit, les incertitudes se combinent : $(a+u)(b+v)-ab=bu+av+uv$.</p>`, T`<ol class="meth"><li>Héron : calcule en fractions exactes.</li><li>Incertitude d’un produit : $|b|\,|u|+|a|\,|v|+|u|\,|v|$.</li><li>Dichotomie : plus petit $n$ avec $2^n>10^k$.</li></ol>`],
+    n11: [T`<p>L’${B('analyse dimensionnelle')} : une formule physique doit avoir les mêmes unités des deux côtés. Cela suffit souvent à trouver sa forme, à une constante près. La ${B('vitesse relative')} de deux mobiles qui se rapprochent est la somme de leurs vitesses.</p>`, T`<ol class="meth"><li>Écris les unités de chaque grandeur avec des exposants (m, s, kg).</li><li>Égalise les exposants de chaque unité : on obtient un système.</li><li>Masse d’une maquette : même matériau, donc rapport des volumes $k^3$.</li></ol>`],
+  };
+  for (const [id, gens] of Object.entries(LEG)) {
+    const s = CU.SKILLS[id];
+    s.gen[3] = CU.oneOf(...gens);
+    s.lessons[3] = LEG_TXT[id][0];
+    s.methods[3] = LEG_TXT[id][1];
+  }
 })();
