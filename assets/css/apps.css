@@ -1,0 +1,55 @@
+/* Apps page (apps.qmd): INFLUENCE player + cards for the educational apps. Scoped under .apps-*. */
+.apps-intro{max-width:46em;margin:.2rem 0 1.6rem;line-height:1.6}
+.apps-section-title{margin:2.2rem 0 .3rem;font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;color:#5b6b7a;font-weight:700;border:0}
+.apps-section-sub{margin:0 0 1.1rem;color:#5b6b7a;max-width:46em}
+
+.apps-btn{display:inline-flex;align-items:center;gap:.45em;padding:.62em 1.15em;border-radius:999px;border:1.5px solid #c9d2da;background:#fff;color:#1b3a52;font-weight:700;font-size:.9rem;line-height:1.2;text-decoration:none;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.apps-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(27,58,82,.14);border-color:#1b3a52;color:#1b3a52;text-decoration:none}
+.apps-btn:focus-visible,.apps-poster:focus-visible,.apps-card summary:focus-visible{outline:3px solid #2f80d0;outline-offset:3px}
+.apps-btn-primary{background:#d9475f;border-color:#d9475f;color:#fff}
+.apps-btn-primary:hover{background:#c23a52;border-color:#c23a52;color:#fff}
+.apps-actions{display:flex;flex-wrap:wrap;gap:.6rem .8rem;align-items:center;margin:1.1rem 0 0}
+.apps-link{font-weight:600;font-size:.88rem}
+
+/* --- INFLUENCE hero ------------------------------------------------------------------ */
+.apps-wrap{container-type:inline-size}
+.apps-hero{display:grid;grid-template-columns:1fr;gap:1.6rem 2.2rem;align-items:center;padding:clamp(1.1rem,2.4vw,2rem);border-radius:22px;background:linear-gradient(135deg,#fff7ec 0%,#eaf3fb 100%);border:1px solid #e3e8ee;box-shadow:0 10px 30px rgba(27,58,82,.08)}
+.apps-kicker{margin:0 0 .5rem;font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#d9475f}
+.apps-hero h2{margin:0 0 .7rem;border:0;padding:0;font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.05;font-weight:900;color:#17344c}
+.apps-hero h2 .apps-dots{margin-right:.35em;vertical-align:-.05em}
+.apps-hero h2 small{display:block;margin-top:.35em;font-size:.4em;font-weight:700;color:#5b6b7a;letter-spacing:.02em}
+.apps-dots{display:inline-flex;position:relative;width:1.35em;height:1.2em;flex:none}
+.apps-dots i{position:absolute;width:.8em;height:.8em}
+.apps-dots i:first-child{left:0;top:0;border-radius:50%;background:linear-gradient(#f0687a,#d9475f)}
+.apps-dots i:last-child{right:0;bottom:0;border-radius:.22em;background:linear-gradient(#5aa5ee,#2f80d0)}
+.apps-hero p{line-height:1.6}
+.apps-hero .apps-en{color:#4a5b6a;font-size:.93em;border-left:3px solid #c9d2da;padding-left:.8em;margin-top:.9rem}
+.apps-facts{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none}
+.apps-facts li{margin:0;padding:.28em .75em;border-radius:999px;background:#fff;border:1px solid #dde4ea;font-size:.8rem;font-weight:600;color:#33516a}
+
+.apps-stage{display:flex;justify-content:center}
+.apps-phone{position:relative;width:min(100%,380px);aspect-ratio:430/780;border-radius:26px;overflow:hidden;background:#fff9ef;border:1px solid #d6dde4;box-shadow:0 18px 40px rgba(27,58,82,.22),0 0 0 7px #17344c}
+.apps-phone iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff9ef}
+.apps-poster{position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer}
+.apps-poster img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;filter:saturate(.95)}
+.apps-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,52,76,0) 40%,rgba(23,52,76,.55) 100%)}
+.apps-play{position:absolute;z-index:1;left:50%;bottom:3.5%;transform:translateX(-50%);padding:.65em 1.5em;border-radius:999px;background:#d9475f;color:#fff;font-weight:800;font-size:1.05rem;box-shadow:0 8px 20px rgba(217,71,95,.5);white-space:nowrap;transition:transform .15s ease}
+.apps-poster:hover .apps-play{transform:translateX(-50%) scale(1.05)}
+
+/* --- Educational apps ----------------------------------------------------------------- */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:1.3rem}
+.apps-card{display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:#fff;border:1px solid #e1e6eb;box-shadow:0 6px 18px rgba(27,58,82,.07);transition:box-shadow .15s ease,transform .15s ease}
+.apps-card:hover{box-shadow:0 12px 28px rgba(27,58,82,.14);transform:translateY(-2px)}
+.apps-card-art{display:flex;align-items:center;justify-content:center;height:120px;font-size:3.4rem;line-height:1;background:linear-gradient(135deg,var(--a1),var(--a2));color:var(--ink,#fff)}
+.apps-card-body{display:flex;flex-direction:column;flex:1;padding:1.1rem 1.2rem 1.2rem}
+.apps-card h3{margin:0 0 .15rem;border:0;padding:0;font-size:1.15rem;line-height:1.25;font-weight:800;color:#17344c}
+.apps-card h3 em{font-style:normal;font-weight:600;font-size:.75em;color:#8a5a00;background:#fff1cc;border-radius:999px;padding:.1em .6em;margin-left:.3em;white-space:nowrap}
+.apps-meta{margin:0 0 .6rem;font-size:.8rem;font-weight:600;color:#5b6b7a}
+.apps-card p{line-height:1.55}
+.apps-card details{margin:.2rem 0 0;font-size:.9rem}
+.apps-card summary{cursor:pointer;font-weight:700;color:#2f6aa8;margin-bottom:.4rem;width:fit-content}
+.apps-card .apps-actions{margin-top:auto;padding-top:1rem}
+.apps-note{margin-top:1.4rem;font-size:.88rem;color:#5b6b7a}
+
+@container (min-width:760px){.apps-hero{grid-template-columns:minmax(0,1fr) 340px;align-items:center}.apps-phone{width:340px}}
+@media (prefers-reduced-motion:reduce){.apps-btn,.apps-card,.apps-play{transition:none}.apps-btn:hover,.apps-card:hover{transform:none}}
