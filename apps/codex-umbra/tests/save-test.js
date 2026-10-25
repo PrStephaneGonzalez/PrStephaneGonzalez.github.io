@@ -8,7 +8,7 @@ const fs = require('fs'),
 const D = path.join(__dirname, '..');
 global.window = global;
 global.localStorage = { getItem: () => null, setItem() {} };
-for (const f of ['core.js', 'ids.js', 'graph.js', 'kit.js', 'rules.js', 'c-vec.js', 'c-alg.js', 'c-misc.js', 'story.js']) vm.runInThisContext(fs.readFileSync(path.join(D, f), 'utf8'), { filename: f });
+for (const f of ['core.js', 'ids.js', 'graph.js', 'kit.js', 'rules.js', 'answers.js', 'c-vec.js', 'c-alg.js', 'c-misc.js', 'story.js']) vm.runInThisContext(fs.readFileSync(path.join(D, f), 'utf8'), { filename: f });
 const CU = global.CU;
 let fails = 0,
   n = 0;

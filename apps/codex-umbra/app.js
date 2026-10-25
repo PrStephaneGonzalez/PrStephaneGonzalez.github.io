@@ -2211,17 +2211,24 @@ ${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pou
   /* ================= composants d'exercice ================= */
   const RENDER = {};
   // champs de saisie avec aperçu et clavier
+  // touches du clavier d'exercice selon les types de champs
+  const keysFor = (ex) => {
+    const has = (k) => ex.fields.some((f) => f.kind === k);
+    if (has('interval')) return ['[', ']', ';', '∞', '∪', 'ℝ', '∖', '{', '}', '−', '/', '√', '(', ')'];
+    if (ex.fields.every((f) => f.kind === 'frac')) return ['−', '/'];
+    return (has('expr') ? ['x', 'x²', '(', ')', '−', '/', '√'] : ['−', '/', '√', '(', ')']).concat(has('set') ? [';'] : []);
+  };
   RENDER.fields = (zone, ex) => {
     const inline = ex.inline;
     zone.innerHTML =
       `<div class="fieldrow ${inline ? 'inline-wrap' : ''}">${ex.fields
         .map(
           (f, i) =>
-            `<div class="fld"><label for="f${i}">${H(f.label)}</label><input class="inp" id="f${i}" data-kind="${f.kind}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" ${f.kind === 'num' && !ex.fields.some((g) => g.kind !== 'num') ? 'inputmode="text"' : ''} placeholder="${f.kind === 'set' ? 'ex. -2 ; 3/2' : f.kind === 'expr' ? 'ex. 3x(2x-1)' : f.kind === 'text' ? '' : 'ex. -3/2'}" />${f.kind !== 'text' ? `<div class="prev" id="p${i}"></div>` : ''}</div>`,
+            `<div class="fld"><label for="f${i}">${H(f.label)}</label><input class="inp" id="f${i}" data-kind="${f.kind}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" ${(f.kind === 'num' || f.kind === 'frac') && !ex.fields.some((g) => g.kind !== 'num' && g.kind !== 'frac') ? 'inputmode="text"' : ''} placeholder="${f.kind === 'set' ? 'ex. -2 ; 3/2' : f.kind === 'expr' ? 'ex. 3x(2x-1)' : f.kind === 'text' ? '' : f.kind === 'interval' ? 'ex. ]-∞ ; 2] ∪ [5 ; +∞[' : f.kind === 'frac' ? 'ex. -3/4' : 'ex. -3/2'}" />${f.kind !== 'text' ? `<div class="prev" id="p${i}"></div>` : ''}</div>`,
         )
         .join('')}</div>` +
       (ex.fields.some((f) => f.kind !== 'text')
-        ? `<div class="keys">${(ex.fields.some((f) => f.kind === 'expr') ? ['x', 'x²', '(', ')', '−', '/', '√'] : ['−', '/', '√', '(', ')']).concat(ex.fields.some((f) => f.kind === 'set') ? [';'] : []).map((k) => `<button type="button" data-k="${k}">${k}</button>`).join('')}${ex.emptyBtn ? `<button type="button" data-k="aucune" style="font-family:var(--font-u)">aucune</button>` : ''}</div>`
+        ? `<div class="keys">${keysFor(ex).map((k) => `<button type="button" data-k="${k}">${k}</button>`).join('')}${ex.emptyBtn ? `<button type="button" data-k="aucune" style="font-family:var(--font-u)">aucune</button>` : ''}</div>`
         : '');
     let lastInp = $('.inp', zone);
     $$('.inp', zone).forEach((inp, i) => {
@@ -2248,7 +2255,7 @@ ${tab === 'lois' ? '<p class="note" style="text-align:center">Touche une Loi pou
         const k = b.dataset.k;
         if (k === 'aucune') inp.value = 'aucune';
         else {
-          const ins = { 'x²': 'x²', '−': '-', ';': ' ; ' }[k] || k;
+          const ins = { 'x²': 'x²', '−': '-', ';': ' ; ', '∪': ' ∪ ' }[k] || k;
           const s0 = inp.selectionStart ?? inp.value.length,
             s1 = inp.selectionEnd ?? inp.value.length;
           inp.value = inp.value.slice(0, s0) + ins + inp.value.slice(s1);
