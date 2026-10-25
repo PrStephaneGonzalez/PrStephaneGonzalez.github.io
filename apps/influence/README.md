@@ -1,7 +1,7 @@
 # INFLUENCE
 
 Jeu de stratégie bilingue FR/EN, sans installation, sans dépendances, sans
-compte et sans service distant. Ouvrir `index.html` via un serveur HTTP.
+service distant (les profils sont locaux à l'appareil, voir ci-dessous). Ouvrir `index.html` via un serveur HTTP.
 
 ## Jouer et déployer
 
@@ -19,14 +19,36 @@ nécessitent HTTP(S).
 
 L'application comprend 12 plateaux, deux joueurs sur le même écran, un mode
 solo à trois difficultés, le choix du camp et du premier joueur, l'aperçu
-puis la confirmation, l'annulation, un défi quotidien (rotation de plateaux
+la prise directe d'un pion (la confirmation reste une option), l'annulation, un défi quotidien (rotation de plateaux
 existants, date UTC), le zoom et le déplacement après agrandissement. Les
-préférences, la partie et les étoiles de victoire sont sauvées localement.
+préférences, la partie et les victoires sont sauvées localement.
 Une restriction du stockage privé n'empêche pas de jouer.
 
 La vue suit le joueur actif par défaut. Une option de vue figée en solo est
 expérimentale et indique explicitement que l'ordinateur joue dans le sens
 inverse. L'option ne change jamais le graphe canonique ni les captures.
+
+## Expérience de jeu (v1.1)
+
+- **Prise directe** : toucher un pion le joue aussitôt ; les pions capturés
+  tombent en cascade, par vagues le long des flèches (`ui/cascade.mjs`).
+  L'option « confirmer avant de jouer » (réglages) rétablit aperçu + bouton.
+- **Tour de l'ordinateur** : courte pause, une main désigne le pion choisi,
+  aperçu des pions visés, puis cascade. Vitesse réglable (calme / normal /
+  rapide) ; un toucher sur le plateau passe les pauses ; « animations
+  réduites » supprime la main et raccourcit les pauses.
+- **Sons** (`ui/audio.mjs`) : synthèse Web Audio, aucun fichier audio ; une
+  note de gamme pentatonique par pion tombé, l'ordinateur une octave plus
+  bas. Bouton muet dans l'en-tête. Le son n'est jamais nécessaire au jeu.
+- **Profils locaux** (`ui/profiles.mjs`) : un prénom (2 à 16 caractères, 8
+  profils maximum) conserve la progression sur l'appareil, avec médailles
+  Rouge/Bleu par plateau. La progression d'avant (invité) est reprise par le
+  premier profil créé. Aucune donnée ne quitte l'appareil ; pour changer
+  d'appareil, exporter un code `INF1.…` et l'importer ailleurs (fusion par
+  union des victoires). Une synchronisation en ligne reste une option.
+- Clés `localStorage` : `influence.v1.settings` (`confirm`, `sound`, `speed`,
+  `ver`, …), `influence.v1.profiles` (`version:1`), `influence.v1.progress`
+  (ancien format, migré).
 
 ## Vérifier
 
@@ -38,8 +60,8 @@ npm run test:exhaustive
 npm run test:segments
 ```
 
-`npm test` : 23 tests dont 216 parties complètes, les métadonnées des 12
-plateaux, les traductions FR/EN, les règles et valeurs de référence de
+`npm test` : 31 tests dont 216 parties complètes, les métadonnées des 12
+plateaux, les traductions FR/EN, les cascades et profils locaux (`tests/ui-modules.test.mjs`), les règles et valeurs de référence de
 l'article. Le second oracle Python structurel contrôle les 38 segments.
 
 `test:exhaustive` confronte le solveur à un oracle Python indépendant sans

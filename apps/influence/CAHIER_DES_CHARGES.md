@@ -152,7 +152,7 @@ Internationalisation **FR/EN** dès le départ, via dictionnaires de chaînes ; 
 
 Interface responsive : smartphone portrait, tablette, desktop. Pour les grands graphes, zoom et déplacement du plateau, recentrage, disposition automatique évitant les chevauchements. Interactions souris, tactile et clavier ; focus visible ; étiquettes accessibles ; contrastes vérifiés ; indication du tour et appartenance des sommets non exclusivement colorées ; mode animation réduite (`prefers-reduced-motion`). Audio discret et désactivable, **jamais nécessaire** pour comprendre l'état.
 
-Éviter les dépendances lourdes ; déploiement statique GitHub Pages, sans compte ni collecte de données. Sauvegarde de la progression et des réglages en `localStorage`. Ne pas demander d'autorisations inutiles.
+Éviter les dépendances lourdes ; déploiement statique GitHub Pages, sans collecte de données. Sauvegarde des réglages et de la progression en `localStorage`, avec profils locaux nommés (v1.1) et code d'export/import ; pas de compte distant. Ne pas demander d'autorisations inutiles.
 
 ## 8. Architecture proposée
 

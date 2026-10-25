@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/engine.test.mjs tests/article.test.mjs tests/path-oracle.test.mjs tests/product.test.mjs",
+    "test": "node --test tests/engine.test.mjs tests/article.test.mjs tests/path-oracle.test.mjs tests/product.test.mjs tests/ui-modules.test.mjs",
     "test:exhaustive": "node tests/verify.mjs",
     "test:segments": "node tests/segments.mjs",
     "test:slow": "node tests/segments.mjs --max=38",
