@@ -51,7 +51,9 @@ function build(geo,s){
  const seen=new Set([vertices[0].id]);for(let z=0;z<n;z++)for(const[a,b]of arcs)if(seen.has(a)||seen.has(b)){seen.add(a);seen.add(b);}if(seen.size<n)return null;
  const red=s.colors.filter(c=>c==='L').length;if(red<3||n-red<3)return null;
  const minX=Math.min(...geo.pos.map(p=>p[0])),minY=Math.min(...geo.pos.map(p=>p[1])),shift=[90-minX,80-minY];
- const positions=Object.fromEntries(vertices.map((v,i)=>[v.id,[geo.pos[i][0]+shift[0],geo.pos[i][1]+shift[1]]]));
+ // Stretch evenly so every arc is at least 150 units long: arrows stay readable between close pieces.
+ const len=Math.min(...arcs.map(([a,b])=>{const i=+a.slice(1)-1,j=+b.slice(1)-1;return Math.hypot(geo.pos[i][0]-geo.pos[j][0],geo.pos[i][1]-geo.pos[j][1]);})),k=Math.max(1,150/len);
+ const positions=Object.fromEntries(vertices.map((v,i)=>[v.id,[Math.round(90+(geo.pos[i][0]+shift[0]-90)*k),Math.round(80+(geo.pos[i][1]+shift[1]-80)*k)]]));
  const width=Math.max(...Object.values(positions).map(p=>p[0]))+90,height=Math.max(...Object.values(positions).map(p=>p[1]))+80;
  return {vertices,arcs,positions,viewport:{width,height},diagonals};
 }

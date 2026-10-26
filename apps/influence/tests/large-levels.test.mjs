@@ -19,7 +19,7 @@ test('all 60 additions finish legally in both starting orders with the public en
  }assert.equal(games,240);
 });
 test('large-board Expert returns a legal move under bounded search and leaves the graph unchanged',()=>{
- const g=createGraph(levels.at(-1)),s=createGame(g),before=JSON.stringify(g.arcs);
+ const g=createGraph(levels.find(l=>l.id==='long-path-33')),s=createGame(g),before=JSON.stringify(g.arcs);
  const options={difficulty:'expert',budget:{maxVertices:20,fallbackTimeMs:10000,fallbackNodes:400}};
  const a=chooseMove(g,s,options),b=chooseMove(g,s,options);assert.ok(legalMoves(g,s.remaining,s.turn).includes(a.id));assert.equal(a.exact,false);assert.equal(a.id,b.id);assert.equal(a.depth,b.depth);assert.ok(a.depth>=2);assert.equal(JSON.stringify(g.arcs),before);
 });
