@@ -68,7 +68,12 @@ function home(){const saved=state&&!state.finished&&config.mode===settings.mode;
 function boardSVG(demo=false){
  const g=demo?createGraph(levels[0]):graph, remaining=demo?g.full:state.remaining;
  const p=demo?'L':settings.fixed&&config.mode==='solo'?config.side:state.turn;
- const boardLevel=demo?levels[0]:level(),positions=boardLevel.positions;
+ const boardLevel=demo?levels[0]:level();
+ // A wide graph on a portrait screen (or a tall one on a landscape screen) is drawn with its axes swapped,
+ // a plain reflection: same graph, same arcs, much bigger pieces.
+ let positions=boardLevel.positions;
+ if(!demo){const xs=Object.values(positions).map(p=>p[0]),ys=Object.values(positions).map(p=>p[1]),gw=Math.max(...xs)-Math.min(...xs)+124,gh=Math.max(...ys)-Math.min(...ys)+124,box=$('.play-board')?.getBoundingClientRect(),bw=box?.width||innerWidth,bh=box?.height||innerHeight;
+  if(Math.min(bw/gh,bh/gw)>Math.min(bw/gw,bh/gh)*1.05)positions=Object.fromEntries(Object.entries(positions).map(([id,[x,y]])=>[id,[y,x]]));}
  // The game board always shows the whole graph: the view box hugs the vertices.
  let vx=0,vy=0,W=600,H=520;
  if(!demo){const xs=g.vertices.map(v=>positions[v.id][0]),ys=g.vertices.map(v=>positions[v.id][1]),m=62;vx=Math.min(...xs)-m;vy=Math.min(...ys)-m;W=Math.max(...xs)-Math.min(...xs)+2*m;H=Math.max(...ys)-Math.min(...ys)+2*m;view={w:W,h:H};}
@@ -310,6 +315,7 @@ modal.addEventListener('cancel',()=>{dialogType='';setTimeout(scheduleAI,0);});
 document.addEventListener('pointerdown',e=>{keyboardInput=false;unlockAudio();const b=e.target.closest?.('#board');if(b&&zoom>1&&!e.target.closest('[data-node]')){drag={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};b.setPointerCapture(e.pointerId);}});
 document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board svg').getBoundingClientRect(),factor=Math.max(view.w/rect.width,view.h/rect.height),mx=view.w*(zoom-1)/2,my=view.h*(zoom-1)/2;pan={x:Math.max(-mx,Math.min(mx,drag.px+(e.clientX-drag.x)*factor)),y:Math.max(-my,Math.min(my,drag.py+(e.clientY-drag.y)*factor))};drawBoard();});
 document.addEventListener('pointerup',()=>{drag=null;});
+let lastShape='';addEventListener('resize',()=>{const shape=innerHeight>innerWidth?'portrait':'landscape';if(shape===lastShape)return;lastShape=shape;if(screen==='game'&&state&&!state.finished&&!animating&&$('#board'))drawBoard();});
 document.addEventListener('pointercancel',()=>{drag=null;});
 window.addEventListener('pagehide',save);
 (async()=>{try{const response=await fetch(new URL('../levels/catalog.json?v=large1',import.meta.url));if(!response.ok)throw Error(response.status);levels=await response.json();profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();if(me().cloud)cloudRunSync(me().id,{quiet:true});}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();
