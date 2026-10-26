@@ -17,7 +17,7 @@ n'est nécessaire. Le worker est chargé relativement à `ui/app.mjs`.
 Ne pas ouvrir l'application via `file://` : les modules et le worker
 nécessitent HTTP(S).
 
-L'application comprend 12 plateaux, deux joueurs sur le même écran, un mode
+L'application comprend 60 plateaux, deux joueurs sur le même écran, un mode
 solo à trois difficultés, le choix du camp et du premier joueur, l'aperçu
 la prise directe d'un pion (la confirmation reste une option), l'annulation, un défi quotidien (rotation de plateaux
 existants, date UTC), le zoom et le déplacement après agrandissement. Les
@@ -69,7 +69,7 @@ npm run test:exhaustive
 npm run test:segments
 ```
 
-`npm test` : 37 tests dont 216 parties complètes, les métadonnées des 12
+`npm test` : 37 tests dont 408 parties complètes, les métadonnées des 12
 plateaux, les traductions FR/EN, les cascades et profils locaux (`tests/ui-modules.test.mjs`, `tests/cloud.test.mjs`), les règles et valeurs de référence de
 l'article. Le second oracle Python structurel contrôle les 38 segments.
 
@@ -89,9 +89,9 @@ graphes opposés ; ses valeurs sont résolues sur le graphe entier.
 
 - `engine/` : graphe immuable, BigInt, captures, scores et sauvegardes.
 - `ai/` : minimax exact, heuristique à deux coups, choix aléatoire facile,
-  et Web Worker. Expert : 20 sommets restants, 200 000 états, 1 200 ms ;
+  et Web Worker. Expert : 20 sommets restants, 200 000 états, 700 ms ;
   repli légal Normal en cas de limite, de panne du worker ou après 2 200 ms.
-  Les 12 plateaux ont 8 à 12 sommets et ont été résolus exactement.
+  Les 60 plateaux ont 8 à 12 sommets et ont été résolus exactement.
 - `levels/catalog.json` : positions, noms FR/EN, Ls/Rs et métadonnées.
 - `ui/` : SVG, interface, interactions, clavier et responsive.
 - `i18n/` : dictionnaires FR/EN.

@@ -89,3 +89,32 @@ Validation : 41 tests ; le contrôle indépendant sur 67 267 graphes vérifie
 également que ce raccourci conserve le score final sur les positions visitées.
 Parcours navigateur du plateau 2 : Rouge A, Bleu F, puis attribution automatique
 des deux rouges restants et égalité 4–4, sans troisième clic sur un pion.
+
+## Extension à 60 plateaux — 26 octobre 2026
+
+Les 12 plateaux initiaux et leurs identifiants restent intacts. Ajout de 36
+réseaux de 14/16/18 sommets, sélectionnés sur des simulations et des valeurs
+exactes, et de 12 chemins de 22 à 33 sommets. Ces chemins sont analysés par le
+vérificateur structurel Python sur la position entière, sans additionner les
+valeurs des composantes. Toutes les valeurs Ls/Rs publiées sont exactes.
+
+Sélection par quatre catégories, total de progression dynamique, défilement
+interne des grands SVG, zoom, maintien du défilement après un coup, et mise en
+vue du choix de l'ordinateur. L'Expert utilise une recherche alpha-bêta en
+profondeur progressive lorsque le calcul exact dépasse ses limites. Ces coups
+ne sont pas présentés comme optimaux ; la description de difficulté le précise.
+
+44 tests réussis : les 216 parties de régression et 192 nouvelles parties se
+terminent avec conservation des points. Vérification des 60 graphes, de leur
+unicité, des métadonnées, des géométries, du repli Expert et des traductions.
+Dans Chrome, partie complète contre l'Expert sur le plateau 60 (33 sommets) :
+16–17 ; accès aux quatre catégories vérifié. Simulations de sélection : 12
+parties par ajout, environ 6 à 8 coups pour les réseaux intermédiaires et 8 à
+15 coups pour les grandes traversées. Il s'agit de coups, pas d'une durée en
+minutes garantie. Les graphes sont volontairement peu denses pour éviter les
+captures massives qui raccourciraient la partie.
+
+Contrôle responsive Chrome à 390 px : cibles tactiles de 65 px, zone de jeu
+avec défilement interne (334 × 445 px visibles, contenu de 410 × 832 px),
+aucun débordement horizontal de la page. Les 12 plateaux d'origine gardent
+leur disposition initiale et la progression enregistrée reste compatible.

@@ -1,4 +1,5 @@
 import { captureMask, legalMoves, other, popcount } from '../engine/graph.mjs';
+import { boundedMove } from './bounded.mjs';
 import { createExactSolver } from './exact.mjs';
 
 export function seededRandom(seed) {
@@ -15,7 +16,8 @@ export function chooseMove(graph, state, { difficulty = 'expert', seed = 1, budg
   if (difficulty === 'expert') {
     const result = createExactSolver(graph, budget).solve(state.remaining, state.turn);
     if (result.exact) return { id: result.bestMoves[0], exact: true, value: result.value, stats: result.stats };
-    return { ...chooseMove(graph, state, { difficulty: 'normal', seed }), exact: false, reason: result.reason };
+    const fallback=chooseMove(graph,state,{difficulty:'normal',seed});
+    return {...boundedMove(graph,state,fallback.id,{timeMs:budget?.fallbackTimeMs??650,maxNodes:budget?.fallbackNodes??40000}),reason:result.reason};
   }
   const random = seededRandom(seed);
   if (difficulty === 'easy') return { id: moves[Math.floor(random() * moves.length)], exact: false };
