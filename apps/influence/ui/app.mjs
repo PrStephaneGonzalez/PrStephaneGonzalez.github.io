@@ -19,7 +19,7 @@ let settings={...defaults,...stored};
 for(const[key,allowed]of Object.entries({lang:['fr','en'],mode:['solo','duo'],side:['L','R'],first:['L','R','random'],difficulty:['easy','normal','expert'],speed:['calm','normal','fast']}))if(!allowed.includes(settings[key]))settings[key]=defaults[key];
 for(const k of ['confirm','motion','sound','fixed'])settings[k]=typeof settings[k]==='boolean'?settings[k]:defaults[k];
 let levelGroup=0;
-const groups=[[0,12,'chapter1'],[12,30,'chapter2'],[30,48,'chapter3'],[48,60,'chapter4']];
+const groups=[[0,12,'chapter1'],[12,30,'chapter2'],[30,48,'chapter3'],[48,60,'chapter4'],[60,72,'chapter5']];
 let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},view={w:600,h:520},drag=null,daily=null,toast='',lastOpener=null;
 const today=()=>new Date().toISOString().slice(0,10);
 let profileStore=loadStore(null,[]),profileNote='',pendingDelete=null,cloudMsg='',cloudDeleteAsk=false,cloudRun=Promise.resolve(),cloudTimer=null;
@@ -68,7 +68,12 @@ function home(){const saved=state&&!state.finished&&config.mode===settings.mode;
 function boardSVG(demo=false){
  const g=demo?createGraph(levels[0]):graph, remaining=demo?g.full:state.remaining;
  const p=demo?'L':settings.fixed&&config.mode==='solo'?config.side:state.turn;
- const boardLevel=demo?levels[0]:level(),positions=boardLevel.positions;
+ const boardLevel=demo?levels[0]:level();
+ // A wide graph on a portrait screen (or a tall one on a landscape screen) is drawn with its axes swapped,
+ // a plain reflection: same graph, same arcs, much bigger pieces.
+ let positions=boardLevel.positions;
+ if(!demo){const xs=Object.values(positions).map(p=>p[0]),ys=Object.values(positions).map(p=>p[1]),gw=Math.max(...xs)-Math.min(...xs)+124,gh=Math.max(...ys)-Math.min(...ys)+124,box=$('.play-board')?.getBoundingClientRect(),bw=box?.width||innerWidth,bh=box?.height||innerHeight;
+  if(Math.min(bw/gh,bh/gw)>Math.min(bw/gw,bh/gh)*1.05)positions=Object.fromEntries(Object.entries(positions).map(([id,[x,y]])=>[id,[y,x]]));}
  // The game board always shows the whole graph: the view box hugs the vertices.
  let vx=0,vy=0,W=600,H=520;
  if(!demo){const xs=g.vertices.map(v=>positions[v.id][0]),ys=g.vertices.map(v=>positions[v.id][1]),m=62;vx=Math.min(...xs)-m;vy=Math.min(...ys)-m;W=Math.max(...xs)-Math.min(...xs)+2*m;H=Math.max(...ys)-Math.min(...ys)+2*m;view={w:W,h:H};}
@@ -199,7 +204,7 @@ function radios(key,options){return `<div class="radio-row">${options.map(([valu
 function renderModal(){const close=button('close','', 'icon-button','close',`aria-label="${t('close')}"`);let title='',body='';
  if(dialogType==='help'){title=t('helpTitle');body=`<div class="help-steps">${[1,2,3].map((i)=>`<div class="help-step"><span class="step-number">${i}</span><div><h3>${t(`step${i}`)}</h3><p>${t(`step${i}Text`)}</p></div></div>`).join('')}</div><div class="end-rule"><b>${t('endRule')}</b><p>${t('endRuleText')}</p></div>${button('got-it',t('gotIt'),'button primary wide','play')}`;}
  else if(dialogType==='levels'){title=t('levels');const map={first:'firstWins',red:'redWins',blue:'blueWins',draw:'tie','red-draw':'redDraw','blue-draw':'blueDraw'};
- body=`<p class="dialog-intro">${t('levelHelp')}</p><nav class="level-tabs">${groups.map(([a,b,key],i)=>button('level-group',t(key),`level-tab ${i===levelGroup?'active':''}`,'',`data-group="${i}"`)).join('')}</nav><div class="level-grid">${levels.map((l,i)=>`<button ${i<groups[levelGroup][0]||i>=groups[levelGroup][1]?'hidden':''} class="level-option ${i===index?'selected':''}" data-action="level" data-index="${i}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span><b>${esc(name(l))}</b><small>${l.meta.vertices} ● · ${t(map[l.meta.type])}</small></span>${levelMedals(l.id)}</button>`).join('')}</div>`;}
+ body=`<p class="dialog-intro">${t(groups[levelGroup][2]==='chapter5'?'trapHelp':'levelHelp')}</p><nav class="level-tabs">${groups.map(([a,b,key],i)=>button('level-group',t(key),`level-tab ${i===levelGroup?'active':''}`,'',`data-group="${i}"`)).join('')}</nav><div class="level-grid">${levels.map((l,i)=>`<button ${i<groups[levelGroup][0]||i>=groups[levelGroup][1]?'hidden':''} class="level-option ${i===index?'selected':''}" data-action="level" data-index="${i}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span><b>${esc(name(l))}</b><small>${l.meta.vertices} ● · ${t(map[l.meta.type])}</small></span>${levelMedals(l.id)}</button>`).join('')}</div>`;}
  else if(dialogType==='options'){title=t('configuration');body=`<div class="option-section"><h3>${t('mode')}</h3>${radios('mode',[['solo',t('solo')],['duo',t('duo')]])}</div>${draft.mode==='solo'?`<div class="option-section"><h3>${t('side')}</h3>${radios('side',[['L',`${mark('L')}${t('red')}`],['R',`${mark('R')}${t('blue')}`]])}</div><div class="option-section"><h3>${t('difficulty')}</h3>${radios('difficulty',[['easy',t('easy')],['normal',t('normal')],['expert',t('expert')]])}<p class="option-note">${t(`${draft.difficulty}Text`)}</p></div>`:''}<div class="option-section"><h3>${t('first')}</h3>${radios('first',[['L',t('red')],['R',t('blue')],['random',t('random')]])}</div>${button('apply',t('apply'),'button primary wide','play')}`;}
  else if(dialogType==='settings'){title=t('preferences');body=`<div class="settings-list">${[['confirm','confirmText'],['motion',null],['sound',null],['fixed','fixedText']].map(([key,note])=>`<label class="toggle-label"><span><b>${t(key)}</b>${note?`<small>${t(note)}</small>`:''}</span><input type="checkbox" name="pref-${key}" role="switch" ${settings[key]?'checked':''}></label>`).join('')}</div>${speedSection()}<p class="option-note">${t('local')}</p>`;}
  else if(dialogType==='profile'){title=t('profileTitle');body=profileBody();}
@@ -310,6 +315,7 @@ modal.addEventListener('cancel',()=>{dialogType='';setTimeout(scheduleAI,0);});
 document.addEventListener('pointerdown',e=>{keyboardInput=false;unlockAudio();const b=e.target.closest?.('#board');if(b&&zoom>1&&!e.target.closest('[data-node]')){drag={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};b.setPointerCapture(e.pointerId);}});
 document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board svg').getBoundingClientRect(),factor=Math.max(view.w/rect.width,view.h/rect.height),mx=view.w*(zoom-1)/2,my=view.h*(zoom-1)/2;pan={x:Math.max(-mx,Math.min(mx,drag.px+(e.clientX-drag.x)*factor)),y:Math.max(-my,Math.min(my,drag.py+(e.clientY-drag.y)*factor))};drawBoard();});
 document.addEventListener('pointerup',()=>{drag=null;});
+let lastShape='';addEventListener('resize',()=>{const shape=innerHeight>innerWidth?'portrait':'landscape';if(shape===lastShape)return;lastShape=shape;if(screen==='game'&&state&&!state.finished&&!animating&&$('#board'))drawBoard();});
 document.addEventListener('pointercancel',()=>{drag=null;});
 window.addEventListener('pagehide',save);
 (async()=>{try{const response=await fetch(new URL('../levels/catalog.json?v=large1',import.meta.url));if(!response.ok)throw Error(response.status);levels=await response.json();profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();if(me().cloud)cloudRunSync(me().id,{quiet:true});}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();
