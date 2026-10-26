@@ -14,8 +14,12 @@
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Grandstander:wght@600;800&family=Playwrite+FR+Trad&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Grandstander:wght@600;800&display=swap">
 <style>
+@font-face{font-family:'Playwrite FR Trad';src:url(fonts/pw-fr-trad.woff2) format('woff2');font-display:swap}
+/* le « b » isolé, en attaché, ressemblait à un « l » : on lui donne un dessin à ventre bien rond (Playwrite IT Trad, mêmes proportions) */
+@font-face{font-family:'PW b';src:url(fonts/pw-b.woff2) format('woff2');font-display:swap}
+.cb{font-family:'PW b','Playwrite FR Trad','Segoe Script','Apple Chancery',cursive!important}
 /* Layout : trois territoires (Bois, Prairie, Lac) dessinés en plein écran, animaux = clairières ; chaque jeu occupe l'écran, consigne orale en haut, gestes en bas. Univers unique, clair et pastel. */
 :root{
   --ink:#2b2142; --ink-soft:#5d5079; --paper:#fffaf4; --paper-2:#f2ebff;
@@ -771,6 +775,9 @@ function renderStrip(u,bump){const S=$('#ustrip');S.innerHTML='';if(!u||!u.keys)
     S.append(h('span',{class:'uc'+(u.cur?' cur':'')+(s==='acquis'?' ok':wait?' wait':'')+(k===bump?' bump':''),title:s==='acquis'?'acquis':wait?'à confirmer un autre jour':d+' réussite(s) sur 3'},
       h('b',null,lab),h('i',null,s==='acquis'?'✓':wait?'☾':'●'.repeat(d)+'○'.repeat(3-d))))});
   S.hidden=false}
+/* un « b » seul, en attaché, prend le dessin net (voir @font-face « PW b ») ; dans un mot, la police d'origine garde ses liaisons */
+function fixB(){document.querySelectorAll('.cur,.cur *').forEach(e=>{if(e.children.length)return;const t=e.textContent.trim();e.classList.toggle('cb',t==='b')})}
+new MutationObserver(()=>fixB()).observe(document.body,{childList:true,subtree:true,characterData:true});
 function openGame(id){
   const G=GBY[id];cur={id,mod:MODS[id],rid:0,intro:MODS[id].intro};
   $('#gAni').textContent=G.ani;$('#gAni').style.filter='';$('#gAni').className='a'+(curForm(G)>0?' fx'+curForm(G):'');$('#gName').textContent=G.title;$('#map').hidden=true;$('#game').hidden=false;renderStars();
@@ -1274,18 +1281,30 @@ function sndUnlock(){
   if(!sndOK&&sndEl.paused){try{sndEl.src='data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';const p=sndEl.play();if(p&&p.then)p.then(()=>{sndOK=true}).catch(()=>{});else sndOK=true}catch(e){}}
   if(hasTTS&&!ttsOK){try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='fr-FR';speechSynthesis.speak(u);ttsOK=true}catch(e){}}}
 ['pointerdown','touchend','click','keydown'].forEach(ev=>document.addEventListener(ev,sndUnlock,{capture:true,passive:true}));
-function sndLoad(path){if(!(path in sndUrl))sndUrl[path]=fetch(path).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>URL.createObjectURL(b)).catch(()=>null);return sndUrl[path]}
+/* un fichier son : 6 s au plus par essai, deux essais ; un échec n'est jamais retenu (sinon un petit raté de réseau
+   condamnait ce son à la voix de l'iPad pour toute la séance) */
+function sndFetch(path){const once=()=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),6000);
+    return fetch(path,{signal:c.signal}).then(r=>{if(!r.ok)throw 0;return r.blob()}).finally(()=>clearTimeout(t))};
+  return once().catch(()=>once()).then(b=>URL.createObjectURL(b))}
+function sndLoad(path){if(!(path in sndUrl))sndUrl[path]=sndFetch(path).catch(()=>{delete sndUrl[path];return null});return sndUrl[path]}
+/* préchargement : deux fichiers à la fois, pour ne pas écraser la connexion au moment où l'on a besoin d'un son précis */
+const sndQ=[];let sndQn=0;
+function sndQueue(path){if(path in sndUrl||sndQ.includes(path))return;sndQ.push(path);sndPump()}
+function sndPump(){while(sndQn<2&&sndQ.length){const p=sndQ.shift();if(p in sndUrl)continue;sndQn++;sndLoad(p).finally(()=>{sndQn--;sndPump()})}}
 const sndPath=(cat,x)=>SND_SET[cat].has(x)?'sons/'+cat+'/'+SKEY(x)+'.mp3':null;
-function sndPreload(gs,cat){gs.forEach(g=>{const p=sndPath(cat||'ph',g);if(p)sndLoad(p)})}
+function sndPreload(gs,cat){gs.forEach(g=>{const p=sndPath(cat||'ph',g);if(p)sndQueue(p)})}
 /* joue un fichier son ; sinon la voix de l'appareil dit le texte de secours */
-function sndPlay(path,fbText,onend,rate){const tok=++sndTok;let done=false,fell=false;const fin=()=>{if(!done&&tok===sndTok){done=true;onend&&onend()}};
-  const fb=()=>{if(fell||tok!==sndTok)return;fell=true;ttsSay(fbText,fin,rate)};
+function sndPlay(path,fbText,onend,rate){const tok=++sndTok;let done=false,fell=false,started=false;const fin=()=>{if(!done&&tok===sndTok){done=true;onend&&onend()}};
+  const fb=()=>{if(fell||done||tok!==sndTok)return;fell=true;if(started)try{sndEl.pause()}catch(e){}ttsSay(fbText,fin,rate)};
   if(!path){fb();return}
   try{if(hasTTS)speechSynthesis.cancel()}catch(e){}
-  sndLoad(path).then(u=>{if(tok!==sndTok)return;if(!u){fb();return}
+  const tw=setTimeout(()=>{if(!started)fb()},4500);      /* fichier trop long à arriver : la voix de l'appareil prend le relais */
+  sndLoad(path).then(u=>{clearTimeout(tw);if(tok!==sndTok||fell)return;if(!u){fb();return}
+    started=true;
     try{sndEl.pause();sndEl.onended=fin;sndEl.onerror=fb;sndEl.src=u;const p=sndEl.play();if(p&&p.catch)p.catch(fb)}catch(e){fb()}
-    /* garde-fou : on attend la fin réelle du son (les consignes peuvent durer plusieurs secondes), au plus ~20 s */
-    let n=0;const wd=()=>setTimeout(()=>{if(done||fell||tok!==sndTok)return;if(sndEl.paused||sndEl.ended||++n>5)fin();else wd()},3500);wd()})}
+    /* garde-fous : un son qui n'a pas démarré après 2,5 s est abandonné ; sinon on attend sa fin réelle (les consignes peuvent durer plusieurs secondes), au plus ~20 s */
+    let n=0;const wd=ms=>setTimeout(()=>{if(done||fell||tok!==sndTok)return;if(n===0&&!sndEl.ended&&sndEl.currentTime<.05){fb();return}
+      if(sndEl.paused||sndEl.ended||++n>5)fin();else wd(3500)},ms);wd(2500)})}
 function snd(g,onend){sndPlay(sndPath('ph',g),SNDT(g),onend)}
 const pSn=g=>cb=>snd(g,cb);
 /* hibou : noms des lettres et phrases en fichiers son, pour ne pas dépendre de la voix de l'iPad */
@@ -1317,10 +1336,13 @@ function replayPrompt(pre){if(!cur)return;const t0=((pre?pre+' ':'')+cur.prompt)
 function promptS(A,spoken,shown,pl){cur.prompt=spoken;cur.pplay=pl||null;$('#ptext').textContent=shown||spoken;const t=((cur.intro?cur.intro+' ':'')+spoken).trim();cur.intro=null;if(!t&&pl){pl();return}say(t,pl?()=>{if(cur&&cur.pplay===pl)pl()}:null)}
 /* mauvaise réponse : on entend ce que l'on a touché, puis la consigne */
 function wrongS(el,pl,A){if(!cur||cur.busy||cur.lock)return;cur.firstTry=false;cur.errors++;sfx('no');shake(el);const rid=cur.rid;cur.lock=true;
-  setTimeout(()=>{if(!cur||cur.rid!==rid)return;const go=()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;if(cur.errors>=2&&cur.hint)cur.hint('Essaie encore.');else replayPrompt('Essaie encore.')};pl?pl(go):go()},260)}
+  setTimeout(()=>{if(!cur||cur.rid!==rid)return;const go=once(()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;if(cur.errors>=2&&cur.hint)cur.hint('Essaie encore.');else replayPrompt('Essaie encore.')},9000);pl?pl(go):go()},260)}
 /* bonne réponse : on entend la bonne réponse, puis la fée félicite */
-function rightS(el,key,pl,A){if(!cur||cur.busy||cur.lock)return;cur.lock=true;el&&el.classList.add('pop');const rid=cur.rid;const go=()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;A.right(key)};pl?pl(go):go()}
+function once(f,ms){let d=false,t;const g=()=>{if(d)return;d=true;clearTimeout(t);f()};t=setTimeout(g,ms);return g}   /* filet : si un son se perd, la suite part quand même */
+function rightS(el,key,pl,A){if(!cur||cur.busy||cur.lock)return;cur.lock=true;el&&el.classList.add('pop');const rid=cur.rid;const go=once(()=>{if(!cur||cur.rid!==rid)return;cur.lock=false;A.right(key)},9000);pl?pl(go):go()}
 const guard=()=>cur&&!cur.busy&&!cur.lock;
+/* dernier filet : si un son perdu laisse l'écran verrouillé plus de 12 s, on le libère */
+setInterval(()=>{if(!cur)return;if(!cur.lock){cur.lkR=null;return}const k=cur.rid+':'+(cur.lkN||0);if(cur.lkR!==k){cur.lkR=k;cur.lkS=Date.now();return}if(Date.now()-cur.lkS>12000){cur.lock=false;cur.lkR=null;cur.lkN=(cur.lkN||0)+1;try{sndEl.pause()}catch(e){}}},1500);
 function face(d){return h('span',{class:(d.cur?'cur':'')+(/[a-zà-ÿ]/i.test(d.t)&&d.t.length>3?' long':'')},d.t)}
 
 /* écoute, puis touche la bonne bulle */
@@ -1770,7 +1792,7 @@ async function choose(name){
   document.querySelectorAll('.whobtn,#whoGo').forEach(b=>b.disabled=false);begin()}
 $('#whoForm').onsubmit=e=>{e.preventDefault();const v=$('#whoName').value.trim();if(!slug(v)){$('#whoMsg').textContent='Écris ton prénom avec des lettres.';return}choose(v)};
 $('#sync').onclick=()=>{push();if(hasTTS)try{speechSynthesis.cancel()}catch(e){}showWho()};
-function begin(){$('#start').hidden=true;sfx('tap');sndUnlock();try{document.fonts&&document.fonts.load('48px "Playwrite FR Trad"','abc')}catch(e){}st.visits++;save();renderMap();
+function begin(){$('#start').hidden=true;sfx('tap');sndUnlock();try{document.fonts&&(document.fonts.load('48px "Playwrite FR Trad"','abc'),document.fonts.load('48px "PW b"','b'))}catch(e){}st.visits++;save();renderMap();
   const fr=GAMES.filter(g=>st.games[g.id].freed).length;
   say(st.visits<=1?"Bonjour, petite fée ! Une sorcière a plongé la forêt dans l'ombre. Les animaux sont prisonniers. Touche un animal pour l'aider !"
     :st.games.siren.freed?"Bravo, grande gardienne ! Toute la forêt est sauvée. Avec quel ami veux-tu jouer ?":`Te revoilà, petite fée ! Tu as déjà libéré ${fr<=1?(fr?'un animal':'aucun animal'):NW[fr]+' animaux'}. Quel ami veux-tu aider aujourd'hui ?`);
