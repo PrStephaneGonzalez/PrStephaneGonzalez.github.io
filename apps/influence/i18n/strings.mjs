@@ -1,7 +1,7 @@
 export const strings = {
  fr: {
  largeHint:'Grand plateau : fais défiler le graphe pour explorer tous les pions.',
- chapter1:'Découverte',chapter2:'Connexions',chapter3:'Grands réseaux',chapter4:'Longues traversées',
+ chapter1:'Découverte',chapter2:'Connexions',chapter3:'Grands réseaux',chapter4:'Longues traversées',chapter5:'Pièges gloutons',trapHelp:'Sur ces plateaux, le coup qui capture le plus de pions fait perdre le Rouge. Un ou deux pions seulement mènent à la victoire : à toi de les trouver.',
   twoTeams:'2 camps · 1 graphe',subtitle:'Un petit graphe. De grandes idées.', home:'Accueil', settings:'Paramètres', language:'Changer de langue',
   eyebrow:'LE JEU DES CONNEXIONS', hero:'Un coup peut<br>tout changer.', intro:'Choisis un pion, suis les flèches et prends ton adversaire de vitesse. À toi de faire les bons liens !',
   play:'Jouer maintenant', resume:'Reprendre ma partie', solo:'Contre l’ordinateur', duo:'À deux sur cet écran', levels:'Les {total} plateaux', how:'Comment jouer ?', about:'Derrière le jeu',
@@ -43,7 +43,7 @@ export const strings = {
  },
  en: {
  largeHint:'Large board: scroll the graph to explore all the pieces.',
- chapter1:'Discovery',chapter2:'Connections',chapter3:'Big networks',chapter4:'Long crossings',
+ chapter1:'Discovery',chapter2:'Connections',chapter3:'Big networks',chapter4:'Long crossings',chapter5:'Greedy traps',trapHelp:'On these boards, the move that captures the most pieces makes Red lose. Only one or two pieces lead to victory: find them.',
   twoTeams:'2 teams · 1 graph',subtitle:'A little graph. Big ideas.',home:'Home',settings:'Settings',language:'Change language',
   eyebrow:'THE GAME OF CONNECTIONS',hero:'One move can<br>change everything.',intro:'Pick a piece, follow the arrows and stay one step ahead. Make the right connections!',
   play:'Play now',resume:'Resume my game',solo:'Play the computer',duo:'Two players, one screen',levels:'The {total} boards',how:'How to play',about:'Behind the game',
