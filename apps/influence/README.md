@@ -30,6 +30,14 @@ inverse. L'option ne change jamais le graphe canonique ni les captures.
 
 ## Expérience de jeu (v1.1)
 
+- **Chapitre 5, « Pièges gloutons »** (`scripts/trap-levels.mjs`, plateaux
+  `trap-1` à `trap-12`, 10 à 16 sommets, arcs en diagonale) : Rouge commence et
+  gagne avec le bon coup, mais tout coup qui capture le plus de pions le fait
+  perdre (écart d'au moins 6 points, calculé exactement). Un ou deux pions clés
+  seulement gagnent ; ils capturent peu (au plus un tiers du plateau) et la
+  partie optimale dure encore plusieurs coups. Recherche locale sur grilles
+  avec diagonales, chaque candidat résolu exactement ; reproductible
+  (`SEED`, `RESTARTS`, `STEPS`, `SIZES`).
 - **Écran de jeu épuré** : en partie, seuls le graphe et le score restent. Une barre
   fine (accueil, plateau, scores, annuler, menu « ⋯ ») ; tout le reste (plateaux,
   options, son, langue, profil, aide) est dans le menu. Le plateau occupe tout
