@@ -30,6 +30,11 @@ inverse. L'option ne change jamais le graphe canonique ni les captures.
 
 ## Expérience de jeu (v1.1)
 
+- **Écran de jeu épuré** : en partie, seuls le graphe et le score restent. Une barre
+  fine (accueil, plateau, scores, annuler, menu « ⋯ ») ; tout le reste (plateaux,
+  options, son, langue, profil, aide) est dans le menu. Le plateau occupe tout
+  l'écran et le graphe entier y tient toujours (la vue s'ajuste aux sommets,
+  agrandissement plafonné à 1,5) ; zoom jusqu'à ×3 et déplacement au doigt.
 - **Prise directe** : toucher un pion le joue aussitôt ; les pions capturés
   tombent en cascade, par vagues le long des flèches (`ui/cascade.mjs`).
   L'option « confirmer avant de jouer » (réglages) rétablit aperçu + bouton.

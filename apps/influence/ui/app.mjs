@@ -20,7 +20,7 @@ for(const[key,allowed]of Object.entries({lang:['fr','en'],mode:['solo','duo'],si
 for(const k of ['confirm','motion','sound','fixed'])settings[k]=typeof settings[k]==='boolean'?settings[k]:defaults[k];
 let levelGroup=0;
 const groups=[[0,12,'chapter1'],[12,30,'chapter2'],[30,48,'chapter3'],[48,60,'chapter4']];
-let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},drag=null,daily=null,toast='',lastOpener=null;
+let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},view={w:600,h:520},drag=null,daily=null,toast='',lastOpener=null;
 const today=()=>new Date().toISOString().slice(0,10);
 let profileStore=loadStore(null,[]),profileNote='',pendingDelete=null,cloudMsg='',cloudDeleteAsk=false,cloudRun=Promise.resolve(),cloudTimer=null;
 const cloudApi=createApi();
@@ -69,7 +69,10 @@ function boardSVG(demo=false){
  const g=demo?createGraph(levels[0]):graph, remaining=demo?g.full:state.remaining;
  const p=demo?'L':settings.fixed&&config.mode==='solo'?config.side:state.turn;
  const boardLevel=demo?levels[0]:level(),positions=boardLevel.positions;
- const W=boardLevel.viewport?.width??600,H=boardLevel.viewport?.height??520,large=!demo&&Boolean(boardLevel.viewport);
+ // The game board always shows the whole graph: the view box hugs the vertices.
+ let vx=0,vy=0,W=600,H=520;
+ if(!demo){const xs=g.vertices.map(v=>positions[v.id][0]),ys=g.vertices.map(v=>positions[v.id][1]),m=62;vx=Math.min(...xs)-m;vy=Math.min(...ys)-m;W=Math.max(...xs)-Math.min(...xs)+2*m;H=Math.max(...ys)-Math.min(...ys)+2*m;view={w:W,h:H};}
+ const cx=vx+W/2,cy=vy+H/2;
  const arcs=displayedArcs(g,remaining,p), color=p==='L'?'red':'blue';
  const active=!demo&&!state.finished&&!busy&&!(config.mode==='solo'&&state.turn!==config.side);
  const nodes=g.vertices.filter((v,i)=>remaining&g.bits[i]);
@@ -82,26 +85,26 @@ function boardSVG(demo=false){
  const shape=v.color==='L'?'<circle class="piece-body" r="39"/>':'<rect class="piece-body" x="-38" y="-38" width="76" height="76" rx="23"/>';
  return `<g class="node ${c} ${playable?'playable':''}" transform="translate(${x} ${y})" data-node="${v.id}" ${demo?'aria-hidden="true"':`role="button" tabindex="${playable?0:-1}" aria-label="${esc(label)}" aria-disabled="${!playable}"`}><rect class="touch-area" x="-50" y="-50" width="100" height="100" rx="22" fill="transparent"/><g class="piece-fall"><circle class="node-halo" r="49"/>${shape}<g transform="translate(-16 -17) scale(1.33)" class="piece-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${nodeIcon(nodeIcons[i%nodeIcons.length])}</g><text class="node-letter" y="29" text-anchor="middle">${v.id}</text><circle class="preview-badge" cx="29" cy="-30" r="12"/><path class="preview-check" d="m23 -30 4 4 8-9"/></g></g>`;
  }).join('');
- return `<svg class="graph ${color} ${demo?'demo':''}" viewBox="0 0 ${W} ${H}" style="${large?`--graph-width:${W}px;--graph-min-width:${W*.65*zoom}px`:``}" ${demo?'aria-hidden="true"':`role="group" aria-label="${esc(name(level()))}"`}><title>${demo?'INFLUENCE':esc(name(level()))}</title>${defs}<g class="graph-content" transform="translate(${demo?0:pan.x} ${demo?0:pan.y}) translate(${W/2} ${H/2}) scale(${demo||large?1:zoom}) translate(${-W/2} ${-H/2})">${lines}${pieces}</g></svg>`;
+ return `<svg class="graph ${color} ${demo?'demo':''}" viewBox="${vx} ${vy} ${W} ${H}" style="${demo?'':`max-width:${Math.round(W*1.5)}px;max-height:${Math.round(H*1.5)}px`}" ${demo?'aria-hidden="true"':`role="group" aria-label="${esc(name(level()))}"`}><title>${demo?'INFLUENCE':esc(name(level()))}</title>${defs}<g class="graph-content" transform="translate(${demo?0:pan.x} ${demo?0:pan.y}) translate(${cx} ${cy}) scale(${demo?1:zoom}) translate(${-cx} ${-cy})">${lines}${pieces}</g></svg>`;
 }
-function scoreCard(p){const n=state.scores[p],left=popcount(state.remaining&graph.colors[p]),isHuman=config.mode==='solo'&&p===config.side;
- return `<div class="score-card ${p==='L'?'red':'blue'} ${!state.finished&&state.turn===p?'current':''}"><div class="score-team">${mark(p)}<div><b>${camp(p)}</b><small>${config.mode==='solo'?isHuman?t('you'):t('computer'):''}</small></div></div><strong class="score-number">${n}</strong><div class="playable-count ${left===1&&!state.finished?'last':''}"><span>${left}</span> ${t('playable')}</div></div>`;}
+function scoreCard(p){const n=state.scores[p],isHuman=config.mode==='solo'&&p===config.side,who=config.mode==='solo'?t(isHuman?'you':'computer'):camp(p);
+ return `<div class="score-card ${p==='L'?'red':'blue'} ${!state.finished&&state.turn===p?'current':''}" title="${camp(p)}">${mark(p)}<strong class="score-number">${n}</strong><small>${who}</small></div>`;}
+// Game screen: only the graph and the score. Everything else lives in the menu.
 function game(){
  const done=state.finished,ai=!done&&config.mode==='solo'&&state.turn!==config.side;
- const cntL=popcount(state.remaining&graph.colors.L),cntR=popcount(state.remaining&graph.colors.R);
- const notice=cntL===1&&cntR===1?t('lastBoth'):cntL===1?t('lastL'):cntR===1?t('lastR'):'';
- const label=daily?t('dailyTitle',{date:daily}):`${t('level')} ${String(index+1).padStart(2,'0')} / ${levels.length}`;
- const canUndo=history.some(s=>config.mode==='duo'||s.turn===config.side);
- return `<main class="game-main"><div class="game-heading"><div><span class="eyebrow">${label}</span><h1>${esc(name(level()))}</h1></div><div class="game-tools">${soundButton()}${button('levels','', 'icon-button','grid',`aria-label="${t('levels')}" title="${t('levels')}"`)}${button('help','', 'icon-button','help',`aria-label="${t('how')}" title="${t('how')}"`)}${button('home','', 'icon-button','home',`aria-label="${t('home')}" title="${t('home')}"`)}</div></div><div class="game-layout"><section class="board-card"><div class="turn-banner ${done?'ended':state.turn==='L'?'red':'blue'}" role="status"><div class="turn-symbol">${icon(done?'trophy':ai?'robot':'flag')}</div><div><strong>${done?t(result()==='draw'?'draw':`win${result()}`):t(`turn${state.turn}`)}</strong><span id="banner-sub">${done?t('allCaptured'):busy?t('capturing'):ai?t('thinking'):t(settings.confirm?'instruction':'instructionDirect')}</span></div>${!done?'<span class="turn-dots" aria-hidden="true"><i></i><i></i><i></i></span>':''}</div><div class="board-landscape"><span class="cloud cloud-a" aria-hidden="true"></span><span class="cloud cloud-b" aria-hidden="true"></span><div id="board" data-level="${esc(level().id)}" class="${!done&&level().viewport?'large-board':''}" ${done?'hidden':''}>${done?'':boardSVG()}</div>${done?resultPanel():''}<div class="board-controls" ${done?'hidden':''}>${button('zoom-out','', 'board-control','minus',`aria-label="${t('zoomOut')}"`)}${button('center','', 'board-control','center',`aria-label="${t('resetView')}"`)}${button('zoom-in','', 'board-control','plus',`aria-label="${t('zoomIn')}"`)}</div></div><div class="move-bar ${settings.confirm?'':'direct'}" ${done?'hidden':''}><div><span class="move-dot"></span><span id="preview-text">${ai?t('thinking'):t(level().viewport?'largeHint':settings.confirm?'select':'selectDirect')}</span></div>${settings.confirm?button('confirm',t('capture',{n:0,s:'s'}),'button primary capture-button','check','disabled'):''}</div></section><aside class="game-sidebar"><div class="scores">${scoreCard('L')}${scoreCard('R')}</div>${notice&&!done?`<p class="last-warning">${icon('info')}${notice}</p>`:''}<div class="aside-card"><span class="mini-kicker">${t('configuration')}</span><div class="config-line">${icon(config.mode==='solo'?'robot':'people')}<span>${t(config.mode==='solo'?'solo':'duo')}</span></div>${config.mode==='solo'?`<div class="difficulty-tag">${t(config.difficulty)}<span>${'●'.repeat(['easy','normal','expert'].indexOf(config.difficulty)+1)}</span></div>`:''}${button('options',t('startOptions'),'text-button','gear')}<hr><p class="arrow-note">${icon('arrow')}${t(settings.fixed&&config.mode==='solo'?'fixedNotice':'autoNotice')}</p></div><div class="aside-actions">${button('undo',t('undo'),'button secondary','back',canUndo?'':'disabled')}${button('restart',t('restart'),'text-button','refresh')}</div><div class="progress-compact"><div>${icon('star')}<span>${t('progressText',{n:wonCount()})}</span></div><div class="progress-track"><i style="width:${wonCount()/levels.length*100}%"></i></div><small class="progress-sides">${sidesText()}</small></div></aside></div><div class="game-bottom"><span>${t('local')}</span>${button('about',t('about'),'text-button','info')}</div></main>`;
+ const label=daily?t('dailyTitle',{date:daily}):`${String(index+1).padStart(2,'0')} / ${levels.length}`;
+ const canUndo=!done&&history.some(s=>config.mode==='duo'||s.turn===config.side);
+ const status=done?t(result()==='draw'?'draw':`win${result()}`):t(`turn${state.turn}`);
+ return `<main class="play ${done?'ended':`turn-${state.turn}`} ${ai?'ai':''}"><header class="play-bar">${button('home','', 'icon-button','home',`aria-label="${t('home')}" title="${t('home')}"`)}<div class="play-title"><small>${label}</small><b>${esc(name(level()))}</b></div><div class="scores">${scoreCard('L')}${scoreCard('R')}</div>${button('undo','', 'icon-button','back',`aria-label="${t('undo')}" title="${t('undo')}" ${canUndo?'':'disabled'}`)}${button('menu','', 'icon-button','more',`aria-label="${t('menu')}" title="${t('menu')}"`)}</header><p class="sr-only" role="status"><span>${status}.</span> <span id="banner-sub">${done?t('allCaptured'):busy?t('capturing'):ai?t('thinking'):''}</span> <span id="preview-text">${ai?t('thinking'):t(settings.confirm?'select':'selectDirect')}</span></p><section class="play-board"><div id="board" data-level="${esc(level().id)}" class="${zoom>1?'is-zoomed':''}" ${done?'hidden':''}>${done?'':boardSVG()}</div>${done?resultPanel():`<div class="board-controls">${button('zoom-out','', 'board-control','minus',`aria-label="${t('zoomOut')}"`)}${button('center','', 'board-control','center',`aria-label="${t('resetView')}"`)}${button('zoom-in','', 'board-control','plus',`aria-label="${t('zoomIn')}"`)}</div>${settings.confirm?`<div class="move-bar">${button('confirm',t('capture',{n:0,s:'s'}),'button primary capture-button','check','disabled')}</div>`:''}`}</section></main>`;
 }
 function resultPanel(){const r=result(),won=r===config.side;return `<section class="result-panel" aria-labelledby="result-title"><div class="result-trophy" aria-hidden="true">${icon(r==='draw'?'spark':'trophy')}</div><span class="eyebrow">${t('resultLabel')}</span><h2 id="result-title">${t(r==='draw'?'draw':`win${r}`)}</h2><p>${config.mode==='solo'?t(won?'victory':'loss'):t('resultNext')}</p><div class="final-score"><span class="red">${mark('L')}${state.scores.L}</span><span class="score-separator">–</span><span class="blue">${mark('R')}${state.scores.R}</span></div><small>${t('final',{a:state.scores.L,b:state.scores.R,n:graph.vertices.length})}</small><p class="settlement">${state.settlement?t(state.settlement.reason==='one-color'?'terminalMonochrome':'terminal',{camp:camp(state.settlement.player),n:state.settlement.count,winner:camp(state.settlement.recipient)}):t('allCaptured')}</p>${keepPrompt()}<div class="result-buttons">${button('next',t('next'),'button primary','arrow')}${button('replay',t('replay'),'button secondary','refresh')}</div><div class="result-links">${button('switch',t('switch'),'text-button')}${button('share',toast||t('share'),'text-button')}</div></section>`;}
-function render(){const oldBoard=$('#board'),scroll=oldBoard?{id:oldBoard.dataset.level,x:oldBoard.scrollLeft,y:oldBoard.scrollTop}:null;setSettings();app.innerHTML=header()+(screen==='home'?home():game())+footer();const board=$('#board');if(board&&scroll?.id===board.dataset.level)board.scrollTo(scroll.x,scroll.y);if(screen==='game'&&!state.finished)updatePreview();}
+function render(){const oldBoard=$('#board'),scroll=oldBoard?{id:oldBoard.dataset.level,x:oldBoard.scrollLeft,y:oldBoard.scrollTop}:null;setSettings();document.body.classList.toggle('playing',screen==='game');app.innerHTML=screen==='home'?header()+home()+footer():game();const board=$('#board');if(board&&scroll?.id===board.dataset.level)board.scrollTo(scroll.x,scroll.y);if(screen==='game'&&!state.finished)updatePreview();}
 function updatePreview(){if(screen!=='game'||!state||state.finished)return;
  const id=aiShow??selected??hovered;let mask=0n;if(id&&(aiShow||!busy&&!(config.mode==='solo'&&state.turn!==config.side))){try{mask=previewMove(graph,state,id);}catch{}}
  document.querySelectorAll('#board [data-node]').forEach(el=>{const hit=Boolean(mask&graph.bits[graph.index[el.dataset.node]]);el.classList.toggle('in-preview',hit);el.classList.toggle('chosen',el.dataset.node===(aiShow??selected));el.setAttribute('aria-pressed',String(el.dataset.node===(aiShow??selected)));});
  document.querySelectorAll('#board .edge').forEach(el=>el.classList.toggle('in-preview',Boolean((mask&graph.bits[graph.index[el.dataset.from]])&&(mask&graph.bits[graph.index[el.dataset.to]]))));
  const n=popcount(mask),ai=config.mode==='solo'&&state.turn!==config.side;
- $('#preview-text').textContent=n?t(aiShow?'aiPreview':'preview',{n,s:plural(n)}):busy?t('capturing'):ai?t('thinking'):t(level().viewport?'largeHint':settings.confirm?'select':'selectDirect');
+ $('#preview-text').textContent=n?t(aiShow?'aiPreview':'preview',{n,s:plural(n)}):busy?t('capturing'):ai?t('thinking'):t(settings.confirm?'select':'selectDirect');
  const confirm=$('[data-action="confirm"]');if(confirm){confirm.disabled=!selected||busy||ai;confirm.innerHTML=icon('check')+t('capture',{n,s:plural(n)});}
 }
 function drawBoard(){if(animating)return;$('#board').classList.toggle('is-zoomed',zoom>1);const focused=document.activeElement?.dataset.node;$('#board').innerHTML=boardSVG();updatePreview();if(focused)$(`#board [data-node="${focused}"]`)?.focus({preventScroll:true});}
@@ -120,7 +123,6 @@ function makeHand(player){const board=$('#board');if(!board)return null;const el
 function ripple(target,player){const board=$('#board');if(!board)return;const el=document.createElement('div');el.className=`ai-ripple ${player==='L'?'red':'blue'}`;el.style.left=`${target.x}px`;el.style.top=`${target.y}px`;board.appendChild(el);setTimeout(()=>el.remove(),700);}
 /** The computer shows its choice: a pointer travels to the piece, the capture preview lights up, then the pieces fall. */
 async function showAiChoice(id,token){
- if(level().viewport)$('#board')?.querySelector(`[data-node="${id}"]`)?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'auto'});
  const p=pace(),player=state.turn,target=nodeCenter(id);
  setSub(t('aiPicks',{camp:camp(player)}));
  const hand=target?makeHand(player):null;
@@ -202,6 +204,8 @@ function renderModal(){const close=button('close','', 'icon-button','close',`ari
  else if(dialogType==='settings'){title=t('preferences');body=`<div class="settings-list">${[['confirm','confirmText'],['motion',null],['sound',null],['fixed','fixedText']].map(([key,note])=>`<label class="toggle-label"><span><b>${t(key)}</b>${note?`<small>${t(note)}</small>`:''}</span><input type="checkbox" name="pref-${key}" role="switch" ${settings[key]?'checked':''}></label>`).join('')}</div>${speedSection()}<p class="option-note">${t('local')}</p>`;}
  else if(dialogType==='profile'){title=t('profileTitle');body=profileBody();}
  else if(dialogType==='about'){title=t('scienceTitle');body=`<div class="science-copy"><div class="science-symbol">${icon('spark')}</div><p>${t('science')}</p><p>${t('science2')}</p><p>${t('science3')}</p><blockquote><i>influence: A partizan scoring game on graphs.</i><br>Theoretical Computer Science, 878–879 (2021), 26–46.</blockquote><a class="button primary" href="https://doi.org/10.1016/j.tcs.2021.05.028" target="_blank" rel="noopener noreferrer">${t('paper')}${icon('arrow')}</a></div>`;}
+ else if(dialogType==='menu'){title=t('menu');const item=(action,label,ico,close=false)=>`<button class="menu-item" data-action="${action}" ${close?'data-menu-close':''}>${icon(ico)}<span>${label}</span></button>`;
+  body=`<div class="menu-list">${item('restart',t('restart'),'refresh',true)}${item('levels',t('levels'),'grid')}${item('options',t('startOptions'),'robot')}${item('settings',t('preferences'),'gear')}${item('sound',t(settings.sound?'soundMute':'soundUnmute'),settings.sound?'mute':'volume')}${item('language',settings.lang==='fr'?'English':'Français','globe')}${item('profile',esc(me().name||t('guest')),'user')}${item('help',t('how'),'help')}${item('about',t('about'),'info')}${item('home',t('home'),'home',true)}</div>`;}
  else if(dialogType==='undo'){title=t('undo');body=`<p>${t('undoConsent')}</p>${button('undo-agreed',t('undo'),'button primary wide','back')}`;}
  modal.className=`modal ${dialogType==='levels'?'large':''}`;modal.innerHTML=`<div class="modal-heading"><h2 id="modal-title">${title}</h2>${close}</div>${body}`;
 }
@@ -211,14 +215,14 @@ async function act(action,el){switch(action){
  case'mode-solo':case'mode-duo':settings.mode=action.slice(5);setSettings();render();break;
  case'play':start(index,settings);if(!read('seen-help',false)){write('seen-help',true);openModal('help');}break;
  case'resume':screen='game';config={...config,lang:settings.lang};render();finishResumedTail();break;
- case'levels':case'help':case'about':case'settings':case'options':openModal(action);break;
+ case'levels':case'help':case'about':case'settings':case'options':case'menu':openModal(action);break;
  case'close':closeModal();break;
  case'got-it':closeModal();if(screen==='home')start(index,settings);break;
  case'apply':settings={...settings,mode:draft.mode,side:draft.side,first:draft.first,difficulty:draft.difficulty};setSettings();start(index,settings);break;
  case'level-group':levelGroup=Number(el.dataset.group);renderModal();break;
  case'level':index=Number(el.dataset.index);start(index,screen==='home'?settings:config);break;
  case'confirm':if(selected)commit(selected);break;
- case'sound':settings.sound=!settings.sound;setSettings();unlockAudio();syncSoundButton();if(settings.sound)audio.tap();break;
+ case'sound':settings.sound=!settings.sound;setSettings();unlockAudio();syncSoundButton();if(dialogType==='menu')renderModal();if(settings.sound)audio.tap();break;
  case'profile':openModal('profile');break;
  case'profile-switch':profileStore=switchProfile(profileStore,el.dataset.id);saveProfiles();pendingDelete=null;cloudMsg='';cloudDeleteAsk=false;afterProfileChange();if(me().cloud)cloudRunSync(me().id,{quiet:true});break;
  case'cloud-sync':cloudRunSync(me().id);break;
@@ -234,8 +238,8 @@ async function act(action,el){switch(action){
  case'restart':case'replay':start(index,config,daily);break;
  case'next':start(index+1,config);break;
  case'switch':start(index,{...config,side:config.side==='L'?'R':'L',first:config.first==='L'?'R':config.first==='R'?'L':'random'},daily);break;
- case'zoom-in':zoom=Math.min(2,zoom+.2);drawBoard();break;
- case'zoom-out':zoom=Math.max(.8,zoom-.2);drawBoard();break;
+ case'zoom-in':zoom=Math.min(3,zoom*1.25);drawBoard();break;
+ case'zoom-out':zoom=Math.max(1,zoom/1.25);if(zoom<1.01){zoom=1;pan={x:0,y:0};}drawBoard();break;
  case'center':zoom=1;pan={x:0,y:0};drawBoard();$('#board').scrollTo(0,0);break;
  case'daily':{const date=new Date().toISOString().slice(0,10),days=Math.floor(Date.parse(date)/86400000);start(days%levels.length,{...settings,mode:'solo',first:days%2?'R':'L'},date);break;}
  case'share':{const text=`INFLUENCE${daily?' · '+daily:''} · ${name(level())}\n${t('red')} ${state.scores.L} – ${state.scores.R} ${t('blue')}\nhttps://stephanegonzalez.eu/apps/influence/`;try{await navigator.clipboard.writeText(text);toast=t('copied');}catch{toast=t('copyFailed');}render();announce(toast);setTimeout(()=>{toast='';if(screen==='game'&&state.finished)render();},2500);break;}
@@ -243,7 +247,7 @@ async function act(action,el){switch(action){
 // Unlock in activation events accepted by touch browsers, before async animations.
 document.addEventListener('click',unlockAudio,{capture:true});
 document.addEventListener('touchend',unlockAudio,{capture:true,passive:true});
-document.addEventListener('click',event=>{if(animating&&event.target.closest?.('#board'))skip();const el=event.target.closest('[data-action]');if(el&&!el.disabled){act(el.dataset.action,el);return;}const node=event.target.closest('#board [data-node]');if(node)select(node.dataset.node);});
+document.addEventListener('click',event=>{if(animating&&event.target.closest?.('#board'))skip();const el=event.target.closest('[data-action]');if(el&&!el.disabled){if(el.hasAttribute('data-menu-close')&&modal.open){modal.close();dialogType='';}act(el.dataset.action,el);return;}const node=event.target.closest('#board [data-node]');if(node)select(node.dataset.node);});
 document.addEventListener('keydown',e=>{keyboardInput=true;unlockAudio();const n=e.target.closest?.('#board [data-node]');if(n&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(n.dataset.node);}if(n&&['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();const nodes=[...document.querySelectorAll('#board [data-node][tabindex="0"]')],i=nodes.indexOf(n),delta=['ArrowRight','ArrowDown'].includes(e.key)?1:-1;nodes[(i+delta+nodes.length)%nodes.length]?.focus();}if(e.key==='Escape'&&!modal.open){selected=null;hovered=null;updatePreview();}});
 document.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||screen!=='game'||state.finished)return;const n=e.target.closest?.('#board [data-node]');if(n?.getAttribute('aria-disabled')==='false'){hovered=n.dataset.node;updatePreview();}});
 document.addEventListener('pointerout',e=>{const n=e.target.closest?.('#board [data-node]');if(n&&!n.contains(e.relatedTarget)){hovered=null;if(screen==='game'&&!state.finished)updatePreview();}});
@@ -303,8 +307,8 @@ modal.addEventListener('submit',e=>{const kind=e.target.closest?.('[data-form]')
 
 modal.addEventListener('cancel',()=>{dialogType='';setTimeout(scheduleAI,0);});
 // Pan the board after zooming. Pointer capture is kept on the persistent board container.
-document.addEventListener('pointerdown',e=>{keyboardInput=false;unlockAudio();const b=e.target.closest?.('#board');if(b&&zoom>1&&!level().viewport&&!e.target.closest('[data-node]')){drag={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};b.setPointerCapture(e.pointerId);}});
-document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board').getBoundingClientRect(),factor=600/rect.width;pan={x:Math.max(-250,Math.min(250,drag.px+(e.clientX-drag.x)*factor)),y:Math.max(-250,Math.min(250,drag.py+(e.clientY-drag.y)*factor))};drawBoard();});
+document.addEventListener('pointerdown',e=>{keyboardInput=false;unlockAudio();const b=e.target.closest?.('#board');if(b&&zoom>1&&!e.target.closest('[data-node]')){drag={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};b.setPointerCapture(e.pointerId);}});
+document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board svg').getBoundingClientRect(),factor=Math.max(view.w/rect.width,view.h/rect.height),mx=view.w*(zoom-1)/2,my=view.h*(zoom-1)/2;pan={x:Math.max(-mx,Math.min(mx,drag.px+(e.clientX-drag.x)*factor)),y:Math.max(-my,Math.min(my,drag.py+(e.clientY-drag.y)*factor))};drawBoard();});
 document.addEventListener('pointerup',()=>{drag=null;});
 document.addEventListener('pointercancel',()=>{drag=null;});
 window.addEventListener('pagehide',save);
