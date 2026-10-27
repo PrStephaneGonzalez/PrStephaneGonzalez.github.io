@@ -19,7 +19,7 @@ Cette page rassemble les petits programmes que je construis à côté de mes rec
     <p class="apps-kicker">Jeu à deux sur un graphe · FR / EN</p>
     <h2 id="influence-title"><span class="apps-dots" aria-hidden="true"><i></i><i></i></span>INFLUENCE <small>le jeu des connexions</small></h2>
     <p>INFLUENCE est tiré de l'article que nous avons écrit avec Éric Duchêne, Aline Parreau, Éric Rémila et Philippe Solal. Deux joueurs, un graphe orienté dont les sommets sont rouges ou bleus. À son tour, on choisit un sommet de sa couleur et on capture tout ce qu'il atteint en suivant les arcs (pour le joueur bleu, ils sont lus à l'envers). Chaque sommet capturé vaut un point, et le coup le plus gourmand n'est pas toujours le bon.</p>
-    <p>Douze plateaux, à jouer contre l'ordinateur (trois niveaux) ou à deux sur le même écran. Un prénom suffit pour garder sa progression, sur l'appareil ou en ligne avec un code.</p>
+    <p>Une initiation en cinq petits plateaux, puis 84 plateaux rangés du plus simple au plus retors, à jouer contre l'ordinateur (trois niveaux) ou à deux sur le même écran. En fin de partie, le jeu rejoue la partie avec un solveur exact et montre le coup décisif. Un prénom suffit pour garder sa progression, sur l'appareil ou en ligne avec un code.</p>
     <p class="apps-en" lang="en">INFLUENCE is a two-player scoring game on directed graphs, from our paper in <em>Theoretical Computer Science</em> (2021). You can play it right here, in English or in French.</p>
     <p class="apps-actions">
       <button type="button" class="apps-btn apps-btn-primary" data-influence-play>▶ Jouer ici</button>

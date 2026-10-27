@@ -2,6 +2,8 @@
 // Pure functions over a plain object, so they are easy to test and never touch the DOM.
 export const MAX_PROFILES = 8, NAME_MIN = 2, NAME_MAX = 16;
 const SIDES = ['L', 'R', 'U'];            // won as Red, won as Blue, won (side unknown: older saves)
+// Stored per board: the three sides above (first star), E = second star (against Expert), P = third star (perfect score).
+const KEYS = [...SIDES, 'E', 'P'];
 const CODE_PREFIX = 'INF1.';
 
 const guestProfile = () => ({ id: 'guest', name: '', levels: {}, games: 0 });
@@ -25,7 +27,7 @@ function cleanLevels(raw, known) {
   for (const [id, wins] of Object.entries(raw)) {
     if (!known.includes(id) || !wins || typeof wins !== 'object') continue;
     const kept = {};
-    for (const side of SIDES) if (isDay(wins[side])) kept[side] = wins[side];
+    for (const side of KEYS) if (isDay(wins[side])) kept[side] = wins[side];
     if (Object.keys(kept).length) levels[id] = kept;
   }
   return levels;
@@ -68,26 +70,49 @@ export function loadStore(raw, known, legacyCompleted = [], today = '1970-01-01'
 
 export const activeProfile = store => store.profiles.find(p => p.id === store.active) ?? store.profiles[0];
 const update = (store, id, change) => ({ ...store, profiles: store.profiles.map(p => p.id === id ? change(p) : p) });
-export const isWon = (profile, levelId) => Boolean(profile.levels[levelId]);
+const won = w => Boolean(w && (w.L || w.R || w.U));
+export const isWon = (profile, levelId) => won(profile.levels[levelId]);
+/** Stars of one board: 0 to 3. */
+export const starsOf = (profile, levelId) => { const w = profile.levels[levelId]; return won(w) ? 1 + (w.E ? 1 : 0) + (w.P ? 1 : 0) : 0; };
 
 export function summary(profile, levelIds) {
-  let won = 0, red = 0, blue = 0;
+  let count = 0, red = 0, blue = 0, stars = 0;
   for (const id of levelIds) {
     const w = profile.levels[id];
-    if (!w) continue;
-    won++; if (w.L) red++; if (w.R) blue++;
+    if (!won(w)) continue;
+    count++; if (w.L) red++; if (w.R) blue++; stars += starsOf(profile, id);
   }
-  return { won, red, blue, games: profile.games };
+  return { won: count, red, blue, stars, games: profile.games };
 }
 
-/** Record a finished solo game for the active profile; `side` is the side the player had. */
-export function recordGame(store, levelId, side, won, today) {
+/**
+ * Record a finished solo game for the active profile; `side` is the side the player had.
+ * `won` is the first star (a win, or a perfect draw when a draw is the best possible);
+ * `expert` and `perfect` are the second and third stars, only meaningful with `won`.
+ */
+export function recordGame(store, levelId, side, won, today, { expert = false, perfect = false } = {}) {
   if (!SIDES.includes(side) || side === 'U') return store;
   return update(store, store.active, p => {
     const next = { ...p, games: p.games + 1, levels: { ...p.levels } };
-    if (won) next.levels[levelId] = { ...(p.levels[levelId] ?? {}), [side]: p.levels[levelId]?.[side] ?? today };
+    if (won) {
+      const old = p.levels[levelId] ?? {}, w = { ...old, [side]: old[side] ?? today };
+      if (expert) w.E = old.E ?? today;
+      if (expert && perfect) w.P = old.P ?? today;
+      next.levels[levelId] = w;
+    }
     return next;
   });
+}
+
+/**
+ * The stars a finished solo game earns. res: final score difference from the player's side,
+ * opt: what perfect play from both sides guarantees to that side, from the same start.
+ * 1st star: a win, or a draw when a draw is the best that can be forced. 2nd: the same against Expert,
+ * without undo. 3rd: against Expert, without undo, at least the perfect-play score.
+ */
+export function gameStars({ res, opt, expert, assisted = false }) {
+  const success = res > 0 || (res === 0 && opt <= 0), againstExpert = success && expert && !assisted;
+  return { success, expert: againstExpert, perfect: againstExpert && res >= opt };
 }
 
 const newId = () => 'p' + (globalThis.crypto?.randomUUID?.().replace(/-/g, '').slice(0, 10) ?? Math.random().toString(36).slice(2, 12));
@@ -164,14 +189,14 @@ export function mergeData(a, b) {
   for (const source of [a.levels ?? {}, b.levels ?? {}]) {
     for (const [id, wins] of Object.entries(source)) {
       const into = levels[id] ??= {};
-      for (const side of SIDES) if (wins[side] && (!into[side] || wins[side] < into[side])) into[side] = wins[side];
+      for (const side of KEYS) if (wins[side] && (!into[side] || wins[side] < into[side])) into[side] = wins[side];
     }
   }
   return { games: Math.max(a.games ?? 0, b.games ?? 0), levels };
 }
 
 export const sameData = (a, b) => a.games === b.games && JSON.stringify(sortLevels(a.levels)) === JSON.stringify(sortLevels(b.levels));
-const sortLevels = levels => Object.keys(levels ?? {}).sort().map(id => [id, SIDES.map(s => levels[id][s] ?? null)]);
+const sortLevels = levels => Object.keys(levels ?? {}).sort().map(id => [id, KEYS.map(s => levels[id][s] ?? null)]);
 
 /** Merge synced data into a profile of the CURRENT store and remember the online revision. */
 export function applyCloud(store, id, data, cloud) {

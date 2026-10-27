@@ -64,7 +64,7 @@ test('profiles: recordGame keeps first win date per side, counts games, ignores 
  s=P.recordGame(s,known[0],'L',true,'2026-01-01');s=P.recordGame(s,known[0],'L',true,'2026-02-02');s=P.recordGame(s,known[0],'R',false,'2026-02-02');
  const p=P.activeProfile(s);assert.equal(p.levels[known[0]].L,'2026-01-01');assert.equal(p.levels[known[0]].R,undefined);assert.equal(p.games,3);
  assert.equal(P.recordGame(s,known[0],'U',true,day),s);assert.equal(P.recordGame(s,known[0],'X',true,day),s);
- assert.deepEqual(P.summary(p,known),{won:1,red:1,blue:0,games:3});
+ assert.deepEqual(P.summary(p,known),{won:1,red:1,blue:0,stars:1,games:3});
 });
 
 test('profiles: switch, delete (guest is permanent, active falls back to guest)',()=>{

@@ -1,12 +1,14 @@
-import {createGraph,definition,legalMoves,popcount,ids,displayedArcs} from '../engine/graph.mjs';
+import {createGraph,definition,legalMoves,popcount,ids,displayedArcs,captureMask} from '../engine/graph.mjs';
 import {createGame,previewMove,playMove,serializeGame,deserializeGame,finishMonochrome} from '../engine/game.mjs?v=ending1';
 import {chooseMove} from '../ai/choose.mjs';
-import {translate} from '../i18n/strings.mjs?v=large1';
+import {translate} from '../i18n/strings.mjs?v=journey1';
+import {composeLevels,imposedSide} from '../levels/compose.mjs?v=journey1';
+import {summarize} from '../ai/analysis.mjs?v=journey1';
 import {icon,nodeIcon,nodeIcons} from './icons.mjs';
 import {captureWaves,cascadeSchedule} from './cascade.mjs';
 import {createAudio} from './audio.mjs?v=4';
-import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,applyCloud,unlinkCloud,sameData,MAX_PROFILES} from './profiles.mjs';
-import {createApi,accountKey,validPin,syncProfile} from './cloud.mjs';
+import {loadStore,activeProfile,summary,recordGame,createProfile,switchProfile,deleteProfile,exportProfile,importProfile,applyCloud,unlinkCloud,sameData,MAX_PROFILES,isWon,starsOf,gameStars} from './profiles.mjs?v=journey1';
+import {createApi,accountKey,validPin,syncProfile} from './cloud.mjs?v=journey1';
 
 const $=s=>document.querySelector(s),app=$('#app'),modal=$('#modal');
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(`influence.v1.${key}`))??fallback;}catch{return fallback;}};
@@ -19,7 +21,15 @@ let settings={...defaults,...stored};
 for(const[key,allowed]of Object.entries({lang:['fr','en'],mode:['solo','duo'],side:['L','R'],first:['L','R','random'],difficulty:['easy','normal','expert'],speed:['calm','normal','fast']}))if(!allowed.includes(settings[key]))settings[key]=defaults[key];
 for(const k of ['confirm','motion','sound','fixed'])settings[k]=typeof settings[k]==='boolean'?settings[k]:defaults[k];
 let levelGroup=0;
-const groups=[[0,12,'chapter1'],[12,30,'chapter2'],[30,48,'chapter3'],[48,60,'chapter4'],[60,72,'chapter5']];
+let groups=[];
+// First steps, imposed sides, the three stars, the decisive move and the arrow flip.
+const isTutorial=l=>Boolean(l?.meta?.tutorial);
+const firstRealIndex=()=>Math.max(0,levels.findIndex(l=>!isTutorial(l)));
+const tutorialDone=()=>read('tutorial',false)===true;
+const hasRealWins=()=>levels.some(l=>!isTutorial(l)&&isWon(me(),l.id));
+const played=new Set(read('played',[]));
+function markPlayed(id){if(!played.has(id)){played.add(id);write('played',[...played]);}}
+let gameId=0,assisted=false,analysis=null,analysisWorker=null,lastTurn=null,pendingFlip=false,lastEval=null;
 let config={...settings},levels=[],index=0,graph,state=null,history=[],selected=null,hovered=null,screen='home',dialogType='',draft={},busy=false,worker=null,aiTimer=null,revision=0,zoom=1,pan={x:0,y:0},view={w:600,h:520},drag=null,daily=null,toast='',lastOpener=null;
 const today=()=>new Date().toISOString().slice(0,10);
 let profileStore=loadStore(null,[]),profileNote='',pendingDelete=null,cloudMsg='',cloudDeleteAsk=false,cloudRun=Promise.resolve(),cloudTimer=null;
@@ -39,71 +49,134 @@ const announce=s=>{$('#announcer').textContent=s;};
 const plural=n=>n===1?'':'s';
 const level=()=>levels[index];
 function setSettings(){write('settings',settings);document.documentElement.lang=settings.lang;document.documentElement.classList.toggle('reduced',settings.motion);}
-function save(){if(!state)return;write('session',{index,config,daily,game:serializeGame(graph,state),history:history.map(s=>serializeGame(graph,s))});}
+function save(){if(!state)return;write('session',{index,id:level()?.id,config,daily,assisted,game:serializeGame(graph,state),history:history.map(s=>serializeGame(graph,s))});}
 function stop(){revision++;clearTimeout(aiTimer);aiTimer=null;if(worker){worker.terminate();worker=null;}busy=false;aiShow=null;animating=false;skipAnim=false;document.querySelectorAll('.ai-hand,.ai-ripple').forEach(e=>e.remove());[...waiters].forEach(f=>f());waiters.clear();onSkip.clear();}
-function restore(){const saved=read('session',null);try{if(!saved||!Number.isInteger(saved.index)||!levels[saved.index])return;
- index=saved.index;graph=createGraph(level().definition??level());const result=deserializeGame(saved.game);
+function restore(){const saved=read('session',null);try{if(!saved)return;const at=levels.findIndex(l=>l.id===saved.id);if(at<0)return;
+ index=at;assisted=Boolean(saved.assisted);graph=createGraph(level().definition??level());const result=deserializeGame(saved.game);
  if(JSON.stringify(definition(result.graph))!==JSON.stringify(definition(graph)))throw Error('Changed board');
  state=result.state;config={...settings,...saved.config};
  if(!['solo','duo'].includes(config.mode)||!['L','R'].includes(config.side)||!['easy','normal','expert'].includes(config.difficulty))throw Error('Invalid configuration');
  daily=typeof saved.daily==='string'?saved.daily:null;
  history=(saved.history??[]).slice(-30).map(s=>deserializeGame(s)).filter(r=>JSON.stringify(definition(r.graph))===JSON.stringify(definition(graph))).map(r=>r.state);
- }catch{state=null;history=[];index=0;daily=null;}}
-function start(i=index,options=config,dailyDate=null){stop();index=(i+levels.length)%levels.length;config={...settings,...options};daily=dailyDate;graph=createGraph(level());history=[];selected=null;hovered=null;zoom=1;pan={x:0,y:0};
+ }catch{state=null;history=[];index=0;daily=null;assisted=false;}}
+function start(i=index,options=config,dailyDate=null,{impose=true}={}){stop();index=(i+levels.length)%levels.length;config={...settings,...options};daily=dailyDate;graph=createGraph(level());history=[];selected=null;hovered=null;zoom=1;pan={x:0,y:0};assisted=false;analysis=null;lastTurn=null;lastEval=null;gameId++;analysisWorker?.terminate();analysisWorker=null;
+ // Traps and first steps impose the side that is tested; first steps also impose the computer's level.
+ const imposed=impose?imposedSide(level()):null;if(imposed){if(config.mode==='solo')config.side=imposed;config.first=imposed;}
+ if(isTutorial(level())){write('seen-help',true);if(config.mode==='solo')config.difficulty=level().meta.tutorial.difficulty;}
  const first=config.first==='random'?(Math.random()<.5?'L':'R'):config.first;
  state=createGame(graph,first);screen='game';closeModal();save();render();announce(t(`turn${state.turn}`));scheduleAI();}
 function result(){return state.scores.L===state.scores.R?'draw':state.scores.L>state.scores.R?'L':'R';}
-function endProgress(){if(config.mode!=='solo')return;profileStore=recordGame(profileStore,level().id,config.side,result()===config.side,today());saveProfiles();if(me().cloud)scheduleCloud();}
+/** Score difference from `side`'s point of view: what happened (res) and what perfect play guarantees (opt). */
+function evaluate(side=config.side){const m=level().meta,first=(history[0]??state).turn,v=first==='L'?m.Ls:m.Rs,sign=side==='L'?1:-1,res=sign*(state.scores.L-state.scores.R),opt=Number.isFinite(v)?sign*v:0;
+ const stars=gameStars({res,opt,expert:config.mode==='solo'&&config.difficulty==='expert',assisted});
+ return {res,opt,...stars,points:(graph.vertices.length+opt)/2};}
+function endProgress(){markPlayed(level().id);requestAnalysis();
+ if(config.mode!=='solo'){lastEval=null;return;}
+ lastEval=evaluate();
+ if(isTutorial(level())&&lastEval.success&&!isTutorial(levels[index+1]))write('tutorial',true);
+ profileStore=recordGame(profileStore,level().id,config.side,lastEval.success,today(),{expert:lastEval.expert,perfect:lastEval.perfect});saveProfiles();if(me().cloud)scheduleCloud();}
+/** The decisive move: the finished game is replayed by the exact solver in a worker, without blocking the screen. */
+function requestAnalysis(){const states=[...history,state];analysis={pending:true,states};if(states.length<2)return;
+ const token=gameId,serial=states.map(s=>({remaining:s.remaining.toString(),turn:s.turn,scores:s.scores,finished:s.finished,ply:s.ply,settlement:null}));
+ const done=data=>{if(token!==gameId||!analysis?.pending)return;clearTimeout(timer);analysisWorker?.terminate();analysisWorker=null;
+  analysis=data?{states,data,report:summarize(data,config.mode==='solo'?config.side:null)}:{states,data:null,report:{kind:'unknown'}};
+  if(screen==='game'&&state.finished&&!modal.open)render();else if(screen==='game'&&state.finished)$('#analysis')?.replaceWith(htmlNode(analysisCard()));};
+ const timer=setTimeout(()=>done(null),8000);
+ try{analysisWorker?.terminate();analysisWorker=new Worker(new URL('../ai/worker.mjs?v=journey1',import.meta.url),{type:'module'});analysisWorker.onmessage=({data})=>done(data.analysis??null);analysisWorker.onerror=()=>done(null);
+  analysisWorker.postMessage({type:'analyze',request:token,graph:definition(graph),states:serial,timeMs:graph.vertices.length>20?2500:3500});}catch{done(null);}}
+function htmlNode(html){const d=document.createElement('div');d.innerHTML=html;return d.firstElementChild??d;}
 const sidesText=()=>{const x=summary(me(),levelIds());return t('progressSides',{r:x.red,b:x.blue});};
 const profileChip=()=>button('profile',`<span class="chip-name">${esc(me().name||t('guest'))}</span>`,'profile-chip','user',`aria-label="${t('profileTitle')}: ${esc(me().name||t('guest'))}" title="${t('profileTitle')}"`);
 const soundButton=()=>button('sound','','icon-button sound-toggle',settings.sound?'volume':'mute',`aria-pressed="${settings.sound}" aria-label="${t(settings.sound?'soundMute':'soundUnmute')}" title="${t(settings.sound?'soundMute':'soundUnmute')}"`);
 function syncSoundButton(){const b=$('[data-action="sound"]');if(b){const focus=document.activeElement===b;b.outerHTML=soundButton();if(focus)$('[data-action="sound"]')?.focus();}}
 function refreshChip(){const c=$('.profile-chip');if(c)c.outerHTML=profileChip();}
-const keepPrompt=()=>config.mode==='solo'&&me().id==='guest'?`<div class="keep-progress">${icon('star')}<span>${t('keepText')}</span>${button('profile',t('keepButton'),'text-button','user')}</div>`:'';
+const keepPrompt=()=>config.mode==='solo'&&me().id==='guest'&&me().games>=3&&!isTutorial(level())?`<div class="keep-progress">${icon('star')}<span>${t('keepText')}</span>${button('profile',t('keepButton'),'text-button','user')}</div>`:'';
 function header(){return `<header class="site-header"><button class="brand" data-action="home" aria-label="INFLUENCE · ${t('home')}"><span class="brand-symbol" aria-hidden="true"><i></i><b></b><em></em></span><span>INFLUENCE<small>${t('subtitle')}</small></span></button><nav class="header-actions" aria-label="Menu"><button class="language" data-action="language" aria-label="${t('language')}"><span class="${settings.lang==='fr'?'active':''}">FR</span><span class="${settings.lang==='en'?'active':''}">EN</span></button>${profileChip()}${button('settings','', 'icon-button','gear',`aria-label="${t('settings')}" title="${t('settings')}"`)}</nav></header>`;}
 function footer(){return `<footer class="site-footer"><span>© INFLUENCE · 2026</span><div>${button('about',t('about'),'text-button')}${button('help',t('how'),'text-button')}</div></footer>`;}
 function home(){const saved=state&&!state.finished&&config.mode===settings.mode;
  return `<main class="home-main"><section class="hero"><div class="hero-copy"><span class="eyebrow"><i></i>${t('eyebrow')}</span><h1>${t('hero')}</h1><p class="intro">${t('intro')}</p><div class="mode-picker" role="group" aria-label="${t('mode')}">${button('mode-solo',t('solo'),settings.mode==='solo'?'mode active':'mode','robot')}${button('mode-duo',t('duo'),settings.mode==='duo'?'mode active':'mode','people')}</div>${button(saved?'resume':'play',saved?t('resume'):t('play'),'button primary hero-cta','play')}<div class="hero-links">${button('levels',t('levels'),'text-button','grid')}${button('options',t('startOptions'),'text-button','gear')}${button('profile',me().name?esc(me().name):t('keepShort'),'text-button','user')}</div><div class="tiny-note">${icon('check')}${t('feature1')}<span>·</span>${t('feature2')}</div></div><div class="hero-art"><div class="orbit-label label-top">${mark('L')}${mark('R')}<span>${t('twoTeams')}</span></div><div class="mini-board">${boardSVG(true)}</div><span class="orbit-label label-bottom">${icon('spark')}${t('quick')}</span><span class="deco-flower flower-a" aria-hidden="true">✳</span><span class="deco-flower flower-b" aria-hidden="true">✳</span></div></section><section class="home-bottom"><div class="journey"><span class="mini-kicker">${t('progress')}</span><div class="journey-line"><div class="journey-stars" aria-hidden="true">${[0,1,2,3,4].map(i=>`<span class="${i<wonCount()?'earned':''}">★</span>`).join('')}</div><span>${t('progressText',{n:wonCount()})}</span>${button('levels',t('levels'),'text-button','arrow')}</div></div><button class="daily-card" data-action="daily"><span class="daily-icon">${icon('sun')}</span><span><b>${t('daily')}</b><small>${t('dailyText')}</small></span>${icon('arrow')}</button></section></main>`;
 }
-function boardSVG(demo=false){
- const g=demo?createGraph(levels[0]):graph, remaining=demo?g.full:state.remaining;
- const p=demo?'L':settings.fixed&&config.mode==='solo'?config.side:state.turn;
- const boardLevel=demo?levels[0]:level();
+function boardSVG(demo=false){return demo?graphSVG({kind:'demo'}):graphSVG({kind:'game'});}
+/** Draws a board. kind: 'game' (the live board), 'demo' (home illustration), 'mini' (a past position in the analysis). */
+function graphSVG({kind,remaining,player,chosen=null,best=null}){
+ const demo=kind==='demo',mini=kind==='mini',live=kind==='game';
+ const boardLevel=demo?levels.find(l=>l.id==='first-links')??levels[0]:level(),g=demo?createGraph(boardLevel):graph;
+ if(demo)remaining=g.full;else if(live)remaining=state.remaining;
+ const p=demo?'L':mini?player:settings.fixed&&config.mode==='solo'?config.side:state.turn;
  // A wide graph on a portrait screen (or a tall one on a landscape screen) is drawn with its axes swapped,
  // a plain reflection: same graph, same arcs, much bigger pieces.
  let positions=boardLevel.positions;
- if(!demo){const xs=Object.values(positions).map(p=>p[0]),ys=Object.values(positions).map(p=>p[1]),gw=Math.max(...xs)-Math.min(...xs)+124,gh=Math.max(...ys)-Math.min(...ys)+124,box=$('.play-board')?.getBoundingClientRect(),bw=box?.width||innerWidth,bh=box?.height||innerHeight;
+ if(live){const xs=Object.values(positions).map(p=>p[0]),ys=Object.values(positions).map(p=>p[1]),gw=Math.max(...xs)-Math.min(...xs)+124,gh=Math.max(...ys)-Math.min(...ys)+124,box=$('.play-board')?.getBoundingClientRect(),bw=box?.width||innerWidth,bh=box?.height||innerHeight;
   if(Math.min(bw/gh,bh/gw)>Math.min(bw/gw,bh/gh)*1.05)positions=Object.fromEntries(Object.entries(positions).map(([id,[x,y]])=>[id,[y,x]]));}
- // The game board always shows the whole graph: the view box hugs the vertices.
+ // The board always shows the whole graph: the view box hugs the vertices.
  let vx=0,vy=0,W=600,H=520;
- if(!demo){const xs=g.vertices.map(v=>positions[v.id][0]),ys=g.vertices.map(v=>positions[v.id][1]),m=62;vx=Math.min(...xs)-m;vy=Math.min(...ys)-m;W=Math.max(...xs)-Math.min(...xs)+2*m;H=Math.max(...ys)-Math.min(...ys)+2*m;view={w:W,h:H};}
+ if(!demo){const xs=g.vertices.map(v=>positions[v.id][0]),ys=g.vertices.map(v=>positions[v.id][1]),m=62;vx=Math.min(...xs)-m;vy=Math.min(...ys)-m;W=Math.max(...xs)-Math.min(...xs)+2*m;H=Math.max(...ys)-Math.min(...ys)+2*m;if(live)view={w:W,h:H};}
  const cx=vx+W/2,cy=vy+H/2;
+ // The arrows are redrawn in their new direction when the turn changes (unless the view is fixed).
+ let flip=false;if(live){flip=lastTurn!==null&&lastTurn!==p;lastTurn=p;if(flip)pendingFlip=true;}
  const arcs=displayedArcs(g,remaining,p), color=p==='L'?'red':'blue';
- const active=!demo&&!state.finished&&!busy&&!(config.mode==='solo'&&state.turn!==config.side);
+ const active=live&&!state.finished&&!busy&&!(config.mode==='solo'&&state.turn!==config.side);
  const nodes=g.vertices.filter((v,i)=>remaining&g.bits[i]);
- const defs=`<defs><marker id="arrow-${demo?'demo':'game'}" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="m2 1 8 5-8 5" fill="none" stroke="${p==='L'?'#d43d54':'#2377be'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></marker><filter id="shadow-${demo?'demo':'game'}" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#234667" flood-opacity=".15"/></filter><linearGradient id="red-fill" x1="0" x2=".5" y2="1"><stop stop-color="#ff7d86"/><stop offset="1" stop-color="#e9435b"/></linearGradient><linearGradient id="blue-fill" x1="0" x2=".5" y2="1"><stop stop-color="#59aff5"/><stop offset="1" stop-color="#247bce"/></linearGradient></defs>`;
+ const bestMask=mini&&best?captureMask(g,remaining,player,best):0n,inBest=id=>Boolean(bestMask&g.bits[g.index[id]]);
+ const defs=`<defs><marker id="arrow-${kind}" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="m2 1 8 5-8 5" fill="none" stroke="${p==='L'?'#d43d54':'#2377be'}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></marker><filter id="shadow-${kind}" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#234667" flood-opacity=".15"/></filter><linearGradient id="red-fill" x1="0" x2=".5" y2="1"><stop stop-color="#ff7d86"/><stop offset="1" stop-color="#e9435b"/></linearGradient><linearGradient id="blue-fill" x1="0" x2=".5" y2="1"><stop stop-color="#59aff5"/><stop offset="1" stop-color="#247bce"/></linearGradient></defs>`;
  const lines=arcs.map(([a,b])=>{const[x,y]=positions[a],[xx,yy]=positions[b],dist=Math.hypot(xx-x,yy-y),pad=54;
  const both=g.arcs.some(([c,d])=>c===b&&d===a);const off=both?10:0,dx=(xx-x)/dist,dy=(yy-y)/dist;
- return `<path class="edge" data-from="${a}" data-to="${b}" d="M ${x+dx*pad-dy*off} ${y+dy*pad+dx*off} L ${xx-dx*pad-dy*off} ${yy-dy*pad+dx*off}" marker-end="url(#arrow-${demo?'demo':'game'})"/>`;}).join('');
+ return `<path class="edge ${mini&&inBest(a)&&inBest(b)?'in-preview':''}" pathLength="1" data-from="${a}" data-to="${b}" d="M ${x+dx*pad-dy*off} ${y+dy*pad+dx*off} L ${xx-dx*pad-dy*off} ${yy-dy*pad+dx*off}" marker-end="url(#arrow-${kind})"/>`;}).join('');
  const pieces=nodes.map(v=>{const i=g.index[v.id],[x,y]=positions[v.id],c=v.color==='L'?'red':'blue',playable=active&&v.color===state.turn;
- const label=demo?'':playable?t('nodeCapture',{id:v.id,camp:camp(v.color),n:popcount(previewMove(g,state,v.id)),s:plural(popcount(previewMove(g,state,v.id)))}):t('node',{id:v.id,camp:camp(v.color)});
+ const label=!live?'':playable?t('nodeCapture',{id:v.id,camp:camp(v.color),n:popcount(previewMove(g,state,v.id)),s:plural(popcount(previewMove(g,state,v.id)))}):t('node',{id:v.id,camp:camp(v.color)});
  const shape=v.color==='L'?'<circle class="piece-body" r="39"/>':'<rect class="piece-body" x="-38" y="-38" width="76" height="76" rx="23"/>';
- return `<g class="node ${c} ${playable?'playable':''}" transform="translate(${x} ${y})" data-node="${v.id}" ${demo?'aria-hidden="true"':`role="button" tabindex="${playable?0:-1}" aria-label="${esc(label)}" aria-disabled="${!playable}"`}><rect class="touch-area" x="-50" y="-50" width="100" height="100" rx="22" fill="transparent"/><g class="piece-fall"><circle class="node-halo" r="49"/>${shape}<g transform="translate(-16 -17) scale(1.33)" class="piece-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${nodeIcon(nodeIcons[i%nodeIcons.length])}</g><text class="node-letter" y="29" text-anchor="middle">${v.id}</text><circle class="preview-badge" cx="29" cy="-30" r="12"/><path class="preview-check" d="m23 -30 4 4 8-9"/></g></g>`;
+ const extra=mini?`${inBest(v.id)?'in-preview':''} ${v.id===best?'mini-best':''} ${v.id===chosen?'mini-chosen':''}`:'';
+ const ring=mini&&(v.id===best||v.id===chosen)?`<circle class="mini-ring ${v.id===best?'best':'chosen'}" r="52"/>`:'';
+ return `<g class="node ${c} ${playable?'playable':''} ${extra}" transform="translate(${x} ${y})" data-node="${v.id}" ${!live?'aria-hidden="true"':`role="button" tabindex="${playable?0:-1}" aria-label="${esc(label)}" aria-disabled="${!playable}"`}><rect class="touch-area" x="-50" y="-50" width="100" height="100" rx="22" fill="transparent"/>${ring}<g class="piece-fall"><circle class="node-halo" r="49"/>${shape}<g transform="translate(-16 -17) scale(1.33)" class="piece-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${nodeIcon(nodeIcons[i%nodeIcons.length])}</g><text class="node-letter" y="29" text-anchor="middle">${v.id}</text><circle class="preview-badge" cx="29" cy="-30" r="12"/><path class="preview-check" d="m23 -30 4 4 8-9"/></g></g>`;
  }).join('');
- return `<svg class="graph ${color} ${demo?'demo':''}" viewBox="${vx} ${vy} ${W} ${H}" style="${demo?'':`max-width:${Math.round(W*1.5)}px;max-height:${Math.round(H*1.5)}px`}" ${demo?'aria-hidden="true"':`role="group" aria-label="${esc(name(level()))}"`}><title>${demo?'INFLUENCE':esc(name(level()))}</title>${defs}<g class="graph-content" transform="translate(${demo?0:pan.x} ${demo?0:pan.y}) translate(${cx} ${cy}) scale(${demo?1:zoom}) translate(${-cx} ${-cy})">${lines}${pieces}</g></svg>`;
+ const size=live?`max-width:${Math.round(W*1.5)}px;max-height:${Math.round(H*1.5)}px`:'';
+ const aria=live?`role="group" aria-label="${esc(name(level()))}"`:'aria-hidden="true"';
+ return `<svg class="graph ${color} ${kind==='game'?'':kind} ${flip?'flip':''}" viewBox="${vx} ${vy} ${W} ${H}" style="${size}" ${aria}><title>${demo?'INFLUENCE':esc(name(boardLevel))}</title>${defs}<g class="graph-content" transform="translate(${live?pan.x:0} ${live?pan.y:0}) translate(${cx} ${cy}) scale(${live?zoom:1}) translate(${-cx} ${-cy})">${lines}${pieces}</g></svg>`;
 }
 function scoreCard(p){const n=state.scores[p],isHuman=config.mode==='solo'&&p===config.side,who=config.mode==='solo'?t(isHuman?'you':'computer'):camp(p);
- return `<div class="score-card ${p==='L'?'red':'blue'} ${!state.finished&&state.turn===p?'current':''}" title="${camp(p)}">${mark(p)}<strong class="score-number">${n}</strong><small>${who}</small></div>`;}
+ return `<div class="score-card ${p==='L'?'red':'blue'} ${!state.finished&&state.turn===p?'current':''} ${config.mode==='solo'?'labelled':''}" title="${camp(p)}">${mark(p)}<strong class="score-number">${n}</strong><small>${who}</small></div>`;}
 // Game screen: only the graph and the score. Everything else lives in the menu.
 function game(){
  const done=state.finished,ai=!done&&config.mode==='solo'&&state.turn!==config.side;
  const label=daily?t('dailyTitle',{date:daily}):`${String(index+1).padStart(2,'0')} / ${levels.length}`;
  const canUndo=!done&&history.some(s=>config.mode==='duo'||s.turn===config.side);
  const status=done?t(result()==='draw'?'draw':`win${result()}`):t(`turn${state.turn}`);
- return `<main class="play ${done?'ended':`turn-${state.turn}`} ${ai?'ai':''}"><header class="play-bar">${button('home','', 'icon-button','home',`aria-label="${t('home')}" title="${t('home')}"`)}<div class="play-title"><small>${label}</small><b>${esc(name(level()))}</b></div><div class="scores">${scoreCard('L')}${scoreCard('R')}</div>${button('undo','', 'icon-button','back',`aria-label="${t('undo')}" title="${t('undo')}" ${canUndo?'':'disabled'}`)}${button('menu','', 'icon-button','more',`aria-label="${t('menu')}" title="${t('menu')}"`)}</header><p class="sr-only" role="status"><span>${status}.</span> <span id="banner-sub">${done?t('allCaptured'):busy?t('capturing'):ai?t('thinking'):''}</span> <span id="preview-text">${ai?t('thinking'):t(settings.confirm?'select':'selectDirect')}</span></p><section class="play-board"><div id="board" data-level="${esc(level().id)}" class="${zoom>1?'is-zoomed':''}" ${done?'hidden':''}>${done?'':boardSVG()}</div>${done?resultPanel():`<div class="board-controls">${button('zoom-out','', 'board-control','minus',`aria-label="${t('zoomOut')}"`)}${button('center','', 'board-control','center',`aria-label="${t('resetView')}"`)}${button('zoom-in','', 'board-control','plus',`aria-label="${t('zoomIn')}"`)}</div>${settings.confirm?`<div class="move-bar">${button('confirm',t('capture',{n:0,s:'s'}),'button primary capture-button','check','disabled')}</div>`:''}`}</section></main>`;
+ return `<main class="play ${done?'ended':`turn-${state.turn}`} ${ai?'ai':''}"><header class="play-bar">${button('home','', 'icon-button','home',`aria-label="${t('home')}" title="${t('home')}"`)}<div class="play-title"><small>${label}</small><b>${esc(name(level()))}</b></div><div class="scores">${scoreCard('L')}${scoreCard('R')}</div>${button('undo','', 'icon-button','back',`aria-label="${t('undo')}" title="${t('undo')}" ${canUndo?'':'disabled'}`)}${button('menu','', 'icon-button','more',`aria-label="${t('menu')}" title="${t('menu')}"`)}</header><p class="sr-only" role="status"><span>${status}.</span> <span id="banner-sub">${done?t('allCaptured'):busy?t('capturing'):ai?t('thinking'):''}</span> <span id="preview-text">${ai?t('thinking'):t(settings.confirm?'select':'selectDirect')}</span></p><section class="play-board">${done?'':coach()}<div class="turn-pill" aria-hidden="true" hidden></div><div id="board" data-level="${esc(level().id)}" class="${zoom>1?'is-zoomed':''}" ${done?'hidden':''}>${done?'':boardSVG()}</div>${done?resultPanel():`<div class="board-controls">${button('zoom-out','', 'board-control','minus',`aria-label="${t('zoomOut')}"`)}${button('center','', 'board-control','center',`aria-label="${t('resetView')}"`)}${button('zoom-in','', 'board-control','plus',`aria-label="${t('zoomIn')}"`)}</div>${settings.confirm?`<div class="move-bar">${button('confirm',t('capture',{n:0,s:'s'}),'button primary capture-button','check','disabled')}</div>`:''}`}</section></main>`;
 }
-function resultPanel(){const r=result(),won=r===config.side;return `<section class="result-panel" aria-labelledby="result-title"><div class="result-trophy" aria-hidden="true">${icon(r==='draw'?'spark':'trophy')}</div><span class="eyebrow">${t('resultLabel')}</span><h2 id="result-title">${t(r==='draw'?'draw':`win${r}`)}</h2><p>${config.mode==='solo'?t(won?'victory':'loss'):t('resultNext')}</p><div class="final-score"><span class="red">${mark('L')}${state.scores.L}</span><span class="score-separator">–</span><span class="blue">${mark('R')}${state.scores.R}</span></div><small>${t('final',{a:state.scores.L,b:state.scores.R,n:graph.vertices.length})}</small><p class="settlement">${state.settlement?t(state.settlement.reason==='one-color'?'terminalMonochrome':'terminal',{camp:camp(state.settlement.player),n:state.settlement.count,winner:camp(state.settlement.recipient)}):t('allCaptured')}</p>${keepPrompt()}<div class="result-buttons">${button('next',t('next'),'button primary','arrow')}${button('replay',t('replay'),'button secondary','refresh')}</div><div class="result-links">${button('switch',t('switch'),'text-button')}${button('share',toast||t('share'),'text-button')}</div></section>`;}
-function render(){const oldBoard=$('#board'),scroll=oldBoard?{id:oldBoard.dataset.level,x:oldBoard.scrollLeft,y:oldBoard.scrollTop}:null;setSettings();document.body.classList.toggle('playing',screen==='game');app.innerHTML=screen==='home'?header()+home()+footer():game();const board=$('#board');if(board&&scroll?.id===board.dataset.level)board.scrollTo(scroll.x,scroll.y);if(screen==='game'&&!state.finished)updatePreview();}
+function coach(){const l=level();if(!isTutorial(l)||config.mode!=='solo')return '';const texts=l.meta.tutorial.coach[settings.lang]??l.meta.tutorial.coach.fr;
+ const mine=history.filter(s=>s.turn===config.side).length,text=texts[Math.min(mine,texts.length-1)];
+ return `<div class="coach" role="note"><span class="coach-step">${index+1}/${levels.filter(isTutorial).length}</span><p>${esc(text)}</p>${button('skip-tutorial',t('skip'),'text-button coach-skip','',`aria-label="${t('skipTutorial')}"`)}</div>`;}
+/** A short message over the board: the arrows flipping, or a long-press preview. */
+let pillTimer=null;
+function showPill(text,ms=1700){const el=$('.turn-pill');if(!el)return;clearTimeout(pillTimer);el.textContent=text;el.hidden=false;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');if(ms)pillTimer=setTimeout(hidePill,ms);}
+function hidePill(){clearTimeout(pillTimer);const el=$('.turn-pill');if(el){el.classList.remove('show');el.hidden=true;}}
+function afterFlip(){if(!pendingFlip)return;pendingFlip=false;const n=read('flip-tips',0);if(n<6||isTutorial(level())){write('flip-tips',n+1);showPill(`⇄ ${t(`arrows${state.turn}`)}`);}}
+const ordinal=n=>n===1?t('ordFirst'):t('ordN',{n});
+const outcomeText=o=>t(o>0?'outcomeWin':o<0?'outcomeLoss':'outcomeDraw');
+function starsRow(){if(config.mode!=='solo'||!lastEval)return '';const e=lastEval,got=[e.success,e.expert,e.perfect];
+ const hint=!e.success?(e.opt<0&&e.res<0?t('starsHintSide',{outcome:outcomeText(-1)}):''):assisted&&config.difficulty==='expert'?t('starsHintAssisted'):config.difficulty!=='expert'?t('starsHintExpert'):!e.perfect?t('starsHintPerfect',{p:e.points}):'';
+ if(!e.success)return hint?`<p class="stars-hint">${hint}</p>`:'';
+ return `<div class="result-stars" role="img" aria-label="${got.map((g,i)=>g?t(`star${i+1}`):'').filter(Boolean).join(', ')||'0 ★'}">${got.map((g,i)=>`<span class="rstar ${g?'earned':''}" style="--i:${i}"><b aria-hidden="true">★</b><small>${t(`star${i+1}`)}</small></span>`).join('')}</div>${hint?`<p class="stars-hint">${hint}</p>`:''}`;}
+/** The decisive move, the improvable move, or a flawless game. */
+function analysisCard(){if(!state?.finished||!analysis)return '';
+ if(analysis.pending)return `<div id="analysis" class="analysis pending" role="status"><span class="dots-loader" aria-hidden="true"><i></i><i></i><i></i></span>${t('analysing')}</div>`;
+ const r=analysis.report,solo=config.mode==='solo',e=lastEval;let title='',text='',board='';
+ const gift=solo&&e?.success&&r.gift?`<p class="analysis-note">${t('gift',{ord:ordinal(r.gift.turn)})}</p>`:'';
+ if(r.kind==='decisive'||r.kind==='improvable'){const m=r.move,before=analysis.states[m.ply],best=m.bestIds[0];
+  const v={ord:ordinal(r.turn),best,chosen:m.id,camp:camp(m.player).toLowerCase(),outcome:outcomeText(r.lost),p:r.points,s:plural(r.points)};
+  title=t(r.kind==='decisive'?'decisiveTitle':'improveTitle');text=t(r.kind==='decisive'?(solo?'decisive':'decisiveDuo'):(solo?'improvable':'improvableDuo'),v);
+  board=`<figure class="analysis-board">${graphSVG({kind:'mini',remaining:before.remaining,player:m.player,chosen:m.id,best})}<figcaption><span class="lg chosen">${t('legendChosen')} · ${esc(m.id)}</span><span class="lg best">${t('legendBest')} · ${esc(best)}</span></figcaption></figure>${button('retry-move',t('retryMove'),'button secondary small','refresh',`data-ply="${m.ply}"`)}`;}
+ else if(r.kind==='perfect'){title=t('perfectTitle');text=solo?(e&&!e.success?t('perfectButLost'):t('perfect')):t('perfectDuo');}
+ else if(!analysis.data?.complete)return `<div id="analysis" class="analysis quiet"><p class="analysis-note">${t('analysisTooBig')}</p>${gift}</div>`;
+ else return gift?`<div id="analysis" class="analysis quiet">${gift}</div>`:'<div id="analysis"></div>';
+ return `<section id="analysis" class="analysis ${r.kind}" aria-labelledby="analysis-title"><h3 id="analysis-title">${r.kind==='perfect'?icon('spark'):''}${title}</h3><p>${text}</p>${board}${gift}</section>`;}
+function resultPanel(){const r=result(),solo=config.mode==='solo',e=lastEval,tut=isTutorial(level())&&solo,ok=solo?Boolean(e?.success):false;
+ const lesson=tut?(ok?(level().meta.tutorial.lesson[settings.lang]??level().meta.tutorial.lesson.fr):t('tutorialRetry')):null;
+ const sub=lesson??(solo?t(ok?'victory':'loss'):t('resultNext'));
+ const settle=state.settlement?`<p class="settlement">${t(state.settlement.reason==='one-color'?'terminalMonochrome':'terminal',{camp:camp(state.settlement.player),n:state.settlement.count,winner:camp(state.settlement.recipient)})}</p>`:'';
+ const buttons=tut&&!ok?button('replay',t('retry'),'button primary','refresh')+button('next',t('skip'),'button secondary','arrow'):button('next',tut?t('tutorialNext'):t('next'),'button primary','arrow')+button('replay',t('replay'),'button secondary','refresh');
+ return `<section class="result-panel ${tut?'tutorial':''}" aria-labelledby="result-title"><div class="result-trophy" aria-hidden="true">${icon(r==='draw'||solo&&!ok?'spark':'trophy')}</div><span class="eyebrow">${t('resultLabel')}</span><h2 id="result-title">${t(r==='draw'?'draw':`win${r}`)}</h2><p class="result-sub ${tut?'lesson':''}">${esc(sub)}</p><div class="final-score"><span class="red">${mark('L')}${state.scores.L}</span><span class="score-separator">–</span><span class="blue">${mark('R')}${state.scores.R}</span></div>${starsRow()}${settle}${analysisCard()}${keepPrompt()}<div class="result-buttons">${buttons}</div><div class="result-links">${tut?'':button('switch',t('switch'),'text-button')}${button('share',toast||t('share'),'text-button')}</div></section>`;}
+function render(){const oldBoard=$('#board'),scroll=oldBoard?{id:oldBoard.dataset.level,x:oldBoard.scrollLeft,y:oldBoard.scrollTop}:null;setSettings();document.body.classList.toggle('playing',screen==='game');app.innerHTML=screen==='home'?header()+home()+footer():game();const board=$('#board');if(board&&scroll?.id===board.dataset.level)board.scrollTo(scroll.x,scroll.y);const c=$('.coach');if(c)$('.play-board')?.style.setProperty('--coach-h',`${c.offsetHeight+14}px`);if(screen==='game'&&!state.finished){updatePreview();afterFlip();}}
 function updatePreview(){if(screen!=='game'||!state||state.finished)return;
  const id=aiShow??selected??hovered;let mask=0n;if(id&&(aiShow||!busy&&!(config.mode==='solo'&&state.turn!==config.side))){try{mask=previewMove(graph,state,id);}catch{}}
  document.querySelectorAll('#board [data-node]').forEach(el=>{const hit=Boolean(mask&graph.bits[graph.index[el.dataset.node]]);el.classList.toggle('in-preview',hit);el.classList.toggle('chosen',el.dataset.node===(aiShow??selected));el.setAttribute('aria-pressed',String(el.dataset.node===(aiShow??selected)));});
@@ -112,7 +185,7 @@ function updatePreview(){if(screen!=='game'||!state||state.finished)return;
  $('#preview-text').textContent=n?t(aiShow?'aiPreview':'preview',{n,s:plural(n)}):busy?t('capturing'):ai?t('thinking'):t(settings.confirm?'select':'selectDirect');
  const confirm=$('[data-action="confirm"]');if(confirm){confirm.disabled=!selected||busy||ai;confirm.innerHTML=icon('check')+t('capture',{n,s:plural(n)});}
 }
-function drawBoard(){if(animating)return;$('#board').classList.toggle('is-zoomed',zoom>1);const focused=document.activeElement?.dataset.node;$('#board').innerHTML=boardSVG();updatePreview();if(focused)$(`#board [data-node="${focused}"]`)?.focus({preventScroll:true});}
+function drawBoard(){if(animating)return;$('#board').classList.toggle('is-zoomed',zoom>1);const focused=document.activeElement?.dataset.node;$('#board').innerHTML=boardSVG();updatePreview();afterFlip();if(focused)$(`#board [data-node="${focused}"]`)?.focus({preventScroll:true});}
 function select(id){if(state.finished||busy||config.mode==='solo'&&state.turn!==config.side||!legalMoves(graph,state.remaining,state.turn).includes(id))return;
  if(!settings.confirm||selected===id){commit(id);return;}selected=id;hovered=null;updatePreview();announce(t('preview',{n:popcount(previewMove(graph,state,id)),s:plural(popcount(previewMove(graph,state,id)))}));}
 let keyboardInput=false;
@@ -197,14 +270,15 @@ function scheduleAI(){if(modal.open||aiTimer||worker||busy)return;if(screen!=='g
  const timer=setTimeout(()=>finish(null),2200);
  try{worker=new Worker(new URL('../ai/worker.mjs?v=large1',import.meta.url),{type:'module'});worker.onmessage=({data})=>finish(data.result);worker.onerror=()=>finish(null);worker.postMessage({request:token,graph:definition(graph),state:{...state,remaining:state.remaining.toString()},difficulty:config.difficulty,seed:state.ply*1057+index*37+2026});}catch{finish(null);}
  },pace().think);}
-function undo(){if(!history.length)return;stop();let previous;do{previous=history.pop();}while(history.length&&config.mode==='solo'&&previous.turn!==config.side);state=previous;selected=null;hovered=null;save();render();scheduleAI();}
+function undo(){if(!history.length)return;stop();assisted=true;gameId++;analysis=null;lastEval=null;let previous;do{previous=history.pop();}while(history.length&&config.mode==='solo'&&previous.turn!==config.side);state=previous;selected=null;hovered=null;save();render();scheduleAI();}
 function openModal(kind){if(kind==='levels')levelGroup=groups.findIndex(([a,b])=>index>=a&&index<b);if(screen==='game'&&!busy)stop();if(kind==='profile'){pendingDelete=null;profileNote='';cloudMsg='';cloudDeleteAsk=false;}lastOpener=document.activeElement;dialogType=kind;if(kind==='options')draft={...settings,...(screen==='game'?config:{})};renderModal();if(!modal.open)modal.showModal();}
 function closeModal(){if(modal.open)modal.close();dialogType='';lastOpener?.focus?.({preventScroll:true});scheduleAI();}
 function radios(key,options){return `<div class="radio-row">${options.map(([value,label])=>`<label class="radio-choice"><input type="radio" name="${key}" value="${value}" ${draft[key]===value?'checked':''}><span>${label}</span></label>`).join('')}</div>`;}
 function renderModal(){const close=button('close','', 'icon-button','close',`aria-label="${t('close')}"`);let title='',body='';
  if(dialogType==='help'){title=t('helpTitle');body=`<div class="help-steps">${[1,2,3].map((i)=>`<div class="help-step"><span class="step-number">${i}</span><div><h3>${t(`step${i}`)}</h3><p>${t(`step${i}Text`)}</p></div></div>`).join('')}</div><div class="end-rule"><b>${t('endRule')}</b><p>${t('endRuleText')}</p></div>${button('got-it',t('gotIt'),'button primary wide','play')}`;}
  else if(dialogType==='levels'){title=t('levels');const map={first:'firstWins',red:'redWins',blue:'blueWins',draw:'tie','red-draw':'redDraw','blue-draw':'blueDraw'};
- body=`<p class="dialog-intro">${t(groups[levelGroup][2]==='chapter5'?'trapHelp':'levelHelp')}</p><nav class="level-tabs">${groups.map(([a,b,key],i)=>button('level-group',t(key),`level-tab ${i===levelGroup?'active':''}`,'',`data-group="${i}"`)).join('')}</nav><div class="level-grid">${levels.map((l,i)=>`<button ${i<groups[levelGroup][0]||i>=groups[levelGroup][1]?'hidden':''} class="level-option ${i===index?'selected':''}" data-action="level" data-index="${i}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span><b>${esc(name(l))}</b><small>${l.meta.vertices} ● · ${t(map[l.meta.type])}</small></span>${levelMedals(l.id)}</button>`).join('')}</div>`;}
+ const sum=summary(me(),levelIds()),key=groups[levelGroup][2];
+ body=`<p class="dialog-intro">${t(key==='chapter5'?'trapHelp':key==='chapter0'?'tutorialHelp':'levelHelp')}</p><p class="stars-total">★ ${t('starsTotal',{n:sum.stars,max:3*levels.length})}</p><nav class="level-tabs">${groups.map(([a,b,key],i)=>button('level-group',t(key),`level-tab ${i===levelGroup?'active':''}`,'',`data-group="${i}"`)).join('')}</nav><div class="level-grid">${levels.map((l,i)=>`<button ${i<groups[levelGroup][0]||i>=groups[levelGroup][1]?'hidden':''} class="level-option ${i===index?'selected':''}" data-action="level" data-index="${i}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span><b>${esc(name(l))}</b><small>${t('pieces',{n:l.meta.vertices})} · ${dotsHTML(l)}${played.has(l.id)&&!isTutorial(l)&&map[l.meta.type]?` · ${t(map[l.meta.type])}`:''}</small></span>${levelMedals(l.id)}</button>`).join('')}</div>`;}
  else if(dialogType==='options'){title=t('configuration');body=`<div class="option-section"><h3>${t('mode')}</h3>${radios('mode',[['solo',t('solo')],['duo',t('duo')]])}</div>${draft.mode==='solo'?`<div class="option-section"><h3>${t('side')}</h3>${radios('side',[['L',`${mark('L')}${t('red')}`],['R',`${mark('R')}${t('blue')}`]])}</div><div class="option-section"><h3>${t('difficulty')}</h3>${radios('difficulty',[['easy',t('easy')],['normal',t('normal')],['expert',t('expert')]])}<p class="option-note">${t(`${draft.difficulty}Text`)}</p></div>`:''}<div class="option-section"><h3>${t('first')}</h3>${radios('first',[['L',t('red')],['R',t('blue')],['random',t('random')]])}</div>${button('apply',t('apply'),'button primary wide','play')}`;}
  else if(dialogType==='settings'){title=t('preferences');body=`<div class="settings-list">${[['confirm','confirmText'],['motion',null],['sound',null],['fixed','fixedText']].map(([key,note])=>`<label class="toggle-label"><span><b>${t(key)}</b>${note?`<small>${t(note)}</small>`:''}</span><input type="checkbox" name="pref-${key}" role="switch" ${settings[key]?'checked':''}></label>`).join('')}</div>${speedSection()}<p class="option-note">${t('local')}</p>`;}
  else if(dialogType==='profile'){title=t('profileTitle');body=profileBody();}
@@ -218,14 +292,17 @@ async function act(action,el){switch(action){
  case'home':stop();screen='home';selected=null;hovered=null;save();render();break;
  case'language':settings.lang=settings.lang==='fr'?'en':'fr';render();if(dialogType)renderModal();break;
  case'mode-solo':case'mode-duo':settings.mode=action.slice(5);setSettings();render();break;
- case'play':start(index,settings);if(!read('seen-help',false)){write('seen-help',true);openModal('help');}break;
+ case'play':{if(isTutorial(level())&&(tutorialDone()||settings.mode==='duo'||hasRealWins()))index=firstRealIndex();start(index,settings);if(!isTutorial(level())&&!read('seen-help',false)){write('seen-help',true);openModal('help');}break;}
+ case'skip-tutorial':write('tutorial',true);start(firstRealIndex(),settings);break;
+ case'retry-move':{const k=Number(el.dataset.ply),states=analysis?.states;if(!states||!states[k]||states[k].finished)break;stop();gameId++;analysisWorker?.terminate();analysisWorker=null;
+  state=states[k];history=states.slice(0,k);assisted=true;analysis=null;lastEval=null;lastTurn=null;selected=null;hovered=null;screen='game';save();render();announce(t(`turn${state.turn}`));scheduleAI();break;}
  case'resume':screen='game';config={...config,lang:settings.lang};render();finishResumedTail();break;
  case'levels':case'help':case'about':case'settings':case'options':case'menu':openModal(action);break;
  case'close':closeModal();break;
  case'got-it':closeModal();if(screen==='home')start(index,settings);break;
  case'apply':settings={...settings,mode:draft.mode,side:draft.side,first:draft.first,difficulty:draft.difficulty};setSettings();start(index,settings);break;
  case'level-group':levelGroup=Number(el.dataset.group);renderModal();break;
- case'level':index=Number(el.dataset.index);start(index,screen==='home'?settings:config);break;
+ case'level':index=Number(el.dataset.index);if(!isTutorial(level()))write('tutorial',true);start(index,settings);break;
  case'confirm':if(selected)commit(selected);break;
  case'sound':settings.sound=!settings.sound;setSettings();unlockAudio();syncSoundButton();if(dialogType==='menu')renderModal();if(settings.sound)audio.tap();break;
  case'profile':openModal('profile');break;
@@ -240,19 +317,19 @@ async function act(action,el){switch(action){
  case'profile-import':importCode();break;
  case'undo':if(config.mode==='duo')openModal('undo');else undo();break;
  case'undo-agreed':closeModal();undo();break;
- case'restart':case'replay':start(index,config,daily);break;
- case'next':start(index+1,config);break;
- case'switch':start(index,{...config,side:config.side==='L'?'R':'L',first:config.first==='L'?'R':config.first==='R'?'L':'random'},daily);break;
+ case'restart':case'replay':start(index,config,daily,{impose:false});break;
+ case'next':start(index+1,settings);break;
+ case'switch':start(index,{...config,side:config.side==='L'?'R':'L',first:config.first==='L'?'R':config.first==='R'?'L':'random'},daily,{impose:false});break;
  case'zoom-in':zoom=Math.min(3,zoom*1.25);drawBoard();break;
  case'zoom-out':zoom=Math.max(1,zoom/1.25);if(zoom<1.01){zoom=1;pan={x:0,y:0};}drawBoard();break;
  case'center':zoom=1;pan={x:0,y:0};drawBoard();$('#board').scrollTo(0,0);break;
- case'daily':{const date=new Date().toISOString().slice(0,10),days=Math.floor(Date.parse(date)/86400000);start(days%levels.length,{...settings,mode:'solo',first:days%2?'R':'L'},date);break;}
+ case'daily':{const date=new Date().toISOString().slice(0,10),days=Math.floor(Date.parse(date)/86400000),first=firstRealIndex();start(first+days%(levels.length-first),{...settings,mode:'solo',first:days%2?'R':'L'},date);break;}
  case'share':{const text=`INFLUENCE${daily?' · '+daily:''} · ${name(level())}\n${t('red')} ${state.scores.L} – ${state.scores.R} ${t('blue')}\nhttps://stephanegonzalez.eu/apps/influence/`;try{await navigator.clipboard.writeText(text);toast=t('copied');}catch{toast=t('copyFailed');}render();announce(toast);setTimeout(()=>{toast='';if(screen==='game'&&state.finished)render();},2500);break;}
  }}
 // Unlock in activation events accepted by touch browsers, before async animations.
 document.addEventListener('click',unlockAudio,{capture:true});
 document.addEventListener('touchend',unlockAudio,{capture:true,passive:true});
-document.addEventListener('click',event=>{if(animating&&event.target.closest?.('#board'))skip();const el=event.target.closest('[data-action]');if(el&&!el.disabled){if(el.hasAttribute('data-menu-close')&&modal.open){modal.close();dialogType='';}act(el.dataset.action,el);return;}const node=event.target.closest('#board [data-node]');if(node)select(node.dataset.node);});
+document.addEventListener('click',event=>{if(suppressClick&&event.target.closest?.('#board')){suppressClick=false;return;}if(animating&&event.target.closest?.('#board'))skip();const el=event.target.closest('[data-action]');if(el&&!el.disabled){if(el.hasAttribute('data-menu-close')&&modal.open){modal.close();dialogType='';}act(el.dataset.action,el);return;}const node=event.target.closest('#board [data-node]');if(node)select(node.dataset.node);});
 document.addEventListener('keydown',e=>{keyboardInput=true;unlockAudio();const n=e.target.closest?.('#board [data-node]');if(n&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(n.dataset.node);}if(n&&['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();const nodes=[...document.querySelectorAll('#board [data-node][tabindex="0"]')],i=nodes.indexOf(n),delta=['ArrowRight','ArrowDown'].includes(e.key)?1:-1;nodes[(i+delta+nodes.length)%nodes.length]?.focus();}if(e.key==='Escape'&&!modal.open){selected=null;hovered=null;updatePreview();}});
 document.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||screen!=='game'||state.finished)return;const n=e.target.closest?.('#board [data-node]');if(n?.getAttribute('aria-disabled')==='false'){hovered=n.dataset.node;updatePreview();}});
 document.addEventListener('pointerout',e=>{const n=e.target.closest?.('#board [data-node]');if(n&&!n.contains(e.relatedTarget)){hovered=null;if(screen==='game'&&!state.finished)updatePreview();}});
@@ -260,8 +337,9 @@ document.addEventListener('focusin',e=>{const n=e.target.closest?.('#board [data
 modal.addEventListener('change',e=>{if(e.target.name.startsWith('pref-')){const key=e.target.name.slice(5);settings[key]=e.target.type==='checkbox'?e.target.checked:e.target.value;setSettings();if(key==='sound'){syncSoundButton();if(settings.sound){audio.unlock();audio.tap();}}if(screen==='game'&&!state.finished&&!busy){if(key==='confirm')render();else drawBoard();save();}}else if(dialogType==='options'){draft[e.target.name]=e.target.value;const focusName=e.target.name,focusValue=e.target.value;renderModal();modal.querySelector(`[name="${focusName}"][value="${focusValue}"]`)?.focus();}});
 modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeModal();}});
 // ---- Profiles: nickname + progression, kept on this device only. ----
-function levelMedals(levelId){const w=me().levels[levelId],red=Boolean(w?.L),blue=Boolean(w?.R);
- return `<span class="level-medals"><span class="level-star ${w?'earned':''}">${w?'★':'☆'}</span><span class="medals" aria-hidden="true"><i class="medal red ${red?'on':''}"></i><i class="medal blue ${blue?'on':''}"></i></span><span class="sr-only">${w?[t('wonLevel'),red?t('wonAsRed'):'',blue?t('wonAsBlue'):''].filter(Boolean).join(' · '):''}</span></span>`;}
+function levelMedals(levelId){const w=me().levels[levelId],n=starsOf(me(),levelId),red=Boolean(w?.L),blue=Boolean(w?.R);
+ return `<span class="level-medals" title="${[1,2,3].filter(i=>i<=n).map(i=>t(`star${i}`)).join(' · ')}"><span class="level-stars" aria-hidden="true">${[1,2,3].map(i=>`<i class="${i<=n?'earned':''}">★</i>`).join('')}</span><span class="sr-only">${n?`${n} ★ · `+[t('wonLevel'),red?t('wonAsRed'):'',blue?t('wonAsBlue'):''].filter(Boolean).join(' · '):''}</span></span>`;}
+function dotsHTML(l){const n=l.meta.difficulty?.dots;if(!n)return '';return `<span class="diff-dots" role="img" aria-label="${t('difficultyLabel',{n})}">${[1,2,3].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;}
 function speedSection(){return `<div class="option-section settings-speed"><h3>${t('speed')}</h3><div class="radio-row">${['calm','normal','fast'].map(v=>`<label class="radio-choice"><input type="radio" name="pref-speed" value="${v}" ${settings.speed===v?'checked':''}><span>${t(`speed_${v}`)}</span></label>`).join('')}</div><p class="option-note">${t('speedText')}</p></div>`;}
 function profileBody(){
  const ids=levelIds(),active=profileStore.active;
@@ -311,6 +389,14 @@ modal.addEventListener('submit',e=>{const kind=e.target.closest?.('[data-form]')
  profileStore=result.store;saveProfiles();profileNote='';cloudMsg='';cloudDeleteAsk=false;afterProfileChange();if(pin)cloudRunSync(me().id,{pin});});
 
 modal.addEventListener('cancel',()=>{dialogType='';setTimeout(scheduleAI,0);});
+// Long press on a piece (touch): show what it would capture, without playing. Releasing cancels.
+let press=null,peeking=false,suppressClick=false;
+function endPress(){if(press){clearTimeout(press.timer);press=null;}if(peeking){peeking=false;hovered=null;suppressClick=true;setTimeout(()=>{suppressClick=false;},500);hidePill();if(screen==='game'&&state&&!state.finished)updatePreview();}}
+document.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||screen!=='game'||!state||state.finished||busy)return;const n=e.target.closest?.('#board [data-node]');if(!n||n.getAttribute('aria-disabled')!=='false')return;
+ const id=n.dataset.node;press={x:e.clientX,y:e.clientY,timer:setTimeout(()=>{press=null;if(busy||state.finished)return;peeking=true;hovered=id;updatePreview();const k=popcount(previewMove(graph,state,id));showPill(t('peek',{n:k,s:plural(k)}),0);navigator.vibrate?.(12);},420)};});
+document.addEventListener('pointermove',e=>{if(press&&Math.hypot(e.clientX-press.x,e.clientY-press.y)>12){clearTimeout(press.timer);press=null;}});
+document.addEventListener('pointerup',endPress);document.addEventListener('pointercancel',endPress);
+document.addEventListener('contextmenu',e=>{if(e.target.closest?.('#board [data-node]'))e.preventDefault();});
 // Pan the board after zooming. Pointer capture is kept on the persistent board container.
 document.addEventListener('pointerdown',e=>{keyboardInput=false;unlockAudio();const b=e.target.closest?.('#board');if(b&&zoom>1&&!e.target.closest('[data-node]')){drag={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};b.setPointerCapture(e.pointerId);}});
 document.addEventListener('pointermove',e=>{if(!drag)return;const rect=$('#board svg').getBoundingClientRect(),factor=Math.max(view.w/rect.width,view.h/rect.height),mx=view.w*(zoom-1)/2,my=view.h*(zoom-1)/2;pan={x:Math.max(-mx,Math.min(mx,drag.px+(e.clientX-drag.x)*factor)),y:Math.max(-my,Math.min(my,drag.py+(e.clientY-drag.y)*factor))};drawBoard();});
@@ -318,4 +404,4 @@ document.addEventListener('pointerup',()=>{drag=null;});
 let lastShape='';addEventListener('resize',()=>{const shape=innerHeight>innerWidth?'portrait':'landscape';if(shape===lastShape)return;lastShape=shape;if(screen==='game'&&state&&!state.finished&&!animating&&$('#board'))drawBoard();});
 document.addEventListener('pointercancel',()=>{drag=null;});
 window.addEventListener('pagehide',save);
-(async()=>{try{const response=await fetch(new URL('../levels/catalog.json?v=large1',import.meta.url));if(!response.ok)throw Error(response.status);levels=await response.json();profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();if(me().cloud)cloudRunSync(me().id,{quiet:true});}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();
+(async()=>{try{const[cat,jr]=await Promise.all(['catalog.json?v=large1','journey.json?v=journey1'].map(async f=>{const r=await fetch(new URL(`../levels/${f}`,import.meta.url));if(!r.ok)throw Error(r.status);return r.json();}));({levels,groups}=composeLevels(cat,jr));profileStore=loadStore(read('profiles',null),levelIds(),read('progress',[]),today());saveProfiles();restore();graph??=createGraph(levels[0]);render();if(me().cloud)cloudRunSync(me().id,{quiet:true});}catch(error){app.innerHTML=`<p class="loading">${t('error')}</p>`;console.error(error);}})();
