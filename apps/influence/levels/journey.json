@@ -1,0 +1,1348 @@
+{
+ "tutorial": [
+  {
+   "id": "intro-arrows",
+   "name": {
+    "fr": "Suivre les flèches",
+    "en": "Follow the arrows"
+   },
+   "vertices": [
+    {
+     "id": "A",
+     "color": "L"
+    },
+    {
+     "id": "B",
+     "color": "R"
+    },
+    {
+     "id": "C",
+     "color": "L"
+    },
+    {
+     "id": "D",
+     "color": "L"
+    },
+    {
+     "id": "E",
+     "color": "R"
+    },
+    {
+     "id": "F",
+     "color": "R"
+    }
+   ],
+   "arcs": [
+    [
+     "B",
+     "A"
+    ],
+    [
+     "A",
+     "D"
+    ],
+    [
+     "F",
+     "C"
+    ],
+    [
+     "D",
+     "E"
+    ],
+    [
+     "F",
+     "E"
+    ]
+   ],
+   "positions": {
+    "A": [
+     100,
+     100
+    ],
+    "B": [
+     300,
+     100
+    ],
+    "C": [
+     500,
+     100
+    ],
+    "D": [
+     100,
+     300
+    ],
+    "E": [
+     300,
+     300
+    ],
+    "F": [
+     500,
+     300
+    ]
+   },
+   "meta": {
+    "Ls": 2,
+    "Rs": -4,
+    "vertices": 6,
+    "red": 3,
+    "blue": 3,
+    "arcs": 5,
+    "chapter": "chapter0",
+    "tutorial": {
+     "side": "L",
+     "first": "L",
+     "difficulty": "normal",
+     "coach": {
+      "fr": [
+       "Touche un pion rouge : tu captures ce pion et tout ce que ses flèches atteignent, même en plusieurs étapes.",
+       "Chaque pion capturé vaut un point. Astuce : un appui long montre une capture sans jouer."
+      ],
+      "en": [
+       "Tap a red piece: you capture it and everything its arrows reach, even through several steps.",
+       "Each captured piece is worth one point. Tip: a long press shows a capture without playing."
+      ]
+     },
+     "lesson": {
+      "fr": "Une capture suit les flèches de proche en proche.",
+      "en": "A capture follows the arrows step by step."
+     },
+     "keys": [
+      "A",
+      "D"
+     ],
+     "greedy": [
+      "A"
+     ],
+     "plies": 4
+    }
+   }
+  },
+  {
+   "id": "intro-backwards",
+   "name": {
+    "fr": "Le bleu lit à l’envers",
+    "en": "Blue reads backwards"
+   },
+   "vertices": [
+    {
+     "id": "A",
+     "color": "L"
+    },
+    {
+     "id": "B",
+     "color": "L"
+    },
+    {
+     "id": "C",
+     "color": "L"
+    },
+    {
+     "id": "D",
+     "color": "L"
+    },
+    {
+     "id": "E",
+     "color": "R"
+    },
+    {
+     "id": "F",
+     "color": "R"
+    },
+    {
+     "id": "G",
+     "color": "R"
+    },
+    {
+     "id": "H",
+     "color": "R"
+    }
+   ],
+   "arcs": [
+    [
+     "A",
+     "E"
+    ],
+    [
+     "B",
+     "C"
+    ],
+    [
+     "D",
+     "C"
+    ],
+    [
+     "G",
+     "C"
+    ],
+    [
+     "G",
+     "F"
+    ],
+    [
+     "G",
+     "H"
+    ],
+    [
+     "E",
+     "B"
+    ]
+   ],
+   "positions": {
+    "A": [
+     100,
+     100
+    ],
+    "B": [
+     300,
+     100
+    ],
+    "C": [
+     500,
+     100
+    ],
+    "D": [
+     700,
+     100
+    ],
+    "E": [
+     100,
+     300
+    ],
+    "F": [
+     300,
+     300
+    ],
+    "G": [
+     500,
+     300
+    ],
+    "H": [
+     700,
+     300
+    ]
+   },
+   "meta": {
+    "Ls": 2,
+    "Rs": -2,
+    "vertices": 8,
+    "red": 4,
+    "blue": 4,
+    "arcs": 7,
+    "chapter": "chapter0",
+    "tutorial": {
+     "side": "L",
+     "first": "L",
+     "difficulty": "normal",
+     "coach": {
+      "fr": [
+       "Regarde bien les flèches quand c’est au bleu : elles changent de sens.",
+       "Le bleu suit les flèches à l’envers. Pense à ce qu’il pourra prendre ensuite."
+      ],
+      "en": [
+       "Watch the arrows on Blue’s turn: they change direction.",
+       "Blue follows the arrows backwards. Think about what it can take next."
+      ]
+     },
+     "lesson": {
+      "fr": "Rouge suit les flèches, bleu les remonte : un même graphe, deux lectures.",
+      "en": "Red follows the arrows, Blue goes against them: one graph, two readings."
+     },
+     "keys": [
+      "A"
+     ],
+     "greedy": [
+      "A"
+     ],
+     "plies": 4
+    }
+   }
+  },
+  {
+   "id": "intro-trap",
+   "name": {
+    "fr": "Le gros coup piégé",
+    "en": "The tempting big move"
+   },
+   "vertices": [
+    {
+     "id": "A",
+     "color": "L"
+    },
+    {
+     "id": "B",
+     "color": "L"
+    },
+    {
+     "id": "C",
+     "color": "R"
+    },
+    {
+     "id": "D",
+     "color": "L"
+    },
+    {
+     "id": "E",
+     "color": "R"
+    },
+    {
+     "id": "F",
+     "color": "L"
+    },
+    {
+     "id": "G",
+     "color": "L"
+    },
+    {
+     "id": "H",
+     "color": "R"
+    },
+    {
+     "id": "I",
+     "color": "R"
+    }
+   ],
+   "arcs": [
+    [
+     "D",
+     "A"
+    ],
+    [
+     "C",
+     "B"
+    ],
+    [
+     "C",
+     "F"
+    ],
+    [
+     "G",
+     "D"
+    ],
+    [
+     "E",
+     "F"
+    ],
+    [
+     "F",
+     "I"
+    ],
+    [
+     "H",
+     "G"
+    ],
+    [
+     "H",
+     "I"
+    ],
+    [
+     "D",
+     "B"
+    ],
+    [
+     "E",
+     "I"
+    ]
+   ],
+   "positions": {
+    "A": [
+     100,
+     100
+    ],
+    "B": [
+     300,
+     100
+    ],
+    "C": [
+     500,
+     100
+    ],
+    "D": [
+     100,
+     300
+    ],
+    "E": [
+     300,
+     300
+    ],
+    "F": [
+     500,
+     300
+    ],
+    "G": [
+     100,
+     500
+    ],
+    "H": [
+     300,
+     500
+    ],
+    "I": [
+     500,
+     500
+    ]
+   },
+   "meta": {
+    "Ls": 3,
+    "Rs": -1,
+    "vertices": 9,
+    "red": 5,
+    "blue": 4,
+    "arcs": 10,
+    "chapter": "chapter0",
+    "tutorial": {
+     "side": "L",
+     "first": "L",
+     "difficulty": "expert",
+     "coach": {
+      "fr": [
+       "Un seul pion rouge mène à la victoire, et ce n’est pas celui qui capture le plus.",
+       "L’ordinateur joue parfaitement ici. Chaque pion laissé peut se retourner contre toi."
+      ],
+      "en": [
+       "Only one red piece leads to victory, and it is not the one that captures the most.",
+       "The computer plays perfectly here. Every piece you leave can turn against you."
+      ]
+     },
+     "lesson": {
+      "fr": "Le coup qui rapporte le plus tout de suite n’est pas toujours le meilleur. C’est tout l’intérêt du jeu.",
+      "en": "The move that scores most right now is not always the best. That is the whole game."
+     },
+     "keys": [
+      "F"
+     ],
+     "greedy": [
+      "G"
+     ],
+     "plies": 7
+    }
+   }
+  },
+  {
+   "id": "intro-ending",
+   "name": {
+    "fr": "Plus de pion, plus de jeu",
+    "en": "No piece, no move"
+   },
+   "vertices": [
+    {
+     "id": "A",
+     "color": "R"
+    },
+    {
+     "id": "B",
+     "color": "R"
+    },
+    {
+     "id": "C",
+     "color": "R"
+    },
+    {
+     "id": "D",
+     "color": "L"
+    },
+    {
+     "id": "E",
+     "color": "R"
+    },
+    {
+     "id": "F",
+     "color": "L"
+    },
+    {
+     "id": "G",
+     "color": "L"
+    },
+    {
+     "id": "H",
+     "color": "L"
+    }
+   ],
+   "arcs": [
+    [
+     "A",
+     "B"
+    ],
+    [
+     "E",
+     "A"
+    ],
+    [
+     "F",
+     "B"
+    ],
+    [
+     "C",
+     "D"
+    ],
+    [
+     "F",
+     "E"
+    ],
+    [
+     "G",
+     "F"
+    ],
+    [
+     "G",
+     "H"
+    ],
+    [
+     "G",
+     "D"
+    ]
+   ],
+   "positions": {
+    "A": [
+     100,
+     100
+    ],
+    "B": [
+     300,
+     100
+    ],
+    "C": [
+     500,
+     100
+    ],
+    "D": [
+     700,
+     100
+    ],
+    "E": [
+     100,
+     300
+    ],
+    "F": [
+     300,
+     300
+    ],
+    "G": [
+     500,
+     300
+    ],
+    "H": [
+     700,
+     300
+    ]
+   },
+   "meta": {
+    "Ls": 6,
+    "Rs": -4,
+    "vertices": 8,
+    "red": 4,
+    "blue": 4,
+    "arcs": 8,
+    "chapter": "chapter0",
+    "tutorial": {
+     "side": "L",
+     "first": "L",
+     "difficulty": "expert",
+     "coach": {
+      "fr": [
+       "Dernière règle : si un camp n’a plus de pion de sa couleur à son tour, l’adversaire prend tout ce qui reste.",
+       "Prive le bleu de ses derniers pions bleus."
+      ],
+      "en": [
+       "Last rule: if a side has no piece of its colour on its turn, the opponent takes everything left.",
+       "Leave Blue without blue pieces."
+      ]
+     },
+     "lesson": {
+      "fr": "Sans pion de sa couleur, on ne passe pas : l’adversaire ramasse tout ce qui reste.",
+      "en": "With no piece of your colour you do not pass: your opponent collects everything left."
+     },
+     "keys": [
+      "F",
+      "G"
+     ],
+     "greedy": [
+      "G"
+     ],
+     "plies": 3
+    }
+   }
+  },
+  {
+   "id": "intro-deeper",
+   "name": {
+    "fr": "Deux coups d’avance",
+    "en": "Two moves ahead"
+   },
+   "vertices": [
+    {
+     "id": "A",
+     "color": "L"
+    },
+    {
+     "id": "B",
+     "color": "L"
+    },
+    {
+     "id": "C",
+     "color": "L"
+    },
+    {
+     "id": "D",
+     "color": "R"
+    },
+    {
+     "id": "E",
+     "color": "L"
+    },
+    {
+     "id": "F",
+     "color": "R"
+    },
+    {
+     "id": "G",
+     "color": "R"
+    },
+    {
+     "id": "H",
+     "color": "R"
+    },
+    {
+     "id": "I",
+     "color": "L"
+    },
+    {
+     "id": "J",
+     "color": "R"
+    },
+    {
+     "id": "K",
+     "color": "L"
+    },
+    {
+     "id": "L",
+     "color": "R"
+    }
+   ],
+   "arcs": [
+    [
+     "B",
+     "A"
+    ],
+    [
+     "A",
+     "E"
+    ],
+    [
+     "B",
+     "C"
+    ],
+    [
+     "F",
+     "B"
+    ],
+    [
+     "G",
+     "C"
+    ],
+    [
+     "D",
+     "H"
+    ],
+    [
+     "E",
+     "I"
+    ],
+    [
+     "F",
+     "J"
+    ],
+    [
+     "G",
+     "K"
+    ],
+    [
+     "L",
+     "H"
+    ],
+    [
+     "K",
+     "J"
+    ],
+    [
+     "F",
+     "I"
+    ],
+    [
+     "H",
+     "C"
+    ],
+    [
+     "H",
+     "K"
+    ]
+   ],
+   "positions": {
+    "A": [
+     100,
+     100
+    ],
+    "B": [
+     300,
+     100
+    ],
+    "C": [
+     500,
+     100
+    ],
+    "D": [
+     700,
+     100
+    ],
+    "E": [
+     100,
+     300
+    ],
+    "F": [
+     300,
+     300
+    ],
+    "G": [
+     500,
+     300
+    ],
+    "H": [
+     700,
+     300
+    ],
+    "I": [
+     100,
+     500
+    ],
+    "J": [
+     300,
+     500
+    ],
+    "K": [
+     500,
+     500
+    ],
+    "L": [
+     700,
+     500
+    ]
+   },
+   "meta": {
+    "Ls": 2,
+    "Rs": -2,
+    "vertices": 12,
+    "red": 6,
+    "blue": 6,
+    "arcs": 14,
+    "chapter": "chapter0",
+    "tutorial": {
+     "side": "L",
+     "first": "L",
+     "difficulty": "expert",
+     "coach": {
+      "fr": [
+       "Dernier essai : un seul pion gagne. Regarde ce que le bleu pourra répondre.",
+       "Avant de jouer, demande-toi ce que l’autre camp prendra juste après."
+      ],
+      "en": [
+       "Final test: only one piece wins. Look at what Blue can answer.",
+       "Before you play, ask yourself what the other side takes right after."
+      ]
+     },
+     "lesson": {
+      "fr": "Tu connais l’essentiel. Les plateaux suivants t’attendent, du plus simple au plus retors.",
+      "en": "You know the essentials. The next boards await, from the simplest to the trickiest."
+     },
+     "keys": [
+      "K"
+     ],
+     "greedy": [
+      "B"
+     ],
+     "plies": 6
+    }
+   }
+  }
+ ],
+ "chapters": [
+  {
+   "key": "chapter0",
+   "ids": [
+    "intro-arrows",
+    "intro-backwards",
+    "intro-trap",
+    "intro-ending",
+    "intro-deeper"
+   ]
+  },
+  {
+   "key": "chapter1",
+   "ids": [
+    "first-links",
+    "network-3",
+    "two-gardens",
+    "network-5",
+    "network-10",
+    "network-11",
+    "network-6",
+    "network-2",
+    "network-9",
+    "network-12",
+    "network-8",
+    "network-7"
+   ]
+  },
+  {
+   "key": "chapter2",
+   "ids": [
+    "expedition-8",
+    "expedition-4",
+    "expedition-13",
+    "expedition-1",
+    "expedition-2",
+    "expedition-5",
+    "expedition-7",
+    "expedition-10",
+    "expedition-12",
+    "expedition-16",
+    "expedition-9",
+    "expedition-11",
+    "expedition-17",
+    "expedition-18",
+    "expedition-14",
+    "expedition-6",
+    "expedition-3",
+    "expedition-15"
+   ]
+  },
+  {
+   "key": "chapter5",
+   "ids": [
+    "trap-1",
+    "trap-1-blue",
+    "trap-2",
+    "trap-2-blue",
+    "trap-3",
+    "trap-3-blue",
+    "trap-4",
+    "trap-4-blue",
+    "trap-5",
+    "trap-5-blue",
+    "trap-6",
+    "trap-6-blue",
+    "trap-7",
+    "trap-7-blue",
+    "trap-8",
+    "trap-8-blue",
+    "trap-9",
+    "trap-9-blue",
+    "trap-10",
+    "trap-10-blue",
+    "trap-11",
+    "trap-11-blue",
+    "trap-12",
+    "trap-12-blue"
+   ]
+  },
+  {
+   "key": "chapter3",
+   "ids": [
+    "expedition-35",
+    "expedition-19",
+    "expedition-31",
+    "expedition-34",
+    "expedition-21",
+    "expedition-23",
+    "expedition-32",
+    "expedition-33",
+    "expedition-25",
+    "expedition-22",
+    "expedition-24",
+    "expedition-20",
+    "expedition-36",
+    "expedition-27",
+    "expedition-28",
+    "expedition-26",
+    "expedition-29",
+    "expedition-30"
+   ]
+  },
+  {
+   "key": "chapter4",
+   "ids": [
+    "long-path-23",
+    "long-path-29",
+    "long-path-22",
+    "long-path-31",
+    "long-path-27",
+    "long-path-30",
+    "long-path-26",
+    "long-path-33",
+    "long-path-32",
+    "long-path-28",
+    "long-path-24",
+    "long-path-25"
+   ]
+  }
+ ],
+ "mirrors": [
+  "trap-1",
+  "trap-2",
+  "trap-3",
+  "trap-4",
+  "trap-5",
+  "trap-6",
+  "trap-7",
+  "trap-8",
+  "trap-9",
+  "trap-10",
+  "trap-11",
+  "trap-12"
+ ],
+ "difficulty": {
+  "first-links": {
+   "bits": 0,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-2": {
+   "bits": 1.32,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-3": {
+   "bits": 0,
+   "turns": 2,
+   "dots": 1
+  },
+  "two-gardens": {
+   "bits": 0,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-5": {
+   "bits": 0,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-6": {
+   "bits": 1.22,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-7": {
+   "bits": 2.32,
+   "turns": 2,
+   "dots": 2
+  },
+  "network-8": {
+   "bits": 2,
+   "turns": 1,
+   "dots": 2
+  },
+  "network-9": {
+   "bits": 1.58,
+   "turns": 1,
+   "dots": 2
+  },
+  "network-10": {
+   "bits": 0,
+   "turns": 2,
+   "dots": 1
+  },
+  "network-11": {
+   "bits": 0,
+   "turns": 3,
+   "dots": 1
+  },
+  "network-12": {
+   "bits": 1.81,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-1": {
+   "bits": 1.64,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-2": {
+   "bits": 1.81,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-3": {
+   "bits": 3.81,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-4": {
+   "bits": 1.07,
+   "turns": 3,
+   "dots": 1
+  },
+  "expedition-5": {
+   "bits": 1.81,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-6": {
+   "bits": 3.39,
+   "turns": 3,
+   "dots": 3
+  },
+  "expedition-7": {
+   "bits": 1.81,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-8": {
+   "bits": 0.58,
+   "turns": 3,
+   "dots": 1
+  },
+  "expedition-9": {
+   "bits": 2.81,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-10": {
+   "bits": 2.22,
+   "turns": 4,
+   "dots": 2
+  },
+  "expedition-11": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "expedition-12": {
+   "bits": 2.39,
+   "turns": 3,
+   "dots": 2
+  },
+  "expedition-13": {
+   "bits": 1.42,
+   "turns": 3,
+   "dots": 1
+  },
+  "expedition-14": {
+   "bits": 3.26,
+   "turns": 3,
+   "dots": 3
+  },
+  "expedition-15": {
+   "bits": 4,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-16": {
+   "bits": 2.42,
+   "turns": 4,
+   "dots": 2
+  },
+  "expedition-17": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-18": {
+   "bits": 3,
+   "turns": 3,
+   "dots": 3
+  },
+  "expedition-19": {
+   "bits": 1.68,
+   "turns": 5,
+   "dots": 2
+  },
+  "expedition-20": {
+   "bits": 4,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-21": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-22": {
+   "bits": 3.74,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-23": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-24": {
+   "bits": 3.74,
+   "turns": 3,
+   "dots": 3
+  },
+  "expedition-25": {
+   "bits": 3.49,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-26": {
+   "bits": 5.49,
+   "turns": 5,
+   "dots": 3
+  },
+  "expedition-27": {
+   "bits": 4.17,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-28": {
+   "bits": 4.49,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-29": {
+   "bits": 5.49,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-30": {
+   "bits": 6.08,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-31": {
+   "bits": 2.17,
+   "turns": 5,
+   "dots": 2
+  },
+  "expedition-32": {
+   "bits": 3.17,
+   "turns": 5,
+   "dots": 3
+  },
+  "expedition-33": {
+   "bits": 3.17,
+   "turns": 4,
+   "dots": 3
+  },
+  "expedition-34": {
+   "bits": 2.7,
+   "turns": 4,
+   "dots": 2
+  },
+  "expedition-35": {
+   "bits": 0.95,
+   "turns": 5,
+   "dots": 1
+  },
+  "expedition-36": {
+   "bits": 4.02,
+   "turns": 4,
+   "dots": 3
+  },
+  "long-path-22": {
+   "bits": 1.5,
+   "turns": 5,
+   "dots": 2
+  },
+  "long-path-23": {
+   "bits": 0.46,
+   "turns": 5,
+   "dots": 1
+  },
+  "long-path-24": {
+   "bits": 5.34,
+   "turns": 6,
+   "dots": 3
+  },
+  "long-path-25": {
+   "bits": 6.92,
+   "turns": 6,
+   "dots": 3
+  },
+  "long-path-26": {
+   "bits": 4.24,
+   "turns": 6,
+   "dots": 3
+  },
+  "long-path-27": {
+   "bits": 1.89,
+   "turns": 6,
+   "dots": 2
+  },
+  "long-path-28": {
+   "bits": 5.1,
+   "turns": 7,
+   "dots": 3
+  },
+  "long-path-29": {
+   "bits": 0.7,
+   "turns": 6,
+   "dots": 1
+  },
+  "long-path-30": {
+   "bits": 2.91,
+   "turns": 6,
+   "dots": 2
+  },
+  "long-path-31": {
+   "bits": 1.64,
+   "turns": 7,
+   "dots": 2
+  },
+  "long-path-32": {
+   "bits": 4.92,
+   "turns": 7,
+   "dots": 3
+  },
+  "long-path-33": {
+   "bits": 4.4,
+   "turns": 7,
+   "dots": 3
+  },
+  "trap-1": {
+   "bits": 1.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-2": {
+   "bits": 1.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-3": {
+   "bits": 2.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-4": {
+   "bits": 2.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-5": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-6": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-7": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-8": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-9": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "trap-10": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "trap-11": {
+   "bits": 3,
+   "turns": 5,
+   "dots": 3
+  },
+  "trap-12": {
+   "bits": 3.17,
+   "turns": 4,
+   "dots": 3
+  },
+  "trap-1-blue": {
+   "bits": 1.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-2-blue": {
+   "bits": 1.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-3-blue": {
+   "bits": 2.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-4-blue": {
+   "bits": 2.58,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-5-blue": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-6-blue": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-7-blue": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-8-blue": {
+   "bits": 2.81,
+   "turns": 4,
+   "dots": 2
+  },
+  "trap-9-blue": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "trap-10-blue": {
+   "bits": 3,
+   "turns": 4,
+   "dots": 3
+  },
+  "trap-11-blue": {
+   "bits": 3,
+   "turns": 5,
+   "dots": 3
+  },
+  "trap-12-blue": {
+   "bits": 3.17,
+   "turns": 4,
+   "dots": 3
+  },
+  "intro-arrows": {
+   "bits": 0.58,
+   "turns": 2,
+   "dots": 1
+  },
+  "intro-backwards": {
+   "bits": 2,
+   "turns": 2,
+   "dots": 2
+  },
+  "intro-trap": {
+   "bits": 2.32,
+   "turns": 4,
+   "dots": 2
+  },
+  "intro-ending": {
+   "bits": 1,
+   "turns": 2,
+   "dots": 1
+  },
+  "intro-deeper": {
+   "bits": 2.58,
+   "turns": 3,
+   "dots": 2
+  }
+ }
+}

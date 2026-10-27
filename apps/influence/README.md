@@ -72,6 +72,29 @@ inverse. L'option ne change jamais le graphe canonique ni les captures.
   `ver`, …), `influence.v1.profiles` (`version:1`, avec `cloud:{key,rev,at}` si la sauvegarde en ligne est activée), `influence.v1.progress`
   (ancien format, migré).
 
+## Parcours, étoiles et coup décisif (v1.2)
+
+- **Premiers pas** : cinq petits plateaux d'initiation (`levels/journey.json`, générés par
+  `node scripts/tutorial-levels.mjs`), une idée chacun : suivre les flèches, la lecture à l'envers du bleu,
+  le gros coup piégé, la règle de fin, un piège plus profond. Chaque propriété est vérifiée par le solveur exact
+  (`tests/journey.test.mjs`). Un bandeau de consignes accompagne chaque plateau, on peut passer l'initiation.
+- **Ordre mesuré** : `node scripts/journey.mjs` mesure la difficulté de chaque plateau (en bits : somme de
+  log2(coups légaux / bons coups) le long de la variante principale, pour le camp du joueur) et range les
+  plateaux du plus simple au plus retors, en 1 à 3 points. Ordre des chapitres : Premiers pas, Découverte,
+  Connexions, Pièges gloutons, Grands réseaux, Longues traversées. `catalog.json` reste la référence des
+  72 plateaux d'origine ; `levels/compose.mjs` assemble la liste jouée (89 plateaux).
+- **Pièges côté bleu** : chaque piège a son miroir (couleurs échangées, arcs inversés) où le bleu commence et
+  se fait piéger. Sur les pièges et l'initiation, le camp du joueur est imposé.
+- **Trois étoiles** par plateau : réussi (victoire, ou égalité quand c'est le mieux possible), réussi contre
+  l'Expert sans annulation, score parfait contre l'Expert. Le verdict théorique d'un plateau n'apparaît dans
+  la liste qu'après l'avoir joué.
+- **Coup décisif** : en fin de partie, un worker rejoue la partie avec le solveur exact (`ai/analysis.mjs`) et
+  montre le premier coup qui a fait perdre la victoire ou l'égalité, sur un petit plateau, avec « Rejouer à
+  partir de ce coup ». Sinon : le coup qui rapportait plus, ou « Sans faute ». Les très grands plateaux
+  peuvent dépasser le budget d'analyse : rien n'est alors affirmé.
+- **Flèches qui se retournent** à chaque changement de tour (animation + court message les premières fois),
+  pastilles de score « toi / ordi », **appui long** sur un pion pour voir sa capture sans jouer.
+
 ## Vérifier
 
 Node >=20 et Python >=3.9. Aucune installation de paquets.
