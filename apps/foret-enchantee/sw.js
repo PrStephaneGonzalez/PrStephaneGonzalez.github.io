@@ -1,6 +1,6 @@
 /* Fonctionnement hors connexion : on garde la page, l'icône et les polices déjà chargées.
    Pour publier une nouvelle version, changez le numéro ci-dessous. */
-const VERSION = 'foret-v16';
+const VERSION = 'foret-v17';
 const SONS = 'foret-sons-1';   /* les enregistrements ne changent presque jamais : cache à part, conservé d'une version à l'autre, lu en premier */
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png', './fonts/pw-fr-trad.woff2', './fonts/pw-b.woff2'];
 
