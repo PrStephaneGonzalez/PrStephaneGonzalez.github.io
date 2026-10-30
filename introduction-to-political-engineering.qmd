@@ -20,3 +20,15 @@ The chapters of the book are available progressively in **English and French**. 
 ## Course material
 
 Additional course-specific material will be added progressively.
+
+## Homework — Designing a Fair Content Platform
+
+**Group assignment (3–4 students) · Deadline: January 5, 2027**
+
+Design a platform inspired by Spotify or YouTube, with two connected mechanisms: a recommendation algorithm that learns user preferences while encouraging discovery, and a fair revenue-sharing rule for creators. Analyze their normative properties, strategic incentives, and interactions.
+
+The assignment requires **at least three formally stated properties**, with proofs or counterexamples, and **two illustrative examples**.
+
+[**Read the full homework assignment →**](applied-economic-theory-homework.qmd)
+
+**Submission:** One PDF report per group (suggested length: 8–12 pages), sent by email with the exact subject **Applied Economic Theory Homework**.
