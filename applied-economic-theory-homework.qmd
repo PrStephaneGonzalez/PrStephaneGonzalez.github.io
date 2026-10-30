@@ -1,0 +1,64 @@
+---
+title: "Homework — Designing a Fair Content Platform"
+description-meta: "Applied Economic Theory group assignment: recommendation algorithms, preference revelation, creator compensation, and mechanism design."
+---
+
+# Designing a Fair Content Platform
+
+**Applied Economic Theory — Group homework**
+
+**Deadline:** January 5, 2027  
+**Groups:** 3–4 students  
+**Submission:** One PDF report per group, sent by email  
+**Email subject (exactly):** `Applied Economic Theory Homework`  
+**Suggested length:** 8–12 pages
+
+## The challenge
+
+Imagine you are designing a new online content platform resembling Spotify, YouTube, or TikTok. It generates revenues from subscriptions, advertising, or both. Your task is to design and evaluate **two interconnected mechanisms**:
+
+1. **Recommendation:** How should the platform infer user preferences from observed behavior, rank creators or content, and introduce users to unfamiliar material without trapping them in a narrow set of recommendations?
+2. **Compensation:** How should revenues be distributed fairly among creators, given that the recommendation mechanism itself influences the audience each creator receives?
+
+The platform does not merely observe demand: **its choices affect the behavior and opportunities it observes**. Your task is to analyze this feedback, the incentives it creates, and the unavoidable trade-offs.
+
+## Part I — Normative objectives
+
+Identify and justify desirable properties from the perspectives of users, creators, and the platform. Discuss possible conflicts between user satisfaction, discovery, fairness, economic viability, and other objectives you consider important.
+
+## Part II — Recommendation mechanism
+
+Define a sufficiently precise rule for ranking and recommending creators or content to individual users. Specify the information you collect (views, skips, searches, likes, subscriptions, etc.), how it reveals preferences, and how you address the fact that observed behavior depends on what was recommended in the first place.
+
+Explain how your mechanism promotes discovery and how users and creators might strategically influence it.
+
+## Part III — Compensation mechanism
+
+Define a rule allocating the available revenue among creators. Explain what makes it fair: number of views, viewing time, user satisfaction, subscriber contributions, or another principle. Analyze the incentives your rule gives creators and potential manipulation.
+
+## Part IV — Interaction between the mechanisms
+
+Examine how recommendation and compensation affect each other. Could early exposure create cumulative advantages? Can new creators reach their audience? Can maximizing engagement conflict with fair compensation? Explain how your mechanisms respond to these difficulties.
+
+## Part V — Axiomatic analysis and examples
+
+**Formally state at least three desirable properties** of your mechanisms. For each property, either justify rigorously why your proposed rule satisfies it or provide a counterexample showing that it does not. You may define your own properties, but they must be precise enough to evaluate.
+
+Construct **at least two small numerical or illustrative examples**, using a few users and creators, to show how rankings and payments are determined. At least one example must expose a weakness, tension, strategic incentive, or undesirable consequence.
+
+You do **not** need to implement software or machine learning. Simple mathematical models, tables, and diagrams are welcome.
+
+## Part VI — Defend your design
+
+Explain why your platform should be preferred to plausible alternatives. Identify its main strengths, its limitations, and the single change you would prioritize if you could improve it.
+
+The aim is not to claim that your design is perfect. **A clear explanation of why desirable properties conflict is a valuable theoretical result.**
+
+## Assessment
+
+- Normative analysis and justification of objectives: **25%**
+- Precision and coherence of the two mechanisms: **30%**
+- Strategic analysis and interaction effects: **25%**
+- Examples, formal properties, proofs and counterexamples: **20%**
+
+The report should be clear, rigorous, and original. State simplifying assumptions explicitly and acknowledge any sources used. We are evaluating **economic reasoning and mechanism design**, not programming complexity or a description of how existing platforms currently operate.
