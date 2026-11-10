@@ -39,7 +39,7 @@ Cette page rassemble les petits programmes que je construis à côté de mes rec
 </div>
 
 <h2 class="apps-section-title" id="pedagogiques">Applications pédagogiques</h2>
-<p class="apps-section-sub">De la maternelle à la terminale, développées surtout pour mes enfants — et une pour apprendre l'espagnol.</p>
+<p class="apps-section-sub">De la maternelle à la terminale, développées surtout pour mes enfants — et deux pour apprendre une langue à l'oral : l'espagnol, et le français pour les hispanophones.</p>
 
 <div class="apps-grid">
   <article class="apps-card" style="--a1:#d4eef4;--a2:#f6c8de">
@@ -95,6 +95,20 @@ Cette page rassemble les petits programmes que je construis à côté de mes rec
         <p>Sept niveaux de révision, expliqués dans l'application : pas d'algorithme caché, ni quota quotidien ni série à tenir. Un bouton « déjà acquis » et un tri rapide par groupes de 50 permettent de passer les mots connus. La lecture à voix haute utilise la voix de synthèse de l'appareil, quand une voix espagnole y est installée. Un prénom et un code à quatre chiffres suffisent pour retrouver sa progression sur n'importe quel appareil, et plusieurs personnes peuvent partager le même. Le contenu n'a pas encore été relu par un locuteur natif : chaque carte permet de signaler une erreur.</p>
       </details>
       <p class="apps-actions"><a class="apps-btn apps-btn-primary" href="apps/espagnol/index.html">Ouvrir</a></p>
+    </div>
+  </article>
+
+  <article class="apps-card" style="--a1:#cfe0fb;--a2:#f2b8b8">
+    <div class="apps-card-art" aria-hidden="true">ç</div>
+    <div class="apps-card-body">
+      <h3>Francés oral</h3>
+      <p class="apps-meta">Débutants hispanophones · interface en espagnol du Mexique</p>
+      <p>La même application dans l'autre sens, pour des hispanophones qui apprennent le français : cartes de l'espagnol vers le français, leçons de grammaire française expliquées en espagnol (être et avoir, négation, articles et genre, verbes en -er, passé composé…), neuf situations de conversation et 1 500 mots, chacun employé dans au moins une phrase.</p>
+      <details>
+        <summary>En savoir plus</summary>
+        <p>Chaque verbe a sa conjugaison complète au présent et au passé composé ; la carte est lue en espagnol au recto et en français au verso, si les voix sont installées sur l'appareil. Mêmes principes que l'application d'espagnol : sept niveaux de révision expliqués, aucun quota, progression retrouvée partout avec un prénom et un code à quatre chiffres. Contenu en brouillon, pas encore relu par un locuteur natif.</p>
+      </details>
+      <p class="apps-actions"><a class="apps-btn apps-btn-primary" href="apps/frances/index.html">Ouvrir</a></p>
     </div>
   </article>
 </div>
