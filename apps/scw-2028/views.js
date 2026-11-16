@@ -1,11 +1,11 @@
 // Rendu des vues (chaînes HTML). Les interactions sont gérées dans app.js par délégation (attributs data-*).
-import { phaseOf, PHASES, STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays } from './model.js?v=20261116b';
-import { GLOSSARY } from './i18n.js?v=20261116b';
+import { phaseOf, PHASES, STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays } from './model.js?v=20261116c';
+import { GLOSSARY } from './i18n.js?v=20261116c';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, slug,
   fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, roles, myLabels, isMine,
   inOrder, matches, filtersActive,
-} from './core.js?v=20261116b';
+} from './core.js?v=20261116c';
 
 const VIEWS = ['home', 'mine', 'next', 'road', 'decisions', 'team', 'log'];
 const VIEW_LABEL = { home: 'viewHome', mine: 'viewMine', next: 'viewNext', road: 'viewRoad', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };

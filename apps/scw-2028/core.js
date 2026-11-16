@@ -1,6 +1,6 @@
 // État partagé de l'interface et petites fonctions utilitaires (aucun rendu ici).
-import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116b';
-import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116b';
+import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116c';
+import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116c';
 
 export const $ = sel => document.querySelector(sel);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -13,7 +13,7 @@ export const store = {
 export const EMPTY_FILTERS = { q: '', domain: '', person: '', priority: '', showDone: false };
 
 export const state = {
-  lang: store.get('lang') || ((navigator.language || 'fr').startsWith('fr') ? 'fr' : 'en'),
+  lang: store.get('lang') || 'fr', // français par défaut ; le bouton de langue bascule en anglais
   api: null, who: '', tasks: new Map(), meta: {}, a: null, since: null,
   view: store.get('view') || 'home',
   f: { ...EMPTY_FILTERS, ...store.json('filters', {}) },
