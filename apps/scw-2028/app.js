@@ -1,11 +1,11 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261116b';
-import { createApi, ApiError } from './api.js?v=20261116b';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime } from './core.js?v=20261116b';
-import { renderShell, render, agendaText, csv } from './views.js?v=20261116b';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116b';
+import { wouldUnlock } from './model.js?v=20261116c';
+import { createApi, ApiError } from './api.js?v=20261116c';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime } from './core.js?v=20261116c';
+import { renderShell, render, agendaText, csv } from './views.js?v=20261116c';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116c';
 
 /* ---------- Connexion ---------- */
 
