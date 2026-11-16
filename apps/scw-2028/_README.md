@@ -56,12 +56,24 @@ Colonne JSON `data` ; ajouter un champ ne demande aucune migration (le déclarer
 | `docs/supabase-scw.sql` | Schéma et fonctions côté serveur |
 | `tests/model.test.mjs` | Tests de `model.js` : `node --test apps/scw-2028/tests/model.test.mjs` |
 
-## Ordre logique et dates
+## Ordre de travail et dates
 
-L'ordre affiché est un tri topologique des prérequis : une tâche n'apparaît jamais avant ce dont elle dépend.
-À égalité, la tâche au repère le plus tôt passe d'abord, puis la plus prioritaire. Une tâche est **prête** quand
-tous ses prérequis (hors règles et rituels) sont terminés. La date cible vient de l'échéance ferme, sinon de la cible
-interne, sinon du jalon de référence ; modifier un jalon dans « Équipe et repères » recale toutes les tâches rattachées.
+L'onglet « Tasks » montre toutes les tâches ouvertes dans un seul ordre, calculé dans `model.js` (`analyse`) :
+
+1. **Échéance effective** : date cible de la tâche (échéance ferme, sinon cible interne, sinon jalon + décalage),
+   sinon repère en texte libre (fin du mois indiqué). Si une tâche qui l'attend doit finir plus tôt, l'échéance est
+   ramenée à « échéance de la suivante − durée de la suivante » (affiché « needed for … »).
+2. **Importance effective** : poids Urgent 8, High 4, Medium 2, Low 1 ; un prérequis prend le poids le plus fort
+   des tâches qui l'attendent.
+3. **Durée** : few hours = 1 jour, few days = 3, several weeks = 10 (non estimée = 3).
+4. **Score** (règle ATC, « apparent tardiness cost ») : importance / durée × exp(−marge / 30), avec
+   marge = jours restants avant l'échéance − durée (au moins 0).
+5. **Liste** : groupée par horizon (en retard, 4 semaines, 3 mois, puis par année, semaine de la conférence, après,
+   sans date), puis par score décroissant ; une tâche n'est jamais placée avant un prérequis encore ouvert.
+
+Paramètres modifiables en haut de la section « Paramètres de l'ordonnancement » de `model.js` (WEIGHT, DURATION, TAU).
+Une tâche est **prête** quand tous ses prérequis (hors règles et rituels) sont terminés ; sinon la ligne affiche
+« First: … ». Modifier un jalon dans « Team and dates » recale toutes les tâches rattachées.
 L'interface refuse les prérequis qui créeraient une boucle.
 
 ## Révision du 16/11/2026
@@ -85,3 +97,13 @@ Contenu en anglais simple (« globish ») pour les organisateurs non francophone
 s'affiche dans une pastille de couleur (une couleur par personne) ; un clic sur une pastille filtre les tâches de
 cette personne. Les tâches faites restent visibles, barrées et grisées, avec « Done: prénom, date ».
 11 tâches ajoutées : GOV-009 (donner l'accès à l'équipe) et INC-001 à INC-010 (accessibilité, allergènes, inclusion).
+
+## Révision du 16/11/2026 (nuit) : interface simplifiée
+
+- Quatre onglets : Tasks (toutes les tâches, ordre de travail), Decisions (avec l'ordre du jour de réunion),
+  Team and dates (frise des jalons, personnes, dates clés, règles, glossaire), History.
+- Filtres rapides : All, Mine, Nobody on it, Late ; recherche ; « More filters » (domaine, priorité, rôle).
+- Chaque tâche a deux gros boutons : « I'll do it » (prend la couleur de la personne) et « Mark done » (vert).
+  Après un clic, la tâche reste à sa place, s'éclaire un instant, et un message propose « Undo ».
+- Les tâches faites sont regroupées en bas (« Done tasks »), barrées et grisées.
+- Export Excel : colonnes « Order » (rang dans l'ordre de travail) et « Do by » (échéance effective) ajoutées.

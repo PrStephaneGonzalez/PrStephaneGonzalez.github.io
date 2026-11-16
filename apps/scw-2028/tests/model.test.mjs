@@ -22,14 +22,30 @@ test('identifiants cités', () => {
   assert.deepEqual(parseIds('CAL-008, bud-001 and CAL-008'), ['CAL-008', 'BUD-001']);
 });
 
-test("une tâche n'apparaît jamais avant ses prérequis, même si elle est datée plus tôt", () => {
+test("une tâche n'apparaît jamais avant ses prérequis ; le prérequis hérite de l'échéance et de l'importance", () => {
   const a = analyse([
-    task('BB-001', { dependsOn: 'AA-001', planningDate: '2026-10-01', priority: 'Urgent' }),
-    task('AA-001', { planningDate: '2027-03-01' }),
+    task('BB-001', { dependsOn: 'AA-001', planningDate: '2027-01-10', priority: 'Urgent', effort: 'days' }),
+    task('AA-001', { planningDate: '2027-03-01', priority: 'Low' }),
     task('CC-001', { planningDate: '2026-12-01' }),
-  ]);
+  ], { today: '2026-11-16' });
   assert.deepEqual(a.order, ['CC-001', 'AA-001', 'BB-001']);
-  assert.equal(a.month.get('BB-001'), '2027-03'); // hérite du repère de son prérequis
+  assert.equal(a.deadline.get('AA-001').date, '2027-01-07'); // 10 janvier − 3 jours pour BB-001
+  assert.equal(a.deadline.get('AA-001').source, 'needed');
+  assert.equal(a.weight.get('AA-001'), 8); // urgente, comme la tâche qui l'attend
+});
+
+test('score : à échéance proche, la tâche importante et courte passe d’abord', () => {
+  const a = analyse([
+    task('AA-001', { planningDate: '2026-12-01', priority: 'Low', effort: 'hours' }),
+    task('BB-001', { planningDate: '2026-12-01', priority: 'Urgent', effort: 'weeks' }),
+    task('CC-001', { planningDate: '2026-12-01', priority: 'Urgent', effort: 'hours' }),
+    task('DD-001', { planningDate: '2026-10-01', priority: 'Low' }),
+    task('EE-001', { planningDate: '2027-09-01', priority: 'Urgent', effort: 'hours' }),
+  ], { today: '2026-11-16' });
+  assert.deepEqual(a.order, ['DD-001', 'CC-001', 'BB-001', 'AA-001', 'EE-001']);
+  assert.deepEqual([...a.late], ['DD-001']);
+  assert.equal(a.horizon.get('CC-001'), 'month');
+  assert.equal(a.horizon.get('EE-001'), 'y2027');
 });
 
 test('à repère égal, la priorité départage', () => {

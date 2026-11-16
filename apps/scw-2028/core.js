@@ -1,6 +1,6 @@
 // État partagé de l'interface et petites fonctions utilitaires (aucun rendu ici).
-import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116e';
-import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116e';
+import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116f';
+import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116f';
 
 export const $ = sel => document.querySelector(sel);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -11,13 +11,15 @@ export const store = {
 };
 
 // Les tâches faites restent visibles par défaut (barrées et grisées). « taker » = qui a dit « Je m'en occupe ».
-export const EMPTY_FILTERS = { q: '', domain: '', person: '', taker: '', priority: '', showDone: true };
+export const EMPTY_FILTERS = { q: '', domain: '', person: '', taker: '', priority: '', scope: 'all' };
 
 export const state = {
   lang: store.get('lang') || 'en', // anglais simple par défaut (organisateurs internationaux) ; bouton pour le français
   api: null, who: '', tasks: new Map(), meta: {}, a: null, since: null,
-  view: store.get('view') || 'home',
-  f: { ...EMPTY_FILTERS, ...store.json('filters2', {}) },
+  view: ['tasks', 'decisions', 'team', 'log'].includes(store.get('view')) ? store.get('view') : 'tasks',
+  f: { ...EMPTY_FILTERS, ...store.json('filters3', {}) },
+  recent: new Map(), // tâches cochées « faite » à l'instant : id → { h: horizon, before: id suivant } (restent en place)
+  flash: null,       // tâche à faire briller brièvement après une action
   open: null,       // identifiant de la tâche ouverte, ou '' pour une nouvelle tâche
   draft: null,      // brouillon de la fiche ouverte (sous-étapes comprises)
   dirty: false, busy: false, log: null,
@@ -41,7 +43,7 @@ export const iTook = t => takersOf(t).some(n => same(n, state.who));
 
 /** Couleur stable par personne (même prénom = même couleur pour tout le monde). */
 const PALETTE = [['#1d6f6a', '#dcefec'], ['#2f5d8a', '#e1ebf6'], ['#8a3b6e', '#f5e2ee'], ['#8a5d0c', '#f6ead3'], ['#5b4a9e', '#eae6f7'],
-  ['#a03a2a', '#f8e2dd'], ['#3f6b2a', '#e4efdc'], ['#1f6f8b', '#dbeef5'], ['#7a3d9a', '#efe2f6'], ['#6b4f3a', '#efe6dd'], ['#9a2f55', '#f7e1e9'], ['#2e6b52', '#ddefe6']];
+  ['#3d5a80', '#e2e9f3'], ['#3f6b2a', '#e4efdc'], ['#1f6f8b', '#dbeef5'], ['#7a3d9a', '#efe2f6'], ['#6b4f3a', '#efe6dd'], ['#5f6b7a', '#e7eaee'], ['#2e6b52', '#ddefe6']];
 export function colorFor(name) {
   let h = 0;
   for (const c of String(name || '').trim().toLowerCase()) h = (h * 31 + c.codePointAt(0)) >>> 0;
@@ -76,16 +78,20 @@ export function recompute() {
   state.a = analyse([...state.tasks.values()], { today: today(), milestones: milestones() });
 }
 
-/** Filtres de la barre d'outils ; les règles et rituels sont exclus des listes de travail. */
-export function matches(t, { includeNonTasks = false } = {}) {
+/**
+ * Filtres de la barre d'outils ; les règles et rituels sont exclus des listes de travail.
+ * Portée : 'all', 'mine' (je m'en occupe ou mon rôle est cité), 'free' (personne dessus), 'late' (en retard).
+ */
+export function matches(t, { includeNonTasks = false, scope = state.f.scope } = {}) {
   const f = state.f;
+  if (!t) return false;
   if (!includeNonTasks && !isActionable(t)) return false;
-  if (!f.showDone && t.status === 'Done') return false;
+  if (scope === 'mine' && !isMine(t)) return false;
+  if (scope === 'free' && (takersOf(t).length || t.status === 'Done')) return false;
+  if (scope === 'late' && !state.a.late.has(t.id)) return false;
   if (f.domain && t.domain !== f.domain) return false;
   if (f.priority && t.priority !== f.priority) return false;
-  if (f.taker) {
-    if (f.taker === '__none' ? takersOf(t).length || t.status === 'Done' : !(takersOf(t).some(n => same(n, f.taker)) || same(t.doneBy, f.taker))) return false;
-  }
+  if (f.taker && !(takersOf(t).some(n => same(n, f.taker)) || same(t.doneBy, f.taker))) return false;
   if (f.person) {
     const ps = people(t.person).map(p => p.toLowerCase());
     if (f.person === '__none' ? ps.length : !ps.includes(f.person)) return false;
@@ -97,9 +103,8 @@ export function matches(t, { includeNonTasks = false } = {}) {
   }
   return true;
 }
-export const inOrder = opts => state.a.order.map(id => state.tasks.get(id)).filter(t => t && matches(t, opts));
-export const filtersActive = () => Object.entries(EMPTY_FILTERS).some(([k, v]) => state.f[k] !== v);
-export function saveFilters() { store.set('filters2', JSON.stringify(state.f)); }
+export const filtersActive = (ignore = []) => Object.entries(EMPTY_FILTERS).some(([k, v]) => !ignore.includes(k) && state.f[k] !== v);
+export function saveFilters() { store.set('filters3', JSON.stringify(state.f)); }
 
 let toastTimer;
 /** Message bref ; `action` = { label, run } ajoute un bouton (ex. Annuler). */

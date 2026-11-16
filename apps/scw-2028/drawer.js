@@ -1,10 +1,10 @@
 // Fiche d'une tâche (panneau latéral) : lecture, modification, sous-étapes, historique.
-import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116e';
+import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116f';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, kindLabel, domainLabel, titleOf, slug,
   fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same,
-} from './core.js?v=20261116e';
-import { logItems, chip } from './views.js?v=20261116e';
+} from './core.js?v=20261116f';
+import { logItems, chip, actionsHtml } from './views.js?v=20261116f';
 
 export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {} };
 
@@ -28,12 +28,13 @@ function sourceBlock(task) {
   return `<details class="source"><summary>${esc(T().source)}</summary><p>${esc(task.provenance)}</p><dl>${rows}</dl></details>`;
 }
 
-/** Qui s'en occupe (enregistré tout de suite, indépendamment du formulaire). */
+/** Qui s'en occupe, et les deux gros boutons (enregistrés tout de suite, indépendamment du formulaire). */
 function peopleBlock(task) {
-  const t = T(), mine = takersOf(task).some(n => same(n, state.who));
-  if (task.status === 'Done') return `<p class="drawer-people"><b>${esc(t.doneShort)}</b> ${task.doneBy ? chip(task.doneBy) : ''} ${task.doneAt ? esc(fmtDate(task.doneAt.slice(0, 10))) : ''}</p>`;
-  return `<div class="drawer-people"><b>${esc(t.fTakers)}${fr() ? ' :' : ':'}</b> ${takersOf(task).map(n => chip(n, { me: same(n, state.who) })).join('') || `<span class="m-soft">${esc(t.nobodyOnIt)}</span>`}
-    <button type="button" class="take${mine ? ' leave' : ''}" data-take="${esc(task.id)}" aria-pressed="${mine}">${esc(mine ? t.leave : t.take)}</button></div>`;
+  const t = T();
+  const who = task.status === 'Done'
+    ? `<b>${esc(t.doneShort)}</b> ${task.doneBy ? chip(task.doneBy) : ''} ${task.doneAt ? esc(fmtDate(task.doneAt.slice(0, 10))) : ''}`
+    : `<b>${esc(t.fTakers)}${fr() ? ' :' : ':'}</b> ${takersOf(task).map(n => chip(n, { me: same(n, state.who) })).join('') || `<span class="soft">${esc(t.nobodyOnIt)}</span>`}`;
+  return `<div class="drawer-people"><p>${who}</p>${actionsHtml(task)}</div>`;
 }
 
 function checklistHtml(steps) {
