@@ -1,7 +1,7 @@
 // Tests de la logique d'ordonnancement : node --test apps/scw-2028/tests/
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyse, parseHint, parseIds, wouldCycle, nextId, prefixFor, phaseOf, people } from '../model.js';
+import { analyse, parseHint, parseIds, wouldCycle, nextId, prefixFor, phaseOf, people, targetDate, milestoneDates, addDays, labelsFor, concerns, wouldUnlock, agenda, csvCell } from '../model.js';
 
 const task = (id, extra = {}) => ({ id, title: id, domain: 'General', priority: 'Medium', status: 'To do', dependsOn: '', planningDate: '', due: '', timing: '', startWhen: '', person: '', ...extra });
 
@@ -80,4 +80,55 @@ test('phases et personnes', () => {
   assert.equal(phaseOf('2028-06'), 'conference');
   assert.equal(phaseOf(null), 'undated');
   assert.deepEqual(people('Taï / Lyon 2 '), ['Taï', 'Lyon 2']);
+});
+
+test('dates cibles : échéance, cible interne, puis jalon et décalage', () => {
+  const ms = milestoneDates([{ key: 'reg-open', date: '2028-03-10' }]);
+  assert.deepEqual(targetDate(task('AA-001', { anchor: 'reg-open', anchorOffset: -14 }), ms), { date: '2028-02-25', source: 'anchor' });
+  assert.equal(targetDate(task('AA-002', { anchor: 'reg-open', planningDate: '2027-01-01' }), ms).source, 'planning');
+  assert.equal(targetDate(task('AA-003', { anchor: 'unknown' }), ms), null);
+  assert.equal(addDays('2028-03-01', -1), '2028-02-29');
+});
+
+test('un jalon déplace les tâches qui y sont rattachées', () => {
+  const ts = [task('AA-001', { anchor: 'conf', anchorOffset: -30 })];
+  const a = analyse(ts, { milestones: [{ key: 'conf', date: '2028-06-06' }] });
+  assert.equal(a.target.get('AA-001').date, '2028-05-07');
+  assert.equal(a.conference, '2028-06');
+});
+
+test('les règles et rituels ne bloquent pas et ne sont pas « prêts »', () => {
+  const a = analyse([task('RR-001', { kind: 'rule' }), task('BB-001', { dependsOn: 'RR-001' }), task('CC-001', { kind: 'recurring' })]);
+  assert.deepEqual([...a.ready], ['BB-001']);
+  assert.deepEqual(a.waitingOn.get('BB-001'), []);
+});
+
+test('mes tâches : prénom et rôles tenus', () => {
+  const roles = [{ role: 'Budget lead', holder: 'Antoinette, Zoi' }, { role: 'Programme Chair', holder: '' }];
+  assert.deepEqual(labelsFor('zoi', roles), ['zoi', 'Budget lead']);
+  assert.equal(concerns(task('BB-001', { person: 'LOC / Budget lead' }), labelsFor('Zoi', roles)), true);
+  assert.equal(concerns(task('BB-002', { person: 'Programme Chair' }), labelsFor('Zoi', roles)), false);
+});
+
+test('ce que débloque une tâche terminée', () => {
+  const a = analyse([task('AA-001'), task('BB-001', { dependsOn: 'AA-001' }), task('CC-001', { dependsOn: 'AA-001, BB-001' })]);
+  assert.deepEqual(wouldUnlock(a, 'AA-001'), ['BB-001']);
+});
+
+test('ordre du jour : décisions mûres, retards, attentes', () => {
+  const a = analyse([
+    task('DD-001', { status: 'Decision needed' }),
+    task('DD-002', { status: 'Decision needed', dependsOn: 'DD-001' }),
+    task('LL-001', { planningDate: '2026-10-01' }),
+    task('WW-001', { status: 'Waiting' }),
+  ], { today: '2026-11-16' });
+  const ag = agenda(a);
+  assert.deepEqual(ag.decisions.map(t => t.id), ['DD-001']);
+  assert.deepEqual(ag.overdue.map(t => t.id), ['LL-001']);
+  assert.deepEqual(ag.blocked.map(t => t.id), ['WW-001']);
+});
+
+test('cellules CSV', () => {
+  assert.equal(csvCell('a, "b"'), '"a, ""b"""');
+  assert.equal(csvCell('simple'), 'simple');
 });
