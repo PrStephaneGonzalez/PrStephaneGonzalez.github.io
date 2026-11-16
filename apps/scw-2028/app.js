@@ -1,12 +1,12 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261116d';
-import { createApi, ApiError } from './api.js?v=20261116d';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116d';
-import { workbook } from './xlsx.js?v=20261116d';
-import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116d';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116d';
+import { wouldUnlock } from './model.js?v=20261116e';
+import { createApi, ApiError } from './api.js?v=20261116e';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116e';
+import { workbook } from './xlsx.js?v=20261116e';
+import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116e';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116e';
 
 /* ---------- Connexion ---------- */
 
@@ -305,7 +305,7 @@ document.addEventListener('submit', async e => {
   if (f.id === 'signin-form') {
     const btn = f.querySelector('button[type=submit]');
     btn.disabled = true;
-    try { await signIn(f.code.value.trim(), f.who.value.trim(), f.remember.checked); }
+    try { await signIn(f.code.value.trim().toLowerCase(), f.who.value.trim(), f.remember.checked); }
     catch (err) {
       btn.disabled = false;
       f.querySelector('.form-error').textContent = err.code === 'code' ? T().badCode : err.code === 'locked' ? T().locked : T().offline;

@@ -1,6 +1,6 @@
 // État partagé de l'interface et petites fonctions utilitaires (aucun rendu ici).
-import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116d';
-import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116d';
+import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116e';
+import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116e';
 
 export const $ = sel => document.querySelector(sel);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
