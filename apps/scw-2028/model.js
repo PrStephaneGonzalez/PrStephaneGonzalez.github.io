@@ -4,16 +4,25 @@
 // Idée centrale : chaque tâche peut dépendre d'autres tâches (champ dependsOn, ex. « CAL-008, BUD-001 »).
 // L'ordre logique est un tri topologique : une tâche n'apparaît jamais avant ses prérequis.
 // À égalité, on place d'abord ce qui est daté le plus tôt, puis le plus prioritaire.
+//
+// Dates : une tâche a une date cible si elle a une échéance ferme (due), une cible interne (planningDate),
+// ou un jalon de référence (anchor + anchorOffset en jours, ex. « 14 jours avant l'ouverture des inscriptions »).
+// À défaut, un repère approximatif est tiré du texte libre (« Q2 2027 »).
+//
+// Nature (kind) : 'task' (par défaut), 'rule' (exigence permanente, jamais « à faire ») ou
+// 'recurring' (rituel sans fin). Les règles et rituels ne bloquent jamais les autres tâches.
 
 export const STATUSES = ['To do', 'In progress', 'Waiting', 'Decision needed', 'Blocked', 'Done'];
 export const PRIORITIES = ['Urgent', 'High', 'Medium', 'Low'];
+export const EFFORTS = ['hours', 'days', 'weeks'];
+export const KINDS = ['task', 'rule', 'recurring'];
 
-// Fenêtre provisoire de la conférence (CAL-002, mise à jour du 20/10/2026 : 6–9 juin 2028).
-// Sert uniquement à situer les repères relatifs (« 30 days before the conference ») pour l'ordre d'affichage.
+// Mois de la conférence si aucun jalon « conf » n'est fourni (préférence provisoire : 6–9 juin 2028).
 export const CONFERENCE_MONTH = '2028-06';
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const SEASONS = { spring: 3, summer: 6, autumn: 9, fall: 9, winter: 12 };
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
 
 const pad = n => String(n).padStart(2, '0');
 const ym = (y, m) => `${y}-${pad(m)}`;
@@ -21,6 +30,16 @@ function addMonths(month, delta) {
   const [y, m] = month.split('-').map(Number);
   const i = y * 12 + (m - 1) + delta;
   return ym(Math.floor(i / 12), (i % 12) + 1);
+}
+/** Ajoute n jours à une date ISO (calcul en UTC, sans dépendre du fuseau). */
+export function addDays(iso, n) {
+  const d = new Date(iso + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+/** Nombre de jours entiers de a à b (dates ISO). */
+export function daysBetween(a, b) {
+  return Math.round((Date.parse(b + 'T12:00:00Z') - Date.parse(a + 'T12:00:00Z')) / 86400000);
 }
 
 /** Identifiants de tâches cités dans un texte (« CAL-008, BUD-001 » → ['CAL-008','BUD-001']). */
@@ -52,22 +71,39 @@ export function parseHint(text, conference = CONFERENCE_MONTH) {
   return null;
 }
 
-/** Repère propre d'une tâche : date cible interne, sinon échéance, sinon indications textuelles. */
-export function ownMonth(t, conference = CONFERENCE_MONTH) {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(t.due || '')) return t.due.slice(0, 7);
-  if (/^\d{4}-\d{2}-\d{2}$/.test(t.planningDate || '')) return t.planningDate.slice(0, 7);
+/** Table des jalons { clé → date ISO } à partir de la liste [{ key, date }]. */
+export const milestoneDates = list => new Map((list || []).filter(m => m && ISO.test(m.date || '')).map(m => [m.key, m.date]));
+
+/**
+ * Date cible d'une tâche et sa provenance, ou null.
+ * provenance : 'due' (échéance ferme), 'planning' (cible interne), 'anchor' (jalon + décalage).
+ */
+export function targetDate(t, milestones = new Map()) {
+  if (ISO.test(t.due || '')) return { date: t.due, source: 'due' };
+  if (ISO.test(t.planningDate || '')) return { date: t.planningDate, source: 'planning' };
+  if (t.anchor && milestones.has(t.anchor)) return { date: addDays(milestones.get(t.anchor), Number(t.anchorOffset) || 0), source: 'anchor' };
+  return null;
+}
+
+/** Repère propre d'une tâche (« YYYY-MM ») : date cible, sinon indications textuelles. */
+export function ownMonth(t, conference = CONFERENCE_MONTH, milestones = new Map()) {
+  const d = targetDate(t, milestones);
+  if (d) return d.date.slice(0, 7);
   return parseHint(t.timing, conference) || parseHint(t.startWhen, conference);
 }
 
 const priorityRank = p => { const i = PRIORITIES.indexOf(p); return i < 0 ? PRIORITIES.length : i; };
 const max = (a, b) => (!a ? b : !b ? a : a > b ? a : b);
+export const isActionable = t => (t.kind || 'task') === 'task';
 
 /**
- * Analyse complète de la liste : graphe, ordre logique, tâches prêtes, boucles.
- * tasks : [{ id, title, status, priority, dependsOn, planningDate, due, timing, startWhen, ... }]
- * Renvoie un objet dont chaque table est indexée par identifiant de tâche.
+ * Analyse complète de la liste : graphe, ordre logique, tâches prêtes, boucles, dates.
+ * tasks : [{ id, title, status, priority, dependsOn, planningDate, due, anchor, anchorOffset, kind, ... }]
+ * options : { today: 'YYYY-MM-DD', milestones: [{ key, date }] }
  */
-export function analyse(tasks, { conference = CONFERENCE_MONTH, today = new Date().toISOString().slice(0, 10) } = {}) {
+export function analyse(tasks, { today = new Date().toISOString().slice(0, 10), milestones = [] } = {}) {
+  const ms = milestoneDates(milestones);
+  const conference = (ms.get('conf') || '').slice(0, 7) || CONFERENCE_MONTH;
   const byId = new Map(tasks.map(t => [t.id, t]));
   const prereqs = new Map(), dependents = new Map(), missing = new Map();
   for (const t of tasks) { prereqs.set(t.id, []); dependents.set(t.id, []); }
@@ -80,8 +116,8 @@ export function analyse(tasks, { conference = CONFERENCE_MONTH, today = new Date
     }
   }
 
-  // Tri topologique (Kahn) avec file de priorité : repère le plus tôt, puis priorité, puis identifiant.
-  const own = new Map(tasks.map(t => [t.id, ownMonth(t, conference)]));
+  const target = new Map(tasks.map(t => [t.id, targetDate(t, ms)]));
+  const own = new Map(tasks.map(t => [t.id, ownMonth(t, conference, ms)]));
   const month = new Map(); // repère effectif : jamais avant celui des prérequis
   const indeg = new Map(tasks.map(t => [t.id, prereqs.get(t.id).length]));
   // Une tâche sans repère est placée au plus tôt des repères des tâches qui l'attendent (« à faire avant »).
@@ -113,27 +149,40 @@ export function analyse(tasks, { conference = CONFERENCE_MONTH, today = new Date
     }
   }
   // Tâches prises dans une boucle de dépendances : ajoutées à la fin et signalées.
-  const inCycle = new Set(tasks.map(t => t.id).filter(id => !order.includes(id)));
+  const placed = new Set(order);
+  const inCycle = new Set(tasks.map(t => t.id).filter(id => !placed.has(id)));
   for (const id of [...inCycle].sort()) { month.set(id, own.get(id)); order.push(id); }
   const rank = new Map(order.map((id, i) => [id, i + 1]));
   // Repère servant à la feuille de route : le sien (ou hérité des prérequis), sinon celui des tâches qui l'attendent.
   const slot = new Map(order.map(id => [id, month.get(id) || need(id) || null]));
 
   const done = id => byId.get(id)?.status === 'Done';
-  const waitingOn = new Map(tasks.map(t => [t.id, prereqs.get(t.id).filter(p => !done(p))]));
-  const ready = new Set(tasks.filter(t => !done(t.id) && waitingOn.get(t.id).length === 0).map(t => t.id));
+  const blocking = id => !done(id) && isActionable(byId.get(id));
+  const waitingOn = new Map(tasks.map(t => [t.id, prereqs.get(t.id).filter(blocking)]));
+  const open = t => !done(t.id) && isActionable(t);
+  const ready = new Set(tasks.filter(t => open(t) && waitingOn.get(t.id).length === 0).map(t => t.id));
 
-  // Nombre de tâches non terminées qui attendent, directement ou non, chaque tâche.
+  // Nombre de tâches ouvertes qui attendent, directement ou non, chaque tâche.
   const unlocks = new Map();
   for (const t of tasks) {
     const seen = new Set(), stack = [...dependents.get(t.id)];
     while (stack.length) { const x = stack.pop(); if (seen.has(x) || x === t.id) continue; seen.add(x); stack.push(...dependents.get(x)); }
-    unlocks.set(t.id, [...seen].filter(x => !done(x)).length);
+    unlocks.set(t.id, [...seen].filter(x => open(byId.get(x))).length);
   }
 
-  const overdue = new Set(tasks.filter(t => !done(t.id) && ((t.due && t.due < today) || (t.planningDate && t.planningDate < today))).map(t => t.id));
+  const overdue = new Set(tasks.filter(t => open(t) && target.get(t.id) && target.get(t.id).date < today).map(t => t.id));
 
-  return { byId, order, rank, month, slot, prereqs, dependents, waitingOn, ready, unlocks, overdue, inCycle, missing };
+  return { byId, order, rank, month, slot, target, prereqs, dependents, waitingOn, ready, unlocks, overdue, inCycle, missing, milestones: ms, conference };
+}
+
+/** Tâches qui deviendraient prêtes si `id` était terminée. */
+export function wouldUnlock(a, id) {
+  return (a.dependents.get(id) || []).filter(d => {
+    const t = a.byId.get(d);
+    if (!t || t.status === 'Done' || !isActionable(t)) return false;
+    const w = a.waitingOn.get(d) || [];
+    return w.length === 1 && w[0] === id;
+  });
 }
 
 /** Phase de la feuille de route d'après le repère effectif. */
@@ -174,11 +223,48 @@ export function prefixFor(tasks, domain) {
 /** Identifiant libre suivant pour un préfixe (« BUD » → « BUD-013 »). */
 export function nextId(tasks, prefix) {
   const nums = tasks.filter(t => t.id.startsWith(prefix + '-')).map(t => +t.id.slice(prefix.length + 1)).filter(Number.isFinite);
-  return `${prefix}-${pad3((nums.length ? Math.max(...nums) : 0) + 1)}`;
+  return `${prefix}-${String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3, '0')}`;
 }
-const pad3 = n => String(n).padStart(3, '0');
 
-/** Personnes citées dans le champ « person » (« Taï / Lyon 2 » → ['Taï', 'Lyon 2']). */
+/** Personnes ou rôles cités dans le champ « person » (« Taï / Lyon 2 » → ['Taï', 'Lyon 2']). Le premier est le responsable. */
 export function people(person) {
   return String(person || '').split('/').map(s => s.trim()).filter(Boolean);
 }
+
+/**
+ * Libellés (personnes et rôles) qui désignent quelqu'un, d'après l'annuaire des rôles.
+ * roles : [{ role, holder }] où holder liste des prénoms séparés par des virgules.
+ */
+export function labelsFor(name, roles = []) {
+  const n = String(name || '').trim().toLowerCase();
+  if (!n) return [];
+  const out = [name.trim()];
+  for (const r of roles) {
+    const holders = String(r.holder || '').split(/[,;/]/).map(s => s.trim().toLowerCase()).filter(Boolean);
+    if (holders.includes(n)) out.push(r.role);
+  }
+  return out;
+}
+
+/** Vrai si la tâche concerne l'une des étiquettes (comparaison sans casse). */
+export const concerns = (t, labels) => {
+  const ps = people(t.person).map(p => p.toLowerCase());
+  return labels.some(l => ps.includes(String(l).toLowerCase()));
+};
+
+/** Ordre du jour d'une réunion du comité : décisions mûres, retards, tâches bloquées. */
+export function agenda(a) {
+  const open = [...a.byId.values()].filter(t => t.status !== 'Done' && isActionable(t));
+  const byRank = (x, y) => a.rank.get(x.id) - a.rank.get(y.id);
+  return {
+    decisions: open.filter(t => t.status === 'Decision needed' && a.ready.has(t.id)).sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || byRank(x, y)),
+    overdue: open.filter(t => a.overdue.has(t.id)).sort(byRank),
+    blocked: open.filter(t => t.status === 'Blocked' || t.status === 'Waiting').sort(byRank),
+  };
+}
+
+/** Échappe une valeur pour un fichier CSV (séparateur virgule, guillemets doublés). */
+export const csvCell = v => {
+  const s = String(v ?? '');
+  return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+};

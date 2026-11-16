@@ -137,3 +137,18 @@ revoke execute on function public.scw_list(text, timestamptz), public.scw_save(t
   public.scw_delete(text, text, integer, text), public.scw_log(text, text, integer) from public;
 grant execute on function public.scw_list(text, timestamptz), public.scw_save(text, jsonb, text),
   public.scw_delete(text, text, integer, text), public.scw_log(text, text, integer) to anon, authenticated;
+
+-- ---------------------------------------------------------------------------------------------
+-- Migration « scw_2028_meta » (16/11/2026) : documents partagés hors tâches (jalons, rôles).
+create table if not exists public.scw_meta (
+  key text primary key check (key ~ '^[a-z][a-z0-9-]{1,29}$'),
+  value jsonb not null check (pg_column_size(value) < 30000),
+  version integer not null default 1,
+  updated timestamptz not null default now(),
+  updated_by text not null default ''
+);
+alter table public.scw_meta enable row level security;
+revoke all on public.scw_meta from anon, authenticated;
+-- scw_list renvoie en plus 'meta' : { clé: { value, version, updated, updated_by } }.
+-- scw_meta_save(c, k, v, ver, who) : crée (ver null) ou met à jour (ver = version lue) un document,
+-- avec historique dans scw_history (task_id = 'meta:' || clé). Code complet appliqué tel que dans la migration.
