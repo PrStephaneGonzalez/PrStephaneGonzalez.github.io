@@ -1,10 +1,10 @@
 // Fiche d'une tâche (panneau latéral) : lecture, modification, sous-étapes, historique.
-import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116c';
+import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116d';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, kindLabel, domainLabel, titleOf, slug,
-  fmtDate, fmtDateTime, milestones, milestoneLabel, recompute, toast,
-} from './core.js?v=20261116c';
-import { logItems } from './views.js?v=20261116c';
+  fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same,
+} from './core.js?v=20261116d';
+import { logItems, chip } from './views.js?v=20261116d';
 
 export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {} };
 
@@ -28,6 +28,14 @@ function sourceBlock(task) {
   return `<details class="source"><summary>${esc(T().source)}</summary><p>${esc(task.provenance)}</p><dl>${rows}</dl></details>`;
 }
 
+/** Qui s'en occupe (enregistré tout de suite, indépendamment du formulaire). */
+function peopleBlock(task) {
+  const t = T(), mine = takersOf(task).some(n => same(n, state.who));
+  if (task.status === 'Done') return `<p class="drawer-people"><b>${esc(t.doneShort)}</b> ${task.doneBy ? chip(task.doneBy) : ''} ${task.doneAt ? esc(fmtDate(task.doneAt.slice(0, 10))) : ''}</p>`;
+  return `<div class="drawer-people"><b>${esc(t.fTakers)}${fr() ? ' :' : ':'}</b> ${takersOf(task).map(n => chip(n, { me: same(n, state.who) })).join('') || `<span class="m-soft">${esc(t.nobodyOnIt)}</span>`}
+    <button type="button" class="take${mine ? ' leave' : ''}" data-take="${esc(task.id)}" aria-pressed="${mine}">${esc(mine ? t.leave : t.take)}</button></div>`;
+}
+
 function checklistHtml(steps) {
   const t = T();
   return `<ul class="steps">${steps.map((s, i) => `
@@ -42,7 +50,7 @@ function readForm() {
   const form = $('#task-form');
   if (!form || !state.draft) return;
   const fd = Object.fromEntries(new FormData(form));
-  for (const k of ['titleFr', 'title', 'deliverable', 'status', 'priority', 'effort', 'kind', 'person', 'domain', 'topic', 'planningDate', 'due',
+  for (const k of ['titleFr', 'title', 'deliverable', 'deliverableFr', 'status', 'priority', 'effort', 'kind', 'person', 'domain', 'topic', 'planningDate', 'due',
     'anchor', 'timing', 'startWhen', 'dependsOn', 'decision', 'notes']) if (k in fd) state.draft[k] = fd[k];
   if ('anchorOffset' in fd) state.draft.anchorOffset = Number(fd.anchorOffset) || 0;
 }
@@ -76,8 +84,9 @@ export function renderDrawer(error = '') {
       <form id="task-form" novalidate>
         <label class="f-title">${esc(fr() ? t.fTitleFr : t.fTitleEn)}
           <textarea name="${fr() ? 'titleFr' : 'title'}" rows="2" maxlength="300" id="d-title" required>${esc(fr() ? d.titleFr : d.title)}</textarea></label>
+        ${isNew ? '' : peopleBlock(stored)}
         <label class="f-deliv">${esc(t.fDeliverable)}<small>${esc(t.fDeliverableHelp)}</small>
-          <textarea name="deliverable" rows="2" maxlength="500">${esc(d.deliverable)}</textarea></label>
+          <textarea name="${fr() ? 'deliverableFr' : 'deliverable'}" rows="2" maxlength="500">${esc(fr() ? d.deliverableFr : d.deliverable)}</textarea></label>
         <div class="grid">
           <label>${esc(t.fStatus)}<select name="status">${opt(STATUSES, d.status, statusLabel)}</select></label>
           <label>${esc(t.fPriority)}<select name="priority">${opt(PRIORITIES, d.priority, priorityLabel)}</select></label>

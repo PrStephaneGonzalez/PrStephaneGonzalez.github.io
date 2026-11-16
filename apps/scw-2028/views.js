@@ -1,11 +1,11 @@
 // Rendu des vues (chaînes HTML). Les interactions sont gérées dans app.js par délégation (attributs data-*).
-import { phaseOf, PHASES, STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays } from './model.js?v=20261116c';
-import { GLOSSARY } from './i18n.js?v=20261116c';
+import { phaseOf, PHASES, STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays } from './model.js?v=20261116d';
+import { GLOSSARY } from './i18n.js?v=20261116d';
 import {
-  $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, slug,
-  fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, roles, myLabels, isMine,
-  inOrder, matches, filtersActive,
-} from './core.js?v=20261116c';
+  $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, deliverableOf, slug,
+  fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, myLabels, isMine,
+  inOrder, matches, filtersActive, takersOf, iTook, colorFor, same, everyone,
+} from './core.js?v=20261116d';
 
 const VIEWS = ['home', 'mine', 'next', 'road', 'decisions', 'team', 'log'];
 const VIEW_LABEL = { home: 'viewHome', mine: 'viewMine', next: 'viewNext', road: 'viewRoad', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };
@@ -43,13 +43,17 @@ export function renderShell() {
       <select id="f-person" aria-label="${esc(t.allPeople)}"><option value="">${esc(t.allPeople)}</option>
         <option value="__none" ${state.f.person === '__none' ? 'selected' : ''}>${esc(t.unassigned)}</option>
         ${ownerOpts.map(([k, v]) => `<option value="${esc(k)}" ${state.f.person === k ? 'selected' : ''}>${esc(ownerLabel(v))}</option>`).join('')}</select>
+      <select id="f-taker" aria-label="${esc(t.whoOnIt)}"><option value="">${esc(t.whoOnIt)}${fr() ? ' :' : ':'} ${esc(t.anyone)}</option>
+        <option value="__none" ${state.f.taker === '__none' ? 'selected' : ''}>${esc(t.nobodyYet)}</option>
+        ${everyone().map(n => `<option value="${esc(n)}" ${same(state.f.taker, n) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
       <select id="f-priority" aria-label="${esc(t.allPriorities)}"><option value="">${esc(t.allPriorities)}</option>
         ${PRIORITIES.map(p => `<option value="${p}" ${state.f.priority === p ? 'selected' : ''}>${esc(priorityLabel(p))}</option>`).join('')}</select>
       <label class="check"><input type="checkbox" id="f-done" ${state.f.showDone ? 'checked' : ''}> ${esc(t.showDone)}</label>
       <button class="link" data-action="clear" id="clear" hidden>${esc(t.clearFilters)}</button>
     </div>
+    <div id="person-banner"></div>
     <main id="main" tabindex="-1" role="tabpanel"></main>
-    <footer class="foot"><span id="sync"></span><button class="link" data-action="export">${esc(t.exportCsv)}</button></footer>
+    <footer class="foot"><span id="sync"></span><button class="btn" data-action="export">${esc(t.exportXlsx)}</button></footer>
     <div id="drawer-root"></div>
     <div id="dialog-root"></div>
     <div id="toast" role="status" aria-live="polite"></div>`;
@@ -69,6 +73,9 @@ function renderOverview() {
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent = counts[el.dataset.count] ?? ''; });
   $('#clear').hidden = !filtersActive();
   $('#toolbar').hidden = !WITH_TOOLBAR.has(state.view);
+  const ft = state.f.taker;
+  $('#person-banner').innerHTML = ft && WITH_TOOLBAR.has(state.view)
+    ? `<p class="person-banner">${ft === '__none' ? esc(t.showingNobody) : `${chip(ft)} ${esc(t.showingPerson(ft))}`} <button class="link" data-action="clear-person">${esc(t.clearPerson)}</button></p>` : '';
 }
 
 /* ---------- Lignes de tâche ---------- */
@@ -92,10 +99,25 @@ function whenHtml(task) {
 
 function ownersHtml(task) {
   const ps = people(task.person);
-  if (!ps.length) return `<span class="m-person m-soft">${esc(T().unassigned)}</span>`;
+  if (!ps.length) return '';
   const mine = myLabels().map(x => x.toLowerCase());
   const fmt = p => `<span class="${mine.includes(p.toLowerCase()) ? 'is-me' : ''}">${esc(ownerLabel(p))}</span>`;
-  return `<span class="m-person"><b>${fmt(ps[0])}</b>${ps.length > 1 ? ` ${esc(T().with)} ${ps.slice(1).map(fmt).join(', ')}` : ''}</span>`;
+  return `<span class="m-person"><span class="m-soft">${esc(T().role)}</span> ${ps.map(fmt).join(', ')}</span>`;
+}
+
+/** Pastille de couleur d'une personne ; un clic filtre sur ses tâches. */
+export function chip(name, { me = false } = {}) {
+  const [c, b] = colorFor(name);
+  return `<button type="button" class="pchip${me ? ' me' : ''}" data-person="${esc(name)}" style="--c:${c};--b:${b}" title="${esc(T().showingPerson(name))}"><span class="pdot"></span>${esc(name)}</button>`;
+}
+
+function peopleHtml(task) {
+  const t = T(), done = task.status === 'Done', takers = takersOf(task);
+  if (done) return task.doneBy ? `<span class="m-done">${esc(t.doneShort)}${fr() ? ' :' : ':'} ${chip(task.doneBy)}${task.doneAt ? ` <span class="m-soft">${esc(fmtDay(task.doneAt.slice(0, 10)))}</span>` : ''}</span>` : '';
+  const mine = iTook(task);
+  return `${takers.map(n => chip(n, { me: same(n, state.who) })).join('')}
+    <button type="button" class="take${mine ? ' leave' : ''}" data-take="${esc(task.id)}" aria-pressed="${mine}"
+      title="${esc(mine ? t.leaveTitle(task.id) : t.takeTitle(task.id))}">${esc(mine ? t.leave : t.take)}</button>`;
 }
 
 export function row(task, { rank = false, compact = false } = {}) {
@@ -110,9 +132,10 @@ export function row(task, { rank = false, compact = false } = {}) {
       <button class="node" type="button" data-done="${esc(id)}" role="checkbox" aria-checked="${done}"
         aria-label="${esc(done ? t.markOpen(id) : t.markDone(id))}" title="${esc(done ? t.markOpen(id) : t.markDone(id))}"></button>
       ${rank ? `<span class="rank">${a.rank.get(id)}</span>` : ''}
+      <div class="task-main">
       <button class="task-btn" type="button" data-open="${esc(id)}">
         <span class="task-title"><span class="tid">${esc(id)}</span> ${esc(titleOf(task))}</span>
-        ${!compact && task.deliverable && !done ? `<span class="task-deliv">${esc(task.deliverable)}</span>` : ''}
+        ${!compact && deliverableOf(task) && !done ? `<span class="task-deliv">${esc(deliverableOf(task))}</span>` : ''}
         <span class="task-meta">
           ${ownersHtml(task)}
           ${whenHtml(task)}
@@ -123,6 +146,8 @@ export function row(task, { rank = false, compact = false } = {}) {
           ${!compact && task.topic ? `<span class="m-topic">${esc(task.topic)}</span>` : ''}
         </span>
       </button>
+      <div class="task-people">${peopleHtml(task)}</div>
+      </div>
       <span class="task-side">
         <select class="quick-status st-${slug(task.status)}" data-status="${esc(id)}" aria-label="${esc(t.quickStatus(id))}">
           ${STATUSES.map(s => `<option value="${s}" ${s === task.status ? 'selected' : ''}>${esc(statusLabel(s))}</option>`).join('')}
@@ -183,8 +208,9 @@ function viewHome() {
     .sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || a.rank.get(x.id) - a.rank.get(y.id)).slice(0, 6);
   const late = open.filter(x => a.overdue.has(x.id)).sort((x, y) => a.rank.get(x.id) - a.rank.get(y.id));
   const ag = agenda(a);
-  const mineReady = open.filter(x => a.ready.has(x.id) && isMine(x)).sort((x, y) => a.rank.get(x.id) - a.rank.get(y.id));
-  const hasRole = myLabels().length > 1 || open.some(isMine);
+  const mine = open.filter(iTook).sort((x, y) => (a.ready.has(y.id) - a.ready.has(x.id)) || a.rank.get(x.id) - a.rank.get(y.id));
+  const free = open.filter(x => a.ready.has(x.id) && !takersOf(x).length && (x.priority === 'Urgent' || x.priority === 'High'))
+    .sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || a.rank.get(x.id) - a.rank.get(y.id));
   return `
     ${timeline()}
     <div class="home-grid">
@@ -200,9 +226,13 @@ function viewHome() {
           <p>${esc(t.meetingIntro(ag.decisions.length, ag.overdue.length, ag.blocked.length))}</p>
           <div class="btn-row"><button class="btn primary" data-action="agenda-copy">${esc(t.copyAgenda)}</button>
             <button class="btn" data-action="agenda-show">${esc(t.showAgenda)}</button></div></section>
-        <section class="card" aria-labelledby="h-mine"><div class="card-head"><h2 id="h-mine">${esc(t.mineTitle)}</h2>
+        <section class="card" aria-labelledby="h-mine"><div class="card-head"><h2 id="h-mine">${esc(t.mineTitle)} <span class="n">${mine.length}</span></h2>
           <button class="link" data-view="mine">${esc(t.seeAll)}</button></div>
-          ${hasRole ? list(mineReady.slice(0, 6), { compact: true, empty: t.mineEmpty }) : `<p class="empty">${esc(t.mineSetup)}</p><button class="link" data-view="team">${esc(t.viewTeam)}</button>`}
+          ${list(mine.slice(0, 6), { compact: true, empty: t.mineEmpty })}
+        </section>
+        <section class="card" aria-labelledby="h-free"><div class="card-head"><h2 id="h-free">${esc(t.freeTitle)} <span class="n">${free.length}</span></h2></div>
+          <p class="intro">${esc(t.freeIntro)}</p>
+          ${list(free.slice(0, 8), { compact: true, empty: t.freeNone })}
         </section>
       </div>
     </div>`;
@@ -211,15 +241,15 @@ function viewHome() {
 /* ---------- Mes tâches, À faire, Feuille de route, Décisions ---------- */
 
 function viewMine() {
-  const t = T(), a = state.a, labels = myLabels();
+  const t = T(), a = state.a;
   const mine = inOrder().filter(isMine);
-  if (!mine.length && labels.length <= 1) return `<p class="intro">${esc(t.mineNoRole)}</p><button class="btn" data-view="team">${esc(t.viewTeam)}</button>`;
+  if (!mine.length) return `<p class="intro">${esc(t.mineNoRole)}</p><button class="btn" data-view="next">${esc(t.viewNext)}</button>`;
   const dec = mine.filter(x => x.status === 'Decision needed');
   const ready = mine.filter(x => x.status !== 'Decision needed' && x.status !== 'Done' && a.ready.has(x.id));
   const waiting = mine.filter(x => x.status !== 'Decision needed' && x.status !== 'Done' && !a.ready.has(x.id));
   const done = mine.filter(x => x.status === 'Done');
   const sec = (title, xs) => xs.length ? `<h2 class="phase">${esc(title)} <span class="n">${xs.length}</span></h2>${list(xs)}` : '';
-  return `<p class="intro">${esc(t.mineIntro(labels.map(ownerLabel).join(', ')))}</p>
+  return `<p class="intro">${esc(t.mineIntro())}</p>
     ${sec(t.mineReady, ready)}${sec(t.mineDecisions, dec)}${sec(t.mineWaiting, waiting)}${sec(t.mineDone, done)}
     ${mine.length ? '' : `<p class="empty">${esc(t.nothingHere)}</p>`}`;
 }
@@ -281,17 +311,14 @@ function viewTeam() {
   const mini = xs => `<ul class="mini">${xs.map(x => `<li><button class="link" data-open="${esc(x.id)}"><span class="tid">${esc(x.id)}</span> ${esc(titleOf(x))}</button>${x.status === 'Done' ? ` <span class="m-soft">(${esc(statusLabel('Done'))})</span>` : ''}</li>`).join('')}</ul>`;
   return `
     <p class="intro">${esc(t.teamIntro)}</p>
-    <section class="card" aria-labelledby="t-roles"><div class="card-head"><h2 id="t-roles">${esc(t.rolesTitle)}</h2></div>
-      <p class="intro">${esc(t.rolesIntro)}</p>
-      <form id="roles-form">
-        <p class="loc"><b>${esc(t.locLabel)} :</b> ${esc(team.loc || '')}</p>
-        <table class="grid-table"><thead><tr><th>${esc(t.roleCol)}</th><th>${esc(t.holderCol)}</th><th class="num">${esc(t.openCol)}</th></tr></thead><tbody>
-          ${(team.roles || []).map((r, i) => `<tr><td>${esc(fr() ? r.fr || r.role : r.role)}</td>
-            <td><input name="holder-${i}" value="${esc(r.holder)}" placeholder="${esc(t.vacant)}" aria-label="${esc(t.holderCol)} : ${esc(fr() ? r.fr || r.role : r.role)}"></td>
-            <td class="num"><button type="button" class="link" data-owner="${esc(r.role.toLowerCase())}">${openOf(r.role)}</button></td></tr>`).join('')}
-        </tbody></table>
-        <button class="btn primary" type="submit">${esc(t.saveRoles)}</button>
-      </form>
+    <section class="card" aria-labelledby="t-people"><div class="card-head"><h2 id="t-people">${esc(t.peopleTitle)}</h2></div>
+      <p class="intro">${esc(t.peopleIntro)}</p>
+      <table class="grid-table"><thead><tr><th>${esc(t.colPerson)}</th><th class="num">${esc(t.colTaking)}</th><th class="num">${esc(t.colDone)}</th></tr></thead><tbody>
+        ${everyone().map(n => `<tr><td>${chip(n, { me: same(n, state.who) })}</td>
+          <td class="num">${all.filter(x => x.status !== 'Done' && takersOf(x).some(m => same(m, n))).length}</td>
+          <td class="num">${all.filter(x => x.status === 'Done' && same(x.doneBy, n)).length}</td></tr>`).join('')}
+      </tbody></table>
+      ${team.loc ? `<p class="loc"><b>${esc(t.locLabel)}${fr() ? ' :' : ':'}</b> ${esc(team.loc)}</p>` : ''}
     </section>
     <section class="card" aria-labelledby="t-ms"><div class="card-head"><h2 id="t-ms">${esc(t.milestonesTitle)}</h2></div>
       <p class="intro">${esc(t.milestonesIntro)}</p>
@@ -391,6 +418,20 @@ export function agendaText() {
   const sec = (title, xs) => `${title}\n${xs.length ? xs.map(line).join('\n') : L[5]}`;
   return [`${L[0]} (${fmtDate(today())})`, '', sec(L[1], ag.decisions), '', sec(L[2], ag.overdue), '', sec(L[3], ag.blocked), '',
     `${L[4]}\n${soon.length ? soon.map(m => `- ${fmtDate(m.date)} : ${milestoneLabel(m)}`).join('\n') : L[5]}`].join('\n');
+}
+
+/** Lignes du tableau Excel (une par tâche, dans l'ordre de travail). */
+export function exportRows() {
+  const a = state.a, E = !fr();
+  const head = E
+    ? ['Number', 'Task', 'Status', 'Who is on it', 'Done by', 'Done on', 'Target date', 'Date type', 'Result we expect', 'Effort', 'Priority', 'Role', 'Area', 'Needs first', 'Topic', 'Kind', 'What we decided', 'Notes', 'Title (French)']
+    : ['Numéro', 'Tâche', 'Statut', 'Qui s’en occupe', 'Faite par', 'Faite le', 'Date cible', 'Type de date', 'Résultat attendu', 'Charge', 'Priorité', 'Rôle', 'Domaine', 'Prérequis', 'Sujet', 'Nature', 'Décision', 'Notes', 'Titre (anglais)'];
+  const src = { due: E ? 'firm deadline' : 'échéance ferme', planning: E ? 'internal target' : 'cible interne', anchor: E ? 'from a key date' : 'calculée d’un jalon' };
+  const rows = a.order.map(id => state.tasks.get(id)).map(x => [x.id, titleOf(x), statusLabel(x.status), takersOf(x).join(', '), x.doneBy || '',
+    x.doneAt ? x.doneAt.slice(0, 10) : '', a.target.get(x.id)?.date || '', a.target.get(x.id) ? src[a.target.get(x.id).source] : (x.timing || ''),
+    deliverableOf(x), effortLabel(x.effort), priorityLabel(x.priority), people(x.person).map(ownerLabel).join(', '), domainLabel(x.domain),
+    x.dependsOn, x.topic, x.kind || 'task', x.decision, x.notes, E ? x.titleFr : x.title]);
+  return { head, rows, doneCol: 2, doneLabel: statusLabel('Done') };
 }
 
 export function csv() {
