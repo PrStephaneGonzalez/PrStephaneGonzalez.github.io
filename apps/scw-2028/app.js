@@ -1,11 +1,12 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261116c';
-import { createApi, ApiError } from './api.js?v=20261116c';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime } from './core.js?v=20261116c';
-import { renderShell, render, agendaText, csv } from './views.js?v=20261116c';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116c';
+import { wouldUnlock } from './model.js?v=20261116d';
+import { createApi, ApiError } from './api.js?v=20261116d';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116d';
+import { workbook } from './xlsx.js?v=20261116d';
+import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116d';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116d';
 
 /* ---------- Connexion ---------- */
 
@@ -86,27 +87,57 @@ Object.assign(hooks, { refresh, render, signOut });
 
 /* ---------- Actions rapides ---------- */
 
-/** Change le statut d'une tâche depuis la liste, avec annulation possible. */
-async function setStatus(id, status, { decision = null, silent = false } = {}) {
-  const task = state.tasks.get(id);
-  if (!task || (task.status === status && decision == null)) return;
-  const prev = { status: task.status, decision: task.decision || '' };
-  const unlockedBefore = status === 'Done' ? wouldUnlock(state.a, id) : [];
-  const next = { ...task, status, decision: decision ?? task.decision ?? '' };
-  try {
-    const r = await state.api.save(next);
-    state.tasks.set(id, { ...next, version: r.version, updated: r.updated, updatedBy: state.who });
-    recompute(); state.log = null; render();
-    if (state.open === id && !state.dirty) { state.draft = null; renderDrawer(); }
-    if (silent) return;
-    const t = T();
-    const msg = status === 'Done' ? t.doneToast(id, unlockedBefore.join(', ')) : prev.status === 'Done' ? t.reopenToast(id) : t.statusToast(id, statusLabel(status));
-    toast(msg, { label: t.undo, run: () => setStatus(id, prev.status, { decision: prev.decision, silent: true }).then(() => toast(t.statusToast(id, statusLabel(prev.status)))) });
-  } catch (e) {
-    if (e.code === 'conflict') { await refresh({ full: true }); toast(T().conflict); return; }
-    if (e.code === 'code' || e.code === 'locked') return signOut();
-    toast(T().offline); render();
+/**
+ * Modifie une tâche depuis la liste (statut, prise en charge). `change` reçoit la version la plus récente
+ * et renvoie les champs à changer ; si quelqu'un a modifié la tâche entre-temps, on recharge et on réessaie une fois.
+ */
+async function mutate(id, change) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const task = state.tasks.get(id);
+    if (!task) return null;
+    const next = { ...task, ...change(task) };
+    try {
+      const r = await state.api.save(next);
+      state.tasks.set(id, { ...next, version: r.version, updated: r.updated, updatedBy: state.who });
+      recompute(); state.log = null; render();
+      if (state.open === id && !state.dirty) { state.draft = null; renderDrawer(); }
+      return task;
+    } catch (e) {
+      if (e.code === 'conflict' && attempt === 0) { await refresh({ full: true }); continue; }
+      if (e.code === 'code' || e.code === 'locked') { signOut(); return null; }
+      toast(e.code === 'conflict' ? T().conflict : T().offline); render();
+      return null;
+    }
   }
+  return null;
+}
+
+/** Change le statut ; « fait » garde qui l'a fait et quand. Annulation possible. */
+async function setStatus(id, status, { decision = null, silent = false } = {}) {
+  const cur = state.tasks.get(id);
+  if (!cur || (cur.status === status && decision == null)) return;
+  const unlockedBefore = status === 'Done' ? wouldUnlock(state.a, id) : [];
+  const before = await mutate(id, t => ({
+    status, decision: decision ?? t.decision ?? '',
+    doneBy: status === 'Done' ? (t.status === 'Done' ? t.doneBy : state.who) : '',
+    doneAt: status === 'Done' ? (t.status === 'Done' ? t.doneAt : new Date().toISOString()) : '',
+  }));
+  if (!before || silent) return;
+  const t = T();
+  const msg = status === 'Done' ? t.doneToast(id, unlockedBefore.join(', ')) : before.status === 'Done' ? t.reopenToast(id) : t.statusToast(id, statusLabel(status));
+  toast(msg, { label: t.undo, run: () => mutate(id, () => ({ status: before.status, decision: before.decision || '', doneBy: before.doneBy || '', doneAt: before.doneAt || '' }))
+    .then(r => r && toast(t.statusToast(id, statusLabel(before.status)))) });
+}
+
+/** « Je m'en occupe » / « Me retirer » : ajoute ou retire le prénom de la personne connectée. */
+async function toggleTake(id) {
+  const task = state.tasks.get(id);
+  if (!task) return;
+  const leaving = takersOf(task).some(n => same(n, state.who));
+  const r = await mutate(id, t => ({
+    takers: leaving ? takersOf(t).filter(n => !same(n, state.who)) : [...takersOf(t).filter(n => !same(n, state.who)), state.who],
+  }));
+  if (r) toast(leaving ? T().leaveToast(id) : T().takeToast(id), { label: T().undo, run: () => toggleTake(id) });
 }
 
 function toggleDone(id) {
@@ -155,11 +186,14 @@ async function copyAgenda() {
   catch { showAgenda(); }
 }
 
-function exportCsv() {
-  const blob = new Blob([csv()], { type: 'text/csv;charset=utf-8' });
+function exportExcel() {
+  const { head, rows } = exportRows();
+  const widths = [10, 60, 14, 22, 14, 12, 12, 16, 50, 16, 10, 28, 24, 22, 24, 10, 40, 60, 60];
+  const done = statusLabel('Done');
+  const blob = workbook({ sheet: fr() ? 'Tâches' : 'Tasks', head, rows, widths, greyRow: r => r[2] === done });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `scw2028-taches-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `SCW2028-tasks-${new Date().toISOString().slice(0, 10)}.xlsx`;
   document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
@@ -196,9 +230,15 @@ function setView(v) {
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-done],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
+  const el = e.target.closest('[data-done],[data-take],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
   if (!el) return;
   if (el.dataset.done) return toggleDone(el.dataset.done);
+  if (el.dataset.take) return toggleTake(el.dataset.take);
+  if (el.dataset.person) {
+    state.f = { ...state.f, taker: el.dataset.person }; saveFilters(); renderShell();
+    if (state.open != null) closeDrawer();
+    return setView(['road', 'mine', 'next', 'decisions'].includes(state.view) ? state.view : 'road');
+  }
   if (el.dataset.open) { e.preventDefault(); return openTask(el.dataset.open); }
   if (el.dataset.view) return setView(el.dataset.view);
   if (el.dataset.owner) { state.f = { ...EMPTY_FILTERS, person: el.dataset.owner }; saveFilters(); renderShell(); return setView('road'); }
@@ -214,7 +254,8 @@ document.addEventListener('click', e => {
   else if (act === 'agenda-copy') copyAgenda();
   else if (act === 'agenda-show') showAgenda();
   else if (act === 'print') window.print();
-  else if (act === 'export') exportCsv();
+  else if (act === 'export') exportExcel();
+  else if (act === 'clear-person') { state.f.taker = ''; saveFilters(); renderShell(); render(); }
   else if (act === 'dialog-close') $('#dialog-root').innerHTML = '';
   else if (act === 'lang') {
     state.lang = fr() ? 'en' : 'fr'; store.set('lang', state.lang); document.documentElement.lang = state.lang;
@@ -229,7 +270,7 @@ document.addEventListener('change', e => {
     return setStatus(el.dataset.status, el.value);
   }
   if (el.dataset.stepToggle != null) return stepAction('toggle', +el.dataset.stepToggle);
-  const k = { 'f-domain': 'domain', 'f-person': 'person', 'f-priority': 'priority' }[el.id];
+  const k = { 'f-domain': 'domain', 'f-person': 'person', 'f-priority': 'priority', 'f-taker': 'taker' }[el.id];
   if (k) { state.f[k] = el.value; saveFilters(); render(); }
   if (el.id === 'f-done') { state.f.showDone = el.checked; saveFilters(); render(); }
 });

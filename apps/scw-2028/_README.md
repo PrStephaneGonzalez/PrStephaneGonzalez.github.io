@@ -21,7 +21,7 @@ Colonne JSON `data` ; ajouter un champ ne demande aucune migration (le déclarer
 
 | Champ | Sens |
 |---|---|
-| `titleFr`, `title` | Titre français (affiché en français) et anglais |
+| `title`, `titleFr` | Titre en anglais simple (langue par défaut de l'outil) et en français |
 | `deliverable` | Résultat attendu : à quoi on reconnaît que c'est fait |
 | `status`, `priority` | Statut (`To do`, `In progress`, `Waiting`, `Decision needed`, `Blocked`, `Done`) et priorité (`Urgent` … `Low`) |
 | `effort` | Charge : `hours`, `days`, `weeks` |
@@ -33,6 +33,9 @@ Colonne JSON `data` ; ajouter un champ ne demande aucune migration (le déclarer
 | `kind` | `task`, `rule` (exigence permanente) ou `recurring` (rituel) ; les deux derniers ne bloquent rien |
 | `topic` | Sujet transversal qui regroupe des tâches de domaines différents |
 | `checklist` | Sous-étapes `[{ text, done }]` |
+| `takers` | Prénoms des personnes qui ont cliqué « I'll do it / Je m'en occupe » (plusieurs possibles) |
+| `doneBy`, `doneAt` | Qui a marqué la tâche faite, et quand (renseignés automatiquement) |
+| `deliverableFr` | Résultat attendu en français (`deliverable` est en anglais simple) |
 | `decision` | Décision prise (demandée quand on clôt une « décision à prendre ») |
 | `notes`, `provenance`, `sourceRecord` | Contexte (en anglais), origine, fiche d'origine du classeur de septembre 2026 |
 
@@ -47,7 +50,8 @@ Colonne JSON `data` ; ajouter un champ ne demande aucune migration (le déclarer
 | `core.js` | État partagé de l'interface, filtres, libellés |
 | `views.js` | Vues : accueil (frise des jalons), mes tâches, à faire, feuille de route, décisions, équipe et repères, journal |
 | `drawer.js` | Fiche d'une tâche (modification, sous-étapes, historique) |
-| `app.js` | Connexion, synchronisation, actions rapides (terminer en un clic, statut, annuler), événements |
+| `app.js` | Connexion, synchronisation, actions rapides (faite, je m'en occupe, statut, annuler), événements |
+| `xlsx.js` | Fichier Excel généré dans le navigateur (bouton « Download as Excel ») |
 | `i18n.js` | Textes de l'interface en français et en anglais, libellés, vocabulaire |
 | `docs/supabase-scw.sql` | Schéma et fonctions côté serveur |
 | `tests/model.test.mjs` | Tests de `model.js` : `node --test apps/scw-2028/tests/model.test.mjs` |
@@ -73,3 +77,11 @@ Modifier les fichiers directement puis pousser sur `main` (le site est publié p
 Tout nouveau texte d'interface va dans les deux langues de `i18n.js`.
 Après une modification, changer partout le suffixe de version `?v=…` (dans `index.html` et dans les `import`) :
 sinon des navigateurs peuvent mélanger anciens et nouveaux fichiers pendant quelques minutes.
+
+## Révision du 16/11/2026 (soir)
+
+Contenu en anglais simple (« globish ») pour les organisateurs non francophones ; le français reste disponible
+(bouton de langue, champs `titleFr`, `deliverableFr`). Chacun peut cliquer « I'll do it » sur une tâche : son prénom
+s'affiche dans une pastille de couleur (une couleur par personne) ; un clic sur une pastille filtre les tâches de
+cette personne. Les tâches faites restent visibles, barrées et grisées, avec « Done: prénom, date ».
+11 tâches ajoutées : GOV-009 (donner l'accès à l'équipe) et INC-001 à INC-010 (accessibilité, allergènes, inclusion).

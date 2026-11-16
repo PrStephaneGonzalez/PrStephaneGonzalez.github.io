@@ -28,7 +28,8 @@ async function rpc(fn, args, timeout = 15000) {
 
 /** Champs d'une tâche enregistrés côté serveur (colonne JSON : un nouveau champ ne demande aucune migration). */
 export const TEXT_FIELDS = ['title', 'titleFr', 'domain', 'due', 'priority', 'status', 'person', 'notes', 'planningDate',
-  'timing', 'dependsOn', 'startWhen', 'provenance', 'sourceRecord', 'deliverable', 'effort', 'kind', 'topic', 'anchor', 'decision'];
+  'timing', 'dependsOn', 'startWhen', 'provenance', 'sourceRecord', 'deliverable', 'deliverableFr', 'effort', 'kind', 'topic', 'anchor',
+  'decision', 'doneBy', 'doneAt'];
 
 /** Une tâche côté interface : { id, version, updated, updatedBy, ...champs }. */
 const toTask = row => ({ ...row.data, id: row.id, version: row.version, updated: row.updated, updatedBy: row.updated_by });
@@ -39,6 +40,8 @@ export function toData(t) {
   d.checklist = Array.isArray(t.checklist)
     ? t.checklist.filter(s => s && String(s.text || '').trim()).map(s => ({ text: String(s.text).trim().slice(0, 300), done: !!s.done })).slice(0, 40)
     : [];
+  // Personnes qui ont cliqué « Je m'en occupe » (prénoms, sans doublon).
+  d.takers = Array.isArray(t.takers) ? [...new Map(t.takers.map(n => String(n).trim()).filter(Boolean).map(n => [n.toLowerCase(), n.slice(0, 40)])).values()].slice(0, 20) : [];
   return d;
 }
 

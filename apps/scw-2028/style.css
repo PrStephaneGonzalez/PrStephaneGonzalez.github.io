@@ -164,11 +164,34 @@ textarea { resize: vertical; line-height: 1.5; }
 .node:hover::before { transform: scale(1.25); }
 .node:not([aria-checked=true]):hover::after { content: ''; position: absolute; width: 5px; height: 9px; border: solid var(--saone-deep); border-width: 0 2px 2px 0; transform: translate(0, -1px) rotate(45deg); }
 .rank { grid-column: 2; font-variant-numeric: tabular-nums; color: var(--ink-3); min-width: 2.2em; text-align: right; padding-top: 4px; }
-.task-btn { grid-column: 3; background: none; border: 0; padding: 3px 0 0; text-align: left; min-width: 0; }
-.task:not(:has(.rank)) .task-btn { grid-column: 2 / 4; }
+.task-main { grid-column: 3; min-width: 0; }
+.task:not(:has(.rank)) .task-main { grid-column: 2 / 4; }
+.task-btn { display: block; width: 100%; background: none; border: 0; padding: 3px 0 0; text-align: left; min-width: 0; }
 .task-title { display: block; font-weight: 600; line-height: 1.4; }
 .task-btn:hover .task-title { text-decoration: underline; text-decoration-color: #9fb8b4; text-underline-offset: 3px; }
-.node-done .task-title { color: var(--ink-3); text-decoration: line-through; text-decoration-color: #9aa79f; }
+.node-done .task-title { color: var(--ink-3); text-decoration: line-through; text-decoration-color: #9aa79f; font-weight: 500; }
+.task.node-done .tid, .task.node-done .task-meta, .task.node-done .prio { color: #8a949c; }
+.task.node-done .task-meta b, .task.node-done .m-unlock { color: #8a949c; font-weight: 400; }
+
+/* Qui s'en occupe : pastilles de couleur (une couleur par personne) et bouton « Je m'en occupe ». */
+.task-people { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+.task-people:empty { display: none; }
+.pchip { display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; border-radius: 999px; padding: 1px 9px 1px 7px; font-size: 13px; font-weight: 600; color: var(--c); background: var(--b); line-height: 1.5; }
+.pchip:hover { border-color: var(--c); }
+.pchip.me { box-shadow: 0 0 0 2px var(--c) inset; }
+.pdot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.take { border: 1px dashed #9fb8b4; background: var(--surface); color: var(--saone-deep); border-radius: 999px; padding: 1px 10px; font-size: 13px; font-weight: 600; line-height: 1.5; }
+.take:hover { border-style: solid; border-color: var(--saone); background: var(--saone-pale); }
+.take.leave { border-style: solid; border-color: transparent; background: none; color: var(--ink-3); font-weight: 400; }
+.take.leave:hover { color: var(--alert); background: none; }
+.m-done { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); }
+.person-banner { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 12px 0 0; padding: 8px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.drawer-people { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 16px; padding: 10px 12px; background: var(--paper); border-radius: var(--radius); font-size: 14px; }
+.foot .btn { font-size: 14px; }
+/* Colonne étroite de l'accueil : statut et priorité passent sous le titre. */
+.home-side .task { grid-template-columns: 32px minmax(0, 1fr); }
+.home-side .task .task-main { grid-column: 2; }
+.home-side .task-side { grid-column: 2; flex-direction: row; align-items: center; justify-content: flex-start; margin-top: 6px; }
 .tid { font-weight: 600; color: var(--saone); font-variant-numeric: tabular-nums; margin-right: 4px; white-space: nowrap; }
 .task-deliv { display: block; margin-top: 2px; color: var(--ink-2); font-size: 14px; }
 .task-deliv::before { content: '→ '; color: var(--saone); }
@@ -301,6 +324,7 @@ legend { font-weight: 600; font-size: 14px; color: var(--ink-2); padding: 0 6px;
   .route::before { left: 13px; }
   .task-side { grid-column: 3; flex-direction: row; align-items: center; justify-content: flex-start; margin-top: 6px; gap: 10px; }
   .task:not(:has(.rank)) .task-side { grid-column: 2 / 4; }
+  .task-main { grid-column: 3; }
   .drawer { padding: 0 16px 32px; }
   .grid, .dep-cols { grid-template-columns: 1fr; }
   .log li { grid-template-columns: 1fr; gap: 2px; }
