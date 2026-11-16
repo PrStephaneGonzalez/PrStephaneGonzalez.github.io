@@ -1,15 +1,16 @@
 // Rendu des vues (chaînes HTML). Les interactions sont gérées dans app.js par délégation (attributs data-*).
-import { phaseOf, PHASES, STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays } from './model.js?v=20261116e';
-import { GLOSSARY } from './i18n.js?v=20261116e';
+import { STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays, horizonRank } from './model.js?v=20261116f';
+import { GLOSSARY } from './i18n.js?v=20261116f';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, deliverableOf, slug,
-  fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, myLabels, isMine,
-  inOrder, matches, filtersActive, takersOf, iTook, colorFor, same, everyone,
-} from './core.js?v=20261116e';
+  fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, isMine,
+  matches, filtersActive, takersOf, iTook, colorFor, same, everyone,
+} from './core.js?v=20261116f';
 
-const VIEWS = ['home', 'mine', 'next', 'road', 'decisions', 'team', 'log'];
-const VIEW_LABEL = { home: 'viewHome', mine: 'viewMine', next: 'viewNext', road: 'viewRoad', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };
-const WITH_TOOLBAR = new Set(['mine', 'next', 'road', 'decisions']);
+const VIEWS = ['tasks', 'decisions', 'team', 'log'];
+const VIEW_LABEL = { tasks: 'viewTasks', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };
+const WITH_TOOLBAR = new Set(['tasks']);
+const SCOPES = ['all', 'mine', 'free', 'late'];
 
 /* ---------- Cadre ---------- */
 
@@ -20,36 +21,44 @@ export function renderShell() {
   const owners = new Map();
   for (const x of all) for (const p of people(x.person)) if (!owners.has(p.toLowerCase())) owners.set(p.toLowerCase(), p);
   const ownerOpts = [...owners].sort((a, b) => ownerLabel(a[1]).localeCompare(ownerLabel(b[1]), state.lang));
+  const extra = !!(state.f.domain || state.f.priority || state.f.person);
   $('#app').innerHTML = `
     <a class="skip" href="#main">${fr() ? 'Aller au contenu' : 'Skip to content'}</a>
     <header class="top">
       <div class="brand"><span class="brand-event">SCW 2028</span><span class="brand-room">${esc(t.appName)}</span></div>
-      <div class="countdown" id="countdown"></div>
       <div class="top-actions">
-        <button class="btn primary" data-action="new">${esc(t.newTask)}</button>
         <button class="link" data-action="lang" lang="${fr() ? 'en' : 'fr'}">${fr() ? 'English' : 'Français'}</button>
-        <span class="who">${esc(state.who)}</span>
+        <span class="who">${chip(state.who, { me: true })}</span>
         <button class="link" data-action="signout">${esc(t.signOut)}</button>
       </div>
     </header>
-    <section class="overview" aria-live="polite"><p id="summary"></p><div class="rail" id="rail" role="img"></div></section>
+    <section class="overview" aria-live="polite">
+      <p class="countdown" id="countdown"></p>
+      <div class="progress"><div class="bar"><span id="bar"></span></div><p id="summary"></p></div>
+    </section>
     <nav class="views" role="tablist" aria-label="${fr() ? 'Vues' : 'Views'}">
       ${VIEWS.map(k => `<button role="tab" id="tab-${k}" data-view="${k}" aria-selected="${state.view === k}" tabindex="${state.view === k ? 0 : -1}">${esc(t[VIEW_LABEL[k]])}<span class="count" data-count="${k}"></span></button>`).join('')}
     </nav>
     <div class="toolbar" id="toolbar">
-      <input type="search" id="f-q" placeholder="${esc(t.search)}" value="${esc(state.f.q)}" aria-label="${esc(t.search)}">
-      <select id="f-domain" aria-label="${esc(t.allDomains)}"><option value="">${esc(t.allDomains)}</option>
-        ${domains.map(d => `<option value="${esc(d)}" ${state.f.domain === d ? 'selected' : ''}>${esc(domainLabel(d))}</option>`).join('')}</select>
-      <select id="f-person" aria-label="${esc(t.allPeople)}"><option value="">${esc(t.allPeople)}</option>
-        <option value="__none" ${state.f.person === '__none' ? 'selected' : ''}>${esc(t.unassigned)}</option>
-        ${ownerOpts.map(([k, v]) => `<option value="${esc(k)}" ${state.f.person === k ? 'selected' : ''}>${esc(ownerLabel(v))}</option>`).join('')}</select>
-      <select id="f-taker" aria-label="${esc(t.whoOnIt)}"><option value="">${esc(t.whoOnIt)}${fr() ? ' :' : ':'} ${esc(t.anyone)}</option>
-        <option value="__none" ${state.f.taker === '__none' ? 'selected' : ''}>${esc(t.nobodyYet)}</option>
-        ${everyone().map(n => `<option value="${esc(n)}" ${same(state.f.taker, n) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
-      <select id="f-priority" aria-label="${esc(t.allPriorities)}"><option value="">${esc(t.allPriorities)}</option>
-        ${PRIORITIES.map(p => `<option value="${p}" ${state.f.priority === p ? 'selected' : ''}>${esc(priorityLabel(p))}</option>`).join('')}</select>
-      <label class="check"><input type="checkbox" id="f-done" ${state.f.showDone ? 'checked' : ''}> ${esc(t.showDone)}</label>
-      <button class="link" data-action="clear" id="clear" hidden>${esc(t.clearFilters)}</button>
+      <div class="toolbar-row">
+        <input type="search" id="f-q" placeholder="${esc(t.search)}" value="${esc(state.f.q)}" aria-label="${esc(t.search)}">
+        <button class="btn" data-action="new">+ ${esc(t.newTask)}</button>
+      </div>
+      <div class="scopes" role="group" aria-label="${esc(t.scopeLabel)}">
+        ${SCOPES.map(s => `<button type="button" class="scope" data-scope="${s}" aria-pressed="${state.f.scope === s}">${esc(t.scopes[s])}<span data-scount="${s}"></span></button>`).join('')}
+      </div>
+      <details class="more-filters" ${extra ? 'open' : ''}><summary>${esc(t.moreFilters)}</summary>
+        <div class="filter-grid">
+          <select id="f-domain" aria-label="${esc(t.allDomains)}"><option value="">${esc(t.allDomains)}</option>
+            ${domains.map(d => `<option value="${esc(d)}" ${state.f.domain === d ? 'selected' : ''}>${esc(domainLabel(d))}</option>`).join('')}</select>
+          <select id="f-priority" aria-label="${esc(t.allPriorities)}"><option value="">${esc(t.allPriorities)}</option>
+            ${PRIORITIES.map(p => `<option value="${p}" ${state.f.priority === p ? 'selected' : ''}>${esc(priorityLabel(p))}</option>`).join('')}</select>
+          <select id="f-person" aria-label="${esc(t.allPeople)}"><option value="">${esc(t.allPeople)}</option>
+            <option value="__none" ${state.f.person === '__none' ? 'selected' : ''}>${esc(t.unassigned)}</option>
+            ${ownerOpts.map(([k, v]) => `<option value="${esc(k)}" ${state.f.person === k ? 'selected' : ''}>${esc(ownerLabel(v))}</option>`).join('')}</select>
+          <button class="link" data-action="clear" id="clear" hidden>${esc(t.clearFilters)}</button>
+        </div>
+      </details>
     </div>
     <div id="person-banner"></div>
     <main id="main" tabindex="-1" role="tabpanel"></main>
@@ -59,50 +68,40 @@ export function renderShell() {
     <div id="toast" role="status" aria-live="polite"></div>`;
 }
 
+/** Nombre de tâches visibles pour chaque portée (avec les autres filtres). */
+function scopeCount(scope) {
+  return state.a.plan.filter(id => matches(state.tasks.get(id), { scope })).length;
+}
+
 function renderOverview() {
   const t = T(), a = state.a, all = [...state.tasks.values()].filter(isActionable);
-  const count = s => all.filter(x => x.status === s).length;
-  const decisions = count('Decision needed');
-  $('#summary').textContent = t.summary(count('Done'), all.length, a.ready.size, a.overdue.size, decisions);
-  $('#rail').innerHTML = STATUSES.map(s => { const n = count(s); return n ? `<span class="seg st-${slug(s)}" style="flex-grow:${n}" title="${esc(statusLabel(s))} : ${n}"></span>` : ''; }).join('');
-  $('#rail').setAttribute('aria-label', STATUSES.map(s => `${statusLabel(s)} ${count(s)}`).join(', '));
+  const done = all.filter(x => x.status === 'Done').length;
+  const decisions = all.filter(x => x.status === 'Decision needed').length;
+  $('#summary').textContent = t.progress(done, all.length, a.late.size, decisions);
+  $('#bar').style.width = `${all.length ? Math.max(1, done / all.length * 100) : 0}%`;
   const conf = a.milestones.get('conf');
-  if (conf) $('#countdown').innerHTML = `<b>${esc(t.countdown(daysBetween(today(), conf)))}</b><span>${esc(t.countdownLabel(fmtDate(conf)))}</span>`;
-  const mine = all.filter(x => x.status !== 'Done' && isMine(x)).length;
-  const counts = { mine: mine || '', next: a.ready.size, decisions, road: all.filter(x => x.status !== 'Done').length };
+  if (conf) $('#countdown').innerHTML = `<b>${esc(t.countdown(daysBetween(today(), conf)))}</b> ${esc(t.countdownLabel(fmtDate(conf)))}`;
+  const counts = { tasks: all.length - done, decisions: all.filter(x => x.status === 'Decision needed').length };
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent = counts[el.dataset.count] ?? ''; });
+  document.querySelectorAll('[data-scount]').forEach(el => { el.textContent = scopeCount(el.dataset.scount); });
+  document.querySelectorAll('[data-scope]').forEach(el => el.setAttribute('aria-pressed', String(state.f.scope === el.dataset.scope)));
   $('#clear').hidden = !filtersActive();
   $('#toolbar').hidden = !WITH_TOOLBAR.has(state.view);
   const ft = state.f.taker;
   $('#person-banner').innerHTML = ft && WITH_TOOLBAR.has(state.view)
-    ? `<p class="person-banner">${ft === '__none' ? esc(t.showingNobody) : `${chip(ft)} ${esc(t.showingPerson(ft))}`} <button class="link" data-action="clear-person">${esc(t.clearPerson)}</button></p>` : '';
+    ? `<p class="person-banner">${chip(ft)} ${esc(t.showingPerson(ft))} <button class="link" data-action="clear-person">${esc(t.clearPerson)}</button></p>` : '';
 }
 
-/* ---------- Lignes de tâche ---------- */
+/* ---------- Une tâche ---------- */
 
+/** Échéance affichée : « avant le 15 janv. 2027 », « vers oct. 2026 », ou « pas de date ». */
 function whenHtml(task) {
-  const a = state.a, t = T(), tgt = a.target.get(task.id);
-  if (tgt) {
-    const late = a.overdue.has(task.id);
-    let title = '';
-    if (tgt.source === 'anchor') {
-      const m = milestones().find(x => x.key === task.anchor);
-      const off = Number(task.anchorOffset) || 0;
-      title = m ? `${off ? `${Math.abs(off)} ${fr() ? 'jours' : 'days'} ${off < 0 ? (fr() ? 'avant' : 'before') : (fr() ? 'après' : 'after')} : ` : ''}${milestoneLabel(m)}` : '';
-    }
-    const label = (tgt.source === 'anchor' ? t.approx + ' ' : '') + fmtDate(tgt.date);
-    return `<span class="m-date${late ? ' m-late' : ''}" ${title ? `title="${esc(title)}"` : ''}>${esc(label)}${late ? ` (${esc(t.targetPassed)})` : ''}</span>`;
-  }
-  const txt = task.timing || task.startWhen;
-  return txt ? `<span class="m-date m-soft">${esc(txt)}</span>` : '';
-}
-
-function ownersHtml(task) {
-  const ps = people(task.person);
-  if (!ps.length) return '';
-  const mine = myLabels().map(x => x.toLowerCase());
-  const fmt = p => `<span class="${mine.includes(p.toLowerCase()) ? 'is-me' : ''}">${esc(ownerLabel(p))}</span>`;
-  return `<span class="m-person"><span class="m-soft">${esc(T().role)}</span> ${ps.map(fmt).join(', ')}</span>`;
+  const a = state.a, t = T(), d = a.deadline.get(task.id);
+  if (!d) return `<span class="when soft">${esc(t.noDate)}</span>`;
+  const late = a.late.has(task.id);
+  const label = d.source === 'hint' ? t.about(fmtMonth(d.date)) : d.source === 'anchor' ? t.about(fmtDate(d.date)) : t.by(fmtDate(d.date));
+  const why = d.source === 'needed' ? t.neededFor(d.via) : d.source === 'anchor' ? t.fromKeyDate : '';
+  return `<span class="when${late ? ' late' : ''}">${late ? `<b>${esc(t.lateWord)}</b> ` : ''}${esc(label)}</span>${why ? `<span class="why">${esc(why)}</span>` : ''}`;
 }
 
 /** Pastille de couleur d'une personne ; un clic filtre sur ses tâches. */
@@ -111,56 +110,96 @@ export function chip(name, { me = false } = {}) {
   return `<button type="button" class="pchip${me ? ' me' : ''}" data-person="${esc(name)}" style="--c:${c};--b:${b}" title="${esc(T().showingPerson(name))}"><span class="pdot"></span>${esc(name)}</button>`;
 }
 
-function peopleHtml(task) {
-  const t = T(), done = task.status === 'Done', takers = takersOf(task);
-  if (done) return task.doneBy ? `<span class="m-done">${esc(t.doneShort)}${fr() ? ' :' : ':'} ${chip(task.doneBy)}${task.doneAt ? ` <span class="m-soft">${esc(fmtDay(task.doneAt.slice(0, 10)))}</span>` : ''}</span>` : '';
-  const mine = iTook(task);
-  return `${takers.map(n => chip(n, { me: same(n, state.who) })).join('')}
-    <button type="button" class="take${mine ? ' leave' : ''}" data-take="${esc(task.id)}" aria-pressed="${mine}"
-      title="${esc(mine ? t.leaveTitle(task.id) : t.takeTitle(task.id))}">${esc(mine ? t.leave : t.take)}</button>`;
+/** Les deux gros boutons : « Je m'en occupe » et « Faite ». Utilisés dans la liste et dans la fiche. */
+export function actionsHtml(task) {
+  const t = T(), id = task.id, done = task.status === 'Done', mine = iTook(task);
+  const [c, b] = colorFor(state.who);
+  const take = done ? '' : `<button type="button" class="act act-take" data-take="${esc(id)}" aria-pressed="${mine}" style="--c:${c};--b:${b}"
+      title="${esc(mine ? t.leaveTitle(id) : t.takeTitle(id))}"><span class="ico" aria-hidden="true"></span><span>${esc(mine ? t.taken : t.take)}</span></button>`;
+  const doneLabel = done ? t.isDone : task.status === 'Decision needed' ? t.decide : t.markDoneShort;
+  return `<div class="acts">${take}<button type="button" class="act act-done" data-done="${esc(id)}" aria-pressed="${done}"
+      title="${esc(done ? t.markOpen(id) : t.markDone(id))}"><span class="ico" aria-hidden="true"></span><span>${esc(doneLabel)}</span></button></div>`;
 }
 
-export function row(task, { rank = false, compact = false } = {}) {
-  const t = T(), a = state.a, id = task.id;
-  const done = task.status === 'Done';
-  const waiting = a.waitingOn.get(id) || [];
-  const node = done ? 'done' : a.ready.has(id) ? 'ready' : 'waiting';
-  const late = a.overdue.has(id);
-  const unl = a.unlocks.get(id) || 0;
+function peopleHtml(task) {
+  const t = T();
+  if (task.status === 'Done') return task.doneBy || task.doneAt
+    ? `<span class="who-line">${esc(t.doneShort)}${task.doneBy ? ` ${chip(task.doneBy)}` : ''}${task.doneAt ? ` <span class="soft">${esc(fmtDay(task.doneAt.slice(0, 10)))}</span>` : ''}</span>` : '';
+  const takers = takersOf(task);
+  return takers.length ? `<span class="who-line">${takers.map(n => chip(n, { me: same(n, state.who) })).join('')}</span>` : '';
+}
+
+export function row(task) {
+  const t = T(), a = state.a, id = task.id, done = task.status === 'Done';
+  const waiting = done ? [] : a.waitingOn.get(id) || [];
+  const unl = done ? 0 : a.unlocks.get(id) || 0;
+  const status = !done && task.status !== 'To do' ? `<span class="badge st-${slug(task.status)}">${esc(statusLabel(task.status))}</span>` : '';
+  const cls = ['task', done ? 'is-done' : '', iTook(task) ? 'is-mine' : '', !done && a.late.has(id) ? 'is-late' : '', state.flash === id ? 'flash' : ''].filter(Boolean).join(' ');
   return `
-    <li class="task node-${node} st-${slug(task.status)}${late ? ' is-late' : ''}">
-      <button class="node" type="button" data-done="${esc(id)}" role="checkbox" aria-checked="${done}"
-        aria-label="${esc(done ? t.markOpen(id) : t.markDone(id))}" title="${esc(done ? t.markOpen(id) : t.markDone(id))}"></button>
-      ${rank ? `<span class="rank">${a.rank.get(id)}</span>` : ''}
-      <div class="task-main">
-      <button class="task-btn" type="button" data-open="${esc(id)}">
-        <span class="task-title"><span class="tid">${esc(id)}</span> ${esc(titleOf(task))}</span>
-        ${!compact && deliverableOf(task) && !done ? `<span class="task-deliv">${esc(deliverableOf(task))}</span>` : ''}
-        <span class="task-meta">
-          ${ownersHtml(task)}
-          ${whenHtml(task)}
-          ${!compact && task.effort ? `<span class="m-soft">${esc(effortLabel(task.effort))}</span>` : ''}
-          ${!done && waiting.length ? `<span class="m-wait">${esc(t.waitsFor)} ${waiting.map(esc).join(', ')}</span>` : ''}
-          ${!done && unl ? `<span class="m-unlock">${esc(t.unlocks(unl))}</span>` : ''}
-          ${a.inCycle.has(id) ? `<span class="m-late">${esc(t.loop)}</span>` : ''}
-          ${!compact && task.topic ? `<span class="m-topic">${esc(task.topic)}</span>` : ''}
-        </span>
+    <li class="${cls}" id="task-${esc(id)}"${iTook(task) ? ` style="--mine:${colorFor(state.who)[0]}"` : ''}>
+      <button class="task-open" type="button" data-open="${esc(id)}">
+        <span class="task-top"><span class="tid">${esc(id)}</span>
+          <span class="prio pr-${slug(task.priority)}">${esc(priorityLabel(task.priority))}</span>
+          ${done ? '' : whenHtml(task)}
+          ${!done && task.effort ? `<span class="soft">${esc(effortLabel(task.effort))}</span>` : ''}
+          ${status}</span>
+        <span class="task-title">${esc(titleOf(task))}</span>
+        ${!done && deliverableOf(task) ? `<span class="task-deliv">${esc(deliverableOf(task))}</span>` : ''}
+        ${waiting.length || unl ? `<span class="task-links">
+          ${waiting.length ? `<span class="needs">${esc(t.needsFirst(waiting.join(', ')))}</span>` : ''}
+          ${unl ? `<span class="unlocks">${esc(t.unlocks(unl))}</span>` : ''}</span>` : ''}
       </button>
-      <div class="task-people">${peopleHtml(task)}</div>
-      </div>
-      <span class="task-side">
-        <select class="quick-status st-${slug(task.status)}" data-status="${esc(id)}" aria-label="${esc(t.quickStatus(id))}">
-          ${STATUSES.map(s => `<option value="${s}" ${s === task.status ? 'selected' : ''}>${esc(statusLabel(s))}</option>`).join('')}
-        </select>
-        <span class="prio pr-${slug(task.priority)}">${esc(priorityLabel(task.priority))}</span>
-      </span>
+      <div class="task-foot">${peopleHtml(task)}${actionsHtml(task)}</div>
     </li>`;
 }
 export const list = (tasks, opts = {}) => tasks.length
-  ? `<ol class="route${opts.compact ? ' compact' : ''}">${tasks.map(x => row(x, opts)).join('')}</ol>`
+  ? `<ol class="tasks">${tasks.map(x => row(x)).join('')}</ol>`
   : `<p class="empty">${esc(opts.empty || T().nothingHere)}</p>`;
 
-/* ---------- Accueil ---------- */
+/* ---------- Toutes les tâches, dans l'ordre de travail ---------- */
+
+function horizonTitle(h) {
+  const t = T(), conf = state.a.milestones.get('conf');
+  if (/^y\d{4}$/.test(h)) return conf && conf.startsWith(h.slice(1)) ? t.hzBeforeConf(h.slice(1)) : t.hzYear(h.slice(1));
+  return t.hz[h] || h;
+}
+function horizonSub(h) {
+  const t = T();
+  if (h === 'month') return t.until(fmtDate(addDays(today(), 28)));
+  if (h === 'quarter') return t.until(fmtDate(addDays(today(), 91)));
+  return t.hzSub[h] || '';
+}
+
+function viewTasks() {
+  const t = T(), a = state.a, f = state.f;
+  const shown = a.plan.map(id => state.tasks.get(id)).filter(x => x && matches(x));
+  const groups = new Map();
+  for (const x of shown) { const h = a.horizon.get(x.id); groups.set(h, [...(groups.get(h) || []), x]); }
+  // Tâches sur lesquelles on vient d'agir : elles restent à leur place (grisées si faites) jusqu'au prochain changement de vue.
+  for (const [id, pos] of state.recent) {
+    const x = state.tasks.get(id);
+    if (!x || shown.includes(x) || !matches(x, { scope: 'all' })) continue;
+    const g = groups.get(pos.h) || [];
+    const i = pos.before ? g.findIndex(y => y.id === pos.before) : -1;
+    i < 0 ? g.push(x) : g.splice(i, 0, x);
+    groups.set(pos.h, g);
+  }
+  const keys = [...groups.keys()].sort((x, y) => horizonRank(x) - horizonRank(y));
+  const doneList = f.scope === 'free' || f.scope === 'late' ? []
+    : [...state.tasks.values()].filter(x => x.status === 'Done' && isActionable(x) && !state.recent.has(x.id) && matches(x))
+      .sort((x, y) => String(y.doneAt || '').localeCompare(String(x.doneAt || '')));
+  const empty = f.scope === 'mine' && !filtersActive(['scope']) ? t.mineEmpty : t.nothingHere;
+  const body = keys.map(h => `
+    <section class="horizon hz-${h}" aria-labelledby="hz-${h}">
+      <h2 id="hz-${h}"><span>${esc(horizonTitle(h))}</span> <span class="n">${groups.get(h).length}</span>${horizonSub(h) ? `<small>${esc(horizonSub(h))}</small>` : ''}</h2>
+      ${list(groups.get(h))}
+    </section>`).join('');
+  return `<p class="order-note">${esc(t.orderNote)}</p>
+    ${body || `<p class="empty">${esc(empty)}</p>`}
+    ${doneList.length ? `<details class="done-group"><summary>${esc(t.doneGroup(doneList.length))}</summary>${list(doneList)}</details>` : ''}`;
+}
+
+/* ---------- Frise des jalons ---------- */
 
 function timeline() {
   const t = T(), ms = milestones().filter(m => m.date).slice().sort((x, y) => x.date.localeCompare(y.date));
@@ -190,110 +229,36 @@ function timeline() {
           const isConf = g.items.some(m => m.key === 'conf');
           return `<div class="tl-ms tier-${tier}${past ? ' past' : ''}${isConf ? ' conf' : ''}${firm ? ' firm' : ''}" style="left:${pos(g.date)}%">
             <span class="tl-dot"></span><span class="tl-stem"></span>
-            <span class="tl-label"><b>${esc(fmtDay(g.date))}</b> ${g.items.map(m => esc(milestoneLabel(m))).join(' · ')}</span>
+            <span class="tl-label"><b>${esc(fmtDay(g.date))}</b> ${g.items.map(m => esc(milestoneLabel(m))).join(', ')}</span>
           </div>`;
         }).join('')}
       </div>
       <ol class="tl-list">
-        ${groups.map(g => `<li class="${g.date < now ? 'past' : ''}"><time>${esc(fmtDate(g.date))}</time> ${g.items.map(m => esc(milestoneLabel(m))).join(' · ')}</li>`).join('')}
+        ${groups.map(g => `<li class="${g.date < now ? 'past' : ''}"><time>${esc(fmtDate(g.date))}</time> ${g.items.map(m => esc(milestoneLabel(m))).join(', ')}</li>`).join('')}
       </ol>
-      <p class="muted tl-note">${esc(t.timelineNote)} <button class="link small" data-view="team">${esc(t.viewTeam)}</button></p>
+      <p class="muted tl-note">${esc(t.timelineNote)}</p>
     </section>`;
 }
 
-function viewHome() {
-  const t = T(), a = state.a;
-  const open = [...state.tasks.values()].filter(x => x.status !== 'Done' && isActionable(x));
-  const critical = open.filter(x => a.unlocks.get(x.id) > 0)
-    .sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || a.rank.get(x.id) - a.rank.get(y.id)).slice(0, 6);
-  const late = open.filter(x => a.overdue.has(x.id)).sort((x, y) => a.rank.get(x.id) - a.rank.get(y.id));
-  const ag = agenda(a);
-  const mine = open.filter(iTook).sort((x, y) => (a.ready.has(y.id) - a.ready.has(x.id)) || a.rank.get(x.id) - a.rank.get(y.id));
-  const free = open.filter(x => a.ready.has(x.id) && !takersOf(x).length && (x.priority === 'Urgent' || x.priority === 'High'))
-    .sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || a.rank.get(x.id) - a.rank.get(y.id));
-  return `
-    ${timeline()}
-    <div class="home-grid">
-      <div class="home-main">
-        <section class="card" aria-labelledby="h-crit"><div class="card-head"><h2 id="h-crit">${esc(t.criticalTitle)}</h2></div>
-          <p class="intro">${esc(t.criticalIntro)}</p>${list(critical, { compact: true })}</section>
-        <section class="card" aria-labelledby="h-late"><div class="card-head"><h2 id="h-late">${esc(t.lateTitle)} <span class="n">${late.length}</span></h2></div>
-          ${list(late.slice(0, 6), { compact: true, empty: t.lateNone })}
-          ${late.length > 6 ? `<details class="more"><summary>${esc(t.showMore(late.length - 6))}</summary>${list(late.slice(6), { compact: true })}</details>` : ''}</section>
-      </div>
-      <div class="home-side">
-        <section class="card meeting" aria-labelledby="h-meet"><div class="card-head"><h2 id="h-meet">${esc(t.meetingTitle)}</h2></div>
-          <p>${esc(t.meetingIntro(ag.decisions.length, ag.overdue.length, ag.blocked.length))}</p>
-          <div class="btn-row"><button class="btn primary" data-action="agenda-copy">${esc(t.copyAgenda)}</button>
-            <button class="btn" data-action="agenda-show">${esc(t.showAgenda)}</button></div></section>
-        <section class="card" aria-labelledby="h-mine"><div class="card-head"><h2 id="h-mine">${esc(t.mineTitle)} <span class="n">${mine.length}</span></h2>
-          <button class="link" data-view="mine">${esc(t.seeAll)}</button></div>
-          ${list(mine.slice(0, 6), { compact: true, empty: t.mineEmpty })}
-        </section>
-        <section class="card" aria-labelledby="h-free"><div class="card-head"><h2 id="h-free">${esc(t.freeTitle)} <span class="n">${free.length}</span></h2></div>
-          <p class="intro">${esc(t.freeIntro)}</p>
-          ${list(free.slice(0, 8), { compact: true, empty: t.freeNone })}
-        </section>
-      </div>
-    </div>`;
-}
-
-/* ---------- Mes tâches, À faire, Feuille de route, Décisions ---------- */
-
-function viewMine() {
-  const t = T(), a = state.a;
-  const mine = inOrder().filter(isMine);
-  if (!mine.length) return `<p class="intro">${esc(t.mineNoRole)}</p><button class="btn" data-view="next">${esc(t.viewNext)}</button>`;
-  const dec = mine.filter(x => x.status === 'Decision needed');
-  const ready = mine.filter(x => x.status !== 'Decision needed' && x.status !== 'Done' && a.ready.has(x.id));
-  const waiting = mine.filter(x => x.status !== 'Decision needed' && x.status !== 'Done' && !a.ready.has(x.id));
-  const done = mine.filter(x => x.status === 'Done');
-  const sec = (title, xs) => xs.length ? `<h2 class="phase">${esc(title)} <span class="n">${xs.length}</span></h2>${list(xs)}` : '';
-  return `<p class="intro">${esc(t.mineIntro())}</p>
-    ${sec(t.mineReady, ready)}${sec(t.mineDecisions, dec)}${sec(t.mineWaiting, waiting)}${sec(t.mineDone, done)}
-    ${mine.length ? '' : `<p class="empty">${esc(t.nothingHere)}</p>`}`;
-}
-
-function viewNext() {
-  const t = T(), a = state.a, pr = p => PRIORITIES.indexOf(p);
-  const visible = inOrder();
-  const ready = visible.filter(x => a.ready.has(x.id)).sort((x, y) =>
-    (a.overdue.has(y.id) - a.overdue.has(x.id)) || (a.unlocks.get(y.id) - a.unlocks.get(x.id)) || (pr(x.priority) - pr(y.priority)) || (a.rank.get(x.id) - a.rank.get(y.id)));
-  const almost = visible.filter(x => x.status !== 'Done' && !a.ready.has(x.id) && (a.waitingOn.get(x.id) || []).length === 1);
-  return `<p class="intro">${esc(t.nextIntro)}</p>
-    <h2 class="phase">${esc(t.readyTitle)} <span class="n">${ready.length}</span></h2>${list(ready)}
-    <h2 class="phase">${esc(t.almostTitle)} <span class="n">${almost.length}</span></h2><p class="intro">${esc(t.almostIntro)}</p>${list(almost)}`;
-}
-
-function milestonesByPhase() {
-  const out = new Map();
-  for (const m of milestones()) { if (!m.date) continue; const p = phaseOf(m.date.slice(0, 7), state.a.conference); out.set(p, [...(out.get(p) || []), m]); }
-  return out;
-}
-
-function viewRoad() {
-  const t = T(), a = state.a, groups = new Map(PHASES.map(p => [p, []])), mph = milestonesByPhase();
-  for (const x of inOrder()) groups.get(phaseOf(a.slot.get(x.id), a.conference)).push(x);
-  const body = [...groups].filter(([, xs]) => xs.length).map(([p, xs]) => {
-    const ms = (mph.get(p) || []).slice().sort((x, y) => x.date.localeCompare(y.date));
-    return `<h2 class="phase">${esc(t.phases[p])} <span class="n">${xs.length}</span></h2>
-      ${ms.length ? `<p class="phase-ms"><span>${esc(t.phaseMilestones)}</span> ${ms.map(m => `<span class="ms-chip"><b>${esc(fmtDay(m.date))}</b> ${esc(milestoneLabel(m))}</span>`).join(' ')}</p>` : ''}
-      ${list(xs, { rank: true })}`;
-  }).join('');
-  return `<p class="intro">${esc(t.roadIntro)}</p>${body || `<p class="empty">${esc(t.nothingHere)}</p>`}`;
-}
+/* ---------- Décisions ---------- */
 
 function viewDecisions() {
-  const t = T(), a = state.a;
-  const dec = inOrder().filter(x => x.status === 'Decision needed');
-  const now = dec.filter(x => a.ready.has(x.id)).sort((x, y) => a.unlocks.get(y.id) - a.unlocks.get(x.id) || a.rank.get(x.id) - a.rank.get(y.id));
+  const t = T(), a = state.a, ag = agenda(a);
+  const dec = a.plan.map(id => state.tasks.get(id)).filter(x => x && x.status === 'Decision needed');
+  const now = dec.filter(x => a.ready.has(x.id));
   const later = dec.filter(x => !a.ready.has(x.id));
-  const taken = state.a.order.map(id => state.tasks.get(id)).filter(x => x && x.status === 'Done' && x.decision);
-  return `<p class="intro">${esc(t.decisionsIntro)}</p>
-    <h2 class="phase">${esc(t.decisionsReady)} <span class="n">${now.length}</span></h2>${list(now)}
-    <h2 class="phase">${esc(t.decisionsLater)} <span class="n">${later.length}</span></h2>${list(later)}
-    ${taken.length ? `<h2 class="phase">${esc(t.decisionsTaken)} <span class="n">${taken.length}</span></h2>
-      <ul class="decisions-taken">${taken.map(x => `<li><button class="link" data-open="${esc(x.id)}"><span class="tid">${esc(x.id)}</span> ${esc(titleOf(x))}</button><p>${esc(x.decision)}</p></li>`).join('')}</ul>` : ''}`;
+  const taken = [...state.tasks.values()].filter(x => x.status === 'Done' && x.decision)
+    .sort((x, y) => String(y.doneAt || '').localeCompare(String(x.doneAt || '')));
+  return `
+    <section class="card meeting" aria-labelledby="h-meet"><div class="card-head"><h2 id="h-meet">${esc(t.meetingTitle)}</h2></div>
+      <p>${esc(t.meetingIntro(ag.decisions.length, ag.overdue.length, ag.blocked.length))}</p>
+      <div class="btn-row"><button class="btn primary" data-action="agenda-copy">${esc(t.copyAgenda)}</button>
+        <button class="btn" data-action="agenda-show">${esc(t.showAgenda)}</button></div></section>
+    <p class="order-note">${esc(t.decisionsIntro)}</p>
+    <section class="horizon"><h2><span>${esc(t.decisionsReady)}</span> <span class="n">${now.length}</span></h2>${list(now)}</section>
+    <section class="horizon"><h2><span>${esc(t.decisionsLater)}</span> <span class="n">${later.length}</span></h2>${list(later)}</section>
+    ${taken.length ? `<section class="horizon"><h2><span>${esc(t.decisionsTaken)}</span> <span class="n">${taken.length}</span></h2>
+      <ul class="decisions-taken">${taken.map(x => `<li><button class="link" data-open="${esc(x.id)}"><span class="tid">${esc(x.id)}</span> ${esc(titleOf(x))}</button><p>${esc(x.decision)}</p></li>`).join('')}</ul></section>` : ''}`;
 }
 
 /* ---------- Équipe et repères ---------- */
@@ -310,7 +275,7 @@ function viewTeam() {
   for (const x of all) if (x.topic) topics.set(x.topic, [...(topics.get(x.topic) || []), x]);
   const mini = xs => `<ul class="mini">${xs.map(x => `<li><button class="link" data-open="${esc(x.id)}"><span class="tid">${esc(x.id)}</span> ${esc(titleOf(x))}</button>${x.status === 'Done' ? ` <span class="m-soft">(${esc(statusLabel('Done'))})</span>` : ''}</li>`).join('')}</ul>`;
   return `
-    <p class="intro">${esc(t.teamIntro)}</p>
+    ${timeline()}
     <section class="card" aria-labelledby="t-people"><div class="card-head"><h2 id="t-people">${esc(t.peopleTitle)}</h2></div>
       <p class="intro">${esc(t.peopleIntro)}</p>
       <table class="grid-table"><thead><tr><th>${esc(t.colPerson)}</th><th class="num">${esc(t.colTaking)}</th><th class="num">${esc(t.colDone)}</th></tr></thead><tbody>
@@ -400,8 +365,8 @@ export function render() {
     b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
   });
   $('#main').setAttribute('aria-labelledby', `tab-${state.view}`);
-  const views = { home: viewHome, mine: viewMine, next: viewNext, road: viewRoad, decisions: viewDecisions, team: viewTeam, log: viewLog };
-  $('#main').innerHTML = (views[state.view] || viewHome)();
+  const views = { tasks: viewTasks, decisions: viewDecisions, team: viewTeam, log: viewLog };
+  $('#main').innerHTML = (views[state.view] || viewTasks)();
 }
 
 /* ---------- Ordre du jour et export ---------- */
@@ -424,14 +389,15 @@ export function agendaText() {
 export function exportRows() {
   const a = state.a, E = !fr();
   const head = E
-    ? ['Number', 'Task', 'Status', 'Who is on it', 'Done by', 'Done on', 'Target date', 'Date type', 'Result we expect', 'Effort', 'Priority', 'Role', 'Area', 'Needs first', 'Topic', 'Kind', 'What we decided', 'Notes', 'Title (French)']
-    : ['Numéro', 'Tâche', 'Statut', 'Qui s’en occupe', 'Faite par', 'Faite le', 'Date cible', 'Type de date', 'Résultat attendu', 'Charge', 'Priorité', 'Rôle', 'Domaine', 'Prérequis', 'Sujet', 'Nature', 'Décision', 'Notes', 'Titre (anglais)'];
+    ? ['Order', 'Number', 'Task', 'Status', 'Who is on it', 'Done by', 'Done on', 'Do by', 'Target date', 'Date type', 'Result we expect', 'Effort', 'Priority', 'Role', 'Area', 'Needs first', 'Topic', 'Kind', 'What we decided', 'Notes', 'Title (French)']
+    : ['Ordre', 'Numéro', 'Tâche', 'Statut', 'Qui s’en occupe', 'Faite par', 'Faite le', 'À faire avant', 'Date cible', 'Type de date', 'Résultat attendu', 'Charge', 'Priorité', 'Rôle', 'Domaine', 'Prérequis', 'Sujet', 'Nature', 'Décision', 'Notes', 'Titre (anglais)'];
   const src = { due: E ? 'firm deadline' : 'échéance ferme', planning: E ? 'internal target' : 'cible interne', anchor: E ? 'from a key date' : 'calculée d’un jalon' };
-  const rows = a.order.map(id => state.tasks.get(id)).map(x => [x.id, titleOf(x), statusLabel(x.status), takersOf(x).join(', '), x.doneBy || '',
-    x.doneAt ? x.doneAt.slice(0, 10) : '', a.target.get(x.id)?.date || '', a.target.get(x.id) ? src[a.target.get(x.id).source] : (x.timing || ''),
+  const pos = new Map(a.plan.map((id, i) => [id, i + 1]));
+  const rows = a.order.map(id => state.tasks.get(id)).map(x => [pos.get(x.id) ?? '', x.id, titleOf(x), statusLabel(x.status), takersOf(x).join(', '), x.doneBy || '',
+    x.doneAt ? x.doneAt.slice(0, 10) : '', x.status === 'Done' ? '' : a.deadline.get(x.id)?.date || '', a.target.get(x.id)?.date || '', a.target.get(x.id) ? src[a.target.get(x.id).source] : (x.timing || ''),
     deliverableOf(x), effortLabel(x.effort), priorityLabel(x.priority), people(x.person).map(ownerLabel).join(', '), domainLabel(x.domain),
     x.dependsOn, x.topic, x.kind || 'task', x.decision, x.notes, E ? x.titleFr : x.title]);
-  return { head, rows, doneCol: 2, doneLabel: statusLabel('Done') };
+  return { head, rows, doneCol: 3, doneLabel: statusLabel('Done') };
 }
 
 export function csv() {

@@ -172,7 +172,85 @@ export function analyse(tasks, { today = new Date().toISOString().slice(0, 10), 
 
   const overdue = new Set(tasks.filter(t => open(t) && target.get(t.id) && target.get(t.id).date < today).map(t => t.id));
 
-  return { byId, order, rank, month, slot, target, prereqs, dependents, waitingOn, ready, unlocks, overdue, inCycle, missing, milestones: ms, conference };
+  // ---------- Ordonnancement (échéance, durée, importance) ----------
+  // 1. Échéance effective : la date cible de la tâche, sinon son repère en texte libre (fin du mois),
+  //    ramenée plus tôt si une tâche qui l'attend doit finir avant : échéance de la suivante − durée de la suivante.
+  // 2. Importance effective : la plus forte entre la sienne et celle des tâches qui l'attendent.
+  // 3. Score « coût du retard apparent » (règle ATC) : importance / durée × exp(−marge / 30 jours),
+  //    où marge = jours jusqu'à l'échéance − durée. Plus la marge est faible, plus le score monte.
+  // 4. Liste : d'abord par horizon (en retard, 4 semaines, 3 mois, puis par année…), puis par score,
+  //    en ne plaçant jamais une tâche avant ses prérequis encore ouverts.
+  const confDate = ms.get('conf') || null;
+  const deadline = new Map(), weight = new Map();
+  for (const id of [...order].reverse()) {
+    const t = byId.get(id), tg = target.get(id);
+    let d = tg ? tg.date : null, source = tg ? tg.source : null, via = null;
+    if (!d) { const h = parseHint(t.timing, conference) || parseHint(t.startWhen, conference); if (h) { d = endOfMonth(h); source = 'hint'; } }
+    let w = WEIGHT[t.priority] || WEIGHT.Medium;
+    for (const c of dependents.get(id)) {
+      const ct = byId.get(c);
+      if (!open(ct)) continue;
+      const cd = deadline.get(c);
+      if (cd) { const lim = addDays(cd.date, -durationOf(ct)); if (!d || lim < d) { d = lim; source = 'needed'; via = c; } }
+      w = Math.max(w, weight.get(c) || 0);
+    }
+    deadline.set(id, d ? { date: d, source, via } : null);
+    weight.set(id, w);
+  }
+  const horizon = new Map(tasks.map(t => [t.id, horizonOf(deadline.get(t.id)?.date, today, confDate)]));
+  const score = new Map(tasks.map(t => {
+    const p = durationOf(t), d = deadline.get(t.id)?.date || confDate || addDays(today, 365);
+    const slack = Math.max(0, daysBetween(today, d) - p);
+    return [t.id, weight.get(t.id) / p * Math.exp(-slack / TAU)];
+  }));
+  const hr = id => horizonRank(horizon.get(id));
+  const dl = id => deadline.get(id)?.date || '9999-12-31';
+  const byPlan = (x, y) => hr(x) - hr(y) || score.get(y) - score.get(x) || (dl(x) < dl(y) ? -1 : dl(x) > dl(y) ? 1 : 0) || (x < y ? -1 : 1);
+  const left = new Set(tasks.filter(open).map(t => t.id));
+  const plan = [];
+  while (left.size) {
+    let cand = [...left].filter(id => !prereqs.get(id).some(p => left.has(p)));
+    if (!cand.length) cand = [...left]; // boucle : on la casse au meilleur score
+    cand.sort(byPlan);
+    plan.push(cand[0]); left.delete(cand[0]);
+  }
+  const doneAt = id => byId.get(id).doneAt || '';
+  const finished = tasks.filter(t => done(t.id) && isActionable(t)).map(t => t.id).sort((x, y) => (doneAt(y) > doneAt(x) ? 1 : doneAt(y) < doneAt(x) ? -1 : 0));
+  const others = order.filter(id => !isActionable(byId.get(id)));
+  const workOrder = [...plan, ...finished, ...others];
+  const workRank = new Map(workOrder.map((id, i) => [id, i + 1]));
+  const late = new Set(plan.filter(id => horizon.get(id) === 'late'));
+
+  return { byId, order: workOrder, rank: workRank, topoOrder: order, month, slot, target, prereqs, dependents, waitingOn, ready, unlocks, overdue,
+    late, deadline, weight, score, horizon, plan, inCycle, missing, milestones: ms, conference };
+}
+
+/* ---------- Paramètres de l'ordonnancement ---------- */
+/** Importance : poids relatif de chaque priorité. */
+export const WEIGHT = { Urgent: 8, High: 4, Medium: 2, Low: 1 };
+/** Durée estimée en jours de travail, d'après la charge (« quelques heures », « quelques jours », « quelques semaines »). */
+export const DURATION = { hours: 1, days: 3, weeks: 10 };
+export const durationOf = t => DURATION[t.effort] || DURATION.days;
+/** Échelle de la marge (jours) : 30 jours de marge en plus divisent le score par e ≈ 2,7. */
+export const TAU = 30;
+const endOfMonth = m => addDays(addMonths(m, 1) + '-01', -1);
+
+/** Horizon d'une échéance : 'late', 'month' (4 semaines), 'quarter' (3 mois), 'y2027'…, 'conference', 'after', 'nodate'. */
+export function horizonOf(d, today, conf) {
+  if (!d) return 'nodate';
+  if (d < today) return 'late';
+  if (d <= addDays(today, 28)) return 'month';
+  if (d <= addDays(today, 91)) return 'quarter';
+  if (conf && d > addDays(conf, 10)) return 'after';
+  if (conf && d >= addDays(conf, -10)) return 'conference';
+  return 'y' + d.slice(0, 4);
+}
+export function horizonRank(h) {
+  if (h === 'late') return 0;
+  if (h === 'month') return 1;
+  if (h === 'quarter') return 2;
+  if (/^y\d{4}$/.test(h)) return 3 + (+h.slice(1) - 2000);
+  return { conference: 900, after: 901, nodate: 999 }[h] ?? 999;
 }
 
 /** Tâches qui deviendraient prêtes si `id` était terminée. */

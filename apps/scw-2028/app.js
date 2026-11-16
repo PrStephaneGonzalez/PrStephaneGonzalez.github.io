@@ -1,12 +1,12 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261116e';
-import { createApi, ApiError } from './api.js?v=20261116e';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116e';
-import { workbook } from './xlsx.js?v=20261116e';
-import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116e';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116e';
+import { wouldUnlock } from './model.js?v=20261116f';
+import { createApi, ApiError } from './api.js?v=20261116f';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116f';
+import { workbook } from './xlsx.js?v=20261116f';
+import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116f';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116f';
 
 /* ---------- Connexion ---------- */
 
@@ -129,23 +129,35 @@ async function setStatus(id, status, { decision = null, silent = false } = {}) {
     .then(r => r && toast(t.statusToast(id, statusLabel(before.status)))) });
 }
 
+/** Garde la tâche à sa place dans la liste après une action, et la fait briller un instant. */
+function remember(id) {
+  const a = state.a, i = a.plan.indexOf(id);
+  if (i >= 0) state.recent.set(id, { h: a.horizon.get(id), before: a.plan[i + 1] || null });
+  state.flash = id;
+  clearTimeout(remember.timer);
+  remember.timer = setTimeout(() => { state.flash = null; document.querySelector('.task.flash')?.classList.remove('flash'); }, 1400);
+}
+const refocus = sel => requestAnimationFrame(() => document.querySelector(sel)?.focus({ preventScroll: true }));
+
 /** « Je m'en occupe » / « Me retirer » : ajoute ou retire le prénom de la personne connectée. */
 async function toggleTake(id) {
   const task = state.tasks.get(id);
   if (!task) return;
   const leaving = takersOf(task).some(n => same(n, state.who));
+  remember(id);
   const r = await mutate(id, t => ({
     takers: leaving ? takersOf(t).filter(n => !same(n, state.who)) : [...takersOf(t).filter(n => !same(n, state.who)), state.who],
   }));
+  refocus(`#main [data-take="${id}"]`);
   if (r) toast(leaving ? T().leaveToast(id) : T().takeToast(id), { label: T().undo, run: () => toggleTake(id) });
 }
 
 function toggleDone(id) {
   const task = state.tasks.get(id);
   if (!task) return;
-  if (task.status === 'Done') return setStatus(id, 'To do');
   if (task.status === 'Decision needed') return askDecision(id);
-  setStatus(id, 'Done');
+  remember(id);
+  setStatus(id, task.status === 'Done' ? 'To do' : 'Done').then(() => refocus(`#main [data-done="${id}"]`));
 }
 
 /** Petite fenêtre pour noter la décision prise avant de clore une « décision à prendre ». */
@@ -188,9 +200,9 @@ async function copyAgenda() {
 
 function exportExcel() {
   const { head, rows } = exportRows();
-  const widths = [10, 60, 14, 22, 14, 12, 12, 16, 50, 16, 10, 28, 24, 22, 24, 10, 40, 60, 60];
+  const widths = [7, 10, 60, 14, 22, 14, 12, 12, 12, 16, 50, 16, 10, 28, 24, 22, 24, 10, 40, 60, 60];
   const done = statusLabel('Done');
-  const blob = workbook({ sheet: fr() ? 'Tâches' : 'Tasks', head, rows, widths, greyRow: r => r[2] === done });
+  const blob = workbook({ sheet: fr() ? 'Tâches' : 'Tasks', head, rows, widths, greyRow: r => r[3] === done });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `SCW2028-tasks-${new Date().toISOString().slice(0, 10)}.xlsx`;
@@ -224,24 +236,25 @@ async function saveMeta(key, value, okMsg) {
 /* ---------- Événements ---------- */
 
 function setView(v) {
-  state.view = v; store.set('view', v);
+  state.view = v; store.set('view', v); state.recent.clear();
   render();
   window.scrollTo({ top: 0 });
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-done],[data-take],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
+  const el = e.target.closest('[data-done],[data-take],[data-scope],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
   if (!el) return;
   if (el.dataset.done) return toggleDone(el.dataset.done);
   if (el.dataset.take) return toggleTake(el.dataset.take);
+  if (el.dataset.scope) { state.f.scope = el.dataset.scope; saveFilters(); state.recent.clear(); render(); return; }
   if (el.dataset.person) {
-    state.f = { ...state.f, taker: el.dataset.person }; saveFilters(); renderShell();
+    state.f = { ...state.f, taker: el.dataset.person, scope: 'all' }; saveFilters(); renderShell();
     if (state.open != null) closeDrawer();
-    return setView(['road', 'mine', 'next', 'decisions'].includes(state.view) ? state.view : 'road');
+    return setView('tasks');
   }
   if (el.dataset.open) { e.preventDefault(); return openTask(el.dataset.open); }
   if (el.dataset.view) return setView(el.dataset.view);
-  if (el.dataset.owner) { state.f = { ...EMPTY_FILTERS, person: el.dataset.owner }; saveFilters(); renderShell(); return setView('road'); }
+  if (el.dataset.owner) { state.f = { ...EMPTY_FILTERS, person: el.dataset.owner }; saveFilters(); renderShell(); return setView('tasks'); }
   if (el.dataset.restore) return restore(el.dataset.restore);
   if (el.dataset.stepRemove) return stepAction('remove', +el.dataset.stepRemove);
   const act = el.dataset.action;
@@ -270,9 +283,8 @@ document.addEventListener('change', e => {
     return setStatus(el.dataset.status, el.value);
   }
   if (el.dataset.stepToggle != null) return stepAction('toggle', +el.dataset.stepToggle);
-  const k = { 'f-domain': 'domain', 'f-person': 'person', 'f-priority': 'priority', 'f-taker': 'taker' }[el.id];
+  const k = { 'f-domain': 'domain', 'f-person': 'person', 'f-priority': 'priority' }[el.id];
   if (k) { state.f[k] = el.value; saveFilters(); render(); }
-  if (el.id === 'f-done') { state.f.showDone = el.checked; saveFilters(); render(); }
 });
 
 let searchTimer;
@@ -290,6 +302,7 @@ document.addEventListener('submit', async e => {
     const text = f.decision.value.trim();
     if (!text) return;
     $('#dialog-root').innerHTML = '';
+    remember(f.dataset.id);
     return setStatus(f.dataset.id, 'Done', { decision: text });
   }
   if (f.id === 'roles-form') {
