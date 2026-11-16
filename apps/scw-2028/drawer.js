@@ -1,10 +1,10 @@
 // Fiche d'une tâche (panneau latéral) : lecture, modification, sous-étapes, historique.
-import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116d';
+import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116e';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, kindLabel, domainLabel, titleOf, slug,
   fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same,
-} from './core.js?v=20261116d';
-import { logItems, chip } from './views.js?v=20261116d';
+} from './core.js?v=20261116e';
+import { logItems, chip } from './views.js?v=20261116e';
 
 export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {} };
 
