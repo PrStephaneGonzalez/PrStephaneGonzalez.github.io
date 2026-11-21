@@ -1,0 +1,38 @@
+---
+title: "Game Theory - Prerequisite course"
+description-meta: "Mathematical prerequisites and fundamental concepts of game theory. A 15-hour introductory course taught in English by Stéphane Gonzalez."
+---
+
+## Mathematical Prerequisites and Fundamental Concepts
+
+**Level:** Master’s, first year (M1)  
+**Programme:** Economics, Data and Decision Science  
+**Semester:** 7  
+**Teaching hours:** 15 hours  
+**Teaching language:** English  
+**Instructor:** Stéphane Gonzalez  
+**Assessment:** No assessment
+
+## Course description
+
+This course provides students with the mathematical foundations and fundamental concepts required for the study of game theory and theoretical economics.
+
+The first part reviews essential mathematical tools, including propositional logic, sets, binary relations, equivalence relations, order structures, mappings, and functions. Particular attention is given to mathematical reasoning, formal definitions, and proofs.
+
+The second part introduces the main concepts of game theory. Students will become familiar with the formal representation of games, players, strategies, preferences, and outcomes. The course will examine strategic interactions, individual and collective deviations, and fundamental equilibrium concepts, including Nash equilibrium, strong Nash equilibrium, and coalition-based equilibrium notions.
+
+Throughout the course, theoretical concepts are illustrated through examples and exercises, with an emphasis on understanding mathematical structures and developing rigorous reasoning skills.
+
+## Learning objectives
+
+By the end of the course, students should be able to:
+
+- Understand and use fundamental mathematical concepts relevant to economic theory.
+- Interpret and manipulate formal definitions, mathematical relations, and functions.
+- Represent strategic interactions using basic game-theoretic models.
+- Understand the role of preferences and individual or collective deviations in defining equilibrium.
+- Identify and analyze basic equilibrium concepts and their properties.
+
+## Course organization
+
+The course combines lectures, mathematical examples, and problem-solving exercises.
