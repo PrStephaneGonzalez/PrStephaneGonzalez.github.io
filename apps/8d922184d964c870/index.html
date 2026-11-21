@@ -120,10 +120,22 @@ let AC=null,muted=false;
 try{muted=localStorage.getItem('momo_muted')==='1';}catch(e){}
 function ac(){
   if(muted)return null;
+  if(AC&&AC.state==='closed')AC=null;
   if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
-  if(AC&&AC.state==='suspended')AC.resume();
+  if(AC&&AC.state!=='running'){try{AC.resume();}catch(e){}}
   return AC;
 }
+let unlocked=false;window.__audio=()=>({state:AC?AC.state:'none',unlocked});
+function unlockAudio(){
+  if(muted)return;
+  try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}
+  const a=ac();if(!a)return;
+  try{const b=a.createBuffer(1,1,22050),src=a.createBufferSource();src.buffer=b;src.connect(a.destination);src.start(0);}catch(e){}
+  unlocked=a.state==='running';
+}
+['pointerup','touchend','click','keydown'].forEach(n=>document.addEventListener(n,unlockAudio,{passive:true,capture:true}));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AC&&!muted){try{AC.resume();}catch(e){}}});
+addEventListener('pageshow',()=>{if(AC&&!muted){try{AC.resume();}catch(e){}}});
 function tone(type,f0,f1,dur,vol,delay){
   const a=ac();if(!a)return;
   const t=a.currentTime+(delay||0);
@@ -1774,6 +1786,7 @@ function drawTitle(){
   if(Math.sin(t*5)>-0.3)ctext('TAPE POUR JOUER',270,868,44,'#7dff6b','#0b3b1a');
   if(G.best>0)ctext('Record : '+G.best,270,920,24,'#ffd23a',INK);
   emoji(muted?'🔇':'🔊',500,96,28);
+  if(muted)ctext('SON COUPÉ : touche 🔇 en haut à droite',270,790,20,'#ff9ad0',INK);
 }
 function drawIntro(){
   const p=Math.min(1,G.stateT/0.35),o=G.stateT>1.6?clamp(1-(G.stateT-1.6)/0.4,0,1):1;
