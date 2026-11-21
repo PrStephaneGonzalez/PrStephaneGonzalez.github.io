@@ -15,3 +15,5 @@ Additional material will be added progressively.
 - [Microeconomics: Imperfect Markets and Strategic Interactions](micro-imperfect-markets.qmd)
 - [Macroeconomics VI: Growth Theories](macro-growth-theories.qmd)
 - [Applied economic theory/Introduction to Political Engineering](introduction-to-political-engineering.qmd)
+
+- [Game Theory - Prerequisite course](game-theory-prerequisite.qmd)
