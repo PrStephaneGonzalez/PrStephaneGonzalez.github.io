@@ -23,3 +23,23 @@ Developed alongside my course [*Applied Economic Theory / Introduction to Politi
 [Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
 
 More chapters will be added progressively.
+
+# Coalitions et jeux coopératifs
+
+### *Du cœur aux fonctions d'effectivité*
+
+**Livre en cours de rédaction · Stéphane Gonzalez**
+
+Ce livre prolonge mon cours de master [*Coalitions in Cooperative and Non-Cooperative Game Theory*](coalitions-in-cooperative-and-non-cooperative-game-theory.qmd). Il reprend les notes de cours en y ajoutant les définitions de base des jeux coopératifs à utilité transférable, les démonstrations complètes et des applications économiques. Les chapitres sont mis en ligne au fur et à mesure, en français.
+
+## Chapitres
+
+### Chapitre 1 — Jeux à utilité transférable et cœur
+
+*Jeux coopératifs & cœur, ou : pourquoi trois amis se disputent un taxi…*
+
+Le jeu du taxi, le cœur, le théorème de Bondareva--Shapley, les jeux de marché, le théorème de Coase, les jeux d'affectation, les jeux convexes, les arbres couvrants de coût minimal et le lac pollué.
+
+[Télécharger le chapitre 1 (PDF, 45 p.)](assets/books/jeux-cooperatifs-et-coeur-chapitre-1-fr.pdf)
+
+D'autres chapitres seront ajoutés progressivement.
