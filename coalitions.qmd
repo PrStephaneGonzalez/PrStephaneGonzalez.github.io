@@ -8,4 +8,6 @@ title: "Coalitions in Cooperative and Non-Cooperative Game Theory"
 
 ## Course material
 
-Slides, bibliographic references, and additional notes will be added here.
+- [Lecture notes: Chapter 1 — Transferable-utility games and the core (PDF, in French)](assets/books/jeux-cooperatifs-et-coeur-chapitre-1-fr.pdf)
+
+The notes are part of a [book in progress](books.qmd) based on this course. Chapter 1 covers transferable-utility games, the core, the Bondareva–Shapley theorem, market games, the Coase theorem, assignment games, convex games, minimum cost spanning tree games and the polluted lake. Further chapters will be added progressively, together with slides and bibliographic references.

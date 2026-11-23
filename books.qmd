@@ -30,7 +30,7 @@ More chapters will be added progressively.
 
 **Livre en cours de rédaction · Stéphane Gonzalez**
 
-Ce livre prolonge mon cours de master [*Coalitions in Cooperative and Non-Cooperative Game Theory*](coalitions-in-cooperative-and-non-cooperative-game-theory.qmd). Il reprend les notes de cours en y ajoutant les définitions de base des jeux coopératifs à utilité transférable, les démonstrations complètes et des applications économiques. Les chapitres sont mis en ligne au fur et à mesure, en français.
+Ce livre prolonge mon cours de master [*Coalitions in Cooperative and Non-Cooperative Game Theory*](coalitions.qmd). Il reprend les notes de cours en y ajoutant les définitions de base des jeux coopératifs à utilité transférable, les démonstrations complètes et des applications économiques. Les chapitres sont mis en ligne au fur et à mesure, en français.
 
 ## Chapitres
 
