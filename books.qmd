@@ -19,8 +19,30 @@ Developed alongside my course [*Applied Economic Theory / Introduction to Politi
 
 *Choix, risque et incertitude*
 
-[Download Chapter 1 — English version (PDF)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
+[Download Chapter 1 — English version (PDF, 50 p.)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
 [Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
+
+### Chapter 2 — Collective Choice & Collective Judgment
+
+*Choix collectif et jugement collectif*
+
+Voting rules and Young's characterizations, Arrow's theorem, the Gibbard–Satterthwaite theorem, Harsanyi's utilitarian theorem, generalized utilitarianism and judgment aggregation.
+
+[Download Chapter 2 — English version (PDF, 44 p.)](assets/books/chapter-2-collective-choice-and-judgment-en.pdf)
+
+### Chapter 3 — Strategic Interaction and the Limits of the Invisible Hand
+
+*Interaction stratégique et limites de la main invisible*
+
+Deviations, power and equilibrium; Nash equilibrium; market failures, congestion and the commons; paradoxes of strategic rationality; zero-sum games; the pizza problem; information and agreement.
+
+[Download Chapter 3 — English version (PDF, 49 p.)](assets/books/chapter-3-strategic-interaction-en.pdf)
+
+### Mathematical appendix
+
+The mathematical tools used in the chapters, proved from a third-year undergraduate background.
+
+[Download the Mathematical Appendix (PDF, 12 p.)](assets/books/mathematical-appendix-en.pdf)
 
 More chapters will be added progressively.
 
