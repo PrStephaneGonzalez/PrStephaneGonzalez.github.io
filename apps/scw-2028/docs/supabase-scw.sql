@@ -152,3 +152,22 @@ revoke all on public.scw_meta from anon, authenticated;
 -- scw_list renvoie en plus 'meta' : { clé: { value, version, updated, updated_by } }.
 -- scw_meta_save(c, k, v, ver, who) : crée (ver null) ou met à jour (ver = version lue) un document,
 -- avec historique dans scw_history (task_id = 'meta:' || clé). Code complet appliqué tel que dans la migration.
+
+-- ---------------------------------------------------------------------------------------------
+-- Migration « scw_2028_meetings » (25/11/2026) : comptes rendus de réunions (onglet « Meetings »).
+-- Même principe que les tâches : table fermée (RLS sans politique), accès par fonctions exigeant le code d'équipe,
+-- contrôle de version, historique dans scw_history (task_id = 'mtg:' || id).
+create table if not exists public.scw_meetings (
+  id text primary key check (id ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}(-[2-9])?$'),
+  data jsonb not null check (jsonb_typeof(data) = 'object' and pg_column_size(data) < 60000),
+  version integer not null default 1,
+  updated timestamptz not null default now(),
+  updated_by text not null default ''
+);
+alter table public.scw_meetings enable row level security;
+revoke all on public.scw_meetings from anon, authenticated;
+-- scw_meetings_list(c) : { now, meetings: [{ id, data, version, updated, updated_by }] }, du plus récent au plus ancien.
+-- scw_meeting_save(c, m, who) : m = { id, version, data } ; crée (version null) ou met à jour (version lue) ;
+--   erreurs : 'id', 'fields' (date absente ou mal formée), 'exists', 'conflict'.
+-- scw_meeting_delete(c, mid, v, who) : supprime si la version est celle lue.
+-- Code complet appliqué tel que dans la migration (même structure que scw_save et scw_delete ci-dessus).

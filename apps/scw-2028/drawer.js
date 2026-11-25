@@ -1,11 +1,14 @@
 // Fiche d'une tâche (panneau latéral) : lecture, modification, sous-étapes, historique.
-import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates, TAGS, tagOf, tagForDomain } from './model.js?v=20261125a';
+import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates, TAGS, tagOf, tagForDomain } from './model.js?v=20261125b';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, kindLabel, domainLabel, titleOf, slug,
-  fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same, tagLabel } from './core.js?v=20261125a';
-import { logItems, chip, actionsHtml } from './views.js?v=20261125a';
+  fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same, tagLabel } from './core.js?v=20261125b';
+import { logItems, chip, actionsHtml } from './views.js?v=20261125b';
 
-export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {} };
+export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {}, linked: async () => {} };
+
+/** Champs préremplis (sans la clé interne _link). */
+function prefillFields() { const { _link, ...rest } = state.prefill || {}; return rest; }
 
 function blankTask() {
   const all = [...state.tasks.values()];
@@ -62,7 +65,7 @@ export function renderDrawer(error = '') {
   const t = T(), a = state.a, isNew = state.open === '';
   const stored = isNew ? null : state.tasks.get(state.open);
   if (!isNew && !stored) { state.open = null; state.draft = null; return renderDrawer(); }
-  if (!state.draft) state.draft = isNew ? blankTask() : { ...stored, checklist: (stored.checklist || []).map(s => ({ ...s })) };
+  if (!state.draft) state.draft = isNew ? { ...blankTask(), ...prefillFields() } : { ...stored, checklist: (stored.checklist || []).map(s => ({ ...s })) };
   const d = state.draft;
   const all = [...state.tasks.values()];
   const domains = [...new Set(all.map(x => x.domain).concat(['General']))].sort((x, y) => domainLabel(x).localeCompare(domainLabel(y), state.lang));
@@ -186,10 +189,10 @@ export function stepAction(kind, index) {
 }
 
 let lastFocus = null;
-export function openTask(id) {
+export function openTask(id, prefill = null) {
   if (state.dirty && state.open != null && !confirm(T().discard)) return;
   if (state.open == null) lastFocus = document.activeElement;
-  state.open = id; state.dirty = false; state.draft = null;
+  state.open = id; state.dirty = false; state.draft = null; state.prefill = id === '' ? prefill : null;
   renderDrawer();
   $('#d-title')?.focus({ preventScroll: true });
 }
@@ -201,7 +204,7 @@ export function closeDrawer() {
 export async function saveTask() {
   const t = T(), isNew = state.open === '';
   readForm();
-  const d = state.draft;
+  const d = state.draft, link = isNew ? state.prefill?._link : null;
   const task = { ...d, titleFr: (d.titleFr || '').trim(), title: (d.title || '').trim(), dependsOn: parseIds(d.dependsOn).join(', ') };
   if (!task.titleFr && !task.title) return showError(t.fieldsError);
   if (!task.title) task.title = task.titleFr;
@@ -216,6 +219,7 @@ export async function saveTask() {
     const r = await state.api.save(task);
     state.dirty = false; state.busy = false; state.log = null;
     toast(isNew ? t.createdToast : t.saved);
+    if (link) await hooks.linked(link, r.id);
     await hooks.refresh();
     state.open = r.id; state.draft = null;
     renderDrawer(); hooks.render();

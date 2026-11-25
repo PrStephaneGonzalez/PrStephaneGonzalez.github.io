@@ -1,6 +1,6 @@
 // État partagé de l'interface et petites fonctions utilitaires (aucun rendu ici).
-import { analyse, people, labelsFor, concerns, isActionable, tagOf } from './model.js?v=20261125a';
-import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261125a';
+import { analyse, people, labelsFor, concerns, isActionable, tagOf } from './model.js?v=20261125b';
+import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261125b';
 
 export const $ = sel => document.querySelector(sel);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -16,13 +16,16 @@ export const EMPTY_FILTERS = { q: '', domain: '', person: '', taker: '', priorit
 export const state = {
   lang: store.get('lang') || 'en', // anglais simple par défaut (organisateurs internationaux) ; bouton pour le français
   api: null, who: '', tasks: new Map(), meta: {}, a: null, since: null,
-  view: ['tasks', 'decisions', 'team', 'log'].includes(store.get('view')) ? store.get('view') : 'tasks',
+  view: ['tasks', 'decisions', 'team', 'log', 'meetings'].includes(store.get('view')) ? store.get('view') : 'tasks',
   f: { ...EMPTY_FILTERS, ...store.json('filters3', {}) },
   recent: new Map(), // tâches cochées « faite » à l'instant : id → { h: horizon, before: id suivant } (restent en place)
   flash: null,       // tâche à faire briller brièvement après une action
   open: null,       // identifiant de la tâche ouverte, ou '' pour une nouvelle tâche
   draft: null,      // brouillon de la fiche ouverte (sous-étapes comprises)
   dirty: false, busy: false, log: null,
+  meetings: null,   // comptes rendus (chargés à la première ouverture de l'onglet), du plus récent au plus ancien
+  mq: '',           // recherche dans les comptes rendus
+  prefill: null,    // champs préremplis d'une nouvelle tâche créée depuis un compte rendu (+ _link : action à relier)
 };
 
 export const T = () => STRINGS[state.lang];

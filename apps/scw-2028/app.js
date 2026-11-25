@@ -1,12 +1,12 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261125a';
-import { createApi, ApiError } from './api.js?v=20261125a';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261125a';
-import { workbook } from './xlsx.js?v=20261125a';
-import { renderShell, render, agendaText, exportRows } from './views.js?v=20261125a';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261125a';
+import { wouldUnlock } from './model.js?v=20261125b';
+import { createApi, ApiError, meetingId } from './api.js?v=20261125b';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, fmtDate, today, takersOf, same } from './core.js?v=20261125b';
+import { workbook } from './xlsx.js?v=20261125b';
+import { renderShell, render, agendaText, exportRows, meetingForm, meetingList, actionRow } from './views.js?v=20261125b';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261125b';
 
 /* ---------- Connexion ---------- */
 
@@ -45,7 +45,7 @@ async function signIn(code, who, remember) {
 
 function signOut() {
   store.set('code', null);
-  state.api = null; state.tasks = new Map(); state.open = null; state.draft = null;
+  state.api = null; state.tasks = new Map(); state.open = null; state.draft = null; state.meetings = null;
   showSignIn();
 }
 
@@ -75,10 +75,20 @@ async function refresh({ full = false } = {}) {
       if (focusId && $('#' + focusId)) $('#' + focusId).focus();
     }
     $('#sync').textContent = `${T().refreshed} ${fmtDateTime(d.now)}`;
+    await refreshMeetings();
   } catch (e) {
     if (e instanceof ApiError && (e.code === 'code' || e.code === 'locked')) return signOut();
     if ($('#sync')) $('#sync').textContent = T().offline;
   }
+}
+/** Comptes rendus : rechargés à chaque synchronisation tant qu'on est dans l'onglet (la liste n'est pas redessinée sous une fenêtre ouverte). */
+async function refreshMeetings() {
+  if (state.view !== 'meetings' || !state.meetings) return;
+  const key = l => JSON.stringify(l.map(m => [m.id, m.version]));
+  try {
+    const ms = await state.api.meetings();
+    if (key(ms) !== key(state.meetings)) { state.meetings = ms; if (!$('#dialog-root').innerHTML) render(); }
+  } catch { /* la prochaine synchronisation réessaiera */ }
 }
 /** Ne pas redessiner la page pendant qu'on remplit les rôles ou les jalons. */
 const isEditingPage = () => state.view === 'team' && document.activeElement?.closest('#roles-form, #ms-form');
@@ -233,6 +243,94 @@ async function saveMeta(key, value, okMsg) {
   }
 }
 
+/* ---------- Comptes rendus de réunions ---------- */
+
+function openMeetingForm(m) {
+  $('#dialog-root').innerHTML = `
+    <div class="scrim"></div>
+    <div class="dialog wide" role="dialog" aria-modal="true" aria-labelledby="dlg-title">${meetingForm(m)}</div>`;
+  $('#meeting-form').addEventListener('input', () => { $('#meeting-form').dataset.dirty = '1'; });
+  $('#meeting-form [name=decisions]').focus();
+}
+
+function newMeeting() {
+  const last = state.meetings?.[0];
+  openMeetingForm({ id: '', version: null, date: today(), next: '', present: last?.present || '', decisions: [], actions: [], notes: '' });
+}
+
+async function reloadMeetings() { state.meetings = await state.api.meetings(); state.log = null; }
+
+/** Lit le formulaire, enregistre (création ou modification) puis recharge la liste. */
+async function saveMeeting(f) {
+  const t = T(), err = f.querySelector('.form-error'), btn = f.querySelector('button[type=submit]');
+  const isNew = f.dataset.version === '';
+  if (!f.date.value) { err.textContent = t.meetingFieldsError; return; }
+  const rows = [...f.querySelectorAll('.m-action-row')].map(r => ({
+    text: r.querySelector('[name=a-text]').value, who: r.querySelector('[name=a-who]').value,
+    due: r.querySelector('[name=a-due]').value, task: r.querySelector('[name=a-task]').value }));
+  const m = { id: isNew ? meetingId(f.date.value, state.meetings.map(x => x.id)) : f.dataset.id, version: isNew ? null : Number(f.dataset.version),
+    date: f.date.value, next: f.next.value, present: f.present.value, decisions: f.decisions.value.split('\n'), actions: rows, notes: f.notes.value };
+  btn.disabled = true;
+  try {
+    await state.api.saveMeeting(m);
+    await reloadMeetings();
+    $('#dialog-root').innerHTML = ''; render(); toast(t.meetingSaved);
+  } catch (e) {
+    btn.disabled = false;
+    if (e.code === 'code' || e.code === 'locked') return signOut();
+    if (e.code === 'conflict') { await reloadMeetings().catch(() => {}); $('#dialog-root').innerHTML = ''; render(); return toast(t.meetingConflict); }
+    err.textContent = e.code === 'fields' ? t.meetingFieldsError : t.offline;
+  }
+}
+
+async function deleteMeeting(f) {
+  const t = T(), m = state.meetings.find(x => x.id === f.dataset.id);
+  if (!m || !confirm(t.confirmMeetingDelete(fmtDate(m.date)))) return;
+  try {
+    await state.api.removeMeeting(m);
+    await reloadMeetings();
+    $('#dialog-root').innerHTML = ''; render(); toast(t.meetingDeleted);
+  } catch (e) {
+    if (e.code === 'code' || e.code === 'locked') return signOut();
+    if (e.code === 'conflict') { await reloadMeetings().catch(() => {}); $('#dialog-root').innerHTML = ''; render(); return toast(t.meetingConflict); }
+    f.querySelector('.form-error').textContent = t.offline;
+  }
+}
+
+/** « Créer la tâche » : ouvre une nouvelle tâche préremplie ; une fois enregistrée, l'action du compte rendu y est reliée. */
+function taskFromAction(ref) {
+  const [mid, idx] = ref.split('|');
+  const m = state.meetings.find(x => x.id === mid), a = m?.actions[Number(idx)];
+  if (!a) return;
+  openTask('', { title: a.text, titleFr: a.text, planningDate: a.due || '', takers: a.who ? [a.who] : [], notes: T().fromMeeting(fmtDate(m.date)), _link: { mid, idx: Number(idx), text: a.text } });
+}
+
+/** Après l'enregistrement de la tâche : on inscrit son numéro dans l'action du compte rendu (un nouvel essai si quelqu'un a modifié entre-temps). */
+hooks.linked = async ({ mid, idx, text }, taskId) => {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const m = state.meetings?.find(x => x.id === mid);
+    if (!m) return;
+    let i = m.actions.findIndex(a => a.text === text && !a.task);
+    if (i < 0) i = m.actions[idx] && !m.actions[idx].task ? idx : -1;
+    if (i < 0) return;
+    try {
+      await state.api.saveMeeting({ ...m, actions: m.actions.map((a, j) => (j === i ? { ...a, task: taskId } : a)) });
+      await reloadMeetings();
+      return;
+    } catch (e) {
+      if (e.code !== 'conflict') return;
+      await reloadMeetings().catch(() => {});
+    }
+  }
+};
+
+/** Ferme la fenêtre ; demande confirmation si un compte rendu en cours a été modifié. */
+function closeDialog() {
+  if ($('#meeting-form')?.dataset.dirty && !confirm(T().discard)) return false;
+  $('#dialog-root').innerHTML = '';
+  return true;
+}
+
 /* ---------- Événements ---------- */
 
 function setView(v) {
@@ -242,7 +340,7 @@ function setView(v) {
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-done],[data-take],[data-scope],[data-tag],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
+  const el = e.target.closest('[data-done],[data-take],[data-scope],[data-tag],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-meeting-task],[data-meeting-edit],[data-action]');
   if (!el) return;
   if (el.dataset.done) return toggleDone(el.dataset.done);
   if (el.dataset.take) return toggleTake(el.dataset.take);
@@ -257,6 +355,8 @@ document.addEventListener('click', e => {
   if (el.dataset.view) return setView(el.dataset.view);
   if (el.dataset.owner) { state.f = { ...EMPTY_FILTERS, person: el.dataset.owner }; saveFilters(); renderShell(); return setView('tasks'); }
   if (el.dataset.restore) return restore(el.dataset.restore);
+  if (el.dataset.meetingTask) return taskFromAction(el.dataset.meetingTask);
+  if (el.dataset.meetingEdit) { const m = state.meetings?.find(x => x.id === el.dataset.meetingEdit); return m && openMeetingForm(m); }
   if (el.dataset.stepRemove) return stepAction('remove', +el.dataset.stepRemove);
   const act = el.dataset.action;
   if (act === 'close') closeDrawer();
@@ -270,7 +370,19 @@ document.addEventListener('click', e => {
   else if (act === 'print') window.print();
   else if (act === 'export') exportExcel();
   else if (act === 'clear-person') { state.f.taker = ''; saveFilters(); renderShell(); render(); }
-  else if (act === 'dialog-close') $('#dialog-root').innerHTML = '';
+  else if (act === 'dialog-close') closeDialog();
+  else if (act === 'meeting-new') newMeeting();
+  else if (act === 'meeting-add-action') {
+    $('#m-action-rows').insertAdjacentHTML('beforeend', actionRow());
+    $('#meeting-form').dataset.dirty = '1';
+    [...document.querySelectorAll('#m-action-rows [name=a-text]')].pop().focus();
+  }
+  else if (act === 'meeting-del-action') {
+    el.closest('.m-action-row').remove();
+    if (!document.querySelector('#m-action-rows .m-action-row')) $('#m-action-rows').insertAdjacentHTML('beforeend', actionRow());
+    $('#meeting-form').dataset.dirty = '1';
+  }
+  else if (act === 'meeting-delete') deleteMeeting($('#meeting-form'));
   else if (act === 'lang') {
     state.lang = fr() ? 'en' : 'fr'; store.set('lang', state.lang); document.documentElement.lang = state.lang;
     if (state.api) { renderShell(); render(); if (state.open != null) renderDrawer(); } else showSignIn();
@@ -290,6 +402,7 @@ document.addEventListener('change', e => {
 
 let searchTimer;
 document.addEventListener('input', e => {
+  if (e.target.id === 'm-q') { state.mq = e.target.value; const box = $('#m-list'); if (box) box.innerHTML = meetingList(); return; }
   if (e.target.id !== 'f-q') return;
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => { state.f.q = e.target.value.trim(); saveFilters(); render(); }, 150);
@@ -299,6 +412,7 @@ document.addEventListener('submit', async e => {
   e.preventDefault();
   const f = e.target;
   if (f.id === 'task-form') return saveTask();
+  if (f.id === 'meeting-form') return saveMeeting(f);
   if (f.id === 'decision-form') {
     const text = f.decision.value.trim();
     if (!text) return;
@@ -329,7 +443,7 @@ document.addEventListener('submit', async e => {
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    if ($('#dialog-root')?.innerHTML) { $('#dialog-root').innerHTML = ''; return; }
+    if ($('#dialog-root')?.innerHTML) { closeDialog(); return; }
     if (state.open != null) closeDrawer();
   }
   // Onglets : flèches gauche et droite.

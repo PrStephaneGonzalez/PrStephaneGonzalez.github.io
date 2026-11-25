@@ -120,3 +120,12 @@ cette personne. Les tâches faites restent visibles, barrées et grisées, avec 
 - Le comité local (onglet Équipe) : Stéphane, Antoinette, Zoi, Federico, Taï, Federica, Benoît, Lily, Jean-Baptiste, Antoine. Philippe, proposé auparavant, n'y figure plus.
 - Export Excel : nouvelle colonne « Groupe ».
 
+
+## Révision du 25/11/2026 (soir) : onglet Meetings
+
+- Nouvel onglet **Meetings** (« Réunions »), après History : un compte rendu par réunion (rythme prévu : environ tous les 15 jours). Chaque fiche contient la date, les présents, les décisions (une par ligne), les actions (quoi, qui, pour quand) et des notes ; la date de la prochaine réunion est facultative. Tout le monde peut créer, modifier ou supprimer une fiche ; rien n'est à valider.
+- Une action peut devenir une tâche : « Make it a task » ouvre une nouvelle tâche préremplie (titre, personne qui s'en occupe, date cible). Une fois la tâche enregistrée, son numéro s'affiche dans l'action.
+- Recherche dans tous les comptes rendus ; les deux plus récents sont dépliés, les autres repliés.
+- Stockage : table `scw_meetings` (migration « scw_2028_meetings », voir `docs/supabase-scw.sql`), fonctions `scw_meetings_list`, `scw_meeting_save`, `scw_meeting_delete`, avec le même code d'équipe, le même contrôle de version et l'historique dans `scw_history` (`task_id` = `mtg:` + date). Les modifications apparaissent dans l'onglet History.
+- Fiche d'une réunion : `{ date, present, decisions[], actions[{ text, who, due, task }], notes, next }` (voir `meetingData` dans `api.js`). Identifiant = la date (`2026-11-25`), suivie de `-2`, `-3`… s'il y a deux réunions le même jour.
+- Le compte rendu du 25/11/2026, d'abord écrit dans les notes de GOV-006, a été déplacé dans l'onglet ; GOV-006 est marquée faite (le texte d'origine reste dans son historique).

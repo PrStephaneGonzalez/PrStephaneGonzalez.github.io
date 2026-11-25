@@ -271,6 +271,36 @@ textarea { resize: vertical; line-height: 1.5; }
 .log .link:not(.small) { display: inline; padding: 0; font-weight: 400; color: var(--ink); }
 .log .link .tid { color: var(--saone); }
 
+/* Réunions (comptes rendus) */
+.meet-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin: 4px 0 6px; }
+.meet-bar input[type=search] { flex: 1; min-width: 200px; padding: 10px 12px; font-size: 16px; }
+.minutes summary { cursor: pointer; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; list-style: none; }
+.minutes summary::-webkit-details-marker { display: none; }
+.minutes summary::before { content: '▸'; color: var(--ink-3); font-size: 14px; }
+.minutes[open] summary::before { content: '▾'; }
+.minutes summary h2 { display: inline; }
+.minutes:not([open]) { padding-top: 12px; padding-bottom: 12px; }
+.meet-meta { display: flex; flex-wrap: wrap; gap: 4px 22px; margin: 10px 0 0; color: var(--ink-2); }
+.meet-decisions { margin: 4px 0 0; padding-left: 20px; }
+.meet-decisions li { margin: 4px 0; max-width: 80ch; }
+.meet-actions { list-style: none; padding: 0; margin: 4px 0 0; }
+.meet-actions li { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.meet-actions .a-text { flex: 1 1 22em; max-width: 80ch; }
+.meet-actions .a-meta { display: inline-flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.meet-actions .link:not(.small) { display: inline; padding: 0; }
+.meet-notes { white-space: pre-wrap; max-width: 80ch; color: var(--ink); }
+.m-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.m-actions { border: 1px solid var(--line); border-radius: var(--radius); margin: 14px 0 0; padding: 10px 12px 12px; }
+.m-actions legend { font-weight: 600; padding: 0 6px; }
+.m-actions small { color: var(--ink-3); display: block; margin-bottom: 8px; }
+.m-action-row { display: grid; grid-template-columns: minmax(0, 1fr) 9em 9.5em auto; gap: 8px; align-items: center; margin-bottom: 8px; }
+.m-action-row input[type=hidden] { display: none; }
+@media (max-width: 640px) {
+  .m-two { grid-template-columns: 1fr; }
+  .m-action-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .m-action-row [name=a-text] { grid-column: 1 / -1; }
+}
+
 .foot { margin-top: 36px; color: var(--ink-3); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
 /* Fiche (panneau latéral) */
