@@ -15,7 +15,7 @@ Developed alongside my course [*Applied Economic Theory / Introduction to Politi
 
 ## Download
 
-[Download the book so far — Chapters 1–4 and Mathematical Appendix (PDF, 197 p.)](assets/books/applied-economic-theory-en.pdf)
+[Download the book so far — Chapters 1–4 and Mathematical Appendix (PDF, 197 p.)](assets/books/decision-making-and-political-engineering-en.pdf)
 
 The book is a work in progress. The PDF is replaced as chapters are added, and ends with a *To be continued* page.
 
