@@ -1,0 +1,47 @@
+---
+title: "Decision-Making and Political Engineering"
+description-meta: "Chapters and downloadable material for Decision-Making and Political Engineering by Stéphane Gonzalez."
+---
+
+[← All books](books.qmd){.sg-book-back}
+
+### *An introduction to economic theory through decisions, institutions and collective choice*
+
+**Book in progress · Stéphane Gonzalez**
+
+How should we decide under uncertainty, aggregate conflicting preferences, or design institutions resistant to manipulation? This book introduces economic theory through concrete problems of individual and collective decision-making. It moves from decision theory to social choice, game theory, political economy and network analysis, with particular attention to the trade-offs and impossibility results revealed by theory.
+
+Developed alongside my course [*Applied Economic Theory / Introduction to Political Engineering*](introduction-to-political-engineering.qmd), the chapters are progressively made available in **English and French**. They extend the lecture material with additional examples, results and discussions.
+
+## Chapters
+
+### Chapter 1 — Choice, Risk & Uncertainty
+
+*Choix, risque et incertitude*
+
+[Download Chapter 1 — English version (PDF, 50 p.)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
+[Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
+
+### Chapter 2 — Collective Choice & Collective Judgment
+
+*Choix collectif et jugement collectif*
+
+Voting rules and Young's characterizations, Arrow's theorem, the Gibbard–Satterthwaite theorem, Harsanyi's utilitarian theorem, generalized utilitarianism and judgment aggregation.
+
+[Download Chapter 2 — English version (PDF, 44 p.)](assets/books/chapter-2-collective-choice-and-judgment-en.pdf)
+
+### Chapter 3 — Strategic Interaction and the Limits of the Invisible Hand
+
+*Interaction stratégique et limites de la main invisible*
+
+Deviations, power and equilibrium; Nash equilibrium; market failures, congestion and the commons; paradoxes of strategic rationality; zero-sum games; the pizza problem; information and agreement.
+
+[Download Chapter 3 — English version (PDF, 49 p.)](assets/books/chapter-3-strategic-interaction-en.pdf)
+
+### Mathematical appendix
+
+The mathematical tools used in the chapters, proved from a third-year undergraduate background.
+
+[Download the Mathematical Appendix (PDF, 12 p.)](assets/books/mathematical-appendix-en.pdf)
+
+More chapters will be added progressively.
