@@ -204,6 +204,9 @@
 .sg-book-cover:focus-visible { outline: 3px solid #4079a8; outline-offset: 4px; }
 .sg-book-cover--decision { background: #19314a; color: #f5f3eb !important; }
 .sg-book-cover--coalitions { background: #e5dfd1; color: #283d42 !important; }
+.sg-book-cover--logic { background: #1f3d36; color: #f3efe4 !important; }
+.sg-book-cover--logic .sg-book-cover-kicker { color: #d4a957; opacity: 1; }
+.sg-book-cover--logic .sg-book-cover-rule { border-top-color: #b07d2b; opacity: 1; }
 .sg-book-cover-kicker {
   font-size: .65rem;
   letter-spacing: .19em;

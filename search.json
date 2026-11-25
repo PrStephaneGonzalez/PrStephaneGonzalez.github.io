@@ -21,18 +21,25 @@
     "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroeconomie"
   },
   {
-    "objectID": "teaching-logic-and-set.html",
-    "href": "teaching-logic-and-set.html",
-    "title": "Logic and set",
+    "objectID": "coalitions.html",
+    "href": "coalitions.html",
+    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/logic-and-set"
+    "text": "Download the syllabus (PDF)"
   },
   {
-    "objectID": "logic-and-set-theory.html",
-    "href": "logic-and-set-theory.html",
-    "title": "Logic and Set Theory",
+    "objectID": "coalitions.html#syllabus",
+    "href": "coalitions.html#syllabus",
+    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
     "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/logic-and-set-theory"
+    "text": "Download the syllabus (PDF)"
+  },
+  {
+    "objectID": "coalitions.html#course-material",
+    "href": "coalitions.html#course-material",
+    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
+    "section": "Course material",
+    "text": "Course material\n\nLecture notes: Chapter 1 — Transferable-utility games and the core (PDF, in French)\n\nThe notes are part of a book in progress based on this course. Chapter 1 covers transferable-utility games, the core, the Bondareva–Shapley theorem, market games, the Coase theorem, assignment games, convex games, minimum cost spanning tree games and the polluted lake. Further chapters will be added progressively, together with slides and bibliographic references."
   },
   {
     "objectID": "teaching.html",
@@ -504,172 +511,11 @@
     "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/theorie-de-la-mesure"
   },
   {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
+    "objectID": "teaching-political-engineering.html",
+    "href": "teaching-political-engineering.html",
+    "title": "Introduction to Political Engineering",
     "section": "",
-    "text": "GATE Lyon Saint-Étienne (UMR 5824)\nPhysical address: 77 rue Michelet, 42100 Saint-Etienne, France\nPhone: +334 77 42 19 57\nEmail: stephane.gonzalez@univ-st-etienne.fr"
-  },
-  {
-    "objectID": "introduction-to-political-engineering.html",
-    "href": "introduction-to-political-engineering.html",
-    "title": "Applied Economic Theory / Introduction to Political Engineering",
-    "section": "",
-    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
-  },
-  {
-    "objectID": "introduction-to-political-engineering.html#course-description",
-    "href": "introduction-to-political-engineering.html#course-description",
-    "title": "Applied Economic Theory / Introduction to Political Engineering",
-    "section": "",
-    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
-  },
-  {
-    "objectID": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
-    "href": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
-    "title": "Applied Economic Theory / Introduction to Political Engineering",
-    "section": "Book and extended lecture notes",
-    "text": "Book and extended lecture notes\nThe course is developed alongside my book in progress, Decision-Making and Political Engineering.\nThe chapters of the book are available progressively in English and French. They are deliberately more extensive than the material covered in class: some examples, results, proofs and discussions go beyond what is presented during lectures.\nBook & extended lecture notes →"
-  },
-  {
-    "objectID": "introduction-to-political-engineering.html#course-material",
-    "href": "introduction-to-political-engineering.html#course-material",
-    "title": "Applied Economic Theory / Introduction to Political Engineering",
-    "section": "Course material",
-    "text": "Course material\nAdditional course-specific material will be added progressively."
-  },
-  {
-    "objectID": "introduction-to-political-engineering.html#homework-designing-a-fair-content-platform",
-    "href": "introduction-to-political-engineering.html#homework-designing-a-fair-content-platform",
-    "title": "Applied Economic Theory / Introduction to Political Engineering",
-    "section": "Homework — Designing a Fair Content Platform",
-    "text": "Homework — Designing a Fair Content Platform\nGroup assignment (3–4 students) · Deadline: January 5, 2027\nDesign a platform inspired by Spotify or YouTube, with two connected mechanisms: a recommendation algorithm that learns user preferences while encouraging discovery, and a fair revenue-sharing rule for creators. Analyze their normative properties, strategic incentives, and interactions.\nThe assignment requires at least three formally stated properties, with proofs or counterexamples, and two illustrative examples.\nRead the full homework assignment →\nSubmission: One PDF report per group (suggested length: 8–12 pages), sent by email with the exact subject Applied Economic Theory Homework."
-  },
-  {
-    "objectID": "cours-prerequis.html",
-    "href": "cours-prerequis.html",
-    "title": "Cours Prérequis",
-    "section": "",
-    "text": "The course material (PDF) is available on the original Google Sites page:\nhttps://sites.google.com/site/gonzalezstephaneuniv/cours-prerequis"
-  },
-  {
-    "objectID": "teaching-macro-croissance.html",
-    "href": "teaching-macro-croissance.html",
-    "title": "Macroéconomie et croissance",
-    "section": "",
-    "text": "Niveau : Licence 3\nSemestre : 2\nVolume horaire : 18 heures de cours (CM) et 18 heures de pratique (TD)\nIntervenant : Stéphane Gonzalez\nContact : stephane.gonzalez@univ-st-etienne.fr\nObjectifs du cours : Ce cours est conçu pour familiariser les étudiants avec les principales théories de la croissance économique. Les modèles de Harrod-Domar, Solow, Ramsey-Cass-Koopmans, Romer, Barro et Goodwin seront abordés. Chaque modèle sera étudié mathématiquement et appliqué à différentes politiques économiques à travers une simulation en Python. L’objectif est d’amener l’étudiant à une autonomie suffisante pour conseiller quantitativement un décideur sur les questions de croissance économique.\nPlan de cours :\n\nIntroduction aux théories de la croissance\nÉtude mathématique et simulation des modèles de croissance\nApplication des modèles à différentes politiques économiques\nUtilisation de Python pour la simulation de modèles économiques\n\nCompétences développées : À la fin de ce cours, les étudiants seront capables de comprendre et de construire des modèles dynamiques en économie, de les étudier mathématiquement et de les appliquer à différentes politiques économiques. Ils auront également acquis des compétences transversales telles que la capacité de lire un diagramme de phase, d’étudier qualitativement une équation différentielle ordinaire, et de réaliser des simulations en Python.\nModalités d’évaluation : L’évaluation se fera sur la base d’une épreuve écrite.\nPrérequis : Cours introductif à l’analyse mathématique. Connaissance de base de la programmation en Python est un plus.\nBibliographie / références :\n\n“Introduction to Modern Economic Growth” - Daron Acemoglu\n“Théories économiques de la croissance” - Robert J. Barro et Xavier Sala-i-Martin\n“Advanced Macroeconomics” - David Romer\n“Economic Growth” - Weil, D.\n\nQuelques contenus :\n\nmacroeconomics_combined.pdf (see the former Google Sites page)\n\nFormer Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroconomie-et-croissance"
-  },
-  {
-    "objectID": "macro-growth-theories.html",
-    "href": "macro-growth-theories.html",
-    "title": "Macroeconomics VI: Growth Theories",
-    "section": "",
-    "text": "Open the course document"
-  },
-  {
-    "objectID": "macro-growth-theories.html#course-document",
-    "href": "macro-growth-theories.html#course-document",
-    "title": "Macroeconomics VI: Growth Theories",
-    "section": "",
-    "text": "Open the course document"
-  },
-  {
-    "objectID": "macro-growth-theories.html#course-material",
-    "href": "macro-growth-theories.html#course-material",
-    "title": "Macroeconomics VI: Growth Theories",
-    "section": "Course material",
-    "text": "Course material\nLecture notes and references will be added here."
-  },
-  {
-    "objectID": "apps.html",
-    "href": "apps.html",
-    "title": "Apps",
-    "section": "",
-    "text": "Cette page rassemble les petits programmes que je construis à côté de mes recherches et de mes cours. On y trouve d’abord des applications qui viennent directement de mes articles ou de mon enseignement : l’occasion de jouer avec les objets dont on parle d’habitude au tableau. On y trouve ensuite des applications pédagogiques, de la maternelle à la terminale, que j’ai surtout développées pour mes enfants. Elles servent d’abord de terrain d’essai à la maison ; je les laisse en accès libre au cas où elles serviraient à d’autres. Tout s’ouvre dans un navigateur, sans installation.\n\nIssu de mes recherches\nDes jeux et des outils tirés de mes articles et de mes cours.\n\n\n\n  \n    Jeu à deux sur un graphe · FR / EN\n    INFLUENCE le jeu des connexions\n    INFLUENCE est tiré de l'article que nous avons écrit avec Éric Duchêne, Aline Parreau, Éric Rémila et Philippe Solal. Deux joueurs, un graphe orienté dont les sommets sont rouges ou bleus. À son tour, on choisit un sommet de sa couleur et on capture tout ce qu'il atteint en suivant les arcs (pour le joueur bleu, ils sont lus à l'envers). Chaque sommet capturé vaut un point, et le coup le plus gourmand n'est pas toujours le bon.\n    Une initiation en cinq petits plateaux, puis 84 plateaux rangés du plus simple au plus retors, à jouer contre l'ordinateur (trois niveaux) ou à deux sur le même écran. En fin de partie, le jeu rejoue la partie avec un solveur exact et montre le coup décisif. Un prénom suffit pour garder sa progression, sur l'appareil ou en ligne avec un code.\n    INFLUENCE is a two-player scoring game on directed graphs, from our paper in Theoretical Computer Science (2021). You can play it right here, in English or in French.\n    \n      ▶ Jouer ici\n      Plein écran ↗\n      L'article (Theoretical Computer Science, 2021)\n    \n  \n  \n    \n      \n        \n        ▶ Jouer\n      \n    \n  \n\n\n\nApplications pédagogiques\nDe la maternelle à la terminale, développées surtout pour mes enfants — et deux pour apprendre une langue à l'oral : l'espagnol, et le français pour les hispanophones.\n\n\n  \n    🧚\n    \n      Les Gardiens de la Forêt Enchantée\n      Grande section de maternelle → début du CP · en français\n      Une sorcière a plongé la forêt dans l'ombre : l'enfant libère les animaux en relevant des défis de lecture, de nombres et de logique. Une fée lit toutes les consignes à voix haute.\n      \n        En savoir plus\n        Lettres sous toutes leurs formes (capitales, minuscules, attachées), sons et syllabes, premiers mots et phrases, dénombrement jusqu'à 20, formes, repérage dans l'espace, longueurs et masses, petits problèmes, et énigmes de logique (fioles à trier, chemins qui passent une seule fois par chaque fleur, suites, sudokus en images). Un espace parents montre ce qui est acquis.\n      \n      Jouer\n    \n  \n\n  \n    ✦\n    \n      L'École de magie du Fil d'Or\n      CM2 · en français\n      Une apprentie magicienne parcourt une carte du monde : lecture et écriture, calcul et problèmes, fractions et géométrie, jeux de logique. Une histoire en douze chapitres se dévoile au fil des progrès.\n      \n        En savoir plus\n        Le Château des Récits (lecture, vocabulaire, grammaire, écriture), les Forges des Nombres (numération, calcul, problèmes), l'Observatoire céleste (fractions, mesures, géométrie) et le Jardin des énigmes (jeux de logique). Chaque lieu s'illumine quand un apprentissage est confirmé sur plusieurs jours, et des défis plus difficiles attendent ceux qui reviennent. Progression enregistrée en ligne avec un nom de magicienne et un petit code ; espace parents avec suivi détaillé.\n      \n      Jouer\n    \n  \n\n  \n    ☾\n    \n      Codex Umbra prototype\n      Seconde → prépa · 15–25 ans · en français\n      Un jeu de dark fantasy : le Codex qui tenait le monde par ses Lois a été déchiré, et chaque notion comprise se réécrit dans le Codex et rallume une partie du monde. Prérequis : le programme de troisième.\n      \n        En savoir plus\n        Cinq régions reliées par un graphe de prérequis : les vecteurs, le calcul littéral et la factorisation, le second degré, Python et la logique (chevaliers et fripons, invariants). Trois rangs par Loi, des exercices générés et corrigés exactement (y compris la forme factorisée ou canonique), des démonstrations à reconstituer ou à corriger, une baliste qui suit la parabole qu'on lui donne, et un gardien à vaincre par région.\n      \n      Jouer\n    \n  \n\n  \n    ñ\n    \n      Espagnol oral\n      Débutants francophones · espagnol d'Espagne\n      Des cartes illustrées, du français vers l'espagnol, pour apprendre à parler : on cherche le mot, on retourne la carte, on dit honnêtement si on le savait, et la carte revient plus ou moins tard. Les mots servent vite à parler : neuf petites situations (se présenter, commander au café, demander son chemin, raconter son week-end…) où l'on dit sa réplique à voix haute, avec de courtes leçons de grammaire qui se débloquent au fil des mots. 1 500 mots en tout, des plus courants aux moins courants.\n      \n        En savoir plus\n        Sept niveaux de révision, expliqués dans l'application : pas d'algorithme caché, ni quota quotidien ni série à tenir. Un bouton « déjà acquis » et un tri rapide par groupes de 50 permettent de passer les mots connus. La lecture à voix haute utilise la voix de synthèse de l'appareil, quand une voix espagnole y est installée. Un prénom et un code à quatre chiffres suffisent pour retrouver sa progression sur n'importe quel appareil, et plusieurs personnes peuvent partager le même. Le contenu n'a pas encore été relu par un locuteur natif : chaque carte permet de signaler une erreur.\n      \n      Ouvrir\n    \n  \n\n  \n    ç\n    \n      Francés oral\n      Débutants hispanophones · interface en espagnol du Mexique\n      La même application dans l'autre sens, pour des hispanophones qui apprennent le français : cartes de l'espagnol vers le français, leçons de grammaire française expliquées en espagnol (être et avoir, négation, articles et genre, verbes en -er, passé composé…), neuf situations de conversation et 1 500 mots, chacun employé dans au moins une phrase.\n      \n        En savoir plus\n        Chaque verbe a sa conjugaison complète au présent et au passé composé ; la carte est lue en espagnol au recto et en français au verso, si les voix sont installées sur l'appareil. Mêmes principes que l'application d'espagnol : sept niveaux de révision expliqués, aucun quota, progression retrouvée partout avec un prénom et un code à quatre chiffres. Contenu en brouillon, pas encore relu par un locuteur natif.\n      \n      Ouvrir\n    \n  \n\n\nSur iPad ou tablette : ouvrir l'application dans Safari, puis Partager → « Sur l'écran d'accueil » pour l'installer comme une application."
-  },
-  {
-    "objectID": "scientific-organization.html",
-    "href": "scientific-organization.html",
-    "title": "Scientific organization",
-    "section": "",
-    "text": "I regularly contribute to the organization of conferences, workshops and conference sessions in economic theory, game theory and social choice."
-  },
-  {
-    "objectID": "scientific-organization.html#conference-workshop-and-session-organization",
-    "href": "scientific-organization.html#conference-workshop-and-session-organization",
-    "title": "Scientific organization",
-    "section": "Conference, workshop and session organization",
-    "text": "Conference, workshop and session organization\n\n19th Meeting of the Society for Social Choice and Welfare (SSCW 2028) — Co-organizer. Université Lumière Lyon 2, Lyon, France, June–July 2028. The conference will be hosted at Université Lumière Lyon 2, with organization by GATE Lyon Saint-Étienne and Université Jean Monnet and support from the PEPR CONDORCET.\nWorkshop in Economic Theory — Co-organizer. Saint-Étienne, France, September 8, 2026.\nSAET 2025 — Co-organizer with Federica Ceron of the session Axiomatization in Economic Theory. Ischia, Italy, June 29–July 5, 2025.\nSAET 2024 — Organizer, with Federica Ceron as co-organizer, of two sessions on Axiomatizations in Economic Theory. Santiago, Chile, January 8–11, 2024.\nSAET 2023 — Organizer of a session on Axiomatization in Economic Theory. Paris, France, July 17–21, 2023.\nGames and Optimization 2022 (GO22) — Co-organizer with Eric Rémila. Saint-Étienne, France, April 14–15, 2022.\nINDEPTH #1 — Institutional Design and Economic Preferences: Theory and Experiments — Co-organizer. Saint-Étienne, France, March 28–29, 2019.\nJournées SDA2 2018 — Systèmes Dynamiques, Automates & Algorithmes — Member of the organizing committee. Saint-Étienne, France, July 4–6, 2018.\nFaire de la politique autrement? Théorie et pratique du choix social — Co-organizer with Antoinette Baujard and Mostapha Diss. Academic workshop and public-outreach event, Saint-Étienne, France, April 27–28, 2017.\nGames and Optimization — Co-organizer. Saint-Étienne, France, November 21–22, 2017.\nMARS — Measures, Axioms, Rights and Stability in Coalitions and Networks — Organizer. Saint-Étienne, France, March 22–23, 2017."
-  },
-  {
-    "objectID": "scientific-organization.html#scientific-committees",
-    "href": "scientific-organization.html#scientific-committees",
-    "title": "Scientific organization",
-    "section": "Scientific committees",
-    "text": "Scientific committees\n\nFrance–Spain Meeting on Microeconomic Theory — Member of the Scientific Committee. Annual France–Spain meeting in microeconomic theory.\nADRES Doctoral Conference — Member of the Scientific Committee, 2020–2023."
-  },
-  {
-    "objectID": "economic-design.html",
-    "href": "economic-design.html",
-    "title": "Design of Economic and Political Methods: Axiomatic Theory",
-    "section": "",
-    "text": "Download the syllabus (PDF)"
-  },
-  {
-    "objectID": "economic-design.html#syllabus",
-    "href": "economic-design.html#syllabus",
-    "title": "Design of Economic and Political Methods: Axiomatic Theory",
-    "section": "",
-    "text": "Download the syllabus (PDF)"
-  },
-  {
-    "objectID": "economic-design.html#course-material",
-    "href": "economic-design.html#course-material",
-    "title": "Design of Economic and Political Methods: Axiomatic Theory",
-    "section": "Course material",
-    "text": "Course material\nLecture notes, problem sets, and references will be added here."
-  },
-  {
-    "objectID": "macroeconomie-et-croissance.html",
-    "href": "macroeconomie-et-croissance.html",
-    "title": "Macroéconomie et Croissance",
-    "section": "",
-    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomie-et-croissance"
-  },
-  {
-    "objectID": "game-theory-prerequisite.html",
-    "href": "game-theory-prerequisite.html",
-    "title": "Game Theory - Prerequisite course",
-    "section": "",
-    "text": "Level: Master’s, first year (M1)\nProgramme: Economics, Data and Decision Science\nSemester: 7\nTeaching hours: 15 hours\nTeaching language: English\nInstructor: Stéphane Gonzalez\nAssessment: No assessment"
-  },
-  {
-    "objectID": "game-theory-prerequisite.html#mathematical-prerequisites-and-fundamental-concepts",
-    "href": "game-theory-prerequisite.html#mathematical-prerequisites-and-fundamental-concepts",
-    "title": "Game Theory - Prerequisite course",
-    "section": "",
-    "text": "Level: Master’s, first year (M1)\nProgramme: Economics, Data and Decision Science\nSemester: 7\nTeaching hours: 15 hours\nTeaching language: English\nInstructor: Stéphane Gonzalez\nAssessment: No assessment"
-  },
-  {
-    "objectID": "game-theory-prerequisite.html#course-description",
-    "href": "game-theory-prerequisite.html#course-description",
-    "title": "Game Theory - Prerequisite course",
-    "section": "Course description",
-    "text": "Course description\nThis course provides students with the mathematical foundations and fundamental concepts required for the study of game theory and theoretical economics.\nThe first part reviews essential mathematical tools, including propositional logic, sets, binary relations, equivalence relations, order structures, mappings, and functions. Particular attention is given to mathematical reasoning, formal definitions, and proofs.\nThe second part introduces the main concepts of game theory. Students will become familiar with the formal representation of games, players, strategies, preferences, and outcomes. The course will examine strategic interactions, individual and collective deviations, and fundamental equilibrium concepts, including Nash equilibrium, strong Nash equilibrium, and coalition-based equilibrium notions.\nThroughout the course, theoretical concepts are illustrated through examples and exercises, with an emphasis on understanding mathematical structures and developing rigorous reasoning skills."
-  },
-  {
-    "objectID": "game-theory-prerequisite.html#learning-objectives",
-    "href": "game-theory-prerequisite.html#learning-objectives",
-    "title": "Game Theory - Prerequisite course",
-    "section": "Learning objectives",
-    "text": "Learning objectives\nBy the end of the course, students should be able to:\n\nUnderstand and use fundamental mathematical concepts relevant to economic theory.\nInterpret and manipulate formal definitions, mathematical relations, and functions.\nRepresent strategic interactions using basic game-theoretic models.\nUnderstand the role of preferences and individual or collective deviations in defining equilibrium.\nIdentify and analyze basic equilibrium concepts and their properties."
-  },
-  {
-    "objectID": "game-theory-prerequisite.html#course-organization",
-    "href": "game-theory-prerequisite.html#course-organization",
-    "title": "Game Theory - Prerequisite course",
-    "section": "Course organization",
-    "text": "Course organization\nThe course combines lectures, mathematical examples, and problem-solving exercises."
+    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/introduction-to-political-engineering"
   },
   {
     "objectID": "applied-economic-theory-homework.html",
@@ -735,11 +581,186 @@
     "text": "Normative analysis and justification of objectives: 25%\nPrecision and coherence of the two mechanisms: 30%\nStrategic analysis and interaction effects: 25%\nExamples, formal properties, proofs and counterexamples: 20%\n\nThe report should be clear, rigorous, and original. State simplifying assumptions explicitly and acknowledge any sources used. We are evaluating economic reasoning and mechanism design, not programming complexity or a description of how existing platforms currently operate."
   },
   {
-    "objectID": "teaching-political-engineering.html",
-    "href": "teaching-political-engineering.html",
-    "title": "Introduction to Political Engineering",
+    "objectID": "game-theory-prerequisite.html",
+    "href": "game-theory-prerequisite.html",
+    "title": "Game Theory - Prerequisite course",
     "section": "",
-    "text": "Former Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/introduction-to-political-engineering"
+    "text": "Level: Master’s, first year (M1)\nProgramme: Economics, Data and Decision Science\nSemester: 7\nTeaching hours: 15 hours\nTeaching language: English\nInstructor: Stéphane Gonzalez\nAssessment: No assessment"
+  },
+  {
+    "objectID": "game-theory-prerequisite.html#mathematical-prerequisites-and-fundamental-concepts",
+    "href": "game-theory-prerequisite.html#mathematical-prerequisites-and-fundamental-concepts",
+    "title": "Game Theory - Prerequisite course",
+    "section": "",
+    "text": "Level: Master’s, first year (M1)\nProgramme: Economics, Data and Decision Science\nSemester: 7\nTeaching hours: 15 hours\nTeaching language: English\nInstructor: Stéphane Gonzalez\nAssessment: No assessment"
+  },
+  {
+    "objectID": "game-theory-prerequisite.html#course-description",
+    "href": "game-theory-prerequisite.html#course-description",
+    "title": "Game Theory - Prerequisite course",
+    "section": "Course description",
+    "text": "Course description\nThis course provides students with the mathematical foundations and fundamental concepts required for the study of game theory and theoretical economics.\nThe first part reviews essential mathematical tools, including propositional logic, sets, binary relations, equivalence relations, order structures, mappings, and functions. Particular attention is given to mathematical reasoning, formal definitions, and proofs.\nThe second part introduces the main concepts of game theory. Students will become familiar with the formal representation of games, players, strategies, preferences, and outcomes. The course will examine strategic interactions, individual and collective deviations, and fundamental equilibrium concepts, including Nash equilibrium, strong Nash equilibrium, and coalition-based equilibrium notions.\nThroughout the course, theoretical concepts are illustrated through examples and exercises, with an emphasis on understanding mathematical structures and developing rigorous reasoning skills."
+  },
+  {
+    "objectID": "game-theory-prerequisite.html#learning-objectives",
+    "href": "game-theory-prerequisite.html#learning-objectives",
+    "title": "Game Theory - Prerequisite course",
+    "section": "Learning objectives",
+    "text": "Learning objectives\nBy the end of the course, students should be able to:\n\nUnderstand and use fundamental mathematical concepts relevant to economic theory.\nInterpret and manipulate formal definitions, mathematical relations, and functions.\nRepresent strategic interactions using basic game-theoretic models.\nUnderstand the role of preferences and individual or collective deviations in defining equilibrium.\nIdentify and analyze basic equilibrium concepts and their properties."
+  },
+  {
+    "objectID": "game-theory-prerequisite.html#course-organization",
+    "href": "game-theory-prerequisite.html#course-organization",
+    "title": "Game Theory - Prerequisite course",
+    "section": "Course organization",
+    "text": "Course organization\nThe course combines lectures, mathematical examples, and problem-solving exercises."
+  },
+  {
+    "objectID": "macroeconomie-et-croissance.html",
+    "href": "macroeconomie-et-croissance.html",
+    "title": "Macroéconomie et Croissance",
+    "section": "",
+    "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/macroeconomie-et-croissance"
+  },
+  {
+    "objectID": "economic-design.html",
+    "href": "economic-design.html",
+    "title": "Design of Economic and Political Methods: Axiomatic Theory",
+    "section": "",
+    "text": "Download the syllabus (PDF)"
+  },
+  {
+    "objectID": "economic-design.html#syllabus",
+    "href": "economic-design.html#syllabus",
+    "title": "Design of Economic and Political Methods: Axiomatic Theory",
+    "section": "",
+    "text": "Download the syllabus (PDF)"
+  },
+  {
+    "objectID": "economic-design.html#course-material",
+    "href": "economic-design.html#course-material",
+    "title": "Design of Economic and Political Methods: Axiomatic Theory",
+    "section": "Course material",
+    "text": "Course material\nLecture notes, problem sets, and references will be added here."
+  },
+  {
+    "objectID": "scientific-organization.html",
+    "href": "scientific-organization.html",
+    "title": "Scientific organization",
+    "section": "",
+    "text": "I regularly contribute to the organization of conferences, workshops and conference sessions in economic theory, game theory and social choice."
+  },
+  {
+    "objectID": "scientific-organization.html#conference-workshop-and-session-organization",
+    "href": "scientific-organization.html#conference-workshop-and-session-organization",
+    "title": "Scientific organization",
+    "section": "Conference, workshop and session organization",
+    "text": "Conference, workshop and session organization\n\n19th Meeting of the Society for Social Choice and Welfare (SSCW 2028) — Co-organizer. Université Lumière Lyon 2, Lyon, France, June–July 2028. The conference will be hosted at Université Lumière Lyon 2, with organization by GATE Lyon Saint-Étienne and Université Jean Monnet and support from the PEPR CONDORCET.\nWorkshop in Economic Theory — Co-organizer. Saint-Étienne, France, September 8, 2026.\nSAET 2025 — Co-organizer with Federica Ceron of the session Axiomatization in Economic Theory. Ischia, Italy, June 29–July 5, 2025.\nSAET 2024 — Organizer, with Federica Ceron as co-organizer, of two sessions on Axiomatizations in Economic Theory. Santiago, Chile, January 8–11, 2024.\nSAET 2023 — Organizer of a session on Axiomatization in Economic Theory. Paris, France, July 17–21, 2023.\nGames and Optimization 2022 (GO22) — Co-organizer with Eric Rémila. Saint-Étienne, France, April 14–15, 2022.\nINDEPTH #1 — Institutional Design and Economic Preferences: Theory and Experiments — Co-organizer. Saint-Étienne, France, March 28–29, 2019.\nJournées SDA2 2018 — Systèmes Dynamiques, Automates & Algorithmes — Member of the organizing committee. Saint-Étienne, France, July 4–6, 2018.\nFaire de la politique autrement? Théorie et pratique du choix social — Co-organizer with Antoinette Baujard and Mostapha Diss. Academic workshop and public-outreach event, Saint-Étienne, France, April 27–28, 2017.\nGames and Optimization — Co-organizer. Saint-Étienne, France, November 21–22, 2017.\nMARS — Measures, Axioms, Rights and Stability in Coalitions and Networks — Organizer. Saint-Étienne, France, March 22–23, 2017."
+  },
+  {
+    "objectID": "scientific-organization.html#scientific-committees",
+    "href": "scientific-organization.html#scientific-committees",
+    "title": "Scientific organization",
+    "section": "Scientific committees",
+    "text": "Scientific committees\n\nFrance–Spain Meeting on Microeconomic Theory — Member of the Scientific Committee. Annual France–Spain meeting in microeconomic theory.\nADRES Doctoral Conference — Member of the Scientific Committee, 2020–2023."
+  },
+  {
+    "objectID": "apps.html",
+    "href": "apps.html",
+    "title": "Apps",
+    "section": "",
+    "text": "Cette page rassemble les petits programmes que je construis à côté de mes recherches et de mes cours. On y trouve d’abord des applications qui viennent directement de mes articles ou de mon enseignement : l’occasion de jouer avec les objets dont on parle d’habitude au tableau. On y trouve ensuite des applications pédagogiques, de la maternelle à la terminale, que j’ai surtout développées pour mes enfants. Elles servent d’abord de terrain d’essai à la maison ; je les laisse en accès libre au cas où elles serviraient à d’autres. Tout s’ouvre dans un navigateur, sans installation.\n\nIssu de mes recherches\nDes jeux et des outils tirés de mes articles et de mes cours.\n\n\n\n  \n    Jeu à deux sur un graphe · FR / EN\n    INFLUENCE le jeu des connexions\n    INFLUENCE est tiré de l'article que nous avons écrit avec Éric Duchêne, Aline Parreau, Éric Rémila et Philippe Solal. Deux joueurs, un graphe orienté dont les sommets sont rouges ou bleus. À son tour, on choisit un sommet de sa couleur et on capture tout ce qu'il atteint en suivant les arcs (pour le joueur bleu, ils sont lus à l'envers). Chaque sommet capturé vaut un point, et le coup le plus gourmand n'est pas toujours le bon.\n    Une initiation en cinq petits plateaux, puis 84 plateaux rangés du plus simple au plus retors, à jouer contre l'ordinateur (trois niveaux) ou à deux sur le même écran. En fin de partie, le jeu rejoue la partie avec un solveur exact et montre le coup décisif. Un prénom suffit pour garder sa progression, sur l'appareil ou en ligne avec un code.\n    INFLUENCE is a two-player scoring game on directed graphs, from our paper in Theoretical Computer Science (2021). You can play it right here, in English or in French.\n    \n      ▶ Jouer ici\n      Plein écran ↗\n      L'article (Theoretical Computer Science, 2021)\n    \n  \n  \n    \n      \n        \n        ▶ Jouer\n      \n    \n  \n\n\n\nApplications pédagogiques\nDe la maternelle à la terminale, développées surtout pour mes enfants — et deux pour apprendre une langue à l'oral : l'espagnol, et le français pour les hispanophones.\n\n\n  \n    🧚\n    \n      Les Gardiens de la Forêt Enchantée\n      Grande section de maternelle → début du CP · en français\n      Une sorcière a plongé la forêt dans l'ombre : l'enfant libère les animaux en relevant des défis de lecture, de nombres et de logique. Une fée lit toutes les consignes à voix haute.\n      \n        En savoir plus\n        Lettres sous toutes leurs formes (capitales, minuscules, attachées), sons et syllabes, premiers mots et phrases, dénombrement jusqu'à 20, formes, repérage dans l'espace, longueurs et masses, petits problèmes, et énigmes de logique (fioles à trier, chemins qui passent une seule fois par chaque fleur, suites, sudokus en images). Un espace parents montre ce qui est acquis.\n      \n      Jouer\n    \n  \n\n  \n    ✦\n    \n      L'École de magie du Fil d'Or\n      CM2 · en français\n      Une apprentie magicienne parcourt une carte du monde : lecture et écriture, calcul et problèmes, fractions et géométrie, jeux de logique. Une histoire en douze chapitres se dévoile au fil des progrès.\n      \n        En savoir plus\n        Le Château des Récits (lecture, vocabulaire, grammaire, écriture), les Forges des Nombres (numération, calcul, problèmes), l'Observatoire céleste (fractions, mesures, géométrie) et le Jardin des énigmes (jeux de logique). Chaque lieu s'illumine quand un apprentissage est confirmé sur plusieurs jours, et des défis plus difficiles attendent ceux qui reviennent. Progression enregistrée en ligne avec un nom de magicienne et un petit code ; espace parents avec suivi détaillé.\n      \n      Jouer\n    \n  \n\n  \n    ☾\n    \n      Codex Umbra prototype\n      Seconde → prépa · 15–25 ans · en français\n      Un jeu de dark fantasy : le Codex qui tenait le monde par ses Lois a été déchiré, et chaque notion comprise se réécrit dans le Codex et rallume une partie du monde. Prérequis : le programme de troisième.\n      \n        En savoir plus\n        Cinq régions reliées par un graphe de prérequis : les vecteurs, le calcul littéral et la factorisation, le second degré, Python et la logique (chevaliers et fripons, invariants). Trois rangs par Loi, des exercices générés et corrigés exactement (y compris la forme factorisée ou canonique), des démonstrations à reconstituer ou à corriger, une baliste qui suit la parabole qu'on lui donne, et un gardien à vaincre par région.\n      \n      Jouer\n    \n  \n\n  \n    ñ\n    \n      Espagnol oral\n      Débutants francophones · espagnol d'Espagne\n      Des cartes illustrées, du français vers l'espagnol, pour apprendre à parler : on cherche le mot, on retourne la carte, on dit honnêtement si on le savait, et la carte revient plus ou moins tard. Les mots servent vite à parler : neuf petites situations (se présenter, commander au café, demander son chemin, raconter son week-end…) où l'on dit sa réplique à voix haute, avec de courtes leçons de grammaire qui se débloquent au fil des mots. 1 500 mots en tout, des plus courants aux moins courants.\n      \n        En savoir plus\n        Sept niveaux de révision, expliqués dans l'application : pas d'algorithme caché, ni quota quotidien ni série à tenir. Un bouton « déjà acquis » et un tri rapide par groupes de 50 permettent de passer les mots connus. La lecture à voix haute utilise la voix de synthèse de l'appareil, quand une voix espagnole y est installée. Un prénom et un code à quatre chiffres suffisent pour retrouver sa progression sur n'importe quel appareil, et plusieurs personnes peuvent partager le même. Le contenu n'a pas encore été relu par un locuteur natif : chaque carte permet de signaler une erreur.\n      \n      Ouvrir\n    \n  \n\n  \n    ç\n    \n      Francés oral\n      Débutants hispanophones · interface en espagnol du Mexique\n      La même application dans l'autre sens, pour des hispanophones qui apprennent le français : cartes de l'espagnol vers le français, leçons de grammaire française expliquées en espagnol (être et avoir, négation, articles et genre, verbes en -er, passé composé…), neuf situations de conversation et 1 500 mots, chacun employé dans au moins une phrase.\n      \n        En savoir plus\n        Chaque verbe a sa conjugaison complète au présent et au passé composé ; la carte est lue en espagnol au recto et en français au verso, si les voix sont installées sur l'appareil. Mêmes principes que l'application d'espagnol : sept niveaux de révision expliqués, aucun quota, progression retrouvée partout avec un prénom et un code à quatre chiffres. Contenu en brouillon, pas encore relu par un locuteur natif.\n      \n      Ouvrir\n    \n  \n\n\nSur iPad ou tablette : ouvrir l'application dans Safari, puis Partager → « Sur l'écran d'accueil » pour l'installer comme une application."
+  },
+  {
+    "objectID": "macro-growth-theories.html",
+    "href": "macro-growth-theories.html",
+    "title": "Macroeconomics VI: Growth Theories",
+    "section": "",
+    "text": "Open the course document"
+  },
+  {
+    "objectID": "macro-growth-theories.html#course-document",
+    "href": "macro-growth-theories.html#course-document",
+    "title": "Macroeconomics VI: Growth Theories",
+    "section": "",
+    "text": "Open the course document"
+  },
+  {
+    "objectID": "macro-growth-theories.html#course-material",
+    "href": "macro-growth-theories.html#course-material",
+    "title": "Macroeconomics VI: Growth Theories",
+    "section": "Course material",
+    "text": "Course material\nLecture notes and references will be added here."
+  },
+  {
+    "objectID": "teaching-macro-croissance.html",
+    "href": "teaching-macro-croissance.html",
+    "title": "Macroéconomie et croissance",
+    "section": "",
+    "text": "Niveau : Licence 3\nSemestre : 2\nVolume horaire : 18 heures de cours (CM) et 18 heures de pratique (TD)\nIntervenant : Stéphane Gonzalez\nContact : stephane.gonzalez@univ-st-etienne.fr\nObjectifs du cours : Ce cours est conçu pour familiariser les étudiants avec les principales théories de la croissance économique. Les modèles de Harrod-Domar, Solow, Ramsey-Cass-Koopmans, Romer, Barro et Goodwin seront abordés. Chaque modèle sera étudié mathématiquement et appliqué à différentes politiques économiques à travers une simulation en Python. L’objectif est d’amener l’étudiant à une autonomie suffisante pour conseiller quantitativement un décideur sur les questions de croissance économique.\nPlan de cours :\n\nIntroduction aux théories de la croissance\nÉtude mathématique et simulation des modèles de croissance\nApplication des modèles à différentes politiques économiques\nUtilisation de Python pour la simulation de modèles économiques\n\nCompétences développées : À la fin de ce cours, les étudiants seront capables de comprendre et de construire des modèles dynamiques en économie, de les étudier mathématiquement et de les appliquer à différentes politiques économiques. Ils auront également acquis des compétences transversales telles que la capacité de lire un diagramme de phase, d’étudier qualitativement une équation différentielle ordinaire, et de réaliser des simulations en Python.\nModalités d’évaluation : L’évaluation se fera sur la base d’une épreuve écrite.\nPrérequis : Cours introductif à l’analyse mathématique. Connaissance de base de la programmation en Python est un plus.\nBibliographie / références :\n\n“Introduction to Modern Economic Growth” - Daron Acemoglu\n“Théories économiques de la croissance” - Robert J. Barro et Xavier Sala-i-Martin\n“Advanced Macroeconomics” - David Romer\n“Economic Growth” - Weil, D.\n\nQuelques contenus :\n\nmacroeconomics_combined.pdf (see the former Google Sites page)\n\nFormer Google Sites page: https://sites.google.com/site/gonzalezstephaneuniv/teaching-enseignement/macroconomie-et-croissance"
+  },
+  {
+    "objectID": "cours-prerequis.html",
+    "href": "cours-prerequis.html",
+    "title": "Cours Prérequis",
+    "section": "",
+    "text": "The course material (PDF) is available on the original Google Sites page:\nhttps://sites.google.com/site/gonzalezstephaneuniv/cours-prerequis"
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html",
+    "href": "introduction-to-political-engineering.html",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "",
+    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html#course-description",
+    "href": "introduction-to-political-engineering.html#course-description",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "",
+    "text": "This course introduces some of the fundamental tools of economic theory through concrete problems of individual and collective decision-making. It studies how objectives can be defined and reconciled, how decisions can be made under risk and uncertainty, how individual preferences can be aggregated, and how institutions shape collective outcomes.\nThe emphasis is not only on finding solutions, but also on understanding their limits: which desirable properties can be achieved simultaneously, which trade-offs are unavoidable, and when theory leads to impossibility results."
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
+    "href": "introduction-to-political-engineering.html#book-and-extended-lecture-notes",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "Book and extended lecture notes",
+    "text": "Book and extended lecture notes\nThe course is developed alongside my book in progress, Decision-Making and Political Engineering.\nThe chapters of the book are available progressively in English and French. They are deliberately more extensive than the material covered in class: some examples, results, proofs and discussions go beyond what is presented during lectures.\nBook & extended lecture notes →"
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html#course-material",
+    "href": "introduction-to-political-engineering.html#course-material",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "Course material",
+    "text": "Course material\nAdditional course-specific material will be added progressively."
+  },
+  {
+    "objectID": "introduction-to-political-engineering.html#homework-designing-a-fair-content-platform",
+    "href": "introduction-to-political-engineering.html#homework-designing-a-fair-content-platform",
+    "title": "Applied Economic Theory / Introduction to Political Engineering",
+    "section": "Homework — Designing a Fair Content Platform",
+    "text": "Homework — Designing a Fair Content Platform\nGroup assignment (3–4 students) · Deadline: January 5, 2027\nDesign a platform inspired by Spotify or YouTube, with two connected mechanisms: a recommendation algorithm that learns user preferences while encouraging discovery, and a fair revenue-sharing rule for creators. Analyze their normative properties, strategic incentives, and interactions.\nThe assignment requires at least three formally stated properties, with proofs or counterexamples, and two illustrative examples.\nRead the full homework assignment →\nSubmission: One PDF report per group (suggested length: 8–12 pages), sent by email with the exact subject Applied Economic Theory Homework."
+  },
+  {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
+    "section": "",
+    "text": "GATE Lyon Saint-Étienne (UMR 5824)\nPhysical address: 77 rue Michelet, 42100 Saint-Etienne, France\nPhone: +334 77 42 19 57\nEmail: stephane.gonzalez@univ-st-etienne.fr"
+  },
+  {
+    "objectID": "book-logic-and-sets.html",
+    "href": "book-logic-and-sets.html",
+    "title": "Logic and Sets",
+    "section": "",
+    "text": "← All books"
+  },
+  {
+    "objectID": "book-logic-and-sets.html#contents",
+    "href": "book-logic-and-sets.html#contents",
+    "title": "Logic and Sets",
+    "section": "Contents",
+    "text": "Contents\n\nClassical logic — propositions, connectives, truth tables, tautologies, quantifiers and their negation.\nBasic set theory — inclusion and equality, the axioms of specification, pairing and union, intersections, De Morgan’s laws, symmetric difference.\nMappings, inverse image — power set, ordered pairs, Cartesian products, direct and inverse images.\nInjection, surjection, bijection — composition, inverse mappings.\nRelations — equivalence relations and partitions, canonical factorisation, orders and preorders, bounds, infimum and supremum.\n\\(\\mathbb{N}\\), \\(\\mathbb{Z}\\), \\(\\mathbb{Q}\\), \\(\\mathbb{R}\\) — groups, rings and fields, the axiom of the real numbers, the number systems inside \\(\\mathbb{R}\\).\nProperties of \\(\\mathbb{N}\\) and mathematical induction — weak and strong induction, the least number principle.\nliminf and limsup — complete lattices, sequences, inferior and superior limits, monotone sequences, the Knaster–Tarski fixed point theorem.\nCardinality — finite sets, the Cantor–Schröder–Bernstein theorem, Cantor’s theorem, countable and uncountable sets."
   },
   {
     "objectID": "teaching-theorie-mesure.html",
@@ -1358,27 +1379,6 @@
     "text": "Course page and materials:\nhttps://sites.google.com/site/gonzalezstephaneuniv/politique-economique"
   },
   {
-    "objectID": "coalitions.html",
-    "href": "coalitions.html",
-    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
-    "section": "",
-    "text": "Download the syllabus (PDF)"
-  },
-  {
-    "objectID": "coalitions.html#syllabus",
-    "href": "coalitions.html#syllabus",
-    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
-    "section": "",
-    "text": "Download the syllabus (PDF)"
-  },
-  {
-    "objectID": "coalitions.html#course-material",
-    "href": "coalitions.html#course-material",
-    "title": "Coalitions in Cooperative and Non-Cooperative Game Theory",
-    "section": "Course material",
-    "text": "Course material\n\nLecture notes: Chapter 1 — Transferable-utility games and the core (PDF, in French)\n\nThe notes are part of a book in progress based on this course. Chapter 1 covers transferable-utility games, the core, the Bondareva–Shapley theorem, market games, the Coase theorem, assignment games, convex games, minimum cost spanning tree games and the polluted lake. Further chapters will be added progressively, together with slides and bibliographic references."
-  },
-  {
     "objectID": "teaching-coalitions.html",
     "href": "teaching-coalitions.html",
     "title": "Coalitions in cooperative and non-cooperative game theory",
@@ -1390,6 +1390,6 @@
     "href": "books.html",
     "title": "Books",
     "section": "",
-    "text": "Two book projects in progress. Select a cover or title to explore the book and access its available chapters.\n\n\n ECONOMIC THEORY Decision-Makingand PoliticalEngineering  Decisions · Institutions · Collective choice Stéphane Gonzalez \n\n\nBook in progress · English / French\n\n\nDecision-Making and Political Engineering\n\n\nAn introduction to economic theory through decisions, institutions and collective choice\n\n\nEconomic theory through concrete problems: decision-making under uncertainty, aggregation of preferences, strategic interaction and institutional design. From individual choice to social choice and game theory, with an emphasis on fundamental trade-offs and impossibility results.\n\n\nExplore the book and chapters →\n\n\n\n\n THÉORIE DES JEUX Coalitionset jeuxcoopératifs  Du cœur aux fonctions d’effectivité Stéphane Gonzalez \n\n\nLivre en cours de rédaction · Français\n\n\nCoalitions et jeux coopératifs\n\n\nDu cœur aux fonctions d’effectivité\n\n\nUne introduction aux coalitions et aux jeux coopératifs, à partir d’exemples économiques et de résultats fondamentaux. Le texte développe les définitions, les démonstrations et les applications, en prolongement du cours de master.\n\n\nConsulter le livre et les chapitres →"
+    "text": "Two book projects in progress, and an earlier set of lecture notes. Select a cover or title to explore the book and access its available chapters.\n\n\n ECONOMIC THEORY Decision-Makingand PoliticalEngineering  Decisions · Institutions · Collective choice Stéphane Gonzalez \n\n\nBook in progress · English / French\n\n\nDecision-Making and Political Engineering\n\n\nAn introduction to economic theory through decisions, institutions and collective choice\n\n\nEconomic theory through concrete problems: decision-making under uncertainty, aggregation of preferences, strategic interaction and institutional design. From individual choice to social choice and game theory, with an emphasis on fundamental trade-offs and impossibility results.\n\n\nExplore the book and chapters →\n\n\n\n\n THÉORIE DES JEUX Coalitionset jeuxcoopératifs  Du cœur aux fonctions d’effectivité Stéphane Gonzalez \n\n\nLivre en cours de rédaction · Français\n\n\nCoalitions et jeux coopératifs\n\n\nDu cœur aux fonctions d’effectivité\n\n\nUne introduction aux coalitions et aux jeux coopératifs, à partir d’exemples économiques et de résultats fondamentaux. Le texte développe les définitions, les démonstrations et les applications, en prolongement du cours de master.\n\n\nConsulter le livre et les chapitres →\n\n\n\n\n LECTURE NOTES Logicand Sets  From propositions to the real line Stéphane Gonzalez \n\n\nLecture notes · English · Paris 1, 2014–2015 · Revised edition 2026\n\n\nLogic and Sets\n\n\nFrom propositions to the real line, with remarks for economists\n\n\nThe lecture notes of a first course in mathematical reasoning for master’s students in quantitative economics: propositions and quantifiers, sets, mappings, relations and orders, the number systems, induction, liminf and limsup, cardinality. The course is organised around the notion of order.\n\n\nExplore the lecture notes →"
   }
 ]

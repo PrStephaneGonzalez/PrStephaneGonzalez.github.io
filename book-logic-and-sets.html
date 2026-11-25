@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Logic and Sets, lecture notes by Stéphane Gonzalez (Université Paris 1, 2014–2015; revised edition 2026): logic, sets, mappings, relations and orders, number systems, induction, liminf and limsup, cardinality.">
 
-<title>Logic and Set Theory – Stéphane Gonzalez</title>
+<title>Logic and Sets – Stéphane Gonzalez</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -76,9 +77,38 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="assets/css/site.css">
-<meta property="og:title" content="Logic and Set Theory – Stéphane Gonzalez">
+<meta property="og:title" content="Logic and Sets – Stéphane Gonzalez">
 <meta property="og:description" content="Stéphane Gonzalez is Professor of Economics at Université Jean Monnet and Deputy Director of GATE Lyon Saint-Étienne. Research in economic theory, game theory, social choice and axiomatic economics.">
 <meta property="og:site_name" content="Stéphane Gonzalez">
 </head>
@@ -149,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Logic and Set Theory</h1>
+<h1 class="title">Logic and Sets</h1>
 </div>
 
 
@@ -166,10 +196,31 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Course page and materials:</p>
-<p>https://sites.google.com/site/gonzalezstephaneuniv/logic-and-set-theory</p>
+<p><a href="./books.html" class="sg-book-back">← All books</a></p>
+<section id="from-propositions-to-the-real-line-with-remarks-for-economists" class="level3">
+<h3 class="anchored" data-anchor-id="from-propositions-to-the-real-line-with-remarks-for-economists"><em>From propositions to the real line, with remarks for economists</em></h3>
+<p><strong>Lecture notes · Stéphane Gonzalez · Revised edition 2026</strong></p>
+<p>These are the lecture notes of the course <em>Logic and sets</em> that I taught at the Université Paris 1 Panthéon-Sorbonne in 2014–2015, for the students of the Master <em>Mathematical Models in Economics and Finance</em> (MMEF) and of the Erasmus Mundus Master <em>Models and Methods of Quantitative Economics</em> (QEM). I later completed them and used parts of them in courses at the Saint-Étienne School of Economics.</p>
+<p>Many of the students had done little or no mathematics before. The course gives the basic tools of mathematical reasoning and is organised around the notion of <strong>order</strong>: infimum and supremum are introduced with relations, then used to define the real numbers and the limit of a sequence. Two choices of presentation: the real numbers are given by an axiom, and <span class="math inline">\(\mathbb{Q}\)</span>, <span class="math inline">\(\mathbb{Z}\)</span> and <span class="math inline">\(\mathbb{N}\)</span> are obtained inside <span class="math inline">\(\mathbb{R}\)</span> as smallest substructures; the limit is defined through liminf and limsup in a complete lattice, so that the same definition applies to numbers and to sets.</p>
+<p>This edition keeps the original text as close as possible. Mistakes and misprints have been corrected, the missing proofs have been written, and short boxes <em>For economists</em> have been added (preferences as total preorders, Pareto efficiency, anonymity, Tarski’s fixed point theorem, lexicographic preferences). Everything added in this edition is marked in the text.</p>
+<p><a href="assets/books/logic-and-sets-lecture-notes-en.pdf">Download the lecture notes (PDF, 71 p.)</a></p>
+</section>
+<section id="contents" class="level2">
+<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<ol type="1">
+<li><strong>Classical logic</strong> — propositions, connectives, truth tables, tautologies, quantifiers and their negation.</li>
+<li><strong>Basic set theory</strong> — inclusion and equality, the axioms of specification, pairing and union, intersections, De Morgan’s laws, symmetric difference.</li>
+<li><strong>Mappings, inverse image</strong> — power set, ordered pairs, Cartesian products, direct and inverse images.</li>
+<li><strong>Injection, surjection, bijection</strong> — composition, inverse mappings.</li>
+<li><strong>Relations</strong> — equivalence relations and partitions, canonical factorisation, orders and preorders, bounds, infimum and supremum.</li>
+<li><strong><span class="math inline">\(\mathbb{N}\)</span>, <span class="math inline">\(\mathbb{Z}\)</span>, <span class="math inline">\(\mathbb{Q}\)</span>, <span class="math inline">\(\mathbb{R}\)</span></strong> — groups, rings and fields, the axiom of the real numbers, the number systems inside <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li><strong>Properties of <span class="math inline">\(\mathbb{N}\)</span> and mathematical induction</strong> — weak and strong induction, the least number principle.</li>
+<li><strong>liminf and limsup</strong> — complete lattices, sequences, inferior and superior limits, monotone sequences, the Knaster–Tarski fixed point theorem.</li>
+<li><strong>Cardinality</strong> — finite sets, the Cantor–Schröder–Bernstein theorem, Cantor’s theorem, countable and uncountable sets.</li>
+</ol>
 
 
+</section>
 
 </main> <!-- /main -->
 <script src="assets/js/portrait-rotator.js"></script>
