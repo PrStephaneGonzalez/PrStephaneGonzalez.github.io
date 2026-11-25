@@ -13,13 +13,18 @@ How should we decide under uncertainty, aggregate conflicting preferences, or de
 
 Developed alongside my course [*Applied Economic Theory / Introduction to Political Engineering*](introduction-to-political-engineering.qmd), the chapters are progressively made available in **English and French**. They extend the lecture material with additional examples, results and discussions.
 
+## Download
+
+[Download the book so far — Chapters 1–4 and Mathematical Appendix (PDF, 197 p.)](assets/books/applied-economic-theory-en.pdf)
+
+The book is a work in progress. The PDF is replaced as chapters are added, and ends with a *To be continued* page.
+
 ## Chapters
 
 ### Chapter 1 — Choice, Risk & Uncertainty
 
 *Choix, risque et incertitude*
 
-[Download Chapter 1 — English version (PDF, 50 p.)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
 [Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
 
 ### Chapter 2 — Collective Choice & Collective Judgment
@@ -28,20 +33,18 @@ Developed alongside my course [*Applied Economic Theory / Introduction to Politi
 
 Voting rules and Young's characterizations, Arrow's theorem, the Gibbard–Satterthwaite theorem, Harsanyi's utilitarian theorem, generalized utilitarianism and judgment aggregation.
 
-[Download Chapter 2 — English version (PDF, 44 p.)](assets/books/chapter-2-collective-choice-and-judgment-en.pdf)
-
 ### Chapter 3 — Strategic Interaction and the Limits of the Invisible Hand
 
 *Interaction stratégique et limites de la main invisible*
 
 Deviations, power and equilibrium; Nash equilibrium; market failures, congestion and the commons; paradoxes of strategic rationality; zero-sum games; the pizza problem; information and agreement.
 
-[Download Chapter 3 — English version (PDF, 49 p.)](assets/books/chapter-3-strategic-interaction-en.pdf)
+### Chapter 4 — Who Writes the Rules of the Game?
+
+Mechanisms and incentives; auctions; collective decisions with money and the Myerson–Satterthwaite theorem; voting without money; matching and exchange (deferred acceptance, the Boston mechanism, top trading cycles).
 
 ### Mathematical appendix
 
 The mathematical tools used in the chapters, proved from a third-year undergraduate background.
-
-[Download the Mathematical Appendix (PDF, 12 p.)](assets/books/mathematical-appendix-en.pdf)
 
 More chapters will be added progressively.
