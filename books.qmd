@@ -1,67 +1,46 @@
 ---
 title: "Books"
-description-meta: "Books and book projects by Stéphane Gonzalez."
+description-meta: "Books in progress by Stéphane Gonzalez: Decision-Making and Political Engineering; Coalitions et jeux coopératifs."
 ---
 
-# Decision-Making and Political Engineering
+Two book projects in progress. Select a cover or title to explore the book and access its available chapters.
 
-### *An introduction to economic theory through decisions, institutions and collective choice*
+::: {.sg-books-grid}
 
-**Book in progress · Stéphane Gonzalez**
+::: {.sg-book-card}
+<a class="sg-book-cover sg-book-cover--decision" href="book-decision-making.html" aria-label="Explore Decision-Making and Political Engineering">
+  <span class="sg-book-cover-kicker">ECONOMIC THEORY</span>
+  <span class="sg-book-cover-title">Decision-Making<br>and Political<br>Engineering</span>
+  <span class="sg-book-cover-rule"></span>
+  <span class="sg-book-cover-subtitle">Decisions · Institutions · Collective choice</span>
+  <span class="sg-book-cover-author">Stéphane Gonzalez</span>
+</a>
 
-How should we decide under uncertainty, aggregate conflicting preferences, or design institutions resistant to manipulation? This book introduces economic theory through concrete problems of individual and collective decision-making. It moves from decision theory to social choice, game theory, political economy and network analysis, with particular attention to the trade-offs and impossibility results revealed by theory.
+<div class="sg-book-card-body">
+  <p class="sg-book-status">Book in progress · English / French</p>
+  <h2><a href="book-decision-making.html">Decision-Making and Political Engineering</a></h2>
+  <p class="sg-book-tagline"><em>An introduction to economic theory through decisions, institutions and collective choice</em></p>
+  <p>Economic theory through concrete problems: decision-making under uncertainty, aggregation of preferences, strategic interaction and institutional design. From individual choice to social choice and game theory, with an emphasis on fundamental trade-offs and impossibility results.</p>
+  <p><a class="sg-book-action" href="book-decision-making.html">Explore the book and chapters →</a></p>
+</div>
+:::
 
-Developed alongside my course [*Applied Economic Theory / Introduction to Political Engineering*](introduction-to-political-engineering.qmd), the chapters are progressively made available in **English and French**. They extend the lecture material with additional examples, results and discussions.
+::: {.sg-book-card}
+<a class="sg-book-cover sg-book-cover--coalitions" href="book-coalitions.html" aria-label="Consulter Coalitions et jeux coopératifs">
+  <span class="sg-book-cover-kicker">THÉORIE DES JEUX</span>
+  <span class="sg-book-cover-title">Coalitions<br>et jeux<br>coopératifs</span>
+  <span class="sg-book-cover-rule"></span>
+  <span class="sg-book-cover-subtitle">Du cœur aux fonctions d’effectivité</span>
+  <span class="sg-book-cover-author">Stéphane Gonzalez</span>
+</a>
 
-## Chapters
+<div class="sg-book-card-body">
+  <p class="sg-book-status">Livre en cours de rédaction · Français</p>
+  <h2><a href="book-coalitions.html">Coalitions et jeux coopératifs</a></h2>
+  <p class="sg-book-tagline"><em>Du cœur aux fonctions d'effectivité</em></p>
+  <p>Une introduction aux coalitions et aux jeux coopératifs, à partir d'exemples économiques et de résultats fondamentaux. Le texte développe les définitions, les démonstrations et les applications, en prolongement du cours de master.</p>
+  <p><a class="sg-book-action" href="book-coalitions.html">Consulter le livre et les chapitres →</a></p>
+</div>
+:::
 
-### Chapter 1 — Choice, Risk & Uncertainty
-
-*Choix, risque et incertitude*
-
-[Download Chapter 1 — English version (PDF, 50 p.)](assets/books/chapter-1-choice-risk-uncertainty-en.pdf)  
-[Télécharger le chapitre 1 — version française (PDF)](assets/books/chapitre-1-choix-risque-incertitude-fr.pdf)
-
-### Chapter 2 — Collective Choice & Collective Judgment
-
-*Choix collectif et jugement collectif*
-
-Voting rules and Young's characterizations, Arrow's theorem, the Gibbard–Satterthwaite theorem, Harsanyi's utilitarian theorem, generalized utilitarianism and judgment aggregation.
-
-[Download Chapter 2 — English version (PDF, 44 p.)](assets/books/chapter-2-collective-choice-and-judgment-en.pdf)
-
-### Chapter 3 — Strategic Interaction and the Limits of the Invisible Hand
-
-*Interaction stratégique et limites de la main invisible*
-
-Deviations, power and equilibrium; Nash equilibrium; market failures, congestion and the commons; paradoxes of strategic rationality; zero-sum games; the pizza problem; information and agreement.
-
-[Download Chapter 3 — English version (PDF, 49 p.)](assets/books/chapter-3-strategic-interaction-en.pdf)
-
-### Mathematical appendix
-
-The mathematical tools used in the chapters, proved from a third-year undergraduate background.
-
-[Download the Mathematical Appendix (PDF, 12 p.)](assets/books/mathematical-appendix-en.pdf)
-
-More chapters will be added progressively.
-
-# Coalitions et jeux coopératifs
-
-### *Du cœur aux fonctions d'effectivité*
-
-**Livre en cours de rédaction · Stéphane Gonzalez**
-
-Ce livre prolonge mon cours de master [*Coalitions in Cooperative and Non-Cooperative Game Theory*](coalitions.qmd). Il reprend les notes de cours en y ajoutant les définitions de base des jeux coopératifs à utilité transférable, les démonstrations complètes et des applications économiques. Les chapitres sont mis en ligne au fur et à mesure, en français.
-
-## Chapitres
-
-### Chapitre 1 — Jeux à utilité transférable et cœur
-
-*Jeux coopératifs & cœur, ou : pourquoi trois amis se disputent un taxi…*
-
-Le jeu du taxi, le cœur, le théorème de Bondareva--Shapley, les jeux de marché, le théorème de Coase, les jeux d'affectation, les jeux convexes, les arbres couvrants de coût minimal et le lac pollué.
-
-[Télécharger le chapitre 1 (PDF, 45 p.)](assets/books/jeux-cooperatifs-et-coeur-chapitre-1-fr.pdf)
-
-D'autres chapitres seront ajoutés progressivement.
+:::
