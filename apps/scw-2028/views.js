@@ -1,11 +1,10 @@
 // Rendu des vues (chaînes HTML). Les interactions sont gérées dans app.js par délégation (attributs data-*).
-import { STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays, horizonRank } from './model.js?v=20261116f';
-import { GLOSSARY } from './i18n.js?v=20261116f';
+import { STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays, horizonRank, TAGS, tagOf } from './model.js?v=20261125a';
+import { GLOSSARY } from './i18n.js?v=20261125a';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, deliverableOf, slug,
   fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, isMine,
-  matches, filtersActive, takersOf, iTook, colorFor, same, everyone,
-} from './core.js?v=20261116f';
+  matches, filtersActive, takersOf, iTook, colorFor, same, everyone, tagLabel } from './core.js?v=20261125a';
 
 const VIEWS = ['tasks', 'decisions', 'team', 'log'];
 const VIEW_LABEL = { tasks: 'viewTasks', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };
@@ -44,6 +43,9 @@ export function renderShell() {
         <input type="search" id="f-q" placeholder="${esc(t.search)}" value="${esc(state.f.q)}" aria-label="${esc(t.search)}">
         <button class="btn" data-action="new">+ ${esc(t.newTask)}</button>
       </div>
+      <div class="tags" role="group" aria-label="${esc(t.tagsLabel)}">
+        ${TAGS.map(g => `<button type="button" class="tagchip tg-${g}" data-tag="${g}" aria-pressed="${state.f.tag === g}" title="${esc(t.tagTitle(tagLabel(g)))}"><span class="tdot"></span>${esc(tagLabel(g))}<span class="tn" data-tcount="${g}"></span></button>`).join('')}
+      </div>
       <div class="scopes" role="group" aria-label="${esc(t.scopeLabel)}">
         ${SCOPES.map(s => `<button type="button" class="scope" data-scope="${s}" aria-pressed="${state.f.scope === s}">${esc(t.scopes[s])}<span data-scount="${s}"></span></button>`).join('')}
       </div>
@@ -73,6 +75,11 @@ function scopeCount(scope) {
   return state.a.plan.filter(id => matches(state.tasks.get(id), { scope })).length;
 }
 
+/** Nombre de tâches de chaque groupe (avec les autres filtres, sans le filtre de groupe lui-même). */
+function tagCount(tag) {
+  return state.a.plan.filter(id => { const x = state.tasks.get(id); return matches(x, { tag: '' }) && tagOf(x) === tag; }).length;
+}
+
 function renderOverview() {
   const t = T(), a = state.a, all = [...state.tasks.values()].filter(isActionable);
   const done = all.filter(x => x.status === 'Done').length;
@@ -85,6 +92,8 @@ function renderOverview() {
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent = counts[el.dataset.count] ?? ''; });
   document.querySelectorAll('[data-scount]').forEach(el => { el.textContent = scopeCount(el.dataset.scount); });
   document.querySelectorAll('[data-scope]').forEach(el => el.setAttribute('aria-pressed', String(state.f.scope === el.dataset.scope)));
+  document.querySelectorAll('[data-tcount]').forEach(el => { el.textContent = tagCount(el.dataset.tcount); });
+  document.querySelectorAll('[data-tag]').forEach(el => el.setAttribute('aria-pressed', String(state.f.tag === el.dataset.tag)));
   $('#clear').hidden = !filtersActive();
   $('#toolbar').hidden = !WITH_TOOLBAR.has(state.view);
   const ft = state.f.taker;
@@ -139,6 +148,7 @@ export function row(task) {
     <li class="${cls}" id="task-${esc(id)}"${iTook(task) ? ` style="--mine:${colorFor(state.who)[0]}"` : ''}>
       <button class="task-open" type="button" data-open="${esc(id)}">
         <span class="task-top"><span class="tid">${esc(id)}</span>
+          <span class="tagb tg-${tagOf(task)}" title="${esc(tagLabel(tagOf(task)))}">${esc(t.tagsShort[tagOf(task)])}</span>
           <span class="prio pr-${slug(task.priority)}">${esc(priorityLabel(task.priority))}</span>
           ${done ? '' : whenHtml(task)}
           ${!done && task.effort ? `<span class="soft">${esc(effortLabel(task.effort))}</span>` : ''}
@@ -389,21 +399,21 @@ export function agendaText() {
 export function exportRows() {
   const a = state.a, E = !fr();
   const head = E
-    ? ['Order', 'Number', 'Task', 'Status', 'Who is on it', 'Done by', 'Done on', 'Do by', 'Target date', 'Date type', 'Result we expect', 'Effort', 'Priority', 'Role', 'Area', 'Needs first', 'Topic', 'Kind', 'What we decided', 'Notes', 'Title (French)']
-    : ['Ordre', 'Numéro', 'Tâche', 'Statut', 'Qui s’en occupe', 'Faite par', 'Faite le', 'À faire avant', 'Date cible', 'Type de date', 'Résultat attendu', 'Charge', 'Priorité', 'Rôle', 'Domaine', 'Prérequis', 'Sujet', 'Nature', 'Décision', 'Notes', 'Titre (anglais)'];
+    ? ['Order', 'Number', 'Task', 'Status', 'Who is on it', 'Done by', 'Done on', 'Do by', 'Target date', 'Date type', 'Result we expect', 'Effort', 'Priority', 'Role', 'Area', 'Group', 'Needs first', 'Topic', 'Kind', 'What we decided', 'Notes', 'Title (French)']
+    : ['Ordre', 'Numéro', 'Tâche', 'Statut', 'Qui s’en occupe', 'Faite par', 'Faite le', 'À faire avant', 'Date cible', 'Type de date', 'Résultat attendu', 'Charge', 'Priorité', 'Rôle', 'Domaine', 'Groupe', 'Prérequis', 'Sujet', 'Nature', 'Décision', 'Notes', 'Titre (anglais)'];
   const src = { due: E ? 'firm deadline' : 'échéance ferme', planning: E ? 'internal target' : 'cible interne', anchor: E ? 'from a key date' : 'calculée d’un jalon' };
   const pos = new Map(a.plan.map((id, i) => [id, i + 1]));
   const rows = a.order.map(id => state.tasks.get(id)).map(x => [pos.get(x.id) ?? '', x.id, titleOf(x), statusLabel(x.status), takersOf(x).join(', '), x.doneBy || '',
     x.doneAt ? x.doneAt.slice(0, 10) : '', x.status === 'Done' ? '' : a.deadline.get(x.id)?.date || '', a.target.get(x.id)?.date || '', a.target.get(x.id) ? src[a.target.get(x.id).source] : (x.timing || ''),
-    deliverableOf(x), effortLabel(x.effort), priorityLabel(x.priority), people(x.person).map(ownerLabel).join(', '), domainLabel(x.domain),
+    deliverableOf(x), effortLabel(x.effort), priorityLabel(x.priority), people(x.person).map(ownerLabel).join(', '), domainLabel(x.domain), tagLabel(tagOf(x)),
     x.dependsOn, x.topic, x.kind || 'task', x.decision, x.notes, E ? x.titleFr : x.title]);
   return { head, rows, doneCol: 3, doneLabel: statusLabel('Done') };
 }
 
 export function csv() {
   const a = state.a;
-  const head = ['id', 'titre', 'title', 'statut', 'priorite', 'responsables', 'domaine', 'date_cible', 'source_date', 'resultat_attendu', 'charge', 'prerequis', 'sujet', 'nature', 'decision', 'notes'];
-  const rows = a.order.map(id => state.tasks.get(id)).map(x => [x.id, x.titleFr, x.title, x.status, x.priority, x.person, x.domain,
+  const head = ['id', 'titre', 'title', 'statut', 'priorite', 'responsables', 'domaine', 'groupe', 'date_cible', 'source_date', 'resultat_attendu', 'charge', 'prerequis', 'sujet', 'nature', 'decision', 'notes'];
+  const rows = a.order.map(id => state.tasks.get(id)).map(x => [x.id, x.titleFr, x.title, x.status, x.priority, x.person, x.domain, tagOf(x),
     a.target.get(x.id)?.date || '', a.target.get(x.id)?.source || x.timing || '', x.deliverable, x.effort, x.dependsOn, x.topic, x.kind || 'task', x.decision, x.notes]);
   return '﻿' + [head, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n');
 }

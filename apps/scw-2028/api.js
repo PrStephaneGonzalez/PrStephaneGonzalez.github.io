@@ -29,7 +29,7 @@ async function rpc(fn, args, timeout = 15000) {
 /** Champs d'une tâche enregistrés côté serveur (colonne JSON : un nouveau champ ne demande aucune migration). */
 export const TEXT_FIELDS = ['title', 'titleFr', 'domain', 'due', 'priority', 'status', 'person', 'notes', 'planningDate',
   'timing', 'dependsOn', 'startWhen', 'provenance', 'sourceRecord', 'deliverable', 'deliverableFr', 'effort', 'kind', 'topic', 'anchor',
-  'decision', 'doneBy', 'doneAt'];
+  'decision', 'doneBy', 'doneAt', 'tag'];
 
 /** Une tâche côté interface : { id, version, updated, updatedBy, ...champs }. */
 const toTask = row => ({ ...row.data, id: row.id, version: row.version, updated: row.updated, updatedBy: row.updated_by });

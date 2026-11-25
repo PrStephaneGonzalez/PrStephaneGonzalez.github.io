@@ -1,12 +1,12 @@
 // Point d'entrée : connexion, synchronisation, actions rapides et délégation des événements.
 // Organisation des fichiers : model.js (logique pure) · api.js (serveur) · core.js (état) ·
 // views.js (vues) · drawer.js (fiche d'une tâche) · i18n.js (textes).
-import { wouldUnlock } from './model.js?v=20261116f';
-import { createApi, ApiError } from './api.js?v=20261116f';
-import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261116f';
-import { workbook } from './xlsx.js?v=20261116f';
-import { renderShell, render, agendaText, exportRows } from './views.js?v=20261116f';
-import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261116f';
+import { wouldUnlock } from './model.js?v=20261125a';
+import { createApi, ApiError } from './api.js?v=20261125a';
+import { $, esc, state, T, fr, store, statusLabel, recompute, toast, saveFilters, EMPTY_FILTERS, fmtDateTime, takersOf, same } from './core.js?v=20261125a';
+import { workbook } from './xlsx.js?v=20261125a';
+import { renderShell, render, agendaText, exportRows } from './views.js?v=20261125a';
+import { hooks, renderDrawer, openTask, closeDrawer, saveTask, deleteTask, stepAction } from './drawer.js?v=20261125a';
 
 /* ---------- Connexion ---------- */
 
@@ -200,7 +200,7 @@ async function copyAgenda() {
 
 function exportExcel() {
   const { head, rows } = exportRows();
-  const widths = [7, 10, 60, 14, 22, 14, 12, 12, 12, 16, 50, 16, 10, 28, 24, 22, 24, 10, 40, 60, 60];
+  const widths = [7, 10, 60, 14, 22, 14, 12, 12, 12, 16, 50, 16, 10, 28, 24, 16, 22, 24, 10, 40, 60, 60];
   const done = statusLabel('Done');
   const blob = workbook({ sheet: fr() ? 'Tâches' : 'Tasks', head, rows, widths, greyRow: r => r[3] === done });
   const a = document.createElement('a');
@@ -242,10 +242,11 @@ function setView(v) {
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-done],[data-take],[data-scope],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
+  const el = e.target.closest('[data-done],[data-take],[data-scope],[data-tag],[data-person],[data-open],[data-view],[data-owner],[data-restore],[data-step-remove],[data-action]');
   if (!el) return;
   if (el.dataset.done) return toggleDone(el.dataset.done);
   if (el.dataset.take) return toggleTake(el.dataset.take);
+  if (el.dataset.tag) { state.f.tag = state.f.tag === el.dataset.tag ? '' : el.dataset.tag; saveFilters(); state.recent.clear(); render(); return; }
   if (el.dataset.scope) { state.f.scope = el.dataset.scope; saveFilters(); state.recent.clear(); render(); return; }
   if (el.dataset.person) {
     state.f = { ...state.f, taker: el.dataset.person, scope: 'all' }; saveFilters(); renderShell();

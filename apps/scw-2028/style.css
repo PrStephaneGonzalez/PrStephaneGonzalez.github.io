@@ -95,6 +95,18 @@ textarea { resize: vertical; line-height: 1.5; }
 .scope[aria-pressed=true] { background: var(--saone-deep); border-color: var(--saone-deep); color: #fff; }
 .scope[aria-pressed=true] span { color: #cfe6e2; }
 .scope[data-scope=late]:not([aria-pressed=true]) { color: var(--alert); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tagchip { --tc: var(--ink-2); --tb: var(--surface); border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 14px; font-weight: 600; color: var(--ink); display: inline-flex; gap: 8px; align-items: center; }
+.tagchip .tdot { width: 10px; height: 10px; border-radius: 50%; background: var(--tc); flex: none; }
+.tagchip .tn { font-weight: 400; color: var(--ink-3); font-size: 14px; font-variant-numeric: tabular-nums; }
+.tagchip:hover { border-color: var(--tc); }
+.tagchip[aria-pressed=true] { background: var(--tc); border-color: var(--tc); color: #fff; }
+.tagchip[aria-pressed=true] .tdot { background: #fff; }
+.tagchip[aria-pressed=true] .tn { color: rgba(255, 255, 255, .85); }
+.tg-admin { --tc: #2f5d8a; --tb: #e1ebf6; }
+.tg-science { --tc: #5b4a9e; --tb: #eae6f7; }
+.tg-social { --tc: #8a5d0c; --tb: #f6ead3; }
+.tagb { font-size: 12.5px; font-weight: 600; color: var(--tc); background: var(--tb); border-radius: 6px; padding: 1px 8px; }
 .more-filters summary { cursor: pointer; color: var(--saone); font-weight: 600; width: max-content; }
 .filter-grid { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 10px; }
 .filter-grid select { flex: 0 1 230px; }
@@ -325,6 +337,8 @@ legend { font-weight: 600; font-size: 14px; color: var(--ink-2); padding: 0 6px;
   .task { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'open' 'foot' 'acts'; padding: 12px 12px 12px 12px; gap: 4px; }
   .acts { grid-template-columns: 1fr 1fr; margin-top: 8px; }
   .task.is-done .acts { grid-template-columns: 1fr; }
+  .tags { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px; }
+  .tagchip { padding: 6px 12px; white-space: nowrap; }
   .scopes { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px; }
   .scope { padding: 6px 12px; white-space: nowrap; }
   .views button { padding: 10px 10px 8px; font-size: 15px; }

@@ -346,3 +346,17 @@ export const csvCell = v => {
   const s = String(v ?? '');
   return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
+
+/**
+ * Trois groupes de travail (étiquettes) pour filtrer d'un clic : « admin » (administration, budget, supervision),
+ * « science » (programme scientifique, soumissions, communication), « social » (repas, soirées, accueil, inclusion).
+ * Chaque tâche porte son étiquette (champ « tag ») ; à défaut, on la déduit du domaine.
+ */
+export const TAGS = ['admin', 'science', 'social'];
+const DOMAIN_TAG = {
+  'Scientific programme': 'science', 'Submissions & committee': 'science', 'Plenaries & invited sessions': 'science', 'Satellite workshop': 'science',
+  'Website & digital tools': 'science', 'Communications': 'science', 'Post-conference follow-up': 'science',
+  'Dinner & reception': 'social', 'Catering & breaks': 'social', 'Accessibility & inclusion': 'social', 'Student support': 'social', 'Participant gifts': 'social',
+};
+export const tagForDomain = d => DOMAIN_TAG[d] || 'admin';
+export const tagOf = t => (TAGS.includes(t?.tag) ? t.tag : tagForDomain(t?.domain));

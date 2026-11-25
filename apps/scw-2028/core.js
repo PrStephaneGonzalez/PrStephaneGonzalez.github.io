@@ -1,6 +1,6 @@
 // État partagé de l'interface et petites fonctions utilitaires (aucun rendu ici).
-import { analyse, people, labelsFor, concerns, isActionable } from './model.js?v=20261116f';
-import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261116f';
+import { analyse, people, labelsFor, concerns, isActionable, tagOf } from './model.js?v=20261125a';
+import { STRINGS, STATUS_LABELS, PRIORITY_LABELS, EFFORT_LABELS, KIND_LABELS, DOMAIN_LABELS_FR, OWNER_LABELS_FR } from './i18n.js?v=20261125a';
 
 export const $ = sel => document.querySelector(sel);
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -11,7 +11,7 @@ export const store = {
 };
 
 // Les tâches faites restent visibles par défaut (barrées et grisées). « taker » = qui a dit « Je m'en occupe ».
-export const EMPTY_FILTERS = { q: '', domain: '', person: '', taker: '', priority: '', scope: 'all' };
+export const EMPTY_FILTERS = { q: '', domain: '', person: '', taker: '', priority: '', tag: '', scope: 'all' };
 
 export const state = {
   lang: store.get('lang') || 'en', // anglais simple par défaut (organisateurs internationaux) ; bouton pour le français
@@ -31,6 +31,7 @@ export const statusLabel = s => STATUS_LABELS[state.lang][s] || s;
 export const priorityLabel = p => PRIORITY_LABELS[state.lang][p] || p;
 export const effortLabel = e => EFFORT_LABELS[state.lang][e || ''] ?? e;
 export const kindLabel = k => KIND_LABELS[state.lang][k || 'task'] || k;
+export const tagLabel = g => T().tags[g] || g;
 export const domainLabel = d => (fr() && DOMAIN_LABELS_FR[d]) || d;
 export const ownerLabel = o => (fr() && OWNER_LABELS_FR[o]) || o;
 export const titleOf = t => (fr() ? t.titleFr || t.title : t.title || t.titleFr) || '';
@@ -38,7 +39,9 @@ export const deliverableOf = t => (fr() ? t.deliverableFr || t.deliverable : t.d
 
 /** Personnes qui ont dit « Je m'en occupe ». */
 export const takersOf = t => (Array.isArray(t.takers) ? t.takers : []);
-export const same = (a, b) => String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();
+/** Prénoms comparés sans tenir compte des majuscules ni des accents (« Stéphane » = « stephane »). */
+export const fold = s => String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+export const same = (a, b) => fold(a) === fold(b);
 export const iTook = t => takersOf(t).some(n => same(n, state.who));
 
 /** Couleur stable par personne (même prénom = même couleur pour tout le monde). */
@@ -46,13 +49,13 @@ const PALETTE = [['#1d6f6a', '#dcefec'], ['#2f5d8a', '#e1ebf6'], ['#8a3b6e', '#f
   ['#3d5a80', '#e2e9f3'], ['#3f6b2a', '#e4efdc'], ['#1f6f8b', '#dbeef5'], ['#7a3d9a', '#efe2f6'], ['#6b4f3a', '#efe6dd'], ['#5f6b7a', '#e7eaee'], ['#2e6b52', '#ddefe6']];
 export function colorFor(name) {
   let h = 0;
-  for (const c of String(name || '').trim().toLowerCase()) h = (h * 31 + c.codePointAt(0)) >>> 0;
+  for (const c of fold(name)) h = (h * 31 + c.codePointAt(0)) >>> 0;
   return PALETTE[h % PALETTE.length];
 }
 /** Tout le monde : qui a pris ou fait une tâche, plus la personne connectée. */
 export function everyone() {
   const m = new Map();
-  const add = n => { const k = String(n || '').trim(); if (k && !m.has(k.toLowerCase())) m.set(k.toLowerCase(), k); };
+  const add = n => { const k = String(n || '').trim(); if (k && !m.has(fold(k))) m.set(fold(k), k); };
   add(state.who);
   for (const t of state.tasks.values()) { takersOf(t).forEach(add); add(t.doneBy); }
   return [...m.values()].sort((a, b) => a.localeCompare(b));
@@ -82,13 +85,14 @@ export function recompute() {
  * Filtres de la barre d'outils ; les règles et rituels sont exclus des listes de travail.
  * Portée : 'all', 'mine' (je m'en occupe ou mon rôle est cité), 'free' (personne dessus), 'late' (en retard).
  */
-export function matches(t, { includeNonTasks = false, scope = state.f.scope } = {}) {
+export function matches(t, { includeNonTasks = false, scope = state.f.scope, tag = state.f.tag } = {}) {
   const f = state.f;
   if (!t) return false;
   if (!includeNonTasks && !isActionable(t)) return false;
   if (scope === 'mine' && !isMine(t)) return false;
   if (scope === 'free' && (takersOf(t).length || t.status === 'Done')) return false;
   if (scope === 'late' && !state.a.late.has(t.id)) return false;
+  if (tag && tagOf(t) !== tag) return false;
   if (f.domain && t.domain !== f.domain) return false;
   if (f.priority && t.priority !== f.priority) return false;
   if (f.taker && !(takersOf(t).some(n => same(n, f.taker)) || same(t.doneBy, f.taker))) return false;

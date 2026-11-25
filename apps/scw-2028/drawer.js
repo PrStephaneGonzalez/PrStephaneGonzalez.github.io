@@ -1,17 +1,16 @@
 // Fiche d'une tâche (panneau latéral) : lecture, modification, sous-étapes, historique.
-import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates } from './model.js?v=20261116f';
+import { STATUSES, PRIORITIES, EFFORTS, KINDS, parseIds, wouldCycle, prefixFor, nextId, targetDate, milestoneDates, TAGS, tagOf, tagForDomain } from './model.js?v=20261125a';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, kindLabel, domainLabel, titleOf, slug,
-  fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same,
-} from './core.js?v=20261116f';
-import { logItems, chip, actionsHtml } from './views.js?v=20261116f';
+  fmtDate, fmtDateTime, fmtDay, milestones, milestoneLabel, recompute, toast, takersOf, same, tagLabel } from './core.js?v=20261125a';
+import { logItems, chip, actionsHtml } from './views.js?v=20261125a';
 
 export const hooks = { refresh: async () => {}, render: () => {}, signOut: () => {} };
 
 function blankTask() {
   const all = [...state.tasks.values()];
   const domain = state.f.domain || 'General';
-  return { id: nextId(all, prefixFor(all, domain)), title: '', titleFr: '', domain, due: '', priority: 'Medium', status: 'To do',
+  return { id: nextId(all, prefixFor(all, domain)), title: '', titleFr: '', domain, tag: state.f.tag || tagForDomain(domain), due: '', priority: 'Medium', status: 'To do',
     person: '', notes: '', planningDate: '', timing: '', dependsOn: '', startWhen: '', provenance: '', sourceRecord: '',
     deliverable: '', effort: '', kind: 'task', topic: '', anchor: '', anchorOffset: 0, checklist: [], decision: '' };
 }
@@ -51,7 +50,7 @@ function readForm() {
   const form = $('#task-form');
   if (!form || !state.draft) return;
   const fd = Object.fromEntries(new FormData(form));
-  for (const k of ['titleFr', 'title', 'deliverable', 'deliverableFr', 'status', 'priority', 'effort', 'kind', 'person', 'domain', 'topic', 'planningDate', 'due',
+  for (const k of ['titleFr', 'title', 'deliverable', 'deliverableFr', 'status', 'priority', 'effort', 'kind', 'person', 'domain', 'tag', 'topic', 'planningDate', 'due',
     'anchor', 'timing', 'startWhen', 'dependsOn', 'decision', 'notes']) if (k in fd) state.draft[k] = fd[k];
   if ('anchorOffset' in fd) state.draft.anchorOffset = Number(fd.anchorOffset) || 0;
 }
@@ -95,6 +94,7 @@ export function renderDrawer(error = '') {
           <label>${esc(t.fKind)}<select name="kind">${opt(KINDS, d.kind || 'task', kindLabel)}</select></label>
           <label class="wide">${esc(t.fPerson)}<input name="person" maxlength="160" value="${esc(d.person)}"><small>${esc(t.fPersonHelp)}</small></label>
           <label>${esc(t.fDomain)}<select name="domain">${opt(domains, d.domain, domainLabel)}</select></label>
+          <label>${esc(t.fTag)}<select name="tag">${opt(TAGS, tagOf(d), tagLabel)}</select></label>
           <label>${esc(t.fTopic)}<input name="topic" maxlength="80" value="${esc(d.topic)}" list="topic-list"><datalist id="topic-list">${topics.map(x => `<option value="${esc(x)}">`).join('')}</datalist></label>
         </div>
         <fieldset class="when"><legend>${esc(t.fWhen)}</legend>
@@ -142,6 +142,7 @@ export function renderDrawer(error = '') {
   if (isNew) form.domain.addEventListener('change', () => {
     readForm();
     state.draft.id = nextId(all, prefixFor(all, form.domain.value));
+    state.draft.tag = form.tag.value = tagForDomain(form.domain.value);
     $('#d-id').textContent = state.draft.id;
   });
   $('#dep-pick').addEventListener('change', e => {
