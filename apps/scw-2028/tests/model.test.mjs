@@ -165,3 +165,16 @@ test('le groupe de travail est bien enregistré avec la tâche', () => {
   assert.equal(toData({ title: 'x', priority: 'High', status: 'To do', tag: 'social' }).tag, 'social');
   assert.equal(toData({ title: 'x', priority: 'High', status: 'To do' }).tag, '');   // absent : vide, le domaine décide
 });
+
+test('comptes rendus : nettoyage des champs et identifiants', async () => {
+  const { meetingData, meetingId } = await import('../api.js');
+  const d = meetingData({ date: '2026-11-25', present: '  Zoi, Antoinette ', decisions: ['  a ', '', 'b'], next: 'pas une date',
+    actions: [{ text: ' x ', who: ' Zoi ', due: '2026-12-01', task: 'GOV-006' }, { text: '   ' }, { text: 'y', due: 'demain' }], notes: ' n ' });
+  assert.deepEqual(d, { date: '2026-11-25', present: 'Zoi, Antoinette', decisions: ['a', 'b'], next: '',
+    actions: [{ text: 'x', who: 'Zoi', due: '2026-12-01', task: 'GOV-006' }, { text: 'y', who: '', due: '', task: '' }], notes: 'n' });
+  assert.equal(meetingData({ date: '25/11/2026' }).date, '');
+  assert.equal(meetingData().decisions.length, 0);
+  assert.equal(meetingId('2026-11-25', ['2026-11-10']), '2026-11-25');
+  assert.equal(meetingId('2026-11-25', ['2026-11-25']), '2026-11-25-2');
+  assert.equal(meetingId('2026-11-25', ['2026-11-25', '2026-11-25-2']), '2026-11-25-3');
+});

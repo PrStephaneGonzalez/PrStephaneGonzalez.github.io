@@ -1,13 +1,13 @@
 // Rendu des vues (chaînes HTML). Les interactions sont gérées dans app.js par délégation (attributs data-*).
-import { STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays, horizonRank, TAGS, tagOf } from './model.js?v=20261125a';
-import { GLOSSARY } from './i18n.js?v=20261125a';
+import { STATUSES, PRIORITIES, people, isActionable, agenda, daysBetween, csvCell, addDays, horizonRank, TAGS, tagOf } from './model.js?v=20261125b';
+import { GLOSSARY } from './i18n.js?v=20261125b';
 import {
   $, esc, state, T, fr, statusLabel, priorityLabel, effortLabel, domainLabel, ownerLabel, titleOf, deliverableOf, slug,
   fmtDate, fmtDay, fmtMonth, fmtDateTime, today, milestones, milestoneLabel, isMine,
-  matches, filtersActive, takersOf, iTook, colorFor, same, everyone, tagLabel } from './core.js?v=20261125a';
+  matches, filtersActive, takersOf, iTook, colorFor, same, everyone, tagLabel } from './core.js?v=20261125b';
 
-const VIEWS = ['tasks', 'decisions', 'team', 'log'];
-const VIEW_LABEL = { tasks: 'viewTasks', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog' };
+const VIEWS = ['tasks', 'decisions', 'team', 'log', 'meetings'];
+const VIEW_LABEL = { tasks: 'viewTasks', decisions: 'viewDecisions', team: 'viewTeam', log: 'viewLog', meetings: 'viewMeetings' };
 const WITH_TOOLBAR = new Set(['tasks']);
 const SCOPES = ['all', 'mine', 'free', 'late'];
 
@@ -88,7 +88,7 @@ function renderOverview() {
   $('#bar').style.width = `${all.length ? Math.max(1, done / all.length * 100) : 0}%`;
   const conf = a.milestones.get('conf');
   if (conf) $('#countdown').innerHTML = `<b>${esc(t.countdown(daysBetween(today(), conf)))}</b> ${esc(t.countdownLabel(fmtDate(conf)))}`;
-  const counts = { tasks: all.length - done, decisions: all.filter(x => x.status === 'Decision needed').length };
+  const counts = { tasks: all.length - done, decisions: all.filter(x => x.status === 'Decision needed').length, meetings: state.meetings ? state.meetings.length : '' };
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent = counts[el.dataset.count] ?? ''; });
   document.querySelectorAll('[data-scount]').forEach(el => { el.textContent = scopeCount(el.dataset.scount); });
   document.querySelectorAll('[data-scope]').forEach(el => el.setAttribute('aria-pressed', String(state.f.scope === el.dataset.scope)));
@@ -342,17 +342,20 @@ export function logItems(entries, { withTask = true } = {}) {
   return `<ul class="log">${entries.map(e => {
     const verb = { create: t.created, update: t.updated, delete: t.deleted }[e.action];
     const isMeta = String(e.task_id).startsWith('meta:');
+    const isMtg = String(e.task_id).startsWith('mtg:');
     const data = e.after || e.before || {};
-    const title = isMeta ? t.metaChange[e.task_id] || e.task_id : (fr() ? data.titleFr || data.title : data.title || data.titleFr) || '';
+    const title = isMtg ? t.meetingOf(data.date ? fmtDate(data.date) : e.task_id.slice(4))
+      : isMeta ? t.metaChange[e.task_id] || e.task_id : (fr() ? data.titleFr || data.title : data.title || data.titleFr) || '';
     const fields = changedFields(e);
     const statusChange = !isMeta && fields.includes('status') ? `${fr() ? ' :' : ':'} ${statusLabel(e.before.status)} → ${statusLabel(e.after.status)}` : '';
-    const target = isMeta ? `<span>${esc(title)}</span>` : e.action === 'delete' || !withTask
+    const target = isMtg ? (e.action === 'delete' ? `<span>${esc(title)}</span>` : `<button class="link" data-view="meetings">${esc(title)}</button>`)
+      : isMeta ? `<span>${esc(title)}</span>` : e.action === 'delete' || !withTask
       ? (withTask ? `<span class="tid">${esc(e.task_id)}</span> ${esc(title)}` : '')
       : `<button class="link" data-open="${esc(e.task_id)}"><span class="tid">${esc(e.task_id)}</span> ${esc(title)}</button>`;
-    const canRestore = !isMeta && e.before && (e.action === 'update' || e.action === 'delete');
+    const canRestore = !isMeta && !isMtg && e.before && (e.action === 'update' || e.action === 'delete');
     return `<li><time>${esc(fmtDateTime(e.at))}</time>
       <span><b>${esc(e.who || t.someone)}</b> ${esc(verb)} ${target}${esc(statusChange)}
-      ${fields.length && !statusChange && !isMeta ? `<small>${esc(t.changed)} ${fields.map(FIELD_LABEL).map(esc).join(', ')}</small>` : ''}
+      ${fields.length && !statusChange && !isMeta && !isMtg ? `<small>${esc(t.changed)} ${fields.map(FIELD_LABEL).map(esc).join(', ')}</small>` : ''}
       ${canRestore ? `<button class="link small" data-restore="${esc(e.hid)}">${esc(t.restore)}</button>` : ''}</span></li>`;
   }).join('')}</ul>`;
 }
@@ -365,6 +368,92 @@ function viewLog() {
   return `<p class="intro">${esc(T().logIntro)}</p>${logItems(state.log)}`;
 }
 
+/* ---------- Réunions ---------- */
+
+const meetingText = m => [m.date, m.present, ...m.decisions, ...m.actions.flatMap(a => [a.text, a.who, a.task]), m.notes].join(' ').toLowerCase();
+
+/** Une ligne d'action du formulaire de compte rendu (champs relus au moment d'enregistrer). */
+export function actionRow(a = {}) {
+  const t = T();
+  return `<div class="m-action-row">
+    <input name="a-text" maxlength="400" value="${esc(a.text || '')}" placeholder="${esc(t.actionWhat)}" aria-label="${esc(t.actionWhat)}">
+    <input name="a-who" maxlength="80" value="${esc(a.who || '')}" list="m-who-list" placeholder="${esc(t.actionWho)}" aria-label="${esc(t.actionWho)}">
+    <input name="a-due" type="date" value="${esc(a.due || '')}" aria-label="${esc(t.actionDue)}">
+    <input name="a-task" type="hidden" value="${esc(a.task || '')}">
+    <button type="button" class="link small" data-action="meeting-del-action" aria-label="${esc(t.removeStep)}">${esc(t.removeStep)}</button>
+  </div>`;
+}
+
+/** Formulaire (dans une fenêtre) pour écrire ou corriger un compte rendu. */
+export function meetingForm(m) {
+  const t = T(), isNew = m.version == null;
+  const names = everyone().filter(n => !!n);
+  return `<form id="meeting-form" data-id="${esc(m.id)}" data-version="${esc(m.version ?? '')}" novalidate>
+    <h2 id="dlg-title">${esc(isNew ? t.meetingNew : t.meetingEdit(fmtDate(m.date)))}</h2>
+    <div class="m-two">
+      <label>${esc(t.meetingDate)}<input type="date" name="date" required value="${esc(m.date)}"></label>
+      <label>${esc(t.meetingNext)}<input type="date" name="next" value="${esc(m.next || '')}"></label>
+    </div>
+    <label>${esc(t.meetingPresent)}<input name="present" maxlength="300" value="${esc(m.present || '')}"></label>
+    <label>${esc(t.meetingDecisions)}<small>${esc(t.meetingDecisionsHelp)}</small>
+      <textarea name="decisions" rows="5" maxlength="20000">${esc((m.decisions || []).join('\n'))}</textarea></label>
+    <fieldset class="m-actions"><legend>${esc(t.meetingActions)}</legend><small>${esc(t.meetingActionsHelp)}</small>
+      <div id="m-action-rows">${(m.actions?.length ? m.actions : [{}]).map(actionRow).join('')}</div>
+      <datalist id="m-who-list">${names.map(n => `<option value="${esc(n)}">`).join('')}</datalist>
+      <button type="button" class="btn" data-action="meeting-add-action">+ ${esc(t.addAction)}</button>
+    </fieldset>
+    <label>${esc(t.meetingNotes)}<textarea name="notes" rows="7" maxlength="12000">${esc(m.notes || '')}</textarea></label>
+    <p class="form-error" role="alert"></p>
+    <div class="btn-row"><button class="btn primary" type="submit">${esc(t.save)}</button>
+      <button class="link" type="button" data-action="dialog-close">${esc(t.cancel)}</button>
+      ${isNew ? '' : `<button class="link danger" type="button" data-action="meeting-delete">${esc(t.meetingDelete)}</button>`}</div>
+  </form>`;
+}
+
+function meetingCard(m, open) {
+  const t = T();
+  const task = a => {
+    if (a.task) return state.tasks.has(a.task)
+      ? `<button class="link" data-open="${esc(a.task)}"><span class="tid">${esc(a.task)}</span></button>`
+      : `<span class="tid">${esc(a.task)}</span>`;
+    return `<button class="link small" data-meeting-task="${esc(m.id)}|${m.actions.indexOf(a)}">${esc(t.makeTask)}</button>`;
+  };
+  return `<details class="card minutes" ${open ? 'open' : ''}>
+    <summary><h2>${esc(fmtDate(m.date))}</h2><span class="muted">${esc(t.meetingCounts(m.decisions.length, m.actions.length))}</span></summary>
+    ${m.present || m.next ? `<p class="meet-meta">${m.present ? `<span><b>${esc(t.meetingPresent)}${fr() ? ' :' : ':'}</b> ${esc(m.present)}</span>` : ''}
+      ${m.next ? `<span><b>${esc(t.meetingNext)}${fr() ? ' :' : ':'}</b> ${esc(fmtDate(m.next))}</span>` : ''}</p>` : ''}
+    ${m.decisions.length ? `<h3>${esc(t.meetingDecisions)}</h3><ul class="meet-decisions">${m.decisions.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+    ${m.actions.length ? `<h3>${esc(t.meetingActions)}</h3><ul class="meet-actions">${m.actions.map(a => `<li>
+      <span class="a-text">${esc(a.text)}</span>
+      <span class="a-meta">${a.who ? chip(a.who, { me: same(a.who, state.who) }) : ''}${a.due ? `<span class="when">${esc(t.by(fmtDate(a.due)))}</span>` : ''}${task(a)}</span></li>`).join('')}</ul>` : ''}
+    ${m.notes ? `<h3>${esc(t.meetingNotes)}</h3><p class="meet-notes">${esc(m.notes)}</p>` : ''}
+    <div class="btn-row"><button class="btn" data-meeting-edit="${esc(m.id)}">${esc(t.meetingEditBtn)}</button>
+      <span class="muted">${m.updatedBy ? esc(t.lastChange(m.updatedBy, fmtDateTime(m.updated))) : ''}</span></div>
+  </details>`;
+}
+
+/** Liste filtrée par la recherche ; les deux plus récents sont ouverts, les autres repliés (tous ouverts si on cherche). */
+export function meetingList() {
+  const t = T(), q = state.mq.trim().toLowerCase();
+  const list = (state.meetings || []).filter(m => !q || q.split(/\s+/).every(w => meetingText(m).includes(w)));
+  if (!list.length) return `<p class="empty">${esc(q ? t.meetingNoMatch : t.meetingEmpty)}</p>`;
+  return list.map((m, i) => meetingCard(m, !!q || i < 2)).join('');
+}
+
+function viewMeetings() {
+  const t = T();
+  if (!state.meetings) {
+    state.api.meetings().then(ms => { state.meetings = ms; if (state.view === 'meetings') render(); }).catch(() => {});
+    return `<p class="intro">${esc(t.meetingsIntro)}</p><p class="empty">${esc(t.loading)}</p>`;
+  }
+  return `<p class="intro">${esc(t.meetingsIntro)}</p>
+    <div class="meet-bar">
+      <button class="btn primary" data-action="meeting-new">+ ${esc(t.meetingNew)}</button>
+      <input type="search" id="m-q" placeholder="${esc(t.meetingSearch)}" value="${esc(state.mq)}" aria-label="${esc(t.meetingSearch)}">
+    </div>
+    <div id="m-list">${meetingList()}</div>`;
+}
+
 /* ---------- Rendu principal ---------- */
 
 export function render() {
@@ -375,7 +464,7 @@ export function render() {
     b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
   });
   $('#main').setAttribute('aria-labelledby', `tab-${state.view}`);
-  const views = { tasks: viewTasks, decisions: viewDecisions, team: viewTeam, log: viewLog };
+  const views = { tasks: viewTasks, decisions: viewDecisions, team: viewTeam, log: viewLog, meetings: viewMeetings };
   $('#main').innerHTML = (views[state.view] || viewTasks)();
 }
 
