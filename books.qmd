@@ -5,7 +5,7 @@ description-meta: "Books in progress by Stéphane Gonzalez: Decision-Making and 
 
 Two book projects in progress. Select a cover or title to explore the book and access its available chapters.
 
-::: {.sg-books-grid}
+:::: {.sg-books-grid}
 
 ::: {.sg-book-card}
 <a class="sg-book-cover sg-book-cover--decision" href="book-decision-making.html" aria-label="Explore Decision-Making and Political Engineering">
@@ -43,4 +43,4 @@ Two book projects in progress. Select a cover or title to explore the book and a
 </div>
 :::
 
-:::
+::::
