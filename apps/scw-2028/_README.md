@@ -107,3 +107,16 @@ cette personne. Les tâches faites restent visibles, barrées et grisées, avec 
   Après un clic, la tâche reste à sa place, s'éclaire un instant, et un message propose « Undo ».
 - Les tâches faites sont regroupées en bas (« Done tasks »), barrées et grisées.
 - Export Excel : colonnes « Order » (rang dans l'ordre de travail) et « Do by » (échéance effective) ajoutées.
+
+## Révision du 25/11/2026 : trois groupes de travail
+
+- Chaque tâche porte un groupe (champ `tag` : `admin`, `science` ou `social`), affiché en pastille sur la carte et filtrable en un clic (trois boutons au-dessus de « Toutes / Les miennes… »). Le groupe se change dans la fiche de la tâche.
+  - **Administration et financement** (administration, budget, lieu, inscriptions, supervision) : responsable Stephane.
+  - **Science et communication** (programme, soumissions, invités, site web, communication) : responsable zoi.
+  - **Événements sociaux et inclusion** (repas, soirées, accueil, soutien aux étudiants, accessibilité) : responsable ANTOINETTE.
+- Le classement initial vient du domaine de chaque tâche (`tagForDomain` dans `model.js`), avec quelques exceptions décidées une à une (par exemple l'accueil des familles, le code de conduite, la clôture financière). Une tâche sans groupe prend celui de son domaine.
+- Le responsable du groupe a été ajouté comme « Je m'en occupe » sur toutes les tâches non faites du groupe ; les autres personnes déjà inscrites sont conservées. Chacun peut se retirer d'une tâche en recliquant sur le bouton.
+- Les prénoms sont maintenant comparés sans tenir compte des accents ni des majuscules (« Stéphane » = « stephane »).
+- Le comité local (onglet Équipe) : Stéphane, Antoinette, Zoi, Federico, Taï, Federica, Benoît, Lily, Jean-Baptiste, Antoine. Philippe, proposé auparavant, n'y figure plus.
+- Export Excel : nouvelle colonne « Groupe ».
+

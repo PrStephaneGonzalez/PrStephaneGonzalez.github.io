@@ -1,7 +1,8 @@
 // Tests de la logique d'ordonnancement : node --test apps/scw-2028/tests/
 import test from 'node:test';
+import { toData } from '../api.js';
 import assert from 'node:assert/strict';
-import { analyse, parseHint, parseIds, wouldCycle, nextId, prefixFor, phaseOf, people, targetDate, milestoneDates, addDays, labelsFor, concerns, wouldUnlock, agenda, csvCell } from '../model.js';
+import { analyse, parseHint, parseIds, wouldCycle, nextId, prefixFor, phaseOf, people, targetDate, milestoneDates, addDays, labelsFor, concerns, wouldUnlock, agenda, csvCell, TAGS, tagOf, tagForDomain } from '../model.js';
 
 const task = (id, extra = {}) => ({ id, title: id, domain: 'General', priority: 'Medium', status: 'To do', dependsOn: '', planningDate: '', due: '', timing: '', startWhen: '', person: '', ...extra });
 
@@ -147,4 +148,20 @@ test('ordre du jour : décisions mûres, retards, attentes', () => {
 test('cellules CSV', () => {
   assert.equal(csvCell('a, "b"'), '"a, ""b"""');
   assert.equal(csvCell('simple'), 'simple');
+});
+
+test('groupes de travail : étiquette explicite, sinon déduite du domaine', () => {
+  assert.deepEqual(TAGS, ['admin', 'science', 'social']);
+  assert.equal(tagForDomain('Budget & funding'), 'admin');
+  assert.equal(tagForDomain('Submissions & committee'), 'science');
+  assert.equal(tagForDomain('Dinner & reception'), 'social');
+  assert.equal(tagForDomain('General'), 'admin');                         // domaine inconnu : administration
+  assert.equal(tagOf({ domain: 'Catering & breaks' }), 'social');         // pas d'étiquette : déduite
+  assert.equal(tagOf({ domain: 'Catering & breaks', tag: 'science' }), 'science'); // étiquette explicite prioritaire
+  assert.equal(tagOf({ domain: 'Venue & rooms', tag: 'nimporte' }), 'admin');      // étiquette invalide : ignorée
+});
+
+test('le groupe de travail est bien enregistré avec la tâche', () => {
+  assert.equal(toData({ title: 'x', priority: 'High', status: 'To do', tag: 'social' }).tag, 'social');
+  assert.equal(toData({ title: 'x', priority: 'High', status: 'To do' }).tag, '');   // absent : vide, le domaine décide
 });
