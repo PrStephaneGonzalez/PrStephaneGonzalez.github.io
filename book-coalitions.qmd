@@ -1,0 +1,24 @@
+---
+title: "Coalitions et jeux coopératifs"
+description-meta: "Chapitres et documents téléchargeables de Coalitions et jeux coopératifs, par Stéphane Gonzalez."
+---
+
+[← All books](books.qmd){.sg-book-back}
+
+### *Du cœur aux fonctions d'effectivité*
+
+**Livre en cours de rédaction · Stéphane Gonzalez**
+
+Ce livre prolonge mon cours de master [*Coalitions in Cooperative and Non-Cooperative Game Theory*](coalitions.qmd). Il reprend les notes de cours en y ajoutant les définitions de base des jeux coopératifs à utilité transférable, les démonstrations complètes et des applications économiques. Les chapitres sont mis en ligne au fur et à mesure, en français.
+
+## Chapitres
+
+### Chapitre 1 — Jeux à utilité transférable et cœur
+
+*Jeux coopératifs & cœur, ou : pourquoi trois amis se disputent un taxi…*
+
+Le jeu du taxi, le cœur, le théorème de Bondareva--Shapley, les jeux de marché, le théorème de Coase, les jeux d'affectation, les jeux convexes, les arbres couvrants de coût minimal et le lac pollué.
+
+[Télécharger le chapitre 1 (PDF, 45 p.)](assets/books/jeux-cooperatifs-et-coeur-chapitre-1-fr.pdf)
+
+D'autres chapitres seront ajoutés progressivement.
