@@ -1,0 +1,30 @@
+---
+title: "Logic and Sets"
+description-meta: "Logic and Sets, lecture notes by Stéphane Gonzalez (Université Paris 1, 2014–2015; revised edition 2026): logic, sets, mappings, relations and orders, number systems, induction, liminf and limsup, cardinality."
+---
+
+[← All books](books.qmd){.sg-book-back}
+
+### *From propositions to the real line, with remarks for economists*
+
+**Lecture notes · Stéphane Gonzalez · Revised edition 2026**
+
+These are the lecture notes of the course *Logic and sets* that I taught at the Université Paris 1 Panthéon-Sorbonne in 2014–2015, for the students of the Master *Mathematical Models in Economics and Finance* (MMEF) and of the Erasmus Mundus Master *Models and Methods of Quantitative Economics* (QEM). I later completed them and used parts of them in courses at the Saint-Étienne School of Economics.
+
+Many of the students had done little or no mathematics before. The course gives the basic tools of mathematical reasoning and is organised around the notion of **order**: infimum and supremum are introduced with relations, then used to define the real numbers and the limit of a sequence. Two choices of presentation: the real numbers are given by an axiom, and $\mathbb{Q}$, $\mathbb{Z}$ and $\mathbb{N}$ are obtained inside $\mathbb{R}$ as smallest substructures; the limit is defined through liminf and limsup in a complete lattice, so that the same definition applies to numbers and to sets.
+
+This edition keeps the original text as close as possible. Mistakes and misprints have been corrected, the missing proofs have been written, and short boxes *For economists* have been added (preferences as total preorders, Pareto efficiency, anonymity, Tarski's fixed point theorem, lexicographic preferences). Everything added in this edition is marked in the text.
+
+[Download the lecture notes (PDF, 71 p.)](assets/books/logic-and-sets-lecture-notes-en.pdf)
+
+## Contents
+
+1. **Classical logic** — propositions, connectives, truth tables, tautologies, quantifiers and their negation.
+2. **Basic set theory** — inclusion and equality, the axioms of specification, pairing and union, intersections, De Morgan's laws, symmetric difference.
+3. **Mappings, inverse image** — power set, ordered pairs, Cartesian products, direct and inverse images.
+4. **Injection, surjection, bijection** — composition, inverse mappings.
+5. **Relations** — equivalence relations and partitions, canonical factorisation, orders and preorders, bounds, infimum and supremum.
+6. **$\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$** — groups, rings and fields, the axiom of the real numbers, the number systems inside $\mathbb{R}$.
+7. **Properties of $\mathbb{N}$ and mathematical induction** — weak and strong induction, the least number principle.
+8. **liminf and limsup** — complete lattices, sequences, inferior and superior limits, monotone sequences, the Knaster–Tarski fixed point theorem.
+9. **Cardinality** — finite sets, the Cantor–Schröder–Bernstein theorem, Cantor's theorem, countable and uncountable sets.
